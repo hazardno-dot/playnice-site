@@ -77,8 +77,14 @@ function parseLegacyGift(value) {
   };
 }
 
+function isMirrorTimeout(order) {
+  return order?.sheet_state_sync_status === "failed" &&
+    /aborted due to timeout|timeout/i.test(String(order?.sheet_state_sync_error || ""));
+}
+
 function syncLabel(order) {
   const status = order?.sheet_state_sync_status || "synced";
+  if (status === "failed" && isMirrorTimeout(order)) return "Backup confirmation timed out";
   if (status === "failed") return "Backup sync failed";
   if (status === "pending") return "Backup sync pending";
   return "Google backup synced";
@@ -308,6 +314,21 @@ function OrdersWorkspace() {
     current.length === settlementEligible.length ? [] : settlementEligible.map((order) => order.id)
   );
   const retrySync = () => mutate({ action: "retry_sheet_sync", id: selected.id }, "retry");
+  const confirmTimedOutSync = () => {
+    if (!selected) return;
+    const needsAlertConfirmation = selected.delivery_issue === "UNREACHABLE" && !selected.delivery_alert_email_status;
+    const confirmed = window.confirm(
+      needsAlertConfirmation
+        ? "Confirm only after checking the Google Sheets Orders row and verifying both deliveryIssue=UNREACHABLE and alertEmailSent=YES.\n\nThis will mark the backup and customer alert as confirmed without sending another email."
+        : "Confirm only after checking the Google Sheets Orders row and verifying the latest order state is present.\n\nThis will mark the backup as confirmed without sending another write."
+    );
+    if (!confirmed) return;
+    mutate({
+      action: "confirm_sheet_sync",
+      id: selected.id,
+      alert_email_sent: needsAlertConfirmation ? "YES" : ""
+    }, "confirm-sync");
+  };
   const setDeliveryIssue = (delivery_issue) => mutate({ action: "set_delivery_issue", id: selected.id, delivery_issue }, "delivery:" + delivery_issue);
   const saveGiftSample = () => mutate({
     action: "set_gift_sample",
@@ -644,7 +665,13 @@ function OrdersWorkspace() {
             </div> : <div className="orders-readonly-value">Delivery issue controls are available while the order is in the delivery lifecycle.</div>}
             <div className="orders-delivery-note">
               {selected.delivery_issue === "UNREACHABLE"
-                ? (selected.delivery_alert_email_status === "YES" ? "Customer alert email sent." : selected.delivery_alert_email_status === "NO_EMAIL" ? "No customer email available." : "UNREACHABLE will trigger the existing customer alert email.")
+                ? (selected.delivery_alert_email_status === "YES"
+                    ? "Customer alert email sent."
+                    : selected.delivery_alert_email_status === "NO_EMAIL"
+                      ? "No customer email available."
+                      : isMirrorTimeout(selected)
+                        ? "Customer alert confirmation timed out. Check alertEmailSent in Google Sheets before any retry."
+                        : "UNREACHABLE will trigger the existing customer alert email.")
                 : "Only UNREACHABLE triggers the existing customer alert email."}
             </div>
           </section>
@@ -674,8 +701,20 @@ function OrdersWorkspace() {
           <section className="orders-sync">
             <div className="orders-section-title"><span>GOOGLE BACKUP</span><strong className={"orders-sync-state " + (selected.sheet_state_sync_status || "synced")}>{syncLabel(selected)}</strong></div>
             <div className="orders-sync-row">
-              <span>{selected.sheet_state_sync_status === "failed" ? selected.sheet_state_sync_error || "Last backup sync failed." : selected.sheet_state_synced_at ? "Last synced " + dateTime(selected.sheet_state_synced_at) : "Historical parity confirmed."}</span>
-              {writeEnabled && selected.sheet_state_sync_status === "failed" ? <button type="button" onClick={retrySync} disabled={Boolean(busy)}>{busy === "retry" ? "Retrying…" : "Retry backup sync"}</button> : null}
+              <span>{
+                isMirrorTimeout(selected)
+                  ? "Google may have completed the write, but Control Center did not receive the acknowledgement. Verify the Orders row before reconciling."
+                  : selected.sheet_state_sync_status === "failed"
+                    ? selected.sheet_state_sync_error || "Last backup sync failed."
+                    : selected.sheet_state_synced_at
+                      ? "Last synced " + dateTime(selected.sheet_state_synced_at)
+                      : "Historical parity confirmed."
+              }</span>
+              {writeEnabled && selected.sheet_state_sync_status === "failed" && isMirrorTimeout(selected)
+                ? <button type="button" onClick={confirmTimedOutSync} disabled={Boolean(busy)}>{busy === "confirm-sync" ? "Confirming…" : "Confirm from Sheets"}</button>
+                : writeEnabled && selected.sheet_state_sync_status === "failed"
+                  ? <button type="button" onClick={retrySync} disabled={Boolean(busy)}>{busy === "retry" ? "Retrying…" : "Retry backup sync"}</button>
+                  : null}
             </div>
           </section>
 
