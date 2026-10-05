@@ -67,6 +67,12 @@ const WATCH_LABELS = {
   MANUAL_APPROVAL: "Manual approval"
 };
 
+const WATCH_BADGES = {
+  WATCH: "WATCH",
+  VERIFY_BEFORE_SHIPPING: "VERIFY",
+  MANUAL_APPROVAL: "APPROVAL"
+};
+
 function normalizeCustomerKey(value) {
   return String(value || "").trim().toLowerCase().replace(/\s+/g, "");
 }
@@ -334,7 +340,12 @@ function OrdersWorkspace() {
         : "This customer has a VERIFY BEFORE SHIPPING watch. Confirm that the customer/order has been verified before continuing.";
       if (!window.confirm(approvalCopy + "\n\nReason: " + selectedWatch.reason)) return;
     }
-    mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
+    mutate({
+      action: "set_status",
+      id: selected.id,
+      status,
+      customer_watch_acknowledged: Boolean(selectedWatch && selectedWatch.level !== "WATCH" && ["PACKED","SHIPPED"].includes(status))
+    }, "status:" + status);
   };
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
   const settleSelected = () => {
@@ -556,7 +567,7 @@ function OrdersWorkspace() {
             const data = order.source_payload || {};
             const customerWatch = customerWatchFor(order, customerWatches);
             return <button type="button" key={order.id} className={`orders-row status-row-${String(order.status || "").toLowerCase()} ${customerWatch ? "customer-watch-row" : ""} ${selectedId === order.id ? "active" : ""}`} onClick={() => setSelectedId(order.id)}>
-              <div className="orders-row-main"><strong>{order.order_id}{customerWatch ? <em className="customer-watch-badge">VERIFY</em> : null}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
+              <div className="orders-row-main"><strong>{order.order_id}{customerWatch ? <em className="customer-watch-badge">{WATCH_BADGES[customerWatch.level] || "WATCH"}</em> : null}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
               <div className="orders-row-side"><strong>{money(data.total)}</strong><span className={"order-status status-" + String(order.status || "").toLowerCase()}>{STATUS_LABELS[order.status] || order.status}</span><time>{dateTime(order.created_at)}</time></div>
             </button>;
           }) : <div className="orders-empty">No orders match this filter.</div>}
