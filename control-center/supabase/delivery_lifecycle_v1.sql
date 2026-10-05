@@ -100,8 +100,14 @@ begin
     if not (
       (v_order.status='NEW' and v_next_status in ('PACKED','CANCELLED')) or
       (v_order.status='PACKED' and v_next_status in ('NEW','SHIPPED','CANCELLED')) or
-      (v_order.status='SHIPPED' and v_next_status in ('OUT_FOR_DELIVERY','DELIVERY_FAILED')) or
-      (v_order.status='OUT_FOR_DELIVERY' and v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')) or
+      (v_order.status='SHIPPED' and (
+        v_next_status in ('OUT_FOR_DELIVERY','DELIVERY_FAILED')
+        or (v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED','RETURNED'))
+      )) or
+      (v_order.status='OUT_FOR_DELIVERY' and (
+        v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')
+        or (v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED','RETURNED'))
+      )) or
       (v_order.status='DELIVERY_FAILED' and v_next_status in ('OUT_FOR_DELIVERY','RETURNED'))
     ) then
       raise exception 'INVALID_STATUS_TRANSITION_%_TO_%',v_order.status,v_next_status;
