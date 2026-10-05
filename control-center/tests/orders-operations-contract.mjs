@@ -61,6 +61,8 @@ assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/s
 assert.ok(ui.includes("Customer gift history"), "Orders UI must show earlier gifts/samples for the same customer.");
 assert.ok(ui.includes("CUSTOMER WATCH"), "Orders UI must expose the Customer Watch workspace.");
 assert.ok(ui.includes("VERIFY BEFORE SHIPPING watch"), "Operational status transitions must require confirmation for verify-before-shipping customers.");
+assert.ok(ui.includes("customer_watch_acknowledged"), "Fulfillment writes must send explicit Customer Watch acknowledgement.");
+assert.ok(server.includes("Customer Watch acknowledgement is required before packing or shipping this order."), "Orders API must reject unacknowledged flagged-customer packing/shipping writes.");
 assert.ok(ui.includes("customerWatchFor(order, customerWatches)"), "Order rows must match future orders against normalized Customer Watch identity.");
 assert.ok(ui.includes("customer-watch-badge"), "Flagged customers must be visible in the order list.");
 assert.ok(ui.includes("Already sampled"), "Gift editor must warn when a selected fragrance was already gifted to the customer.");
