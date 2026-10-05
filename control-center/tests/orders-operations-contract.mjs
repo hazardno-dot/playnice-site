@@ -146,8 +146,16 @@ assert.ok(edgeStore.includes('text.trim() === "Apps Script is live"'), "Checkout
 
 const lifecycleSql = fs.readFileSync(path.resolve(root, "control-center/supabase/delivery_lifecycle_v1.sql"), "utf8");
 assert.ok(lifecycleSql.includes("returned_at timestamptz"), "Delivery lifecycle schema must track returned_at.");
-assert.ok(lifecycleSql.includes("v_order.status='SHIPPED' and v_next_status in ('OUT_FOR_DELIVERY','DELIVERY_FAILED')"), "Lifecycle RPC must allow shipped orders into active delivery.");
-assert.ok(lifecycleSql.includes("v_order.status='OUT_FOR_DELIVERY' and v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')"), "Lifecycle RPC must support delivery completion and safe undo.");
+assert.ok(
+  lifecycleSql.includes("v_order.status='SHIPPED'") &&
+  lifecycleSql.includes("v_next_status in ('OUT_FOR_DELIVERY','DELIVERY_FAILED')"),
+  "Lifecycle RPC must allow shipped orders into active delivery."
+);
+assert.ok(
+  lifecycleSql.includes("v_order.status='OUT_FOR_DELIVERY'") &&
+  lifecycleSql.includes("v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')"),
+  "Lifecycle RPC must support delivery completion and safe undo."
+);
 assert.ok(lifecycleSql.includes("v_order.status='DELIVERY_FAILED' and v_next_status in ('OUT_FOR_DELIVERY','RETURNED')"), "Lifecycle RPC must support retry or return after failure.");
 assert.ok(lifecycleSql.includes("v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED','RETURNED')"), "Lifecycle RPC must allow direct return from active delivery issues.");
 assert.ok(lifecycleSql.includes("when v_order.status in ('OUT_FOR_DELIVERY','DELIVERED') then 'SHIPPED'"), "Lifecycle mirror must preserve legacy Sheets SHIPPED semantics.");
