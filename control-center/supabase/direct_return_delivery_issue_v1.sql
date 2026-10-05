@@ -8,12 +8,12 @@ declare
   v_old_shipped text := '(v_order.status=''SHIPPED'' and v_next_status in (''OUT_FOR_DELIVERY'',''DELIVERY_FAILED''))';
   v_new_shipped text := '(v_order.status=''SHIPPED'' and (
         v_next_status in (''OUT_FOR_DELIVERY'',''DELIVERY_FAILED'')
-        or (v_next_status=''RETURNED'' and v_order.delivery_issue in (''UNREACHABLE'',''REFUSED'',''RETURNED''))
+        or (v_next_status=''RETURNED'' and v_order.delivery_issue in (''UNREACHABLE'',''REFUSED''))
       ))';
   v_old_delivery text := '(v_order.status=''OUT_FOR_DELIVERY'' and v_next_status in (''SHIPPED'',''DELIVERED'',''DELIVERY_FAILED''))';
   v_new_delivery text := '(v_order.status=''OUT_FOR_DELIVERY'' and (
         v_next_status in (''SHIPPED'',''DELIVERED'',''DELIVERY_FAILED'')
-        or (v_next_status=''RETURNED'' and v_order.delivery_issue in (''UNREACHABLE'',''REFUSED'',''RETURNED''))
+        or (v_next_status=''RETURNED'' and v_order.delivery_issue in (''UNREACHABLE'',''REFUSED''))
       ))';
 begin
   select pg_get_functiondef(p.oid)
