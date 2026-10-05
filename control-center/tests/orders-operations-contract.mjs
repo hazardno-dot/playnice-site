@@ -29,7 +29,12 @@ assert.ok(server.includes("ORDERS_WRITE_THROUGH_ENABLED"), "Orders writes must s
 assert.ok(server.includes("ORDERS_SHEET_SYNC_SECRET"), "Orders mirror writes must require a server-side shared secret.");
 assert.ok(ui.includes('fetch("/api/orders"'), "Orders UI must use the authenticated server route.");
 assert.ok(ui.includes("WRITE-THROUGH ACTIVE"), "Orders UI must communicate active write-through mode.");
-assert.ok(ui.includes("Retry backup sync"), "Orders UI must expose retry for failed Google backup sync.");
+assert.ok(ui.includes("Retry backup sync"), "Orders UI must expose retry for ordinary failed Google backup sync.");
+assert.ok(server.includes("AbortSignal.timeout(30000)"), "Google Sheets state sync must allow enough time for Apps Script acknowledgement.");
+assert.ok(server.includes('action === "confirm_sheet_sync"'), "Orders API must support safe manual reconciliation after an acknowledgement timeout.");
+assert.ok(server.includes("Backup acknowledgement timed out for an UNREACHABLE alert."), "UNREACHABLE timeout retries must be blocked to prevent duplicate customer alerts.");
+assert.ok(ui.includes("Confirm from Sheets"), "Timeout failures must offer reconciliation without replaying the Google write.");
+assert.ok(ui.includes("Customer alert confirmation timed out."), "UNREACHABLE timeout state must explain that customer alert confirmation is unknown.");
 assert.ok(ui.includes("Mark packed"), "Orders UI must support the safe PACKED transition.");
 assert.ok(ui.includes("Mark shipped"), "Orders UI must support the legacy-compatible SHIPPED transition.");
 assert.ok(ui.includes("Return to new"), "Orders UI must support undoing an accidental PACKED transition.");
