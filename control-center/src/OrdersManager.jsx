@@ -198,7 +198,8 @@ function OrdersWorkspace() {
   const saleOrders = useMemo(() => orders.filter((order) => order.status !== "DUPLICATE" && order.origin !== "regression_test"), [orders]);
   const settlementEligible = useMemo(() => saleOrders.filter((order) =>
     ["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status) &&
-    order.courier_payment_status === "PENDING"
+    order.courier_payment_status === "PENDING" &&
+    (!order.delivery_issue || order.delivery_issue === "RESOLVED")
   ), [saleOrders]);
   const codPendingGross = useMemo(() => settlementEligible.reduce((sum, order) =>
     sum + Number(order.source_payload?.total || 0), 0
@@ -601,39 +602,46 @@ function OrdersWorkspace() {
             </section>
           </div>
 
-          <section className={selectedWatch ? "orders-customer-watch active" : "orders-customer-watch"}>
-            <div className="orders-section-title">
+          <details
+            key={selected.id + ":" + (selectedWatch?.id || "none")}
+            className={selectedWatch ? "orders-customer-watch active" : "orders-customer-watch"}
+            open={Boolean(selectedWatch) ? true : undefined}
+          >
+            <summary>
               <span>CUSTOMER WATCH</span>
               <strong>{selectedWatch ? WATCH_LABELS[selectedWatch.level] || selectedWatch.level : "No active flag"}</strong>
-            </div>
-            {selectedWatch ? <div className="orders-customer-watch-alert">
-              <div>
-                <strong>{WATCH_LABELS[selectedWatch.level] || selectedWatch.level}</strong>
-                <span>{selectedWatch.reason}</span>
-                <small>Matched by customer email / phone · updated {dateTime(selectedWatch.updated_at)}</small>
+              <em>{selectedWatch ? "Review" : "Add if needed"}</em>
+            </summary>
+            <div className="orders-customer-watch-body">
+              {selectedWatch ? <div className="orders-customer-watch-alert">
+                <div>
+                  <strong>{WATCH_LABELS[selectedWatch.level] || selectedWatch.level}</strong>
+                  <span>{selectedWatch.reason}</span>
+                  <small>Matched by customer email / phone · updated {dateTime(selectedWatch.updated_at)}</small>
+                </div>
+              </div> : <p className="orders-customer-watch-empty">Add an internal alert if a future order from this customer should receive extra review.</p>}
+              <div className="orders-customer-watch-editor">
+                <label>
+                  <span>ALERT LEVEL</span>
+                  <select value={watchLevel} onChange={(event) => setWatchLevel(event.target.value)} disabled={!editable || Boolean(busy)}>
+                    <option value="WATCH">Watch</option>
+                    <option value="VERIFY_BEFORE_SHIPPING">Verify before shipping</option>
+                    <option value="MANUAL_APPROVAL">Manual approval</option>
+                  </select>
+                </label>
+                <label className="reason">
+                  <span>INTERNAL REASON</span>
+                  <input value={watchReason} onChange={(event) => setWatchReason(event.target.value)} maxLength={500} placeholder="Keep this factual and operational…" disabled={!editable || Boolean(busy)} />
+                </label>
+                <button type="button" className="primary" onClick={saveCustomerWatch} disabled={!editable || watchReason.trim().length < 4 || Boolean(busy)}>
+                  {busy === "customer-watch" ? "Saving…" : selectedWatch ? "Update watch" : "Add watch"}
+                </button>
+                {selectedWatch ? <button type="button" onClick={clearCustomerWatch} disabled={!editable || Boolean(busy)}>
+                  {busy === "customer-watch-clear" ? "Removing…" : "Remove watch"}
+                </button> : null}
               </div>
-            </div> : <p className="orders-customer-watch-empty">Add an internal alert if a future order from this customer should receive extra review.</p>}
-            <div className="orders-customer-watch-editor">
-              <label>
-                <span>ALERT LEVEL</span>
-                <select value={watchLevel} onChange={(event) => setWatchLevel(event.target.value)} disabled={!editable || Boolean(busy)}>
-                  <option value="WATCH">Watch</option>
-                  <option value="VERIFY_BEFORE_SHIPPING">Verify before shipping</option>
-                  <option value="MANUAL_APPROVAL">Manual approval</option>
-                </select>
-              </label>
-              <label className="reason">
-                <span>INTERNAL REASON</span>
-                <input value={watchReason} onChange={(event) => setWatchReason(event.target.value)} maxLength={500} placeholder="Keep this factual and operational…" disabled={!editable || Boolean(busy)} />
-              </label>
-              <button type="button" className="primary" onClick={saveCustomerWatch} disabled={!editable || watchReason.trim().length < 4 || Boolean(busy)}>
-                {busy === "customer-watch" ? "Saving…" : selectedWatch ? "Update watch" : "Add watch"}
-              </button>
-              {selectedWatch ? <button type="button" onClick={clearCustomerWatch} disabled={!editable || Boolean(busy)}>
-                {busy === "customer-watch-clear" ? "Removing…" : "Remove watch"}
-              </button> : null}
             </div>
-          </section>
+          </details>
 
           <section className="orders-items">
             <div className="orders-section-title"><span>ITEMS</span><strong>{items.length}</strong></div>
