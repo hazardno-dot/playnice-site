@@ -1320,6 +1320,7 @@ useEffect(() => {
     total: Number(total),
     language: lang,
     source: "shop",
+    deviceId: getPlayNiceDeviceId(),
     items: cart.map((item) => ({
       name: item.name,
       size: item.size,
