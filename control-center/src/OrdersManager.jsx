@@ -328,7 +328,7 @@ function OrdersWorkspace() {
   const items = Array.isArray(payload.items) ? payload.items : [];
   const editable = Boolean(writeEnabled && selected && selected.status !== "DUPLICATE");
   const hasActiveDeliveryIssue = Boolean(
-    selected && ["UNREACHABLE","REFUSED","RETURNED"].includes(selected.delivery_issue)
+    selected && ["UNREACHABLE","REFUSED"].includes(selected.delivery_issue)
   );
   const nextStatus =
     selected?.status === "NEW" ? "PACKED" :
@@ -770,7 +770,7 @@ function OrdersWorkspace() {
           <section className="orders-delivery">
             <div className="orders-section-title"><span>DELIVERY ISSUE</span><strong>{selected.delivery_issue || "None"}</strong></div>
             {["SHIPPED","OUT_FOR_DELIVERY","DELIVERY_FAILED"].includes(selected.status) ? <div className="orders-action-row">
-              {["UNREACHABLE","REFUSED","RETURNED","RESOLVED"].map((issue) =>
+              {["UNREACHABLE","REFUSED","RESOLVED"].map((issue) =>
                 <button type="button" key={issue} className={selected.delivery_issue === issue ? "primary" : ""} onClick={() => setDeliveryIssue(issue)} disabled={!editable || Boolean(busy)}>
                   {busy === "delivery:" + issue ? "Updating…" : issue}
                 </button>
