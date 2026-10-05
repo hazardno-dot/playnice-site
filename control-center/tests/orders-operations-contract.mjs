@@ -43,6 +43,8 @@ assert.ok(ui.includes("Mark shipped"), "Orders UI must support the legacy-compat
 assert.ok(ui.includes("Return to new"), "Orders UI must support undoing an accidental PACKED transition.");
 assert.ok(ui.includes("DUPLICATE"), "Orders UI must keep duplicate audit records visible.");
 assert.ok(ui.includes("UNREACHABLE"), "Orders UI must expose the existing delivery issue workflow.");
+assert.ok(ui.includes('["UNREACHABLE","REFUSED","RESOLVED"].map((issue)'), "Delivery issue controls must use reasons only.");
+assert.ok(!ui.includes('["UNREACHABLE","REFUSED","RETURNED","RESOLVED"].map((issue)'), "RETURNED must not appear as a delivery issue control.");
 assert.ok(ui.includes("Mark delivery failed"), "Orders UI must support delivery-failed transitions from active delivery.");
 assert.ok(ui.includes("Out for delivery"), "Orders UI must expose SHIPPED → OUT_FOR_DELIVERY.");
 assert.ok(ui.includes("Mark delivered"), "Orders UI must expose OUT_FOR_DELIVERY → DELIVERED.");
@@ -98,11 +100,13 @@ assert.ok(settlementSql.includes("'courier_settlement'"), "Settlement-confirmed 
 const settlementAnalyticsSql = fs.readFileSync(path.resolve(root, "control-center/supabase/settlement_confirmed_delivery_v1.sql"), "utf8");
 const codDeliveryIssueGuardSql = fs.readFileSync(path.resolve(root, "control-center/supabase/cod_delivery_issue_guard_v1.sql"), "utf8");
 const directReturnSql = fs.readFileSync(path.resolve(root, "control-center/supabase/direct_return_delivery_issue_v1.sql"), "utf8");
+const deliveryIssueCleanupSql = fs.readFileSync(path.resolve(root, "control-center/supabase/delivery_issue_semantics_cleanup_v1.sql"), "utf8");
 assert.ok(settlementAnalyticsSql.includes("status in (''SHIPPED'',''OUT_FOR_DELIVERY'',''DELIVERED'')"), "COD pending analytics must match payout eligibility.");
 assert.ok(codDeliveryIssueGuardSql.includes("(delivery_issue is null or delivery_issue = 'RESOLVED')"), "Courier settlement RPC must exclude active delivery issues.");
 assert.ok(codDeliveryIssueGuardSql.includes("delivery_issue=''RESOLVED''"), "COD pending analytics must exclude active delivery issues.");
 assert.ok(directReturnSql.includes("UNREACHABLE"), "Direct return migration must cover unreachable delivery issues.");
 assert.ok(directReturnSql.includes("v_next_status=''RETURNED''"), "Direct return migration must enable RETURNED as the direct terminal action.");
+assert.ok(deliveryIssueCleanupSql.includes("RETURNED is a terminal fulfillment status"), "Delivery issue cleanup migration must preserve RETURNED as fulfillment semantics only.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
 assert.ok(ui.includes('["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status)'), "Courier settlement must accept shipped, out-for-delivery and delivered pending COD orders.");
@@ -157,7 +161,9 @@ assert.ok(
   "Lifecycle RPC must support delivery completion and safe undo."
 );
 assert.ok(lifecycleSql.includes("v_order.status='DELIVERY_FAILED' and v_next_status in ('OUT_FOR_DELIVERY','RETURNED')"), "Lifecycle RPC must support retry or return after failure.");
-assert.ok(lifecycleSql.includes("v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED','RETURNED')"), "Lifecycle RPC must allow direct return from active delivery issues.");
+assert.ok(lifecycleSql.includes("v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED')"), "Lifecycle RPC must allow direct return from active delivery issues.");
+assert.ok(lifecycleSql.includes("if v_value not in ('UNREACHABLE','REFUSED','RESOLVED') then"), "Delivery issue writes must not accept RETURNED as a reason.");
+assert.ok(!lifecycleSql.includes("when v_next_status='RETURNED' then 'RETURNED'"), "Returning an order must preserve the actual delivery issue reason.");
 assert.ok(lifecycleSql.includes("when v_order.status in ('OUT_FOR_DELIVERY','DELIVERED') then 'SHIPPED'"), "Lifecycle mirror must preserve legacy Sheets SHIPPED semantics.");
 assert.ok(lifecycleSql.includes("set_config('app.orders_lifecycle_write','control_center',true)"), "Canonical lifecycle changes must be explicitly marked by the admin RPC.");
 assert.ok(lifecycleSql.includes("protect_checkout_order_lifecycle"), "Supabase must guard canonical lifecycle fields from reverse-sync overwrites.");
