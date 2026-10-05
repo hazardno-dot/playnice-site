@@ -327,10 +327,15 @@ function OrdersWorkspace() {
   const payload = selected?.source_payload || {};
   const items = Array.isArray(payload.items) ? payload.items : [];
   const editable = Boolean(writeEnabled && selected && selected.status !== "DUPLICATE");
+  const hasActiveDeliveryIssue = Boolean(
+    selected && ["UNREACHABLE","REFUSED","RETURNED"].includes(selected.delivery_issue)
+  );
   const nextStatus =
     selected?.status === "NEW" ? "PACKED" :
     selected?.status === "PACKED" ? "SHIPPED" :
+    selected?.status === "SHIPPED" && hasActiveDeliveryIssue ? "RETURNED" :
     selected?.status === "SHIPPED" ? "OUT_FOR_DELIVERY" :
+    selected?.status === "OUT_FOR_DELIVERY" && hasActiveDeliveryIssue ? "RETURNED" :
     selected?.status === "OUT_FOR_DELIVERY" ? "DELIVERED" :
     null;
 
@@ -751,10 +756,11 @@ function OrdersWorkspace() {
                   nextStatus === "PACKED" ? "Mark packed" :
                   nextStatus === "SHIPPED" ? "Mark shipped" :
                   nextStatus === "OUT_FOR_DELIVERY" ? "Out for delivery" :
+                  nextStatus === "RETURNED" ? "Mark returned" :
                   "Mark delivered"}
               </button> : null}
               {editable && ["NEW","PACKED"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("CANCELLED")} disabled={Boolean(busy)}>Cancel order</button> : null}
-              {editable && ["SHIPPED","OUT_FOR_DELIVERY"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("DELIVERY_FAILED")} disabled={Boolean(busy)}>{busy === "status:DELIVERY_FAILED" ? "Updating…" : "Mark delivery failed"}</button> : null}
+              {editable && ["SHIPPED","OUT_FOR_DELIVERY"].includes(selected.status) && !hasActiveDeliveryIssue ? <button type="button" className="danger" onClick={() => setStatus("DELIVERY_FAILED")} disabled={Boolean(busy)}>{busy === "status:DELIVERY_FAILED" ? "Updating…" : "Mark delivery failed"}</button> : null}
               {editable && selected.status === "DELIVERY_FAILED" ? <button type="button" className="primary" onClick={() => setStatus("OUT_FOR_DELIVERY")} disabled={Boolean(busy)}>{busy === "status:OUT_FOR_DELIVERY" ? "Updating…" : "Retry delivery"}</button> : null}
               {editable && selected.status === "DELIVERY_FAILED" ? <button type="button" className="danger" onClick={() => setStatus("RETURNED")} disabled={Boolean(busy)}>{busy === "status:RETURNED" ? "Updating…" : "Mark returned"}</button> : null}
               {["DELIVERED","RETURNED"].includes(selected.status) ? <span className="orders-action-note">Terminal fulfillment state. Further changes require a corrective workflow.</span> : null}
