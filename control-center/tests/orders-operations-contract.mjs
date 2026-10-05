@@ -21,6 +21,9 @@ assert.ok(server.includes("get_control_center_orders"), "Orders API must read th
 assert.ok(server.includes("get_control_center_order_analytics"), "Orders API must expose admin-gated commerce analytics.");
 assert.ok(server.includes("update_control_center_order"), "Orders API must mutate through the admin-gated Supabase RPC.");
 assert.ok(server.includes("mark_control_center_order_sheet_sync"), "Orders API must persist Google backup sync results.");
+assert.ok(server.includes("get_control_center_customer_watches"), "Orders API must load active Customer Watch records.");
+assert.ok(server.includes('action === "set_customer_watch"'), "Orders API must support Customer Watch creation/update.");
+assert.ok(server.includes('action === "clear_customer_watch"'), "Orders API must support Customer Watch removal.");
 assert.ok(server.includes("order_state_sync"), "Orders API must use the dedicated Google Sheets state-sync contract.");
 assert.ok(server.includes('status === "DELIVERED"'), "Delivered lifecycle must map back to legacy SHIPPED for Google Sheets compatibility.");
 assert.ok(server.includes('status === "OUT_FOR_DELIVERY"'), "Out-for-delivery lifecycle must map back to legacy SHIPPED for Google Sheets compatibility.");
@@ -56,6 +59,10 @@ assert.ok(ui.includes("WRITE-THROUGH UNAVAILABLE"), "Orders fallback mode must d
 assert.ok(ui.includes("Supabase remains canonical."), "Orders fallback copy must preserve Supabase as the canonical source.");
 assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
 assert.ok(ui.includes("Customer gift history"), "Orders UI must show earlier gifts/samples for the same customer.");
+assert.ok(ui.includes("CUSTOMER WATCH"), "Orders UI must expose the Customer Watch workspace.");
+assert.ok(ui.includes("VERIFY BEFORE SHIPPING watch"), "Operational status transitions must require confirmation for verify-before-shipping customers.");
+assert.ok(ui.includes("customerWatchFor(order, customerWatches)"), "Order rows must match future orders against normalized Customer Watch identity.");
+assert.ok(ui.includes("customer-watch-badge"), "Flagged customers must be visible in the order list.");
 assert.ok(ui.includes("Already sampled"), "Gift editor must warn when a selected fragrance was already gifted to the customer.");
 assert.ok(ui.includes("unique sample"), "Customer gift history must summarize unique sample fragrances.");
 assert.ok(ui.includes("sampleName"), "Customer gift history must parse structured or legacy sample names.");
@@ -133,6 +140,13 @@ assert.ok(lifecycleSql.includes("v_order.status='DELIVERY_FAILED' and v_next_sta
 assert.ok(lifecycleSql.includes("when v_order.status in ('OUT_FOR_DELIVERY','DELIVERED') then 'SHIPPED'"), "Lifecycle mirror must preserve legacy Sheets SHIPPED semantics.");
 assert.ok(lifecycleSql.includes("set_config('app.orders_lifecycle_write','control_center',true)"), "Canonical lifecycle changes must be explicitly marked by the admin RPC.");
 assert.ok(lifecycleSql.includes("protect_checkout_order_lifecycle"), "Supabase must guard canonical lifecycle fields from reverse-sync overwrites.");
+
+const watchSql = fs.readFileSync(path.resolve(root, "control-center/supabase/customer_watch_v1.sql"), "utf8");
+assert.ok(watchSql.includes("create table if not exists public.customer_watches"), "Customer Watch must use a dedicated canonical Supabase table.");
+assert.ok(watchSql.includes("VERIFY_BEFORE_SHIPPING"), "Customer Watch must support verify-before-shipping severity.");
+assert.ok(watchSql.includes("MANUAL_APPROVAL"), "Customer Watch must support manual-approval severity.");
+assert.ok(watchSql.includes("right(v_phone,8)"), "Customer Watch must normalize phone matching for future orders.");
+assert.ok(watchSql.includes("security definer"), "Customer Watch RPCs must remain admin-gated server-side functions.");
 
 const giftSql = fs.readFileSync(path.resolve(root, "control-center/supabase/gift_sample_editor_v1.sql"), "utf8");
 assert.ok(giftSql.includes("giftSamples"), "Gift/sample RPC must persist structured sample metadata.");
