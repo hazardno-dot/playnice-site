@@ -88,6 +88,19 @@ async function readOrders(token) {
   };
 }
 
+async function readCustomerWatches(token) {
+  const rows = await rpc("get_control_center_customer_watches", token, {});
+  return Array.isArray(rows) ? rows : [];
+}
+
+async function readOrdersWorkspace(token) {
+  const [orderData, customerWatches] = await Promise.all([
+    readOrders(token),
+    readCustomerWatches(token)
+  ]);
+  return { ...orderData, customer_watches: customerWatches };
+}
+
 async function readInventoryStock(token) {
   const rows = await rpc("get_control_center_inventory_stock", token, {});
   return Array.isArray(rows) ? rows : [];
@@ -413,6 +426,32 @@ async function mutateOrder(token, body) {
   };
 }
 
+async function saveCustomerWatch(token, body) {
+  const id = String(body?.id || "").trim();
+  const level = cleanText(body?.level, 80).toUpperCase();
+  const reason = cleanText(body?.reason, 500);
+  if (!id) throw new Error("Missing order id.");
+
+  const watch = await rpc("upsert_control_center_customer_watch", token, {
+    p_record_id: id,
+    p_level: level,
+    p_reason: reason
+  });
+
+  return { customer_watch: watch };
+}
+
+async function clearCustomerWatch(token, body) {
+  const watchId = String(body?.watch_id || "").trim();
+  if (!watchId) throw new Error("Missing customer watch id.");
+
+  const watch = await rpc("deactivate_control_center_customer_watch", token, {
+    p_watch_id: watchId
+  });
+
+  return { customer_watch: watch };
+}
+
 async function updateGiftSample(token, body) {
   const id = String(body?.id || "").trim();
   if (!id) throw new Error("Missing order id.");
@@ -668,7 +707,7 @@ export default async function handler(req, res) {
         });
       }
 
-      const data = await readOrders(auth.token);
+      const data = await readOrdersWorkspace(auth.token);
       return json(res, 200, {
         ok: true,
         mode: WRITE_THROUGH_ENABLED ? "write_through_v1" : "read_only_migration",
@@ -705,10 +744,14 @@ export default async function handler(req, res) {
         ? await settleCourierBatch(auth.token, req.body)
         : action === "create_manual_order"
           ? await createManualOrder(auth.token, req.body)
-          : action === "set_gift_sample"
-            ? await updateGiftSample(auth.token, req.body)
-            : await mutateOrder(auth.token, req.body);
-    const data = await readOrders(auth.token);
+          : action === "set_customer_watch"
+            ? await saveCustomerWatch(auth.token, req.body)
+            : action === "clear_customer_watch"
+              ? await clearCustomerWatch(auth.token, req.body)
+              : action === "set_gift_sample"
+                ? await updateGiftSample(auth.token, req.body)
+                : await mutateOrder(auth.token, req.body);
+    const data = await readOrdersWorkspace(auth.token);
 
     return json(res, 200, {
       ok: true,
