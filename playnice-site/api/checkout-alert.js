@@ -20,6 +20,7 @@ module.exports = async function handler(req, res) {
       shipping = 0,
       language = "",
       source = "shop",
+      deviceId = "",
       items = []
     } = req.body || {};
 
@@ -39,6 +40,7 @@ module.exports = async function handler(req, res) {
 
     const message = [
       "🔔 PLAYNICE · CHECKOUT STARTED",
+      `Device: ${String(deviceId || "").trim() || "N/A"}`,
       "",
       itemLines,
       "",
