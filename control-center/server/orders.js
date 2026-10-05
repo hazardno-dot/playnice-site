@@ -101,6 +101,25 @@ async function readOrdersWorkspace(token) {
   return { ...orderData, customer_watches: customerWatches };
 }
 
+function normalizeWatchEmail(value) {
+  return String(value || "").trim().toLowerCase().replace(/\s+/g, "");
+}
+
+function normalizeWatchPhone(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits.length >= 8 ? digits.slice(-8) : "";
+}
+
+function findCustomerWatch(order, watches) {
+  const payload = order?.source_payload || {};
+  const emailKey = normalizeWatchEmail(payload.email);
+  const phoneKey = normalizeWatchPhone(payload.phone);
+  return (Array.isArray(watches) ? watches : []).find((watch) =>
+    (emailKey && watch.email_key === emailKey) ||
+    (phoneKey && watch.phone_key === phoneKey)
+  ) || null;
+}
+
 async function readInventoryStock(token) {
   const rows = await rpc("get_control_center_inventory_stock", token, {});
   return Array.isArray(rows) ? rows : [];
@@ -404,6 +423,13 @@ async function mutateOrder(token, body) {
   }
 
   const previousStatus = currentOrder?.status || null;
+
+  if (action === "set_status" && ["PACKED","SHIPPED"].includes(value) && currentOrder) {
+    const watch = findCustomerWatch(currentOrder, await readCustomerWatches(token));
+    if (watch && watch.level !== "WATCH" && body?.customer_watch_acknowledged !== true) {
+      throw new Error("Customer Watch acknowledgement is required before packing or shipping this order.");
+    }
+  }
 
   const mutation = await rpc("update_control_center_order", token, {
     p_record_id: id,
