@@ -605,7 +605,7 @@ function OrdersWorkspace() {
           <details
             key={selected.id + ":" + (selectedWatch?.id || "none")}
             className={selectedWatch ? "orders-customer-watch active" : "orders-customer-watch"}
-            open={Boolean(selectedWatch) ? true : undefined}
+            defaultOpen={Boolean(selectedWatch)}
           >
             <summary>
               <span>CUSTOMER WATCH</span>
