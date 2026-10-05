@@ -1001,3 +1001,99 @@
 .orders-gift-unlock:has(input:checked) span {
   color: #edcf88;
 }
+
+
+/* Customer Watch v1 */
+.customer-watch-row {
+  box-shadow: inset 3px 0 0 rgba(255, 187, 72, 0.78);
+}
+
+.customer-watch-badge {
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 187, 72, 0.45);
+  border-radius: 999px;
+  color: #f2c36b;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: .08em;
+  vertical-align: 1px;
+}
+
+.orders-customer-watch {
+  margin-top: 14px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(130, 177, 153, 0.15);
+  border-bottom: 1px solid rgba(130, 177, 153, 0.15);
+}
+
+.orders-customer-watch.active {
+  padding: 14px;
+  border: 1px solid rgba(255, 187, 72, 0.30);
+  border-radius: 10px;
+  background: rgba(255, 187, 72, 0.035);
+}
+
+.orders-customer-watch-alert {
+  display: flex;
+  margin: 10px 0 12px;
+  padding: 11px 12px;
+  border-left: 3px solid rgba(255, 187, 72, 0.75);
+  background: rgba(255, 187, 72, 0.045);
+}
+
+.orders-customer-watch-alert > div {
+  display: grid;
+  gap: 4px;
+}
+
+.orders-customer-watch-alert strong {
+  color: #f2c36b;
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.orders-customer-watch-alert span {
+  color: var(--cc-text, #d8e5dd);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.orders-customer-watch-alert small,
+.orders-customer-watch-empty {
+  color: var(--cc-muted, #769384);
+  font-size: 11px;
+}
+
+.orders-customer-watch-editor {
+  display: grid;
+  grid-template-columns: minmax(170px, .8fr) minmax(280px, 2fr) auto auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.orders-customer-watch-editor label {
+  display: grid;
+  gap: 6px;
+}
+
+.orders-customer-watch-editor label > span {
+  color: var(--cc-muted, #769384);
+  font-size: 10px;
+  letter-spacing: .1em;
+}
+
+.orders-customer-watch-editor input,
+.orders-customer-watch-editor select {
+  width: 100%;
+  min-height: 36px;
+}
+
+@media (max-width: 980px) {
+  .orders-customer-watch-editor {
+    grid-template-columns: 1fr;
+  }
+}
