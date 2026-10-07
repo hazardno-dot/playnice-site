@@ -45,3 +45,11 @@ if (!draftServer.includes("activeChannels(event)") || !publishServer.includes("c
 }
 
 console.log("PASS  Published Social management exposes audited Open, Delete and channel-only Republish controls");
+
+if (!manager.includes('key === "facebook"') || !manager.includes('action === "delete" && channel !== "facebook"')) {
+  throw new Error("Instagram delete must be hidden and guarded while Facebook deletion remains available.");
+}
+if (!manager.includes("To delete, open the post and remove it in Instagram.")) {
+  throw new Error("Instagram published UI must explain the manual removal workflow.");
+}
+console.log("PASS  Instagram uses manual removal UX; Facebook deletion unchanged");
