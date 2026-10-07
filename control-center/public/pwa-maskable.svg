@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="PlayNice Control Center">
+  <!-- Full-bleed background for Android adaptive icon masks. -->
+  <rect width="512" height="512" fill="#03101d"/>
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8fbff"/>
+      <stop offset=".22" stop-color="#72e4ff"/>
+      <stop offset=".50" stop-color="#1698ff"/>
+      <stop offset=".76" stop-color="#0b4fd8"/>
+      <stop offset="1" stop-color="#7fe8ff"/>
+    </linearGradient>
+    <filter id="softGlow" x="-12%" y="-12%" width="124%" height="124%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.6" flood-color="#006dff" flood-opacity=".65"/>
+    </filter>
+  </defs>
+  <!-- Keep the three-line mark inside the central Android maskable safe zone. -->
+  <g transform="translate(256 256) scale(.72) translate(-256 -256)"
+     text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700"
+     fill="url(#blue)" stroke="#083eae" stroke-width="4.5" paint-order="stroke fill" filter="url(#softGlow)">
+    <text x="256" y="190" font-size="118" letter-spacing="-2">PlayNice</text>
+    <text x="256" y="320" font-size="96" letter-spacing="-1">Control</text>
+    <text x="256" y="430" font-size="96" letter-spacing="-1">Center</text>
+  </g>
+</svg>
