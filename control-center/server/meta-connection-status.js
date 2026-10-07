@@ -71,6 +71,37 @@ async function graph(path, token) {
   return { response, payload };
 }
 
+
+const IG_DELETE_PERMISSION = "instagram_manage_contents";
+
+// Diagnostic only. Never return token values, app secrets, or raw Meta debug responses.
+async function inspectInstagramPermissions(token) {
+  if (!META_APP_ID || !META_APP_SECRET) return { status: "unavailable", reason: "Meta App ID or App Secret is not configured." };
+  try {
+    const url = new URL(`https://graph.facebook.com/${META_GRAPH_API_VERSION}/debug_token`);
+    url.searchParams.set("input_token", token);
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${META_APP_ID}|${META_APP_SECRET}`, Accept: "application/json" },
+    });
+    const payload = await safeJson(response);
+    if (!response.ok || !payload?.data || payload.data.is_valid !== true) {
+      return { status: "unavailable", reason: "Meta could not validate the current Page credential for permission inspection." };
+    }
+    const scopes = Array.isArray(payload.data.scopes) ? payload.data.scopes.filter((s) => typeof s === "string") : [];
+    const granular = Array.isArray(payload.data.granular_scopes) ? payload.data.granular_scopes : [];
+    const permission = IG_DELETE_PERMISSION;
+    return {
+      status: "checked",
+      credential_type: String(payload.data.type || "unknown"),
+      instagram_manage_contents: scopes.includes(permission) || granular.some((s) => s?.scope === permission),
+      granted_permissions: scopes.filter((s) => /^(instagram_|pages_)/.test(s)).sort(),
+      note: "Token permissions alone cannot confirm app review status, account asset access, or whether the Graph DELETE endpoint is supported.",
+    };
+  } catch {
+    return { status: "unavailable", reason: "Meta token permission inspection could not complete." };
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== "GET") return json(res, 405, { error: "Method not allowed" });
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Server configuration is incomplete." });
@@ -121,8 +152,10 @@ export default async function handler(req, res) {
     const expectedMatches = !META_INSTAGRAM_ACCOUNT_ID || String(instagram?.id || "") === META_INSTAGRAM_ACCOUNT_ID;
     const connected = Boolean(payload?.id && instagram?.id && expectedMatches);
 
+    const instagram_delete_diagnostics = await inspectInstagramPermissions(resolved.token);
     return json(res, 200, {
       ...base,
+      instagram_delete_diagnostics,
       status: connected ? "connected" : "partial",
       graph_verified: true,
       credential_source: resolved.source,
