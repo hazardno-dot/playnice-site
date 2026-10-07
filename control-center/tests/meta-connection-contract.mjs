@@ -50,3 +50,10 @@ assert.ok(managers.includes("<MetaConnectionBridge />"), "Meta connection bridge
 console.log("PASS  Meta connection phase verifies configuration while keeping automatic publishing locked");
 console.log("PASS  Durable System User credential resolver is primary with Page token fallback");
 console.log("PASS  Instagram/Facebook capability contract is present and publish endpoints remain absent");
+
+assert.ok(api.includes("/debug_token"), "Permission diagnostics must use Meta token inspection.");
+assert.ok(api.includes("instagram_manage_contents"), "Diagnostics must inspect Instagram content management permission.");
+assert.ok(api.includes("instagram_delete_diagnostics"), "Diagnostics must report safe summary.");
+assert.ok(panel.includes("INSTAGRAM DELETE · READ-ONLY DIAGNOSTICS"), "UI must display read-only permission diagnostic.");
+assert.ok(!api.includes('method: "DELETE"'), "Connection diagnostics must never delete Meta content.");
+console.log("PASS  Instagram delete permission diagnostics are read-only");
