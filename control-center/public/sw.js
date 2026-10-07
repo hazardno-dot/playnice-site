@@ -1,5 +1,5 @@
-const CACHE_NAME = "playnice-cc-v19";
-const APP_SHELL = ["/", "/manifest.webmanifest", "/pwa-192.svg", "/pwa-512.svg", "/pwa-favicon.svg"];
+const CACHE_NAME = "playnice-cc-v20";
+const APP_SHELL = ["/", "/manifest.webmanifest", "/pwa-192.svg", "/pwa-512.svg", "/pwa-favicon.svg", "/pwa-maskable.svg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
