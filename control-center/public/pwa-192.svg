@@ -1,35 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 512 512" role="img" aria-label="PlayNice Control Center">
   <defs>
-    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#161616"/>
-      <stop offset=".58" stop-color="#070707"/>
-      <stop offset="1" stop-color="#020202"/>
+    <radialGradient id="bg" cx="50%" cy="42%" r="72%">
+      <stop offset="0" stop-color="#0b2d74"/>
+      <stop offset=".52" stop-color="#061b4e"/>
+      <stop offset="1" stop-color="#020817"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6de8ff"/>
+      <stop offset=".35" stop-color="#2498ff"/>
+      <stop offset=".7" stop-color="#1455ff"/>
+      <stop offset="1" stop-color="#46dfff"/>
     </linearGradient>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#fff0a6"/>
-      <stop offset=".24" stop-color="#e8bd54"/>
-      <stop offset=".52" stop-color="#b77a18"/>
-      <stop offset=".76" stop-color="#ffe49a"/>
-      <stop offset="1" stop-color="#9e630c"/>
+    <linearGradient id="text" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8fbff"/>
+      <stop offset=".38" stop-color="#79dcff"/>
+      <stop offset=".7" stop-color="#2a86ff"/>
+      <stop offset="1" stop-color="#b6f1ff"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity=".8"/>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="textGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <rect width="512" height="512" rx="94" fill="#010101"/>
-  <rect x="12" y="12" width="488" height="488" rx="84" fill="url(#panel)" stroke="url(#gold)" stroke-width="7"/>
-  <g transform="translate(0 -8) scale(.62) translate(157 38)" fill="none" stroke="url(#gold)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)">
-    <path d="M256 86c-24 19-24 36 0 54 24-18 24-35 0-54Z"/>
-    <path d="M256 140c-18 9-18 25 0 37 18-12 18-28 0-37Z"/>
-    <path d="M246 178 188 132c-22 6-31 22-18 38 12 14 29 10 41-1"/>
-    <path d="M266 178 324 132c22 6 31 22 18 38-12 14-29 10-41-1"/>
-    <path d="M256 190 176 253c-34 27-74 21-79-7-5-26 24-44 58-39 28 4 58 22 101 58"/>
-    <path d="M256 190 336 253c34 27 74 21 79-7 5-26-24-44-58-39-28 4-58 22-101 58"/>
-    <path d="M256 265c-27 25-39 51-25 73 10 16 24 25 25 25s15-9 25-25c14-22 2-48-25-73Z"/>
+
+  <rect width="512" height="512" fill="#020817"/>
+  <circle cx="256" cy="256" r="226" fill="url(#bg)" stroke="url(#ring)" stroke-width="8" filter="url(#glow)"/>
+  <circle cx="256" cy="256" r="213" fill="none" stroke="#0a58d9" stroke-width="2" opacity=".7"/>
+
+  <g text-anchor="middle" fill="url(#text)" filter="url(#textGlow)" font-family="Georgia, 'Times New Roman', serif">
+    <text x="256" y="218" font-size="82" font-weight="700" letter-spacing="-1">PLAYNICE</text>
+    <text x="256" y="315" font-size="66" font-weight="700" letter-spacing="4">CONTROL</text>
+    <text x="256" y="397" font-size="66" font-weight="700" letter-spacing="4">CENTER</text>
   </g>
-  <text x="256" y="318" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="76" font-weight="700" letter-spacing="-1" fill="url(#gold)" filter="url(#shadow)">PLAYNICE</text>
-  <line x1="70" y1="349" x2="224" y2="349" stroke="url(#gold)" stroke-width="2.4"/>
-  <path d="M256 338 267 349 256 360 245 349Z" fill="none" stroke="url(#gold)" stroke-width="4"/>
-  <line x1="288" y1="349" x2="442" y2="349" stroke="url(#gold)" stroke-width="2.4"/>
-  <text x="256" y="407" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="600" letter-spacing="7" fill="url(#gold)">CONTROL CENTER</text>
 </svg>
