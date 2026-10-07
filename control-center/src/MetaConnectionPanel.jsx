@@ -110,6 +110,19 @@ export default function MetaConnectionPanel() {
       </div>
 
       {data.graph_error?.message ? <div className="social-error">Meta Graph: {data.graph_error.message}</div> : null}
+      {data.instagram_delete_diagnostics ? <div style={{ borderTop: "1px solid rgba(118,151,137,.28)", paddingTop: 10 }}>
+        <div style={{ ...small, marginBottom: 6 }}>INSTAGRAM DELETE · READ-ONLY DIAGNOSTICS</div>
+        <div style={{ fontSize: 13 }}>
+          Permission inspection: {data.instagram_delete_diagnostics.status === "checked" ? "Available" : "Unavailable"}
+          {data.instagram_delete_diagnostics.status === "checked"
+            ? ` · instagram_manage_contents: ${data.instagram_delete_diagnostics.instagram_manage_contents ? "Present in token" : "Not present in token"}`
+            : ` · ${data.instagram_delete_diagnostics.reason || "No diagnostic information"}`}
+        </div>
+        {data.instagram_delete_diagnostics.status === "checked" ? <div style={{ ...small, marginTop: 5 }}>
+          Credential type: {data.instagram_delete_diagnostics.credential_type} · IG/Page permissions: {(data.instagram_delete_diagnostics.granted_permissions || []).join(", ") || "None returned"}
+        </div> : null}
+        <div style={{ ...small, marginTop: 5 }}>{data.instagram_delete_diagnostics.note || "This check does not modify or delete published content."}</div>
+      </div> : null}
       <div style={small}>Required capability contract: {(data.required_permissions || []).join(" · ") || "awaiting configuration"}</div>
     </> : null}
   </section>;
