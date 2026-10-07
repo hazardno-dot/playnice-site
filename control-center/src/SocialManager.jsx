@@ -294,6 +294,8 @@ function SocialWorkspace() {
 
   const managePublished = async (channel, action) => {
     if (!selected || selected.status !== "published" || publishedAction) return;
+    // Instagram removal is manual until Meta grants instagram_manage_contents.
+    if (action === "delete" && channel !== "facebook") return;
 
     if (action === "republish") {
       const [, title] = CHANNELS.find(([key]) => key === channel) || [channel, label(channel)];
@@ -673,7 +675,7 @@ function SocialWorkspace() {
           {selected.status === "published" ? <section className="social-published-management">
             <div className="social-published-management-head">
               <div><span>PUBLISHED MANAGEMENT</span><strong>Live Meta controls</strong></div>
-              <small>Open or remove the exact published item recorded in Social audit history.</small>
+              <small>Open Instagram posts for manual removal; Facebook posts can be deleted here.</small>
             </div>
             {publishedMessage ? <div className="social-published-management-message ok">{publishedMessage}</div> : null}
             {publishedError ? <div className="social-published-management-message error">{publishedError}</div> : null}
@@ -698,7 +700,9 @@ function SocialWorkspace() {
                       ? <button type="button" className="republish" disabled={!hasPublished || Boolean(publishedAction)} onClick={() => managePublished(key, "republish")}>{republishing ? "Creating draft…" : `Republish ${title}`}</button>
                       : <>
                         <button type="button" disabled={!hasPublished || Boolean(publishedAction)} onClick={() => managePublished(key, "open")}>{opening ? "Opening…" : "Open live post"}</button>
-                        <button type="button" className="danger" disabled={!hasPublished || Boolean(publishedAction)} onClick={() => managePublished(key, "delete")}>{deleting ? "Deleting…" : "Delete from Meta"}</button>
+                        {key === "facebook"
+                          ? <button type="button" className="danger" disabled={!hasPublished || Boolean(publishedAction)} onClick={() => managePublished(key, "delete")}>{deleting ? "Deleting…" : "Delete from Meta"}</button>
+                          : <small className="social-published-manual-note">To delete, open the post and remove it in Instagram.</small>}
                       </>}
                   </div>
                 </div>;
