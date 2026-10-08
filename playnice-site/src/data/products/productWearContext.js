@@ -441,5 +441,10 @@ export const productWearContext = {
   "Maison Alhambra Jean Lowe Verde Aura Eau de Parfum": {
     "sr": "Proleće, leto, posao, šetnja i opušteni dnevni planovi.",
     "en": "Spring, summer, work, walks and easy daytime plans."
+  },
+
+  "French Avenue Imperial Ocean Eau de Parfum": {
+    "sr": "Leto, proleće, posao, more i opuštene dnevne prilike.",
+    "en": "Summer, spring, work, seaside days and casual outings."
   }
 };

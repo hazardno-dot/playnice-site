@@ -3036,6 +3036,32 @@ export const products = [
       heart: ["basil","apricot","carrot-seeds"],
       base: ["fig","dates","ambrette"]
     }
+  },
+  {
+    id: 108,
+    addedAt: "2026-10-08T21:50:05.787Z",
+    slug: "french-avenue-imperial-ocean",
+    name: "French Avenue Imperial Ocean Eau de Parfum",
+    modalName: "French Avenue Imperial Ocean EDP",
+    shortName: "Imperial Ocean",
+    category: "Arabian",
+    image: "/products/french-avenue-imperial-ocean.png",
+    sizes: {"5ml":4.5,"10ml":8,"20ml":15},
+    badge: "FRESH DROP",
+    rating: 8.2,
+    ratingLabel: "Well Loved",
+    season: "summer",
+    moods: ["clean","summer","signature"],
+    recommendations: ["thomas-kosmala-no7-le-sel-de-la-terre","giorgio-armani-acqua-di-gio-profondo-parfum","rayhaan-aquatica"],
+    inspiredBy: {
+      name: "Issey Miyake Le Sel d'Issey",
+      short: "Le Sel d'Issey DNA"
+    },
+    noteMap: {
+      top: ["sea-salt","ginger","bergamot"],
+      heart: ["vetiver","seaweed","lily-of-the-valley"],
+      base: ["ambergris","cedarwood"]
+    }
   }
 
 ];

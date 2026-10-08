@@ -126,6 +126,10 @@ export default [
   {
     "sr": "Na svečanoj večeri usred zime, kada ste u tamnom odelu i svi očekuju nešto ozbiljno. Verde Aura miriše na citruse, zelenilo i sunce. Kao da ste na dodelu nagrada došli pravo sa izleta. Dobar izlet, ali ipak.",
     "en": "At a formal winter dinner, dressed in a dark suit while everyone expects something serious. Verde Aura smells of citrus, greenery and sunshine. Like arriving at an awards ceremony straight from a picnic. A lovely picnic, admittedly."
+  },
+  {
+    "sr": "Na prvom sastanku ako ste obećali da mirišete na vanilu i čokoladu. Imperial Ocean donosi morsku so, alge i suvo drvo. Nije desert, već šetnja pored mora. Ako druga strana očekuje poslastičarnicu, moraćete da promenite plan.",
+    "en": "On a first date if you promised to smell like vanilla and chocolate. Imperial Ocean brings sea salt, seaweed and dry woods. It is a seaside walk, not dessert. If your date expected a pastry shop, you may need a new plan."
   }
 
 ];

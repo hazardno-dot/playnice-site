@@ -3230,6 +3230,37 @@ export const discoveryProfiles = {
     "cleanliness": 8,
     "versatility": 8.5,
     "gourmandness": 1.4
+  },
+
+  "french-avenue-imperial-ocean": {
+    "date": 6.8,
+    "casual": 9.3,
+    "citrus": 7,
+    "office": 9,
+    "unisex": 6,
+    "warmth": 3,
+    "aquatic": 9.3,
+    "dryness": 7.4,
+    "evening": 6.2,
+    "powdery": 0.5,
+    "airiness": 8.1,
+    "darkness": 2.4,
+    "elegance": 7.6,
+    "feminine": 2.5,
+    "florality": 2,
+    "freshness": 9.2,
+    "longevity": 7,
+    "masculine": 8,
+    "spiciness": 4.8,
+    "sweetness": 1.2,
+    "woodiness": 7.1,
+    "creaminess": 0.8,
+    "fruitiness": 1.2,
+    "projection": 6.5,
+    "aromaticity": 7.4,
+    "cleanliness": 8.3,
+    "versatility": 8.5,
+    "gourmandness": 0.2
   }
 };
 

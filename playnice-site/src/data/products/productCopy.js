@@ -3309,6 +3309,55 @@ export const productCopy = {
       "en": "For lovers of bright citrus, green herbal notes and a distinctive, softly fruity drydown.",
       "sr": "Za ljubitelje citrusne svežine, zelenih biljnih nota i neobične, nežno voćne završnice."
     }
+  },
+
+  "French Avenue Imperial Ocean Eau de Parfum": {
+    "miniTag": {
+      "en": "🌊 Marine / Salty",
+      "sr": "🌊 Morski / Slankast"
+    },
+    "card": {
+      "en": "Sea salt, ginger and vetiver in a fresh, mineral scent.",
+      "sr": "Morska so, đumbir i vetiver u svežem, mineralnom mirisu."
+    },
+    "modal": {
+      "en": "Bergamot, ginger and sea salt open crisp and fresh. Seaweed and vetiver add green depth, while ambergris and cedarwood leave a dry, woody trail.",
+      "sr": "Bergamot, đumbir i morska so otvaraju sveže i slankasto. Morska trava i vetiver donose zelenu dubinu, dok ambergris i kedar daju suv, drvenast trag."
+    },
+    "scentType": {
+      "en": "Marine woody aromatic",
+      "sr": "Morski drvenasto-aromatični"
+    },
+    "dominantNotes": {
+      "sr": [
+        "morska so",
+        "đumbir",
+        "vetiver",
+        "ambergris"
+      ],
+      "en": [
+        "sea salt",
+        "ginger",
+        "vetiver",
+        "ambergris"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Morski",
+        "Svež",
+        "Mineralan"
+      ],
+      "en": [
+        "Marine",
+        "Fresh",
+        "Mineral"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of salty marine freshness and dry woods, without unnecessary sweetness.",
+      "sr": "Za ljubitelje morske svežine, slankastih akorda i suvog drveta, bez suvišne slatkoće."
+    }
   }
 };
 
