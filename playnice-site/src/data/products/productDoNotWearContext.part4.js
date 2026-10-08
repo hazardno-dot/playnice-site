@@ -118,6 +118,10 @@ export default [
   {
     "sr": "Da je Đoković ovo nosio na mečevima, oduvao bi protivnike — i skrenuo pažnju pola tribina. Za teren ipak nešto lakše.",
     "en": "If Djokovic wore this on court, he’d blow away his opponents — and distract half the stands. For tennis, though, go lighter."
+  },
+  {
+    "sr": "U prepunom autobusu usred avgusta, nakon osam prskanja. Topla vanila i začini u toj gužvi mogu biti naporni. Putnici već imaju dovoljno razloga da požele sledeću stanicu.",
+    "en": "On a packed bus in August after eight sprays. Warm vanilla and spices can overwhelm a crowded space. The other passengers already have enough reasons to wish for the next stop."
   }
 
 ];

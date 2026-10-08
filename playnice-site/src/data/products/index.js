@@ -2984,6 +2984,32 @@ export const products = [
       heart: ["gardenia","orris","jasmine","heliotrope"],
       base: ["vanilla","leather","patchouli"]
     }
+  },
+  {
+    id: 106,
+    addedAt: "2026-10-08T20:34:58.953Z",
+    slug: "french-avenue-spectre-ghost",
+    name: "French Avenue Spectre Ghost Eau de Parfum",
+    modalName: "French Avenue Spectre Ghost EDP",
+    shortName: "Spectre Ghost",
+    category: "Arabian",
+    image: "/products/french-avenue-spectre-ghost.png",
+    sizes: {"5ml":6,"10ml":11,"20ml":20},
+    badge: "ARABIAN GEM",
+    rating: 8.2,
+    ratingLabel: "Well Loved",
+    season: "winter",
+    moods: ["date","rich","signature"],
+    recommendations: ["lattafa-khamrah-qahwa","tom-ford-noir-extreme","french-avenue-vulcan-sable"],
+    inspiredBy: {
+      name: "Nishane Ani",
+      short: "Ani DNA"
+    },
+    noteMap: {
+      top: ["ginger","bergamot","pink-pepper"],
+      heart: ["cardamom","black-currant","rose"],
+      base: ["vanilla","sandalwood","benzoin"]
+    }
   }
 
 ];

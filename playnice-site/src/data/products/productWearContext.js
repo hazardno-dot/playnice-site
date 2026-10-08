@@ -431,5 +431,10 @@ export const productWearContext = {
   "Nishane Hundred Silent Ways X Extrait de Parfum": {
     "sr": "Veče, dejt i elegantne prilike u hladnijem delu godine.",
     "en": "Evenings, dates and dressed-up occasions in cooler weather."
+  },
+
+  "French Avenue Spectre Ghost Eau de Parfum": {
+    "sr": "Jesen, zima, dejt i večernji izlazak.",
+    "en": "Autumn, winter, dates and evenings out."
   }
 };

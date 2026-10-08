@@ -3211,6 +3211,55 @@ export const productCopy = {
       "en": "For those who enjoy rich florals with vanilla and an elegant leathery finish.",
       "sr": "Za one koji vole bogate cvetne mirise sa vanilom i elegantnim kožnim završetkom."
     }
+  },
+
+  "French Avenue Spectre Ghost Eau de Parfum": {
+    "miniTag": {
+      "en": "🌶️ Spicy / Vanilla",
+      "sr": "🌶️ Začinski / Vanilast"
+    },
+    "card": {
+      "en": "Ginger, cardamom and creamy vanilla in a warm, spicy scent.",
+      "sr": "Đumbir, kardamom i kremasta vanila u toplom, začinskom mirisu."
+    },
+    "modal": {
+      "en": "Fresh ginger and bergamot lead into spicy cardamom and blackcurrant. Vanilla, sandalwood and benzoin create a warm, creamy finish.",
+      "sr": "Svež đumbir i bergamot otvaraju miris, dok kardamom i crna ribizla donose začinsku dubinu. Vanila, sandalovina i benzoin daju topao, kremast trag."
+    },
+    "scentType": {
+      "en": "Warm spicy woody amber",
+      "sr": "Topli začinsko-drvenasti amber"
+    },
+    "dominantNotes": {
+      "sr": [
+        "đumbir",
+        "kardamom",
+        "vanila",
+        "sandalovina"
+      ],
+      "en": [
+        "ginger",
+        "cardamom",
+        "vanilla",
+        "sandalwood"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Začinski",
+        "Topao",
+        "Kremast"
+      ],
+      "en": [
+        "Spicy",
+        "Warm",
+        "Creamy"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of lively ginger, creamy vanilla and a warm woody finish.",
+      "sr": "Za ljubitelje živahnog đumbira, kremaste vanile i toplog drvenastog završetka."
+    }
   }
 };
 
