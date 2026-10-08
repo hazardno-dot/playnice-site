@@ -56,7 +56,7 @@ for (const product of products) {
   const title = `${name} | Dekanti parfema | PlayNice`;
   const offers = sizes.map(([size, price]) => ({
     "@type": "Offer", url, name: `${name} ${size} decant`, priceCurrency: "EUR",
-    price: String(price), availability: "https://schema.org/InStock",
+    price: String(price),
     itemCondition: "https://schema.org/NewCondition"
   }));
   const ld = JSON.stringify({
@@ -85,6 +85,12 @@ for (const product of products) {
     .replace('<div id="root"></div>', `<div id="root">${fallback}</div>`);
   const outDir = path.join(BUILD, "product");
   fs.mkdirSync(outDir, { recursive: true });
+  const canonicalMatches = html.match(/<link\\b[^>]*rel="canonical"[^>]*>/gi) || [];
+  const schemaMatches = html.match(/<script\\b[^>]*id="playnice-product-schema"[^>]*>/gi) || [];
+  if (canonicalMatches.length !== 1 || !canonicalMatches[0].includes(escapeHtml(url)) ||
+      schemaMatches.length !== 1 || !html.includes(`<h1>${escapeHtml(name)}</h1>`)) {
+    throw new Error(`SEO build: invalid HTML contract for ${slug}`);
+  }
   fs.writeFileSync(path.join(outDir, `${slug}.html`), html);
 }
 const urls = ["/", "/shop", "/journal", ...products.map(p => `/product/${p.slug}`)];
