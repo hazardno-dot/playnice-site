@@ -3,6 +3,10 @@
   "ignoreCommand": "node ../scripts/vercel-ignore-build.mjs storefront",
   "rewrites": [
     {
+      "source": "/product/:slug",
+      "destination": "/product/:slug.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
