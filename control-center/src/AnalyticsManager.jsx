@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { GA4_EVENTS, parseGa4EventCsv } from "./ga4CsvImport.mjs";
+
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
 import "./analytics-manager.css";
@@ -25,6 +27,22 @@ export default function AnalyticsManager() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [data, setData] = useState({ orderAnalytics: {} });
+  const [ga4, setGa4] = useState(() => {
+    try { const value=JSON.parse(localStorage.getItem("playnice_cc_ga4_events_v1")||"null");return value?.version===1 ? value : null; }
+    catch { return null; }
+  });
+  const [ga4Message, setGa4Message] = useState("");
+  const importGa4 = async (event) => {
+    const file=event.target.files?.[0];
+    event.target.value="";
+    if(!file)return;
+    try {
+      if(file.size>1024*1024)throw Error("File must be smaller than 1 MB.");
+      const report=parseGa4EventCsv(await file.text());
+      localStorage.setItem("playnice_cc_ga4_events_v1",JSON.stringify(report));
+      setGa4(report);setGa4Message("GA4 aggregate report imported on this device.");
+    } catch(e) {setGa4Message(e.message||"Could not import this CSV.");}
+  };
   const [inventoryProduct, setInventoryProduct] = useState("");
   const [inventoryMl, setInventoryMl] = useState("");
   const [inventoryNote, setInventoryNote] = useState("");
@@ -141,7 +159,19 @@ export default function AnalyticsManager() {
   <div className="sales-section-head conversion-head"><div><span>ORDERS / OUTCOMES</span><h2>Purchase signals</h2></div>
     <div className="sales-head-meta"><span className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</span><small>Supabase orders · no visitor tracking added</small></div>
   </div>
-  <details className="conversion-pending-note"><summary>Visitor funnel not connected · GA4 required</summary><p>These are verified order outcomes, not visitor conversion rates. Page views, cart activity and abandoned checkouts cannot yet be calculated from Supabase order data alone.</p></details>
+  <article className="analytics-panel ga4-import-panel">
+    <div className="analytics-panel-head"><div><span>GOOGLE ANALYTICS / MANUAL IMPORT</span><h3>Visitor activity</h3></div><small>GA4 event totals · not a session-based funnel</small></div>
+    <div className="ga4-import-toolbar"><label className="ga4-file-label">Import GA4 CSV<input type="file" accept=".csv,text/csv" onChange={importGa4} aria-label="Import GA4 Events CSV"/></label>
+      {ga4 ? <span className="ga4-import-period">{ga4.start} → {ga4.end} · imported {new Date(ga4.uploadedAt).toLocaleString()}</span> : <span className="ga4-import-period">No report imported</span>}
+    </div>
+    {ga4Message ? <p className="ga4-import-notice" role="status">{ga4Message}</p> : null}
+    <p className="ga4-import-note">Only aggregated event counts are stored in this browser. They are not synced across devices or saved to Supabase. Re-import replaces the previous period.</p>
+    {ga4 ? <>
+      <div className="ga4-event-grid">{GA4_EVENTS.map(name=><div className="ga4-event-card" key={name}><span>{name.replaceAll("_"," ")}</span><strong>{number(ga4.events[name]?.count||0)}</strong><small>{number(ga4.events[name]?.users||0)} event users</small></div>)}</div>
+      <p className="ga4-import-note">Purchase revenue recorded by GA4: {money(ga4.events.purchase?.revenue||0)}. Event counts are not distinct people or a sequential conversion funnel; periods and definitions may differ from Supabase orders.</p>
+    </> : <p className="ga4-import-empty">Export Reports → Engagement → Events as CSV from Google Analytics to display event totals here.</p>}
+  </article>
+  <details className="conversion-pending-note"><summary>Session funnel not connected · GA4 exploration required</summary><p>The GA4 CSV shows aggregate events only, not a sequential session funnel. These are verified order outcomes, not visitor conversion rates. Page views, cart activity and abandoned checkouts cannot yet be calculated from Supabase order data alone.</p></details>
   <div className="sales-kpis conversion-kpis">
     <div><span>DELIVERED ORDERS</span><strong>{number(sales.completed_orders)}</strong><small>Fulfilled purchases</small></div>
     <div><span>ACTIVE ORDERS</span><strong>{number(sales.active_orders)}</strong><small>Pending fulfillment</small></div>
