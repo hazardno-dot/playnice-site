@@ -19,6 +19,7 @@ for (const token of [
   'Import GA4 CSV',
   'Import product CSV',
   'Product performance',
+  'Signals worth investigating',
   'playnice_cc_ga4_events_v1',
   'Session funnel not connected',
   'Fragrance inventory',
