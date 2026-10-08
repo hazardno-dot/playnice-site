@@ -1,0 +1,11 @@
+import assert from "node:assert/strict";
+import {parseGa4ItemsCsv} from "../src/ga4ItemsCsvImport.mjs";
+const example=`# Ecommerce purchases: Item name\n# Start date: 20260910\n# End date: 20261007\nItem name,Items viewed,Items added to cart,Items purchased,Item revenue\n"Thomas Kosmala No. 4 Après l'Amour Eau de Parfum",792,37,8,127.000001\n"Tester, with comma",40,8,0,0\n`;
+const d=parseGa4ItemsCsv(example);
+assert.equal(d.items.length,2);
+assert.equal(d.items[0].name,"Thomas Kosmala No. 4 Après l'Amour Eau de Parfum");
+assert.equal(d.items[0].views,792);
+assert.equal(d.items[1].name,"Tester, with comma");
+assert.throws(()=>parseGa4ItemsCsv(example+'"Tester, with comma",2,0,0,0\n'),/Duplicate item/);
+assert.throws(()=>parseGa4ItemsCsv("bad csv"),/Expected GA4/);
+console.log("PASS GA4 item CSV validates item counts, quoted names and date bounds");
