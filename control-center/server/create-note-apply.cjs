@@ -162,7 +162,7 @@ function validateNote(value, key) {
 function validateMediaStage(value, key) {
   if (!value) return null;
   const expectedFile = `${NOTE_ASSET_ROOT}/${key}.webp`;
-  if (!value.branch || !value.baseSha) throw new Error("Staged note asset metadata is incomplete.");
+  if (!/^[0-9a-f]{40}$/.test(value.blobSha || "") && (!value.branch || !value.baseSha)) throw new Error("Staged note asset metadata is incomplete.");
   if (value.file !== expectedFile || value.assetPath !== `/note-map/${key}.webp`) throw new Error("Staged note asset metadata does not match the canonical note path.");
   return value;
 }
@@ -209,9 +209,16 @@ module.exports = async function handler(req, res) {
     const mediaStage = validateMediaStage(draft.approved_payload?.mediaStage || null, noteKey);
     const assetFile = `${NOTE_ASSET_ROOT}/${noteKey}.webp`;
     const mainAsset = await githubFile(assetFile, "main");
-    const stagedAsset = mediaStage ? await githubFile(assetFile, mediaStage.branch) : null;
-    if (mediaStage && !stagedAsset?.sha) return json(res, 409, { error: "Staged note asset is missing from its staging branch." });
-    if (!mainAsset?.sha && !stagedAsset?.sha) return json(res, 409, { error: `Missing note asset: /${assetFile}` });
+    const stagedAsset = mediaStage
+      ? mediaStage.blobSha
+        ? await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs/${mediaStage.blobSha}`)
+        : await githubFile(assetFile, mediaStage.branch) // Existing in-progress staged drafts remain compatible.
+      : null;
+    const stagedSha = stagedAsset?.sha;
+    if (mediaStage?.blobSha && stagedSha !== mediaStage.blobSha) return json(res, 409, { error: "Staged note asset SHA mismatch." });
+    if (mediaStage && !stagedSha) return json(res, 409, { error: "Staged note asset is missing." });
+    if (!mainAsset?.sha && !stagedSha) return json(res, 409, { error: `Missing note asset: /${assetFile}` });
+    const stagedContent = stagedAsset?.content?.replace(/\s+/g, "") || "";
 
     if (action === "prepare") {
       if (draft.apply_branch && draft.apply_pr_number) return json(res, 409, { error: "A Notes apply PR already exists for this draft." });
@@ -241,7 +248,7 @@ module.exports = async function handler(req, res) {
     if (mode === "replace" && !existsNow) return json(res, 409, { error: `LIVE DRIFT: Note ${noteKey} no longer exists on main.` });
 
     const changed = upsertLibraryNote(source, approved);
-    if (changed.source === source && !stagedAsset?.sha) return json(res, 409, { error: "No Notes source or asset change was produced." });
+    if (changed.source === source && !stagedSha) return json(res, 409, { error: "No Notes source or asset change was produced." });
 
     // Build the completed Notes source + asset as one Git tree before creating
     // the preview branch. This avoids a Vercel deployment for each file write.
@@ -256,10 +263,10 @@ module.exports = async function handler(req, res) {
       });
       treeEntries.push({ path: NOTE_SOURCE_PATH, mode: "100644", type: "blob", sha: sourceBlob.sha });
     }
-    if (stagedAsset?.content) {
+    if (stagedContent) {
       const assetBlob = await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
         method: "POST",
-        body: JSON.stringify({ content: stagedAsset.content.replace(/\\s+/g, ""), encoding: "base64" }),
+        body: JSON.stringify({ content: stagedContent, encoding: "base64" }),
       });
       treeEntries.push({ path: assetFile, mode: "100644", type: "blob", sha: assetBlob.sha });
     }
@@ -293,7 +300,7 @@ module.exports = async function handler(req, res) {
           `- SR: ${approved.srLabel}`,
           `- EN: ${approved.enLabel}`,
           `- Source: ${NOTE_SOURCE_PATH}`,
-          `- Asset: /${assetFile} (${stagedAsset?.sha ? "included from staged upload" : "verified on main"})`,
+          `- Asset: /${assetFile} (${stagedSha ? "included from staged upload" : "verified on main"})`,
           `- Operation: ${mode === "insert" ? "insert new NOTE_LIBRARY entry" : "replace/promote existing note metadata"}`,
           "- Safety: exact TheNoteMapImpl.jsx SHA drift guard",
           "- Safety: approved payload equality guard",
@@ -308,7 +315,7 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id }),
     });
     if (!update.ok) throw new Error("Notes PR was created, but its draft metadata could not be persisted.");
-    return json(res, 200, { ok: true, note_key: noteKey, branch, pr_number: pr.number, pr_url: pr.html_url, file: NOTE_SOURCE_PATH, asset: stagedAsset?.sha ? assetFile : null, version: "notes-v2-media" });
+    return json(res, 200, { ok: true, note_key: noteKey, branch, pr_number: pr.number, pr_url: pr.html_url, file: NOTE_SOURCE_PATH, asset: stagedSha ? assetFile : null, version: "notes-v2-media" });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Notes Controlled Apply failed." });
   }
