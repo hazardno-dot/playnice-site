@@ -83,3 +83,12 @@
 .inventory-row:not(.stock-low):not(.stock-depleted){grid-template-columns:minmax(0,1fr) 76px}
 .inventory-row:not(.stock-low):not(.stock-depleted)>span{grid-column:2}
 .workflow-intelligence{display:grid;gap:16px}
+
+/* Conversion intelligence — operational indicators, not web funnel */
+.conversion-intelligence{display:grid;gap:16px}
+.conversion-pending-note{border:1px solid rgba(216,185,107,.26);border-radius:12px;padding:15px 18px;background:rgba(216,185,107,.035);color:#d9e2d8}
+.conversion-pending-note strong{font-size:13px;font-weight:600}
+.conversion-pending-note p{font-size:12px;line-height:1.55;color:#a6b5ab;margin:6px 0 0}
+.conversion-kpis>div span{font-size:11px}.conversion-kpis>div small{font-size:11px}
+.conversion-intelligence .ranking-row strong{font-size:12px}.conversion-intelligence .ranking-row small{font-size:11px}
+.conversion-empty{color:#a6b5ab;font-size:12px}

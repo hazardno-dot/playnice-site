@@ -37,7 +37,7 @@ export default function AnalyticsManager() {
     const sync = () => {
       const heading = mainStage.querySelector(".topbar h1")?.textContent?.trim();
       const placeholder = mainStage.querySelector(".placeholder-panel");
-      if (!placeholder || !["Commerce", "Inventory"].includes(heading)) { setSlot(null); return; }
+      if (!placeholder || !["Commerce", "Inventory", "Conversion"].includes(heading)) { setSlot(null); return; }
       setModule(heading);
       let nextSlot = placeholder.querySelector("#analytics-manager-slot");
       if (!nextSlot) {
@@ -137,7 +137,27 @@ export default function AnalyticsManager() {
   if (!slot) return null;
   return createPortal(<section className="analytics-manager">
     {error ? <div className="analytics-error">{error}</div> : null}
-    {module === "Commerce" ? <>
+    {module === "Conversion" ? <section className="conversion-intelligence">
+  <div className="sales-section-head"><div><span>INTELLIGENCE / CONVERSION</span><h2>Purchase signals</h2>
+    <p>Verified order outcomes only. Website visits, abandoned checkouts and conversion rates will appear after GA4 is connected.</p></div>
+    <div className="sales-head-meta"><span className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</span><small>Supabase orders · no visitor tracking added</small></div>
+  </div>
+  <div className="conversion-pending-note"><strong>Visitor funnel not connected</strong><p>No reliable page-view, cart-to-checkout or abandoned-checkout denominator exists in this data source. These are purchase and fulfillment indicators, not a conversion rate.</p></div>
+  <div className="sales-kpis conversion-kpis">
+    <div><span>DELIVERED ORDERS</span><strong>{number(sales.completed_orders)}</strong><small>Fulfilled purchases</small></div>
+    <div><span>ACTIVE ORDERS</span><strong>{number(sales.active_orders)}</strong><small>Pending fulfillment</small></div>
+    <div><span>DELIVERY FAILURES</span><strong>{number(sales.failed_orders)}</strong><small>Not checkout abandonment</small></div>
+    <div><span>REPEAT CUSTOMERS</span><strong>{number(sales.repeat_customers)}</strong><small>From delivered order history</small></div>
+  </div>
+  <div className="sales-grid">
+    <article className="analytics-panel"><div className="analytics-panel-head"><div><span>ORDER ORIGINS</span><h3>Delivered sales by source</h3></div><small>Not website visitor acquisition</small></div>
+      <div className="ranking-list">{salesBySource.length ? salesBySource.map(row=><div className="ranking-row source-row" key={row.order_source}><div><strong>{row.order_source}</strong><small>{number(row.orders)} delivered orders</small></div><span>{money(row.revenue)}</span></div>) : <p className="conversion-empty">No delivered source data yet.</p>}</div>
+    </article>
+    <article className="analytics-panel"><div className="analytics-panel-head"><div><span>PRODUCT DEMAND</span><h3>Most sold fragrances</h3></div><small>Delivered only · not product views</small></div>
+      <div className="ranking-list">{topProducts.filter(row=>Number(row.sold_units)>0).slice().sort((a,b)=>Number(b.sold_units)-Number(a.sold_units)).slice(0,8).map(row=><div className="ranking-row source-row" key={row.product_name}><div><strong>{row.product_name}</strong><small>{number(row.sold_units)} sold units</small></div><span>{money(row.revenue)}</span></div>)}</div>
+    </article>
+  </div>
+</section> : module === "Commerce" ? <>
     <section className="sales-intelligence">
       <div className="sales-section-head">
         <div>
