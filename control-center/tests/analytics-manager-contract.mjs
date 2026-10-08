@@ -8,13 +8,15 @@ const app = fs.readFileSync(path.join(root, "control-center/src/App.jsx"), "utf8
 const workflow = fs.readFileSync(path.join(root, "control-center/src/WorkflowManager.jsx"), "utf8");
 
 for (const token of [
-  '["Commerce", "Inventory"].includes(heading)',
+  '["Commerce", "Inventory", "Conversion"].includes(heading)',
   'FREE SHIPPING',
   'COD PENDING',
   'Size mix',
   'Sales by city',
   'Fragrance volume',
   'Commerce intelligence',
+  'Purchase signals',
+  'Visitor funnel not connected',
   'Fragrance inventory',
   'Revenue, fulfillment, fragrance volume and customer geography from completed orders.',
   'consumed_since_tracking_ml',
@@ -55,7 +57,7 @@ console.log("PASS  Analytics exposes revenue, products, cities, sizes and COD me
 console.log("PASS  customer traffic analytics remain explicitly separate from operational telemetry");
 console.log("Production untouched: yes (static Analytics contract only)");
 
-if (!app.includes('modules: ["Commerce", "Inventory"]')) throw new Error("Intelligence must be split into Commerce and Inventory.");
+if (!app.includes('modules: ["Commerce", "Inventory", "Conversion"]')) throw new Error("Intelligence must be split into Commerce and Inventory.");
 if (!app.includes('modules: ["Site Health", "Workflow"]')) throw new Error("System must include Workflow.");
 if (!workflow.includes("Latest workflow events")) throw new Error("Workflow activity must live under System / Workflow.");
 if (manager.includes("CONTROL CENTER WORKFLOW")) throw new Error("Commerce/Inventory must not contain workflow telemetry.");

@@ -18,7 +18,7 @@ const NAV = [
   { section: "MANAGE", items: [{ name: "Products", icon: "P" }, { name: "Hero", icon: "H" }, { name: "Announcement", icon: "A" }, { name: "Journal", icon: "J" }, { name: "Notes", icon: "N" }, { name: "Exhibition", icon: "E" }] },
   { section: "OPERATIONS", items: [{ name: "Orders", icon: "O" }] },
   { section: "SOCIAL", items: [{ name: "Social", icon: "S" }, { name: "Inbox", icon: "I" }] },
-  { section: "INTELLIGENCE", items: [{ name: "Commerce", icon: "C" }, { name: "Inventory", icon: "I" }] },
+  { section: "INTELLIGENCE", items: [{ name: "Commerce", icon: "C" }, { name: "Inventory", icon: "I" }, { name: "Conversion", icon: "V" }] },
   { section: "COMMUNITY", items: [{ name: "Scent Requests", icon: "R" }, { name: "Journal Feedback", icon: "F" }] },
   { section: "SYSTEM", items: [{ name: "Site Health", icon: "S" }, { name: "Workflow", icon: "W" }] }
 ];
@@ -27,7 +27,7 @@ const PRIMARY_NAV = [
   { name: "Manage", modules: ["Products", "Hero", "Announcement", "Journal", "Notes", "Exhibition"] },
   { name: "Operations", modules: ["Orders"] },
   { name: "Social", modules: ["Social", "Inbox"] },
-  { name: "Intelligence", modules: ["Commerce", "Inventory"] },
+  { name: "Intelligence", modules: ["Commerce", "Inventory", "Conversion"] },
   { name: "Community", modules: ["Scent Requests", "Journal Feedback"] },
   { name: "System", modules: ["Site Health", "Workflow"] }
 ];
@@ -43,6 +43,7 @@ const MODULE_META = {
   Social: { eyebrow: "SOCIAL / PUBLISHER", description: "Create, review and manually publish Instagram and Facebook content from live PlayNice sources." },
   Inbox: { eyebrow: "SOCIAL / INBOX", description: "Facebook intake, prepared replies and explicit approval before every send." },
   Commerce: { eyebrow: "INTELLIGENCE / COMMERCE", description: "Revenue, orders, fragrance volume, customers and sales composition." },
+  Conversion: { eyebrow: "INTELLIGENCE / CONVERSION", description: "Verified order outcomes and product demand. Visitor funnel requires a GA4 connection." },
   Inventory: { eyebrow: "INTELLIGENCE / INVENTORY", description: "Measured fragrance stock, consumption, restocks and low-stock watch." },
   "Scent Requests": { eyebrow: "COMMUNITY / DEMAND", description: "Community fragrance demand, request volume and automatic collection matching." },
   "Journal Feedback": { eyebrow: "COMMUNITY / JOURNAL", description: "Reader reactions, article-level feedback and free-text comments from the Journal." },

@@ -65,7 +65,7 @@ for (const token of [
   }
 }
 
-if (!ccApp.includes('modules: ["Commerce", "Inventory"]')) {
+if (!ccApp.includes('modules: ["Commerce", "Inventory", "Conversion"]')) {
   throw new Error("Intelligence contract changed.");
 }
 if (!ccApp.includes('modules: ["Scent Requests", "Journal Feedback"]')) {
