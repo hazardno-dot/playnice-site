@@ -130,6 +130,10 @@ export default [
   {
     "sr": "Na prvom sastanku ako ste obećali da mirišete na vanilu i čokoladu. Imperial Ocean donosi morsku so, alge i suvo drvo. Nije desert, već šetnja pored mora. Ako druga strana očekuje poslastičarnicu, moraćete da promenite plan.",
     "en": "On a first date if you promised to smell like vanilla and chocolate. Imperial Ocean brings sea salt, seaweed and dry woods. It is a seaside walk, not dessert. If your date expected a pastry shop, you may need a new plan."
+  },
+  {
+    "sr": "Na zimskom sastanku sa upravnikom zgrade, kada pokušavate da objasnite zašto grejanje opet ne radi. Milestone miriše na more, sunce i bezbrižnost. Čovek već misli da ste bili na odmoru dok su ostali sedeli u hladnim stanovima.",
+    "en": "At a winter meeting with your building manager, explaining why the heating still doesn't work. Milestone smells of sea, sunshine and carefree days. He already suspects you were on holiday while everyone else was freezing."
   }
 
 ];

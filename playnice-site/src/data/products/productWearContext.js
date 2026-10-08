@@ -446,5 +446,10 @@ export const productWearContext = {
   "French Avenue Imperial Ocean Eau de Parfum": {
     "sr": "Leto, proleće, posao, more i opuštene dnevne prilike.",
     "en": "Summer, spring, work, seaside days and casual outings."
+  },
+
+  "Armaf Club de Nuit Milestone Eau de Parfum": {
+    "sr": "Proleće, leto, more, posao i elegantne dnevne prilike.",
+    "en": "Spring, summer, seaside, work and elegant daytime wear."
   }
 };

@@ -3358,6 +3358,55 @@ export const productCopy = {
       "en": "For lovers of salty marine freshness and dry woods, without unnecessary sweetness.",
       "sr": "Za ljubitelje morske svežine, slankastih akorda i suvog drveta, bez suvišne slatkoće."
     }
+  },
+
+  "Armaf Club de Nuit Milestone Eau de Parfum": {
+    "miniTag": {
+      "en": "🌊 Marine / Fruity",
+      "sr": "🌊 Morski / Voćni"
+    },
+    "card": {
+      "en": "Marine freshness, red fruits and soft woods in a salty blend.",
+      "sr": "Morska svežina, crveno voće i meko drvo u slankastom spoju."
+    },
+    "modal": {
+      "en": "Bergamot, red fruits and marine notes open fresh and salty. Violet and sandalwood add softness, while vetiver, musk and ambroxan leave a clean trail.",
+      "sr": "Bergamot, crveno voće i morski akordi otvaraju sveže i slankasto. Ljubičica i sandalovina daju mekoću, a vetiver, mošus i ambroksan čist završetak."
+    },
+    "scentType": {
+      "en": "Fruity marine woody musk",
+      "sr": "Voćno-morski drvenasto-mošusni"
+    },
+    "dominantNotes": {
+      "sr": [
+        "morski akordi",
+        "crveno voće",
+        "sandalovina",
+        "mošus"
+      ],
+      "en": [
+        "marine notes",
+        "red fruits",
+        "sandalwood",
+        "musk"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Morski",
+        "Voćni",
+        "Elegantan"
+      ],
+      "en": [
+        "Marine",
+        "Fruity",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of salty marine freshness, juicy fruit and an elegant musky finish.",
+      "sr": "Za ljubitelje slankaste morske svežine, sočnog voća i elegantnog mošusnog završetka."
+    }
   }
 };
 
