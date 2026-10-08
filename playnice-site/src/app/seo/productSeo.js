@@ -208,7 +208,7 @@ export const getProductStructuredData = (product, lang = "sr") => {
       url: productUrl,
       name: `${name} ${size} decant`,
       priceCurrency: "EUR",
-      price: String(price),
+      price: String(product.discount?.size === size\n        ? Number((Number(price) * (1 - Number(product.discount.percent) / 100)).toFixed(2))\n        : price),
       itemCondition: "https://schema.org/NewCondition",
       shippingDetails,
       hasMerchantReturnPolicy,
