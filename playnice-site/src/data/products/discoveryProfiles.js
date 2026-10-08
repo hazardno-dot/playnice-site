@@ -3261,6 +3261,37 @@ export const discoveryProfiles = {
     "cleanliness": 8.3,
     "versatility": 8.5,
     "gourmandness": 0.2
+  },
+
+  "armaf-club-de-nuit-milestone": {
+    "date": 7.7,
+    "casual": 9.2,
+    "citrus": 6.3,
+    "office": 8.5,
+    "unisex": 8.5,
+    "warmth": 3.4,
+    "aquatic": 8.8,
+    "dryness": 4.7,
+    "evening": 6.5,
+    "powdery": 2.2,
+    "airiness": 8,
+    "darkness": 1.6,
+    "elegance": 8.4,
+    "feminine": 4.2,
+    "florality": 3.5,
+    "freshness": 8.7,
+    "longevity": 7.5,
+    "masculine": 5.8,
+    "spiciness": 1.5,
+    "sweetness": 4,
+    "woodiness": 5.5,
+    "creaminess": 3.5,
+    "fruitiness": 7.2,
+    "projection": 7.2,
+    "aromaticity": 4.2,
+    "cleanliness": 8.2,
+    "versatility": 8.5,
+    "gourmandness": 0.8
   }
 };
 

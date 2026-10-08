@@ -3062,6 +3062,32 @@ export const products = [
       heart: ["vetiver","seaweed","lily-of-the-valley"],
       base: ["ambergris","cedarwood"]
     }
+  },
+  {
+    id: 109,
+    addedAt: "2026-10-08T22:17:52.844Z",
+    slug: "armaf-club-de-nuit-milestone",
+    name: "Armaf Club de Nuit Milestone Eau de Parfum",
+    modalName: "Armaf Club de Nuit Milestone EDP",
+    shortName: "CDN Milestone",
+    category: "Arabian",
+    image: "/products/armaf-club-de-nuit-milestone.png",
+    sizes: {"5ml":5,"10ml":9,"20ml":17},
+    badge: "CROWD FAVORITE",
+    rating: 8.3,
+    ratingLabel: "Well Loved",
+    season: "summer",
+    moods: ["summer","clean","signature"],
+    recommendations: ["armaf-club-de-nuit-sillage","thomas-kosmala-no7-le-sel-de-la-terre","rasasi-hawas-ice"],
+    inspiredBy: {
+      name: "Creed Millésime Impérial",
+      short: "Millésime Impérial DNA"
+    },
+    noteMap: {
+      top: ["bergamot","red-fruits","marine-notes"],
+      heart: ["violet","sandalwood","white-woods"],
+      base: ["vetiver","musk","ambroxan"]
+    }
   }
 
 ];

@@ -130,6 +130,10 @@ const entries = [
   {
     "sr": "Bela majica, svetloplava košulja, bež pantalone i dobre patike. Svežina bez napora. Naočare za sunce su poželjne, ali nemojte ih nositi u zatvorenom. Imperial Ocean nije dozvola da glumite filmsku zvezdu.",
     "en": "A white T-shirt, light blue shirt, beige trousers and good sneakers. Effortless freshness. Sunglasses are welcome, but take them off indoors. Imperial Ocean is not a licence to act like a movie star."
+  },
+  {
+    "sr": "Bela lanena košulja, svetle pantalone i dobre mokasine. Može i jednostavna majica. Zlatna bočica nije poziv da obučete zlatni sako. Ostavimo nešto i za ljude koji nastupaju u Las Vegasu.",
+    "en": "A white linen shirt, light trousers and good loafers. A simple T-shirt works too. The gold bottle is not an invitation to wear a gold blazer. Leave something for the performers in Las Vegas."
   }
 
 ];
