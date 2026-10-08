@@ -38,6 +38,20 @@ export default function AnalyticsManager() {
     try {const data=JSON.parse(localStorage.getItem("playnice_cc_ga4_items_v1")||"null"); return data?.version===1?data:null;} catch{return null;}
   });
   const [ga4ItemsNotice,setGa4ItemsNotice]=useState("");
+  const [productTableCollapsed,setProductTableCollapsed]=useState(false);
+  const [productTableSort,setProductTableSort]=useState("views");
+  const [productTableDescending,setProductTableDescending]=useState(true);
+  const [productTableShowAll,setProductTableShowAll]=useState(false);
+  const toggleProductSort=(field)=>{
+    if(productTableSort===field)setProductTableDescending(prev=>!prev);
+    else{setProductTableSort(field);setProductTableDescending(true);}
+  };
+  const sortedProductItems=ga4Items?.items?.slice().sort((a,b)=>{
+    const direction=productTableDescending?-1:1;
+    const difference=Number(a[productTableSort]||0)-Number(b[productTableSort]||0);
+    return difference?direction*difference:a.name.localeCompare(b.name);
+  })||[];
+
   const importGa4Items=async(event)=>{
     const file=event.target.files?.[0];event.target.value="";
     if(!file)return;
@@ -189,34 +203,49 @@ export default function AnalyticsManager() {
     </> : <p className="ga4-import-empty">Export Reports → Engagement → Events as CSV from Google Analytics to display event totals here.</p>}
   </article>
   <article className="analytics-panel ga4-import-panel ga4-product-panel">
-    <div className="analytics-panel-head"><div><span>GOOGLE ANALYTICS / PRODUCTS</span><h3>Product performance</h3></div><small>GA4 item events · report-specific period</small></div>
-    <div className="ga4-import-toolbar">
-      <label className="ga4-file-label">Import product CSV<input type="file" accept=".csv,text/csv" onChange={importGa4Items} aria-label="Import GA4 Ecommerce item CSV"/></label>
-      <span className="ga4-import-period">{ga4Items?`${ga4Items.start} → ${ga4Items.end} · ${ga4Items.items.length} items`:"No product report imported"}</span>
+    <div className="analytics-panel-head"><div><span>GOOGLE ANALYTICS / PRODUCTS</span><h3>Product performance</h3></div>
+      <div className="ga4-product-heading-actions"><small>GA4 item events · report-specific period</small>
+        <button type="button" className="ga4-collapse-button" aria-expanded={!productTableCollapsed} aria-controls="ga4-product-table-content" onClick={()=>setProductTableCollapsed(prev=>!prev)}>{productTableCollapsed?"Expand":"Collapse"} {productTableCollapsed?"▾":"▴"}</button>
+      </div>
     </div>
-    {ga4ItemsNotice?<p className="ga4-import-notice" role="status">{ga4ItemsNotice}</p>:null}
-    <p className="ga4-import-note">This import is stored only on this device. Values are GA4 item events, not unique shoppers. Re-import replaces the prior product report.</p>
-    {ga4Items?<div className="ga4-product-table-wrap"><table className="ga4-product-table">
-      <thead><tr><th>Fragrance</th><th>Views</th><th>Cart adds</th><th>Purchased</th><th>Revenue</th></tr></thead>
-      <tbody>{ga4Items.items.slice().sort((a,b)=>b.views-a.views).slice(0,30).map(row=><tr key={row.name}>
-        <td title={row.name}>{row.name}</td><td>{number(row.views)}</td><td>{number(row.adds)}</td><td>{number(row.purchased)}</td><td>{money(row.revenue)}</td>
-      </tr>)}</tbody>
-    </table></div>:<p className="ga4-import-empty">Import the GA4 Ecommerce purchases → Item name CSV to display the most viewed fragrances and their item-level purchase signals.</p>}
-    {ga4Items ? <section className="product-insights"><div className="analytics-panel-head"><div><span>PRODUCT INSIGHTS / GA4</span><h3>Signals worth investigating</h3></div><small>Heuristic groups, not purchase recommendations</small></div>
+    <div className="ga4-product-table-content" id="ga4-product-table-content" hidden={productTableCollapsed}>
+      <div className="ga4-import-toolbar">
+        <label className="ga4-file-label">Import product CSV<input type="file" accept=".csv,text/csv" onChange={importGa4Items} aria-label="Import GA4 Ecommerce item CSV"/></label>
+        <span className="ga4-import-period">{ga4Items?`${ga4Items.start} → ${ga4Items.end} · ${ga4Items.items.length} items`:"No product report imported"}</span>
+      </div>
+      {ga4ItemsNotice?<p className="ga4-import-notice" role="status">{ga4ItemsNotice}</p>:null}
+      <p className="ga4-import-note">This import is stored only on this device. Values are GA4 item events, not unique shoppers. Re-import replaces the prior product report.</p>
+      {ga4Items?<div className="ga4-product-table-wrap"><table className="ga4-product-table">
+        <thead><tr><th scope="col">Fragrance</th>{[
+          {key:"views",label:"Views"},{key:"adds",label:"Cart adds"},{key:"purchased",label:"Purchased"},{key:"revenue",label:"Revenue"}
+        ].map(column=><th scope="col" key={column.key} aria-sort={productTableSort===column.key?(productTableDescending?"descending":"ascending"):"none"}>
+          <button type="button" className="ga4-sort-button" onClick={()=>toggleProductSort(column.key)}>
+            {column.label} <span aria-hidden="true">{productTableSort===column.key?(productTableDescending?"↓":"↑"):"↕"}</span>
+          </button>
+        </th>)}</tr></thead>
+        <tbody>{(productTableShowAll?sortedProductItems:sortedProductItems.slice(0,30)).map(row=><tr key={row.name}>
+          <td title={row.name}>{row.name}</td><td>{number(row.views)}</td><td>{number(row.adds)}</td><td>{number(row.purchased)}</td><td>{money(row.revenue)}</td>
+        </tr>)}</tbody>
+      </table></div>:<p className="ga4-import-empty">Import the GA4 Ecommerce purchases → Item name CSV to display product-level interest.</p>}
+      {ga4Items?<div className="ga4-table-footer"><p className="ga4-import-note">Showing {productTableShowAll?sortedProductItems.length:Math.min(30,sortedProductItems.length)} of {sortedProductItems.length} items · sorted by {productTableSort} {productTableDescending?"descending":"ascending"}. Item counts are not unique visitors or verified sales.</p>
+      {sortedProductItems.length>30?<button type="button" className="ga4-show-all" onClick={()=>setProductTableShowAll(prev=>!prev)}>{productTableShowAll?"Show top 30":"Show all "+sortedProductItems.length}</button>:null}</div>:null}
+    </div>
+  </article>
+    {ga4Items ? <section className="product-insights"><div className="analytics-panel-head"><div><span>PRODUCT INSIGHTS / GA4 · PURCHASE DATA UNVERIFIED</span><h3>Signals worth investigating</h3></div><small>Heuristic groups, not purchase recommendations</small></div>
       <div className="product-insights-grid">
         {[
           {key:"attention",title:"Viewed, no GA4 purchase",detail:"40+ views · zero GA4 purchased units; verify actual sales in Orders"},
           {key:"cartInterest",title:"High cart interest",detail:"5+ cart additions · signals interest, not abandoned orders"},
           {key:"views",title:"Most viewed fragrances",detail:"Highest GA4 item views in this report"}
         ].map(group=><article className="product-insight-card" key={group.key}><h4>{group.title}</h4><p>{group.detail}</p>
-          {deriveProductInsights(ga4Items.items)[group.key].length ? <ol>{deriveProductInsights(ga4Items.items)[group.key].map(item=><li key={item.name}><strong>{item.name}</strong><small>{number(item.views)} views · {number(item.adds)} cart adds · {number(item.purchased)} GA4 units (unverified)</small></li>)}</ol> : <small>No products meet this rule.</small>}
+          {deriveProductInsights(ga4Items.items)[group.key].length ? <ol>{deriveProductInsights(ga4Items.items)[group.key].map(item=><li key={item.name}><strong>{item.name}</strong><small>{number(item.views)} views · {number(item.adds)} cart adds · {number(item.purchased)} GA4 units</small></li>)}</ol> : <small>No products meet this rule.</small>}
         </article>)}
       </div><p className="ga4-import-note">GA4 purchase counts may include earlier test transactions. Orders/Supabase is the source of truth for actual sales and revenue. Signals can overlap; cart additions do not prove checkout abandonment.</p>
     </section> : null}
     {ga4Items?<p className="ga4-import-note">Showing 30 most viewed items. Product views, cart adds and purchased units are different actions; a ratio between them is not a user-level conversion rate. Supabase delivered sales may cover another period.</p>:null}
   </article>
   <details className="conversion-pending-note"><summary>Session funnel not connected · GA4 exploration required</summary><p>The GA4 CSV shows aggregate events only, not a sequential session funnel. These are verified order outcomes, not visitor conversion rates. Page views, cart activity and abandoned checkouts cannot yet be calculated from Supabase order data alone.</p></details>
-  <div className="sales-kpis conversion-kpis">
+  <div className="sales-kpis conversion-kpis conversion-centered-kpis">
     <div><span>DELIVERED ORDERS</span><strong>{number(sales.completed_orders)}</strong><small>Fulfilled purchases</small></div>
     <div><span>ACTIVE ORDERS</span><strong>{number(sales.active_orders)}</strong><small>Pending fulfillment</small></div>
     <div><span>DELIVERY FAILURES</span><strong>{number(sales.failed_orders)}</strong><small>Not checkout abandonment</small></div>
