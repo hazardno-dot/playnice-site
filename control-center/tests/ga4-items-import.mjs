@@ -6,6 +6,6 @@ assert.equal(d.items.length,2);
 assert.equal(d.items[0].name,"Thomas Kosmala No. 4 Après l'Amour Eau de Parfum");
 assert.equal(d.items[0].views,792);
 assert.equal(d.items[1].name,"Tester, with comma");
-assert.throws(()=>parseGa4ItemsCsv(example+"Tester, with comma,2,0,0,0\n"),/Duplicate item/);
+assert.throws(()=>parseGa4ItemsCsv(example+'"Tester, with comma",2,0,0,0\n'),/Duplicate item/);
 assert.throws(()=>parseGa4ItemsCsv("bad csv"),/Expected GA4/);
 console.log("PASS GA4 item CSV validates item counts, quoted names and date bounds");
