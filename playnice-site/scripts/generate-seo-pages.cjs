@@ -85,8 +85,8 @@ for (const product of products) {
     .replace('<div id="root"></div>', `<div id="root">${fallback}</div>`);
   const outDir = path.join(BUILD, "product");
   fs.mkdirSync(outDir, { recursive: true });
-  const canonicalMatches = html.match(/<link\\b[^>]*rel="canonical"[^>]*>/gi) || [];
-  const schemaMatches = html.match(/<script\\b[^>]*id="playnice-product-schema"[^>]*>/gi) || [];
+  const canonicalMatches = html.match(/<link\b[^>]*rel="canonical"[^>]*>/gi) || [];
+  const schemaMatches = html.match(/<script\b[^>]*id="playnice-product-schema"[^>]*>/gi) || [];
   if (canonicalMatches.length !== 1 || !canonicalMatches[0].includes(escapeHtml(url)) ||
       schemaMatches.length !== 1 || !html.includes(`<h1>${escapeHtml(name)}</h1>`)) {
     throw new Error(`SEO build: invalid HTML contract for ${slug}`);
