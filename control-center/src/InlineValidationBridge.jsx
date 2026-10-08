@@ -18,7 +18,7 @@ function noteLibraryKeys(source) {
   const start = source.indexOf("const NOTE_LIBRARY = {");
   const end = source.indexOf("const NOTE_SR = {", start);
   if (start < 0 || end < 0) return [];
-  return [...source.slice(start, end).matchAll(/^  (?:(?:"([^"]+)")|(?:'([^']+)')|([A-Za-z0-9_-]+))\\s*:\\s*\\{/gm)]
+  return [...source.slice(start, end).matchAll(/^  (?:(?:"([^"]+)")|(?:'([^']+)')|([A-Za-z0-9_-]+))\s*:\s*\{/gm)]
     .map((match) => match[1] || match[2] || match[3])
     .filter(Boolean);
 }
