@@ -17,6 +17,8 @@ for (const token of [
   'Commerce intelligence',
   'Purchase signals',
   'Import GA4 CSV',
+  'Import product CSV',
+  'Product performance',
   'playnice_cc_ga4_events_v1',
   'Session funnel not connected',
   'Fragrance inventory',

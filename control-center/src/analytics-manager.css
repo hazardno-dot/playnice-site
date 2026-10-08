@@ -123,3 +123,11 @@
 .ga4-event-card strong{font-family:Georgia,serif;font-size:24px;font-weight:500;color:#e3efe7}
 .ga4-event-card small{font-size:11px;color:#9db0a4}
 @media(max-width:850px){.ga4-event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.ga4-product-table-wrap{overflow-x:auto;max-width:100%;border:1px solid rgba(255,255,255,.08);border-radius:11px}
+.ga4-product-table{width:100%;border-collapse:collapse;font-size:12px;min-width:590px}
+.ga4-product-table th{padding:12px 11px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8ca799;font-weight:500;text-align:right;border-bottom:1px solid rgba(255,255,255,.1)}
+.ga4-product-table th:first-child{text-align:left}
+.ga4-product-table td{padding:12px 11px;text-align:right;color:#dce7df;border-bottom:1px solid rgba(255,255,255,.065);font-variant-numeric:tabular-nums}
+.ga4-product-table td:first-child{text-align:left;max-width:320px;min-width:200px;overflow-wrap:anywhere;line-height:1.4}
+.ga4-product-table tr:last-child td{border-bottom:0}

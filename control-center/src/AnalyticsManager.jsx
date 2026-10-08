@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { GA4_EVENTS, parseGa4EventCsv } from "./ga4CsvImport.mjs";
+import { parseGa4ItemsCsv } from "./ga4ItemsCsvImport.mjs";
 
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -32,6 +33,21 @@ export default function AnalyticsManager() {
     catch { return null; }
   });
   const [ga4Message, setGa4Message] = useState("");
+  const [ga4Items, setGa4Items] = useState(() => {
+    try {const data=JSON.parse(localStorage.getItem("playnice_cc_ga4_items_v1")||"null"); return data?.version===1?data:null;} catch{return null;}
+  });
+  const [ga4ItemsNotice,setGa4ItemsNotice]=useState("");
+  const importGa4Items=async(event)=>{
+    const file=event.target.files?.[0];event.target.value="";
+    if(!file)return;
+    try{
+      if(file.size>2*1024*1024)throw Error("CSV must be smaller than 2MB.");
+      const report=parseGa4ItemsCsv(await file.text());
+      localStorage.setItem("playnice_cc_ga4_items_v1",JSON.stringify(report));
+      setGa4Items(report);setGa4ItemsNotice("Product report imported locally.");
+    }catch(e){setGa4ItemsNotice(e.message||"CSV import failed.");}
+  };
+
   const importGa4 = async (event) => {
     const file=event.target.files?.[0];
     event.target.value="";
@@ -170,6 +186,22 @@ export default function AnalyticsManager() {
       <div className="ga4-event-grid">{GA4_EVENTS.map(name=><div className="ga4-event-card" key={name}><span>{name.replaceAll("_"," ")}</span><strong>{number(ga4.events[name]?.count||0)}</strong><small>{number(ga4.events[name]?.users||0)} event users</small></div>)}</div>
       <p className="ga4-import-note">Purchase revenue recorded by GA4: {money(ga4.events.purchase?.revenue||0)}. Event counts are not distinct people or a sequential conversion funnel; periods and definitions may differ from Supabase orders.</p>
     </> : <p className="ga4-import-empty">Export Reports → Engagement → Events as CSV from Google Analytics to display event totals here.</p>}
+  </article>
+  <article className="analytics-panel ga4-import-panel ga4-product-panel">
+    <div className="analytics-panel-head"><div><span>GOOGLE ANALYTICS / PRODUCTS</span><h3>Product performance</h3></div><small>GA4 item events · report-specific period</small></div>
+    <div className="ga4-import-toolbar">
+      <label className="ga4-file-label">Import product CSV<input type="file" accept=".csv,text/csv" onChange={importGa4Items} aria-label="Import GA4 Ecommerce item CSV"/></label>
+      <span className="ga4-import-period">{ga4Items?`${ga4Items.start} → ${ga4Items.end} · ${ga4Items.items.length} items`:"No product report imported"}</span>
+    </div>
+    {ga4ItemsNotice?<p className="ga4-import-notice" role="status">{ga4ItemsNotice}</p>:null}
+    <p className="ga4-import-note">This import is stored only on this device. Values are GA4 item events, not unique shoppers. Re-import replaces the prior product report.</p>
+    {ga4Items?<div className="ga4-product-table-wrap"><table className="ga4-product-table">
+      <thead><tr><th>Fragrance</th><th>Views</th><th>Cart adds</th><th>Purchased</th><th>Revenue</th></tr></thead>
+      <tbody>{ga4Items.items.slice().sort((a,b)=>b.views-a.views).slice(0,30).map(row=><tr key={row.name}>
+        <td title={row.name}>{row.name}</td><td>{number(row.views)}</td><td>{number(row.adds)}</td><td>{number(row.purchased)}</td><td>{money(row.revenue)}</td>
+      </tr>)}</tbody>
+    </table></div>:<p className="ga4-import-empty">Import the GA4 Ecommerce purchases → Item name CSV to display the most viewed fragrances and their item-level purchase signals.</p>}
+    {ga4Items?<p className="ga4-import-note">Showing 30 most viewed items. Product views, cart adds and purchased units are different actions; a ratio between them is not a user-level conversion rate. Supabase delivered sales may cover another period.</p>:null}
   </article>
   <details className="conversion-pending-note"><summary>Session funnel not connected · GA4 exploration required</summary><p>The GA4 CSV shows aggregate events only, not a sequential session funnel. These are verified order outcomes, not visitor conversion rates. Page views, cart activity and abandoned checkouts cannot yet be calculated from Supabase order data alone.</p></details>
   <div className="sales-kpis conversion-kpis">
