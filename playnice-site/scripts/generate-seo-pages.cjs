@@ -56,7 +56,7 @@ for (const product of products) {
   const title = `${name} | Dekanti parfema | PlayNice`;
   const offers = sizes.map(([size, price]) => ({
     "@type": "Offer", url, name: `${name} ${size} decant`, priceCurrency: "EUR",
-    price: String(price),
+    price: String(product.discount?.size === size\n      ? Number((Number(price) * (1 - Number(product.discount.percent) / 100)).toFixed(2))\n      : price),
     itemCondition: "https://schema.org/NewCondition"
   }));
   const ld = JSON.stringify({
