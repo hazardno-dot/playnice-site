@@ -209,8 +209,6 @@ export const getProductStructuredData = (product, lang = "sr") => {
       name: `${name} ${size} decant`,
       priceCurrency: "EUR",
       price: String(price),
-      priceValidUntil: "2026-12-31",
-      availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       shippingDetails,
       hasMerchantReturnPolicy,
