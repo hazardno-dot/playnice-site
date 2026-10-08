@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { GA4_EVENTS, parseGa4EventCsv } from "./ga4CsvImport.mjs";
 import { parseGa4ItemsCsv } from "./ga4ItemsCsvImport.mjs";
+import { deriveProductInsights } from "./productInsights.mjs";
 
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -201,6 +202,17 @@ export default function AnalyticsManager() {
         <td title={row.name}>{row.name}</td><td>{number(row.views)}</td><td>{number(row.adds)}</td><td>{number(row.purchased)}</td><td>{money(row.revenue)}</td>
       </tr>)}</tbody>
     </table></div>:<p className="ga4-import-empty">Import the GA4 Ecommerce purchases → Item name CSV to display the most viewed fragrances and their item-level purchase signals.</p>}
+    {ga4Items ? <section className="product-insights"><div className="analytics-panel-head"><div><span>PRODUCT INSIGHTS / GA4</span><h3>Signals worth investigating</h3></div><small>Heuristic groups, not purchase recommendations</small></div>
+      <div className="product-insights-grid">
+        {[
+          {key:"attention",title:"Viewed, not purchased",detail:"40+ item views and zero units purchased"},
+          {key:"cartInterest",title:"Cart interest, limited purchases",detail:"5+ cart additions and at most one purchased unit"},
+          {key:"sales",title:"Highest GA4 item revenue",detail:"Purchased units and revenue for this GA4 period"}
+        ].map(group=><article className="product-insight-card" key={group.key}><h4>{group.title}</h4><p>{group.detail}</p>
+          {deriveProductInsights(ga4Items.items)[group.key].length ? <ol>{deriveProductInsights(ga4Items.items)[group.key].map(item=><li key={item.name}><strong>{item.name}</strong><small>{number(item.views)} views · {number(item.adds)} cart adds · {number(item.purchased)} purchased · {money(item.revenue)}</small></li>)}</ol> : <small>No products meet this rule.</small>}
+        </article>)}
+      </div><p className="ga4-import-note">Signals are descriptive and may overlap. A cart addition is not an abandoned checkout; compare periods before deciding on campaigns.</p>
+    </section> : null}
     {ga4Items?<p className="ga4-import-note">Showing 30 most viewed items. Product views, cart adds and purchased units are different actions; a ratio between them is not a user-level conversion rate. Supabase delivered sales may cover another period.</p>:null}
   </article>
   <details className="conversion-pending-note"><summary>Session funnel not connected · GA4 exploration required</summary><p>The GA4 CSV shows aggregate events only, not a sequential session funnel. These are verified order outcomes, not visitor conversion rates. Page views, cart activity and abandoned checkouts cannot yet be calculated from Supabase order data alone.</p></details>
