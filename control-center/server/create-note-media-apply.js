@@ -29,16 +29,6 @@ async function github(path, options = {}) {
   return data;
 }
 
-async function githubFile(path, branch) {
-  try { return await github(`/repos/${OWNER}/${REPO_NAME}/contents/${path}?ref=${encodeURIComponent(branch)}`); }
-  catch (error) { if (error.status === 404) return null; throw error; }
-}
-
-async function readRef(branch) {
-  try { return await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/${encodeURIComponent(branch)}`); }
-  catch (error) { if (error.status === 404) return null; throw error; }
-}
-
 function decodeWebp(value = "") {
   const base64 = String(value).replace(/^data:image\/webp;base64,/i, "").replace(/\s+/g, "");
   if (!base64) throw new Error("Note WebP image is required.");
@@ -80,30 +70,16 @@ export default async function handler(req, res) {
     if (draft?.apply_branch || draft?.apply_pr_number) return json(res, 409, { error: "A Notes apply preview already exists. Return the note to draft before replacing its asset." });
     if (draft && draft.review_status !== "draft") return json(res, 409, { error: "Note media can only be changed while the note is in Draft." });
 
-    const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
-    const baseSha = mainRef.object.sha;
-    const requestedBranch = String(req.body?.stage_branch || "").trim();
-    const requestedBaseSha = String(req.body?.base_sha || "").trim();
-    const savedStage = draft?.payload?.mediaStage;
-    let branch = "";
-
-    if (requestedBranch && requestedBaseSha === baseSha && /^cc-note-media-stage-[a-z0-9-]+-\d{12}$/i.test(requestedBranch) && await readRef(requestedBranch)) branch = requestedBranch;
-    else if (savedStage?.branch && savedStage.baseSha === baseSha && /^cc-note-media-stage-[a-z0-9-]+-\d{12}$/i.test(savedStage.branch) && await readRef(savedStage.branch)) branch = savedStage.branch;
-    else {
-      const stamp = new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 12);
-      branch = `cc-note-media-stage-${noteKey}-${stamp}`;
-      await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }) });
-    }
-
-    const filePath = `${NOTE_ASSET_ROOT}/${noteKey}.webp`;
-    const current = await githubFile(filePath, branch);
-    await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
-      method: "PUT",
-      body: JSON.stringify({ message: `Stage Note media: ${noteKey}`, content, ...(current?.sha ? { sha: current.sha } : {}), branch }),
+    // Unreferenced Git blobs do not create a branch push or a Vercel Preview.
+    // The final Controlled Apply places this exact blob in the atomic PR tree.
+    const blob = await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
+      method: "POST",
+      body: JSON.stringify({ content, encoding: "base64" }),
     });
-
+    if (!/^[0-9a-f]{40}$/.test(blob.sha || "")) throw new Error("GitHub did not return a valid staged asset SHA.");
+    const filePath = `${NOTE_ASSET_ROOT}/${noteKey}.webp`;
     const now = new Date().toISOString();
-    const mediaStage = { branch, baseSha, file: filePath, assetPath: `/note-map/${noteKey}.webp`, stagedAt: now };
+    const mediaStage = { blobSha: blob.sha, file: filePath, assetPath: `/note-map/${noteKey}.webp`, stagedAt: now };
 
     if (draft) {
       const payload = { ...(draft.payload || {}), assetPath: mediaStage.assetPath, mediaStage };
