@@ -72,7 +72,7 @@ for (const product of products) {
     headMeta("twitter:card", "summary_large_image"),
     headMeta("twitter:title", title), headMeta("twitter:description", description),
     headMeta("twitter:image", image),
-    `<script type="application/ld+json">${ld}</script>`
+    `<script id="playnice-product-schema" type="application/ld+json">${ld}</script>`
   ].join("\n");
   const notes = ["top", "heart", "base"].map(level => {
     const items = product.noteMap?.[level] || [];
