@@ -242,8 +242,6 @@ export default function AnalyticsManager() {
         </article>)}
       </div><p className="ga4-import-note">GA4 purchase counts may include earlier test transactions. Orders/Supabase is the source of truth for actual sales and revenue. Signals can overlap; cart additions do not prove checkout abandonment.</p>
     </section> : null}
-    {ga4Items?<p className="ga4-import-note">Showing 30 most viewed items. Product views, cart adds and purchased units are different actions; a ratio between them is not a user-level conversion rate. Supabase delivered sales may cover another period.</p>:null}
-  </article>
   <details className="conversion-pending-note"><summary>Session funnel not connected · GA4 exploration required</summary><p>The GA4 CSV shows aggregate events only, not a sequential session funnel. These are verified order outcomes, not visitor conversion rates. Page views, cart activity and abandoned checkouts cannot yet be calculated from Supabase order data alone.</p></details>
   <div className="sales-kpis conversion-kpis conversion-centered-kpis">
     <div><span>DELIVERED ORDERS</span><strong>{number(sales.completed_orders)}</strong><small>Fulfilled purchases</small></div>
