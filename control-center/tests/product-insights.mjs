@@ -9,6 +9,6 @@ const items=[
 const x=deriveProductInsights(items);
 assert.deepEqual(x.attention.map(x=>x.name),["A","B"]);
 assert.deepEqual(x.cartInterest.map(x=>x.name),["B","C"]);
-assert.deepEqual(x.sales.map(x=>x.name),["D","C"]);
+assert.deepEqual(x.views.map(x=>x.name),["A","B","C","D"]);
 assert.deepEqual(deriveProductInsights([]).attention,[]);
 console.log("PASS product insights classify descriptive GA4 item signals");

@@ -4,7 +4,7 @@ export function deriveProductInsights(items = []) {
   const by = (filter, comparator) => eligible.filter(filter).sort(comparator).slice(0,5);
   return {
     attention: by(x => x.views >= 40 && x.purchased === 0, (a,b) => b.views-a.views),
-    cartInterest: by(x => x.adds >= 5 && x.purchased <= 1, (a,b) => b.adds-a.adds),
-    sales: items.filter(x => x.purchased > 0).slice().sort((a,b) => b.revenue-a.revenue).slice(0,5)
+    cartInterest: by(x => x.adds >= 5, (a,b) => b.adds-a.adds),
+    views: items.slice().sort((a,b) => b.views-a.views).slice(0,5)
   };
 }
