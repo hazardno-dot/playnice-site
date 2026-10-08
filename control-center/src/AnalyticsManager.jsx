@@ -138,11 +138,10 @@ export default function AnalyticsManager() {
   return createPortal(<section className="analytics-manager">
     {error ? <div className="analytics-error">{error}</div> : null}
     {module === "Conversion" ? <section className="conversion-intelligence">
-  <div className="sales-section-head"><div><span>INTELLIGENCE / CONVERSION</span><h2>Purchase signals</h2>
-    <p>Verified order outcomes only. Website visits, abandoned checkouts and conversion rates will appear after GA4 is connected.</p></div>
+  <div className="sales-section-head conversion-head"><div><span>ORDERS / OUTCOMES</span><h2>Purchase signals</h2></div>
     <div className="sales-head-meta"><span className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</span><small>Supabase orders · no visitor tracking added</small></div>
   </div>
-  <div className="conversion-pending-note"><strong>Visitor funnel not connected</strong><p>No reliable page-view, cart-to-checkout or abandoned-checkout denominator exists in this data source. These are purchase and fulfillment indicators, not a conversion rate.</p></div>
+  <details className="conversion-pending-note"><summary>Visitor funnel not connected · GA4 required</summary><p>These are verified order outcomes, not visitor conversion rates. Page views, cart activity and abandoned checkouts cannot yet be calculated from Supabase order data alone.</p></details>
   <div className="sales-kpis conversion-kpis">
     <div><span>DELIVERED ORDERS</span><strong>{number(sales.completed_orders)}</strong><small>Fulfilled purchases</small></div>
     <div><span>ACTIVE ORDERS</span><strong>{number(sales.active_orders)}</strong><small>Pending fulfillment</small></div>
@@ -153,7 +152,7 @@ export default function AnalyticsManager() {
     <article className="analytics-panel"><div className="analytics-panel-head"><div><span>ORDER ORIGINS</span><h3>Delivered sales by source</h3></div><small>Not website visitor acquisition</small></div>
       <div className="ranking-list">{salesBySource.length ? salesBySource.map(row=><div className="ranking-row source-row" key={row.order_source}><div><strong>{row.order_source}</strong><small>{number(row.orders)} delivered orders</small></div><span>{money(row.revenue)}</span></div>) : <p className="conversion-empty">No delivered source data yet.</p>}</div>
     </article>
-    <article className="analytics-panel"><div className="analytics-panel-head"><div><span>PRODUCT DEMAND</span><h3>Most sold fragrances</h3></div><small>Delivered only · not product views</small></div>
+    <article className="analytics-panel"><div className="analytics-panel-head"><div><span>COMPLETED SALES</span><h3>Top selling fragrances</h3></div><small>Delivered only · not product views</small></div>
       <div className="ranking-list">{topProducts.filter(row=>Number(row.sold_units)>0).slice().sort((a,b)=>Number(b.sold_units)-Number(a.sold_units)).slice(0,8).map(row=><div className="ranking-row source-row" key={row.product_name}><div><strong>{row.product_name}</strong><small>{number(row.sold_units)} sold units</small></div><span>{money(row.revenue)}</span></div>)}</div>
     </article>
   </div>

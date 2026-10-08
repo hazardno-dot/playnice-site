@@ -92,3 +92,20 @@
 .conversion-kpis>div span{font-size:11px}.conversion-kpis>div small{font-size:11px}
 .conversion-intelligence .ranking-row strong{font-size:12px}.conversion-intelligence .ranking-row small{font-size:11px}
 .conversion-empty{color:#a6b5ab;font-size:12px}
+
+/* Conversion v1 mobile density and ranking readability */
+.conversion-intelligence{gap:12px}
+.conversion-intelligence .conversion-head{padding:4px 2px 0;gap:12px}
+.conversion-intelligence .conversion-head h2{font-size:clamp(23px,5vw,29px)}
+.conversion-intelligence .conversion-head .sales-head-meta{align-items:center}
+.conversion-intelligence .conversion-pending-note{padding:10px 14px;border-color:rgba(216,185,107,.16);background:rgba(216,185,107,.018)}
+.conversion-intelligence .conversion-pending-note summary{cursor:pointer;font-size:12px;font-weight:600;color:#bacabd;line-height:1.45}
+.conversion-intelligence .conversion-pending-note p{margin-top:8px;font-size:12px}
+.conversion-intelligence .ranking-row.source-row{grid-template-columns:minmax(0,1fr) auto;gap:12px;text-align:left;align-items:center}
+.conversion-intelligence .ranking-row.source-row>div{text-align:left;min-width:0}
+.conversion-intelligence .ranking-row.source-row strong{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow:hidden;line-height:1.4;font-size:12px;overflow-wrap:anywhere}
+.conversion-intelligence .ranking-row.source-row small{font-size:11px}
+.conversion-intelligence .ranking-row.source-row>span{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.conversion-intelligence .analytics-panel-head{align-items:start;gap:12px}
+.conversion-intelligence .analytics-panel-head>small{text-align:right;max-width:44%}
+@media(max-width:720px){.conversion-intelligence .conversion-head .sales-head-meta small{display:none}.conversion-intelligence .conversion-head .sales-head-meta{justify-content:flex-start}.conversion-intelligence .conversion-head .analytics-live{width:auto;min-width:64px;padding:5px 10px}.conversion-intelligence .analytics-panel-head h3{font-size:19px}}
