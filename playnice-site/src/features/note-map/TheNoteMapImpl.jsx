@@ -86,6 +86,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/gardenia.webp",
     fallback: "•",
   },
+  "seaweed": {
+    sr: "Morska trava",
+    en: "Seaweed",
+    image: "/note-map/seaweed.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
