@@ -126,6 +126,10 @@ const entries = [
   {
     "sr": "Bela lanena košulja, bež pantalone i lagane patike. Opušteno, čisto i mediteranski. Ako uz to držite čašu limunade, niko neće proveravati da li ste zaista na odmoru.",
     "en": "A white linen shirt, beige trousers and light sneakers. Relaxed, clean and Mediterranean. Add a glass of lemonade and nobody will question whether you are actually on holiday."
+  },
+  {
+    "sr": "Bela majica, svetloplava košulja, bež pantalone i dobre patike. Svežina bez napora. Naočare za sunce su poželjne, ali nemojte ih nositi u zatvorenom. Imperial Ocean nije dozvola da glumite filmsku zvezdu.",
+    "en": "A white T-shirt, light blue shirt, beige trousers and good sneakers. Effortless freshness. Sunglasses are welcome, but take them off indoors. Imperial Ocean is not a licence to act like a movie star."
   }
 
 ];
