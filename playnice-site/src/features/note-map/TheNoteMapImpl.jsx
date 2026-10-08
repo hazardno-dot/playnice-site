@@ -92,6 +92,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/seaweed.webp",
     fallback: "•",
   },
+  "red-fruits": {
+    sr: "Crveno voće",
+    en: "Red Fruits",
+    image: "/note-map/red-fruits.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
