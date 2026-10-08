@@ -21,7 +21,7 @@ function readStoredStage(key) {
 }
 
 function storeStage(key, stage) {
-  if (!key || !stage?.branch || !stage?.baseSha) return;
+  if (!key || (!stage?.blobSha && (!stage?.branch || !stage?.baseSha))) return;
   try { sessionStorage.setItem(sessionKey(key), JSON.stringify(stage)); }
   catch { /* Supabase becomes persistent source of truth after Save draft. */ }
 }
@@ -92,9 +92,9 @@ export default function NoteMediaUploadBridge() {
     const preserve = async (row) => {
       if (!row || row.review_status !== "draft") return;
       const stored = readStoredStage(noteKey);
-      if (!stored?.branch || !stored?.baseSha || repairing) return;
+      if ((!stored?.blobSha && (!stored?.branch || !stored?.baseSha)) || repairing) return;
       const current = row.payload?.mediaStage;
-      if (current?.branch === stored.branch && current?.baseSha === stored.baseSha) return;
+      if (stored.blobSha ? current?.blobSha === stored.blobSha : current?.branch === stored.branch && current?.baseSha === stored.baseSha) return;
       repairing = true;
       try {
         const payload = { ...(row.payload || {}), assetPath: stored.assetPath || `/note-map/${noteKey}.webp`, mediaStage: stored };
@@ -156,13 +156,13 @@ export default function NoteMediaUploadBridge() {
       const response = await fetch("/api/create-note-media-apply", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ note_key: noteKey, asset_base64: await blobToBase64(file), stage_branch: stored?.branch || "", base_sha: stored?.baseSha || "" }),
+        body: JSON.stringify({ note_key: noteKey, asset_base64: await blobToBase64(file) }),
       });
       const raw = await response.text();
       let body = {};
       try { body = raw ? JSON.parse(raw) : {}; } catch { throw new Error(raw || "Note media upload returned an invalid response."); }
       if (!response.ok) throw new Error(body?.error || "Could not stage note asset.");
-      if (!body?.media_stage?.branch || !body?.media_stage?.baseSha) throw new Error("Note asset staged, but staging metadata is incomplete.");
+      if (!body?.media_stage?.blobSha) throw new Error("Note asset staged, but staging metadata is incomplete.");
       storeStage(noteKey, body.media_stage);
       setResult(body);
       window.dispatchEvent(new CustomEvent(NOTE_WORKFLOW_UPDATED_EVENT, { detail: { noteKey, mediaStaged: true } }));
