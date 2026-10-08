@@ -2987,7 +2987,7 @@ export const products = [
   },
   {
     id: 106,
-    addedAt: "2026-10-08T20:26:31.195Z",
+    addedAt: "2026-10-08T20:34:58.953Z",
     slug: "french-avenue-spectre-ghost",
     name: "French Avenue Spectre Ghost Eau de Parfum",
     modalName: "French Avenue Spectre Ghost EDP",
@@ -2995,7 +2995,7 @@ export const products = [
     category: "Arabian",
     image: "/products/french-avenue-spectre-ghost.png",
     sizes: {"5ml":6,"10ml":11,"20ml":20},
-    badge: "NEW ARRIVAL",
+    badge: "ARABIAN GEM",
     rating: 8.2,
     ratingLabel: "Well Loved",
     season: "winter",
