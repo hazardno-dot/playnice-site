@@ -122,6 +122,10 @@ const entries = [
   {
     "sr": "Tamna rolka, antilop jakna i dobre farmerke. Parfem se već pobrinuo za začine; ne morate i Vi izgledati kao da vodite restoran.",
     "en": "A dark turtleneck, suede jacket and good jeans. The fragrance already takes care of the spices; you do not need to look like you run a restaurant."
+  },
+  {
+    "sr": "Bela lanena košulja, bež pantalone i lagane patike. Opušteno, čisto i mediteranski. Ako uz to držite čašu limunade, niko neće proveravati da li ste zaista na odmoru.",
+    "en": "A white linen shirt, beige trousers and light sneakers. Relaxed, clean and Mediterranean. Add a glass of lemonade and nobody will question whether you are actually on holiday."
   }
 
 ];

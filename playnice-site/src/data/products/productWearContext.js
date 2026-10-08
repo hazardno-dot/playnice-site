@@ -436,5 +436,10 @@ export const productWearContext = {
   "French Avenue Spectre Ghost Eau de Parfum": {
     "sr": "Jesen, zima, dejt i večernji izlazak.",
     "en": "Autumn, winter, dates and evenings out."
+  },
+
+  "Maison Alhambra Jean Lowe Verde Aura Eau de Parfum": {
+    "sr": "Proleće, leto, posao, šetnja i opušteni dnevni planovi.",
+    "en": "Spring, summer, work, walks and easy daytime plans."
   }
 };

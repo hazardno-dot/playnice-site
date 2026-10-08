@@ -122,6 +122,10 @@ export default [
   {
     "sr": "U prepunom autobusu usred avgusta, nakon osam prskanja. Topla vanila i začini u toj gužvi mogu biti naporni. Putnici već imaju dovoljno razloga da požele sledeću stanicu.",
     "en": "On a packed bus in August after eight sprays. Warm vanilla and spices can overwhelm a crowded space. The other passengers already have enough reasons to wish for the next stop."
+  },
+  {
+    "sr": "Na svečanoj večeri usred zime, kada ste u tamnom odelu i svi očekuju nešto ozbiljno. Verde Aura miriše na citruse, zelenilo i sunce. Kao da ste na dodelu nagrada došli pravo sa izleta. Dobar izlet, ali ipak.",
+    "en": "At a formal winter dinner, dressed in a dark suit while everyone expects something serious. Verde Aura smells of citrus, greenery and sunshine. Like arriving at an awards ceremony straight from a picnic. A lovely picnic, admittedly."
   }
 
 ];
