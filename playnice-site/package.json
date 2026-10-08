@@ -14,7 +14,8 @@
     "start": "react-scripts start",
     "prebuild": "node scripts/sync-hero-preload.mjs",
     "build": "npm test && react-scripts build",
-    "test": "react-scripts test --watchAll=false"
+    "test": "react-scripts test --watchAll=false",
+    "postbuild": "node scripts/generate-seo-pages.cjs"
   },
   "browserslist": {
     "production": [
