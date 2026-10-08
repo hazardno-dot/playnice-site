@@ -243,25 +243,41 @@ module.exports = async function handler(req, res) {
     const changed = upsertLibraryNote(source, approved);
     if (changed.source === source && !stagedAsset?.sha) return json(res, 409, { error: "No Notes source or asset change was produced." });
 
+    // Build the completed Notes source + asset as one Git tree before creating
+    // the preview branch. This avoids a Vercel deployment for each file write.
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
+    const parentSha = mainRef.object.sha;
+    const baseCommit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${parentSha}`);
+    const treeEntries = [];
+    if (changed.source !== source) {
+      const sourceBlob = await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
+        method: "POST",
+        body: JSON.stringify({ content: changed.source, encoding: "utf-8" }),
+      });
+      treeEntries.push({ path: NOTE_SOURCE_PATH, mode: "100644", type: "blob", sha: sourceBlob.sha });
+    }
+    if (stagedAsset?.content) {
+      const assetBlob = await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
+        method: "POST",
+        body: JSON.stringify({ content: stagedAsset.content.replace(/\\s+/g, ""), encoding: "base64" }),
+      });
+      treeEntries.push({ path: assetFile, mode: "100644", type: "blob", sha: assetBlob.sha });
+    }
+    if (!treeEntries.length) return json(res, 409, { error: "No Notes changes remain to apply." });
+    const tree = await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`, {
+      method: "POST",
+      body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: treeEntries }),
+    });
+    const commit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits`, {
+      method: "POST",
+      body: JSON.stringify({ message: `Control Center Notes apply: ${noteKey} (source + asset)`, tree: tree.sha, parents: [parentSha] }),
+    });
     const stamp = new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 12);
     const branch = `cc-note-${noteKey}-${stamp}`;
-    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: mainRef.object.sha }) });
-
-    if (changed.source !== source) {
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${NOTE_SOURCE_PATH}`, {
-        method: "PUT",
-        body: JSON.stringify({ message: `Control Center Notes apply: ${noteKey}`, content: Buffer.from(changed.source, "utf8").toString("base64"), sha: file.sha, branch }),
-      });
-    }
-
-    if (stagedAsset?.content) {
-      const target = await githubFile(assetFile, branch);
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${assetFile}`, {
-        method: "PUT",
-        body: JSON.stringify({ message: `Control Center Notes asset: ${noteKey}`, content: stagedAsset.content.replace(/\s+/g, ""), ...(target?.sha ? { sha: target.sha } : {}), branch }),
-      });
-    }
+    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, {
+      method: "POST",
+      body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: commit.sha }),
+    });
 
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
       method: "POST",
