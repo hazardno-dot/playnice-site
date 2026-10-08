@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { productCopyBySlug } from "@shop/data/products/productContentBySlug.js";
+import noteMapSource from "@shop/features/note-map/TheNoteMapImpl.jsx?raw";
 import {
   validateInlineFields,
 } from "./inlineValidationRules.mjs";
@@ -13,9 +14,19 @@ import "./inline-validation.css";
 
 const PRODUCT_SLUGS = products.map((product) => product.slug);
 const PRODUCT_SLUG_SET = new Set(PRODUCT_SLUGS);
-const NOTE_KEYS = [...new Set(
-  products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || []))
-)];
+function noteLibraryKeys(source) {
+  const start = source.indexOf("const NOTE_LIBRARY = {");
+  const end = source.indexOf("const NOTE_SR = {", start);
+  if (start < 0 || end < 0) return [];
+  return [...source.slice(start, end).matchAll(/^  (?:(?:"([^"]+)")|(?:'([^']+)')|([A-Za-z0-9_-]+))\\s*:\\s*\\{/gm)]
+    .map((match) => match[1] || match[2] || match[3])
+    .filter(Boolean);
+}
+
+const NOTE_KEYS = [...new Set([
+  ...products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || [])),
+  ...noteLibraryKeys(noteMapSource),
+])];
 
 const getSelectedSlug = (root) => {
   const slugNode = root.querySelector(".slug");
