@@ -118,6 +118,10 @@ const entries = [
   {
     "sr": "Košulja, sako, kaput ili elegantan večernji outfit.",
     "en": "A shirt, blazer, coat or an elegant evening outfit."
+  },
+  {
+    "sr": "Tamna rolka, antilop jakna i dobre farmerke. Parfem se već pobrinuo za začine; ne morate i Vi izgledati kao da vodite restoran.",
+    "en": "A dark turtleneck, suede jacket and good jeans. The fragrance already takes care of the spices; you do not need to look like you run a restaurant."
   }
 
 ];

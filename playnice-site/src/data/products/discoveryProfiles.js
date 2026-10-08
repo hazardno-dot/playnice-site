@@ -3168,6 +3168,37 @@ export const discoveryProfiles = {
     "cleanliness": 3.8,
     "versatility": 6.1,
     "gourmandness": 7.9
+  },
+
+  "french-avenue-spectre-ghost": {
+    "date": 9.1,
+    "casual": 7.2,
+    "citrus": 4.5,
+    "office": 5.5,
+    "unisex": 6.5,
+    "warmth": 8.7,
+    "aquatic": 0,
+    "dryness": 3.2,
+    "evening": 9.2,
+    "powdery": 3,
+    "airiness": 3,
+    "darkness": 5.2,
+    "elegance": 7.8,
+    "feminine": 3.8,
+    "florality": 2.3,
+    "freshness": 4.3,
+    "longevity": 8,
+    "masculine": 7,
+    "spiciness": 8.2,
+    "sweetness": 7.5,
+    "woodiness": 6.5,
+    "creaminess": 7.3,
+    "fruitiness": 2.1,
+    "projection": 7.5,
+    "aromaticity": 5.3,
+    "cleanliness": 3.5,
+    "versatility": 7,
+    "gourmandness": 6.7
   }
 };
 
