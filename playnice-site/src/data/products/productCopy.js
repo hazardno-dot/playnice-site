@@ -3260,6 +3260,55 @@ export const productCopy = {
       "en": "For lovers of lively ginger, creamy vanilla and a warm woody finish.",
       "sr": "Za ljubitelje živahnog đumbira, kremaste vanile i toplog drvenastog završetka."
     }
+  },
+
+  "Maison Alhambra Jean Lowe Verde Aura Eau de Parfum": {
+    "miniTag": {
+      "en": "🌿 Green / Citrus",
+      "sr": "🌿 Zeleni / Citrusni"
+    },
+    "card": {
+      "en": "Citrus, mint and basil in a fresh green scent with fig.",
+      "sr": "Citrusi, menta i bosiljak u svežem zelenom mirisu sa smokvom."
+    },
+    "modal": {
+      "en": "Lemon, citron and mint open brightly, while basil and carrot seed add a green, herbal twist. Fig and ambrette leave a soft, gently sweet trail.",
+      "sr": "Citron i menta otvaraju sveže, dok bosiljak i seme šargarepe donose biljnu dubinu. Smokva i ambreta ostavljaju mekan, blago sladak trag."
+    },
+    "scentType": {
+      "en": "Green citrus aromatic",
+      "sr": "Zeleni citrusno-aromatični"
+    },
+    "dominantNotes": {
+      "sr": [
+        "citron",
+        "menta",
+        "bosiljak",
+        "smokva"
+      ],
+      "en": [
+        "citron",
+        "mint",
+        "basil",
+        "fig"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Svež",
+        "Zelen",
+        "Aromatičan"
+      ],
+      "en": [
+        "Fresh",
+        "Green",
+        "Aromatic"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of bright citrus, green herbal notes and a distinctive, softly fruity drydown.",
+      "sr": "Za ljubitelje citrusne svežine, zelenih biljnih nota i neobične, nežno voćne završnice."
+    }
   }
 };
 

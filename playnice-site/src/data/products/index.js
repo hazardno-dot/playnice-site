@@ -3010,6 +3010,32 @@ export const products = [
       heart: ["cardamom","black-currant","rose"],
       base: ["vanilla","sandalwood","benzoin"]
     }
+  },
+  {
+    id: 107,
+    addedAt: "2026-10-08T20:47:56.016Z",
+    slug: "maison-alhambra-jean-lowe-verde-aura",
+    name: "Maison Alhambra Jean Lowe Verde Aura Eau de Parfum",
+    modalName: "Maison Alhambra Jean Lowe Verde Aura EDP",
+    shortName: "Jean Lowe Verde Aura",
+    category: "Arabian",
+    image: "/products/maison-alhambra-jean-lowe-verde-aura.png",
+    sizes: {"5ml":4.5,"10ml":8,"20ml":15},
+    badge: "PLAYNICE PICK",
+    rating: 8.2,
+    ratingLabel: "Well Loved",
+    season: "summer",
+    moods: ["clean","summer","casual"],
+    recommendations: ["thomas-kosmala-no-8-tonic-vert","essential-parfums-nice-bergamote","arabiyat-prestige-marwa"],
+    inspiredBy: {
+      name: "Louis Vuitton Cactus Garden",
+      short: "Cactus Garden DNA"
+    },
+    noteMap: {
+      top: ["citron","mint","black-currant"],
+      heart: ["basil","apricot","carrot-seeds"],
+      base: ["fig","dates","ambrette"]
+    }
   }
 
 ];

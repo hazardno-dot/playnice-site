@@ -3199,6 +3199,37 @@ export const discoveryProfiles = {
     "cleanliness": 3.5,
     "versatility": 7,
     "gourmandness": 6.7
+  },
+
+  "maison-alhambra-jean-lowe-verde-aura": {
+    "date": 6.2,
+    "casual": 9.5,
+    "citrus": 9.2,
+    "office": 9,
+    "unisex": 9,
+    "warmth": 3,
+    "aquatic": 0.6,
+    "dryness": 4.2,
+    "evening": 4.8,
+    "powdery": 1.2,
+    "airiness": 8.2,
+    "darkness": 1.2,
+    "elegance": 7.2,
+    "feminine": 4.5,
+    "florality": 2.1,
+    "freshness": 9,
+    "longevity": 6.8,
+    "masculine": 5.5,
+    "spiciness": 3.2,
+    "sweetness": 3.3,
+    "woodiness": 1.8,
+    "creaminess": 2.5,
+    "fruitiness": 4.6,
+    "projection": 6.4,
+    "aromaticity": 8.7,
+    "cleanliness": 8,
+    "versatility": 8.5,
+    "gourmandness": 1.4
   }
 };
 
