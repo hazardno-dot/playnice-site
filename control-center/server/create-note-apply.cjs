@@ -218,7 +218,7 @@ module.exports = async function handler(req, res) {
     if (mediaStage?.blobSha && stagedSha !== mediaStage.blobSha) return json(res, 409, { error: "Staged note asset SHA mismatch." });
     if (mediaStage && !stagedSha) return json(res, 409, { error: "Staged note asset is missing." });
     if (!mainAsset?.sha && !stagedSha) return json(res, 409, { error: `Missing note asset: /${assetFile}` });
-    const stagedContent = stagedAsset?.content?.replace(/\\s+/g, "") || "";
+    const stagedContent = stagedAsset?.content?.replace(/\s+/g, "") || "";
 
     if (action === "prepare") {
       if (draft.apply_branch && draft.apply_pr_number) return json(res, 409, { error: "A Notes apply PR already exists for this draft." });
