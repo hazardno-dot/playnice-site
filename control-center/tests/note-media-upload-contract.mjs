@@ -50,7 +50,8 @@ if (!managers.includes('import NoteMediaUploadBridge from "./NoteMediaUploadBrid
 for (const token of [
   'NOTE_ASSET_ROOT = "playnice-site/public/note-map"',
   'Note image must be a valid WebP file.',
-  'cc-note-media-stage-',
+  'git/blobs',
+  'blobSha',
   'mediaStage',
   'review_status: "draft"',
 ]) if (!api.includes(token)) throw new Error(`Notes media staging API contract missing: ${token}`);
@@ -59,6 +60,8 @@ for (const token of [
   'validateMediaStage',
   'draft.approved_payload?.mediaStage',
   'included from staged upload',
+  'mediaStage.blobSha',
+  'Staged note asset SHA mismatch.',
   'staged asset remains off main until PR merge',
 ]) if (!apply.includes(token)) throw new Error(`Notes Controlled Apply media contract missing: ${token}`);
 
@@ -72,3 +75,8 @@ console.log("PASS  first Save draft writes staged Note media into the persisted 
 console.log("PASS  saved Note draft reports staged asset instead of false ASSET MISSING");
 console.log("PASS  Notes Controlled Apply accepts staged media and includes it in the draft PR");
 console.log("Production untouched: yes (contract-only verification)");
+
+const stageRoute = read("control-center/server/create-note-media-apply.js");
+if (stageRoute.includes('git/refs') || stageRoute.includes('contents/${filePath}')) throw new Error("Note media stage must not create Git refs or branch commits.");
+if (!stageRoute.includes('encoding: "base64"')) throw new Error("Staging must create a Git blob from the optimized WebP.");
+console.log("PASS  Notes media staging does not push a Git branch or trigger Preview builds");
