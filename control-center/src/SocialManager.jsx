@@ -177,7 +177,7 @@ function SocialWorkspace() {
       .slice(0, 60);
   }, [productQuery]);
   const visible = useMemo(() => filter === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)) : filter === "published" ? events.filter((event) => event.status === "published") : filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [events, activeEvents, filter]);
-  const selected = visible.find((event) => event.id === selectedId) || visible[0] || null;
+  const selected = visible.find((event) => event.id === selectedId) || null;
   const generated = useMemo(() => {
     if (!selected) return null;
     try { return generateSocialDraft(selected); } catch { return null; }
@@ -211,7 +211,7 @@ function SocialWorkspace() {
   const sourceLink = useMemo(() => publicSourceUrl(selected?.source_url), [selected?.source_url]);
 
   useEffect(() => {
-    if (visible.length && !visible.some((event) => event.id === selectedId)) setSelectedId(visible[0].id);
+    if (selectedId && !visible.some((event) => event.id === selectedId)) setSelectedId("");
   }, [visible, selectedId]);
 
   useEffect(() => {
@@ -465,17 +465,6 @@ function SocialWorkspace() {
       setSourcePicker({ open: false, type: "", items: [], query: "", loading: false });
       await load();
       const eventId = payload.event?.id || payload.event_id || "";
-      if (eventId && postType === "carousel") {
-        const setup = await fetch("/api/social-media-event", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ id: eventId, channel: "instagram_feed", action: "start_carousel" }),
-        });
-        const result = await setup.json().catch(() => ({}));
-        if (!setup.ok) throw new Error(result.error || "Could not initialize carousel.");
-        await load();
-      }
-      setNewPostPickerOpen(false);
       if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
     } catch (createError) {
       setActionError(createError.message || String(createError));
@@ -519,8 +508,18 @@ function SocialWorkspace() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Could not create blank Social draft (${response.status}).`);
       setFilter("all");
-      await load();
       const eventId = payload.event?.id || payload.event_id || "";
+      if (eventId && postType === "carousel") {
+        const setup = await fetch("/api/social-media-event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ id: eventId, channel: "instagram_feed", action: "start_carousel" }),
+        });
+        const result = await setup.json().catch(() => ({}));
+        if (!setup.ok) throw new Error(result.error || "Could not initialize carousel.");
+      }
+      setNewPostPickerOpen(false);
+      await load();
       if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
     } catch (createError) {
       setActionError(createError.message || String(createError));
@@ -796,13 +795,18 @@ function SocialWorkspace() {
 
           <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"} · manual controlled</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Automatic scheduler-to-Meta publishing remains disabled. Controlled manual channel publishing is available when its environment flag is enabled.">Auto publish locked · manual enabled</button></div>
         </> : null}
+        {!selected ? <div className="social-idle-workspace">
+          <span>SOCIAL PUBLISHER</span><h3>Select a post to edit</h3>
+          <p>Choose an existing campaign from the queue, or create a new Single image or Carousel post.</p>
+          <button type="button" className="social-create-product" onClick={() => setNewPostPickerOpen(true)}>+ New post</button>
+        </div> : null}
       </article>
     </div> : <section className="social-empty-workspace">
       <span>SOCIAL QUEUE</span>
       <h3>No active social posts</h3>
       <p>Create a clean campaign draft, or start from a Product, Hero visual or Journal article.</p>
       <div>
-        <button type="button" className="social-create-product" disabled={saving} onClick={createBlankPost}>{saving ? "Working…" : "New draft"}</button>
+        <button type="button" className="social-create-product" disabled={saving} onClick={() => setNewPostPickerOpen(true)}>{saving ? "Working…" : "+ New post"}</button>
         <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>Product</button>
         <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>Hero</button>
         <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>
