@@ -53,6 +53,62 @@
       name="keywords"
       content="parfemi Crna Gora, dekanti parfema, niche parfemi, Arabian parfemi, PlayNice, parfemi Podgorica"
     />
+    <!-- Official Montenegro delivery terms. Keep aligned with checkout thresholds. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "OnlineStore",
+        "@id": "https://www.playniceshop.me/#store",
+        "name": "PlayNice",
+        "url": "https://www.playniceshop.me/",
+        "email": "info@playniceshop.me",
+        "sameAs": [
+          "https://www.instagram.com/playnice.me/"
+        ],
+        "hasShippingService": {
+          "@type": "ShippingService",
+          "name": "Dostava širom Crne Gore",
+          "fulfillmentType": "https://schema.org/FulfillmentTypeDelivery",
+          "shippingConditions": [
+            {
+              "@type": "ShippingConditions",
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": "ME"
+              },
+              "orderValue": {
+                "@type": "MonetaryAmount",
+                "currency": "EUR",
+                "maxValue": 48.99
+              },
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "currency": "EUR",
+                "value": 4
+              }
+            },
+            {
+              "@type": "ShippingConditions",
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": "ME"
+              },
+              "orderValue": {
+                "@type": "MonetaryAmount",
+                "currency": "EUR",
+                "minValue": 49
+              },
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "currency": "EUR",
+                "value": 0
+              }
+            }
+          ]
+        }
+      }
+    </script>
+
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://www.playniceshop.me/" />
 
