@@ -123,3 +123,9 @@
 .social-post-choice-grid span { font-size:14px; font-weight:600; }
 .social-post-choice-grid small { font-size:13px; color:#a5b0b7; line-height:1.5; }
 @media(max-width:680px) { .social-post-choice-grid { grid-template-columns:1fr; } }
+
+.social-idle-workspace { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; min-height:360px; gap:12px; padding:32px; }
+.social-idle-workspace > span { font-size:11px; letter-spacing:.16em; color:#9aaebd; }
+.social-idle-workspace h3 { font-size:25px; margin:0; }
+.social-idle-workspace p { max-width:440px; margin:0 0 12px; color:#95a7b1; line-height:1.6; }
+.social-idle-workspace button { padding:11px 23px; cursor:pointer; }
