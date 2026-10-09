@@ -95,6 +95,7 @@ function SocialWorkspace() {
   const [feedDryRunLoading, setFeedDryRunLoading] = useState(false);
   const [feedDryRunError, setFeedDryRunError] = useState("");
   const [productPickerOpen, setProductPickerOpen] = useState(false);
+  const [newPostPickerOpen, setNewPostPickerOpen] = useState(false);
   const [productQuery, setProductQuery] = useState("");
   const [sourcePicker, setSourcePicker] = useState({ open: false, type: "", items: [], query: "", loading: false });
   const [publishedAction, setPublishedAction] = useState("");
@@ -464,6 +465,17 @@ function SocialWorkspace() {
       setSourcePicker({ open: false, type: "", items: [], query: "", loading: false });
       await load();
       const eventId = payload.event?.id || payload.event_id || "";
+      if (eventId && postType === "carousel") {
+        const setup = await fetch("/api/social-media-event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ id: eventId, channel: "instagram_feed", action: "start_carousel" }),
+        });
+        const result = await setup.json().catch(() => ({}));
+        if (!setup.ok) throw new Error(result.error || "Could not initialize carousel.");
+        await load();
+      }
+      setNewPostPickerOpen(false);
       if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
     } catch (createError) {
       setActionError(createError.message || String(createError));
@@ -494,7 +506,7 @@ function SocialWorkspace() {
     }
   };
 
-  const createBlankPost = async () => {
+  const createBlankPost = async (postType = "single") => {
     setSaving(true);
     setActionError("");
     try {
@@ -580,21 +592,40 @@ function SocialWorkspace() {
       <button type="button" onClick={() => setCampaignSuccess("")} aria-label="Dismiss campaign confirmation">×</button>
     </div> : null}
 
-    <div className="social-toolbar">
-      <div className="social-filter-bar">
-        {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
+    <div className="social-toolbar social-toolbar-v2">
+      <div className="social-filter-bar" role="group" aria-label="Filter social campaigns">
+        {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>
+          <span>{label(value)}</span>{value !== "all" ? <em>{value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}</em> : null}
+        </button>)}
       </div>
       <div className="social-create-group">
-        <span>CREATE POST FROM / NEW</span>
+        <span>CREATE POST</span>
         <div>
-          <button type="button" className="social-create-product" disabled={saving} onClick={createBlankPost}>{saving ? "Working…" : "New draft"}</button>
-          <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Product"}</button>
-          <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>{saving ? "Working…" : "Hero"}</button>
-          <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>{saving ? "Working…" : "Journal"}</button>
+          <button type="button" className="social-create-product" disabled={saving} onClick={() => setNewPostPickerOpen(true)}>+ New post</button>
+          <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>Product</button>
+          <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>Hero</button>
+          <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>
         </div>
       </div>
     </div>
-
+    {newPostPickerOpen ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setNewPostPickerOpen(false); }}>
+      <section className="social-product-picker social-new-post-picker" role="dialog" aria-modal="true" aria-label="Choose post type">
+        <div className="social-product-picker-head">
+          <div><span>NEW SOCIAL POST</span><h3>Choose your post format</h3><p>Select the workflow before uploading any media.</p></div>
+          <button type="button" disabled={saving} onClick={() => setNewPostPickerOpen(false)}>Close</button>
+        </div>
+        <div className="social-post-choice-grid">
+          <button type="button" disabled={saving} onClick={() => createBlankPost("single")}>
+            <strong>▣ Single image</strong><span>Custom / Manual Post</span>
+            <small>One image per channel · Instagram Feed, Story and Facebook.</small>
+          </button>
+          <button type="button" disabled={saving} onClick={() => createBlankPost("carousel")}>
+            <strong>▤ Carousel</strong><span>Multiple photos</span>
+            <small>2–10 ordered 4:5 photos · Instagram Feed + Facebook.</small>
+          </button>
+        </div>
+      </section>
+    </div> : null}
 
     {sourcePicker.open ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setSourcePicker({ open: false, type: "", items: [], query: "", loading: false }); }}>
       <section className="social-product-picker" role="dialog" aria-modal="true" aria-label={`Create ${sourcePicker.type} post`}>

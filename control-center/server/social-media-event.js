@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     const channel = String(req.body?.channel || "").trim();
     if (!id) return json(res, 400, { error: "Social event id is required." });
     if (!channelAllowed(channel)) return json(res, 400, { error: "Unsupported Social channel." });
-    if (!["set_media", "approve_visual", "set_carousel", "clear_carousel", "approve_carousel"].includes(action)) return json(res, 400, { error: "Unsupported Social media action." });
+    if (!["set_media", "approve_visual", "start_carousel", "set_carousel", "clear_carousel", "approve_carousel"].includes(action)) return json(res, 400, { error: "Unsupported Social media action." });
 
     const eventRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}&select=*&limit=1`, auth.token);
     if (!eventRes.ok) return json(res, 400, { error: "Could not load Social event." });
@@ -60,7 +60,16 @@ export default async function handler(req, res) {
     let auditAction;
     let auditDetails;
 
-    if (action === "set_carousel") {
+    if (action === "start_carousel") {
+      if (event.source_type !== "custom" || event.metadata?.social_carousel) return json(res, 409, { error: "Carousel setup requires a fresh manual draft." });
+      const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
+      patch = {
+        channels: ["instagram_feed", "facebook"], draft_content: null,
+        metadata: { ...metadata, social_carousel: true, carousel_original_channels: event.channels },
+      };
+      auditAction = "social_carousel_started";
+      auditDetails = { channels: patch.channels };
+    } else if (action === "set_carousel") {
       if (event.source_type !== "custom") return json(res, 409, { error: "Carousel v1 is available for manual blank Social posts." });
       const supplied = req.body?.items;
       if (!Array.isArray(supplied) || supplied.length < 1 || supplied.length > 10) return json(res, 400, { error: "Choose 1–10 images while editing; 2–10 required for approval." });

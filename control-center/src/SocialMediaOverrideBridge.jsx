@@ -333,10 +333,10 @@ export default function SocialMediaOverrideBridge() {
   return createPortal(
     <section className="social-media-override-panel">
       <div className="social-media-override-head">
-        <div><span>SOCIAL ASSET GENERATOR</span><strong>Generate safely or upload channel-specific creative</strong></div>
-        <small>Uploaded channel-specific creative has priority. Generated assets preserve the full source, add the subtle PlayNice pattern and adapt a protected dark zone to the product, so nothing is cropped.</small>
+        <div><span>{carouselActive ? "CAROUSEL MEDIA" : "SOCIAL ASSET GENERATOR"}</span><strong>{carouselActive ? "Arrange and approve your photos" : "Generate safely or upload channel-specific creative"}</strong></div>
+        <small>{carouselActive ? "One ordered gallery for Instagram and Facebook." : "Uploaded channel-specific creative has priority. Generated assets preserve the full source, add the subtle PlayNice pattern and adapt a protected dark zone to the product, so nothing is cropped."}</small>
       </div>
-      {(event.source_type === "custom" || carouselActive) ? <div className="social-carousel-panel">
+      {carouselActive ? <div className="social-carousel-panel">
         <div className="social-media-override-head"><div><span>CAROUSEL · INSTAGRAM + FACEBOOK</span>
           <strong>{carouselActive ? `${carouselItems.length} / 10 images` : "Create a multi-photo post"}</strong></div>
           <small>4:5 · 1080 × 1350 · no crop · manual publish only</small></div>
