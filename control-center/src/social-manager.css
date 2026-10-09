@@ -94,3 +94,9 @@
 
 .social-published-channel-actions.republish{grid-template-columns:1fr}
 .social-published-channel-actions button.republish{border-color:#416b55;background:#142019;color:#b9dbc8}
+
+/* Carousel creatives are reviewed in the gallery; keep captions without duplicate large photo panels. */
+.social-channel-grid-carousel .social-media-frame { display: none; }
+.social-channel-grid-carousel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.social-channel-grid-carousel .social-channel-card { min-width: 0; }
+@media (max-width: 900px) { .social-channel-grid-carousel { grid-template-columns: minmax(0, 1fr); } }
