@@ -27,4 +27,3 @@ for (const file of files) {
 
 console.log(`\nPASS  ${passed} Control Center contract test files`);
 
-await import("./social-carousel-contract.mjs");

@@ -70,7 +70,8 @@ export default async function handler(req, res) {
         width: Number(item?.width), height: Number(item?.height),
         bytes: Number(item?.bytes) || null, storage_path: String(item?.storage_path || ""),
       }));
-      if (items.some((item) => !item.src.startsWith("https://") || item.width !== 1080 || item.height !== 1350 || !item.storage_path.startsWith(`${event.id}/`))) {
+      if (items.some((item) => !item.src.startsWith("https://") || item.width !== 1080 || item.height !== 1350 || !item.storage_path.startsWith(`${event.id}/`) ||
+        item.src !== `${SUPABASE_URL.replace(/\\/$/, "")}/storage/v1/object/public/social-media/${item.storage_path}`)) {
         return json(res, 400, { error: "Each carousel asset must be an uploaded public JPEG at 1080 × 1350." });
       }
       const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
@@ -81,7 +82,7 @@ export default async function handler(req, res) {
         media: [...(Array.isArray(event.media) ? event.media : []).filter((item) => item?.source !== "social_carousel"),
           ...["instagram_feed", "facebook"].flatMap((carouselChannel) => items.map((item) => ({ ...item, channel: carouselChannel })))],
         channels: ["instagram_feed", "facebook"],
-        draft_content: null,
+        draft_content: event.draft_content || null,
         approved_content: null,
         metadata: { ...metadata, social_carousel: true,
           carousel_original_channels: metadata.carousel_original_channels || event.channels,
@@ -98,7 +99,7 @@ export default async function handler(req, res) {
         media: (Array.isArray(event.media) ? event.media : []).filter((item) => item?.source !== "social_carousel"),
         channels: Array.isArray(metadata.carousel_original_channels) ? metadata.carousel_original_channels : ["instagram_feed", "instagram_story", "facebook"],
         metadata: { ...metadata, social_carousel: false, social_media_approval: approvals },
-        draft_content: null, approved_content: null,
+        draft_content: event.draft_content || null, approved_content: null,
       };
       auditAction = "social_carousel_cleared";
       auditDetails = {};
