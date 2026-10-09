@@ -100,3 +100,9 @@
 .social-channel-grid-carousel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .social-channel-grid-carousel .social-channel-card { min-width: 0; }
 @media (max-width: 900px) { .social-channel-grid-carousel { grid-template-columns: minmax(0, 1fr); } }
+
+/* Full campaign publication confirmation, visible without a page refresh. */
+.social-campaign-success { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px; margin: 12px 0; border: 1px solid rgba(101, 181, 139, .45); border-radius: 9px; background: rgba(29, 87, 62, .17); color: #d7f4df; }
+.social-campaign-success strong { font-size: 14px; }
+.social-campaign-success span { font-size: 13px; color: #b7d4c2; }
+.social-campaign-success button { margin-left: auto; padding: 3px 9px; border: 0; background: transparent; color: inherit; cursor: pointer; font-size: 20px; }
