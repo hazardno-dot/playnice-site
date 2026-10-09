@@ -51,6 +51,52 @@ function facebookContent(input = {}) {
   return content && typeof content === "object" ? content : {};
 }
 
+const carouselMediaUrls = (content) => {
+  const items = content?.carousel;
+  if (!Array.isArray(items) || items.length < 2 || items.length > 10) throw new Error("Carousel requires 2–10 images.");
+  return items.map((item) => {
+    const url = cleanString(item?.src || item?.url);
+    if (!/^https:\/\//i.test(url)) throw new Error("Carousel requires public HTTPS media URLs.");
+    return url;
+  });
+};
+
+export function buildInstagramCarouselChildRequests(input = {}) {
+  const igAccountId = cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID);
+  if (!igAccountId) throw new Error("META_INSTAGRAM_ACCOUNT_ID is required.");
+  return carouselMediaUrls(instagramFeedContent(input)).map((image_url) => ({
+    method: "POST", url: graphUrl(`${igAccountId}/media`), auth: "bearer",
+    body: { image_url, is_carousel_item: "true" },
+  }));
+}
+
+export function buildInstagramCarouselCreateRequest(input = {}) {
+  const igAccountId = cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID);
+  const caption = cleanString(instagramFeedContent(input)?.caption || input.caption);
+  const children = input.children;
+  if (!igAccountId || !caption || !Array.isArray(children) || children.length < 2 || children.length > 10 || children.some((id) => !cleanString(id))) throw new Error("Invalid Instagram carousel parent.");
+  return { method: "POST", url: graphUrl(`${igAccountId}/media`), auth: "bearer",
+    body: { media_type: "CAROUSEL", children: children.join(","), caption } };
+}
+
+export function buildFacebookCarouselPhotoRequests(input = {}) {
+  const pageId = cleanString(input.facebook_page_id || process.env.META_FACEBOOK_PAGE_ID);
+  if (!pageId) throw new Error("META_FACEBOOK_PAGE_ID is required.");
+  return carouselMediaUrls(facebookContent(input)).map((url) => ({
+    method: "POST", url: graphUrl(`${pageId}/photos`), auth: "bearer",
+    body: { url, published: "false" },
+  }));
+}
+
+export function buildFacebookCarouselFeedRequest(input = {}) {
+  const pageId = cleanString(input.facebook_page_id || process.env.META_FACEBOOK_PAGE_ID);
+  const message = cleanString(facebookContent(input)?.caption || input.caption);
+  const ids = input.photo_ids;
+  if (!pageId || !message || !Array.isArray(ids) || ids.length < 2 || ids.length > 10 || ids.some((id) => !cleanString(id))) throw new Error("Invalid Facebook multi-photo feed post.");
+  return { method: "POST", url: graphUrl(`${pageId}/feed`), auth: "bearer",
+    body: { message, ...Object.fromEntries(ids.map((media_fbid, i) => [`attached_media[${i}]`, JSON.stringify({ media_fbid })])) } };
+}
+
 export function buildInstagramFeedCreateRequest(input = {}) {
   const igAccountId = cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID);
   const content = instagramFeedContent(input);
@@ -113,6 +159,24 @@ export function parseInstagramFeedPublishResponse(payload = {}, publishedAt = ne
 }
 
 export function buildInstagramFeedDryRun(input = {}) {
+  const content = instagramFeedContent(input);
+  if (Array.isArray(content.carousel)) {
+    return {
+      channel: "instagram_feed", provider: "meta", graph_api_version: META_GRAPH_API_VERSION,
+      carousel: true, child_create: buildInstagramCarouselChildRequests(input),
+      parent_create_template: {
+        method: "POST",
+        url: graphUrl(`${cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID)}/media`),
+        body: { media_type: "CAROUSEL", children: "<CHILD_MEDIA_IDS>", caption: cleanString(content.caption) },
+      },
+      publish_template: {
+        method: "POST",
+        url: graphUrl(`${cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID)}/media_publish`),
+        body: { creation_id: "<PARENT_CONTAINER_ID>" },
+      },
+      sends_network_request: false, token_included: false,
+    };
+  }
   const create = buildInstagramFeedCreateRequest(input);
   return {
     channel: "instagram_feed",

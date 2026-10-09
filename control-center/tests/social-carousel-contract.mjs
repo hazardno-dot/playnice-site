@@ -1,0 +1,28 @@
+import assert from "node:assert/strict";
+import { socialCarouselItems, validateCarouselMedia, generateSocialDraft, validateSocialDraftMedia } from "../src/socialDraft.mjs";
+import { buildInstagramCarouselChildRequests, buildInstagramCarouselCreateRequest,
+  buildFacebookCarouselPhotoRequests, buildFacebookCarouselFeedRequest, buildInstagramFeedDryRun } from "../src/metaPublishAdapter.mjs";
+const image = (n, channel = "instagram_feed") => ({ src: `https://example.com/${n}.jpg`, source: "social_carousel", channel, format: "4:5", carousel_index: n });
+const media = [image(1), image(0), image(1, "facebook"), image(0, "facebook")];
+const event = { source_type: "custom", payload: { title: "September Edit" }, metadata: { social_carousel: true }, media };
+assert.equal(socialCarouselItems(event)[0].carousel_index, 0);
+const draft = generateSocialDraft(event);
+assert.equal(draft.instagram_feed.carousel.length, 2);
+assert.equal(draft.facebook.carousel.length, 2);
+assert.equal(validateSocialDraftMedia(draft).channels.instagram_feed.status, "ideal");
+assert.equal(validateCarouselMedia([image(0)]).blocking, true);
+assert.equal(validateCarouselMedia(Array.from({ length: 11 }, (_, i) => image(i))).blocking, true);
+const content = { instagram_feed: { caption: "Hello", carousel: draft.instagram_feed.carousel }, facebook: { caption: "Hello", carousel: draft.facebook.carousel } };
+const children = buildInstagramCarouselChildRequests({ instagram_account_id: "123", content });
+assert.equal(children.length, 2);
+assert.equal(children[0].body.is_carousel_item, "true");
+const parent = buildInstagramCarouselCreateRequest({ instagram_account_id: "123", content, children: ["a", "b"] });
+assert.equal(parent.body.media_type, "CAROUSEL");
+assert.equal(parent.body.children, "a,b");
+const fbPhotos = buildFacebookCarouselPhotoRequests({ facebook_page_id: "123", content });
+assert.equal(fbPhotos[0].body.published, "false");
+const fbFeed = buildFacebookCarouselFeedRequest({ facebook_page_id: "123", content, photo_ids: ["a", "b"] });
+assert.equal(fbFeed.body["attached_media[1]"], JSON.stringify({ media_fbid: "b" }));
+assert.equal(buildInstagramFeedDryRun({ instagram_account_id: "123", content }).carousel, true);
+assert.equal(generateSocialDraft({ source_type: "custom", payload: {} }).instagram_feed.carousel, undefined);
+console.log("Social Carousel v1 contracts passed.");

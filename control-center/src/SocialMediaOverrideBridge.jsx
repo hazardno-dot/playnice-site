@@ -111,6 +111,15 @@ export default function SocialMediaOverrideBridge() {
   }, []);
 
   const immutable = event && event.status !== "draft";
+  const carouselActive = Boolean(event?.metadata?.social_carousel);
+  const carouselItems = useMemo(() => (Array.isArray(event?.media) ? event.media : [])
+    .filter((item) => item?.source === "social_carousel" && item?.channel === "instagram_feed")
+    .sort((a, b) => a.carousel_index - b.carousel_index), [event]);
+  const carouselUrls = carouselItems.map(mediaUrl);
+  const carouselApproved = ["instagram_feed", "facebook"].every((channel) =>
+    Boolean(event?.metadata?.social_media_approval?.[channel]?.approved) &&
+    JSON.stringify(event.metadata.social_media_approval[channel].carousel_urls || []) === JSON.stringify(carouselUrls));
+
   const overrides = useMemo(() => Object.fromEntries(CHANNELS.map(({ key }) => [key, socialAsset(event, key, "social_upload")])), [event]);
   const generated = useMemo(() => Object.fromEntries(CHANNELS.map(({ key }) => [key, socialAsset(event, key, "social_generated")])), [event]);
   const sourceDraft = useMemo(() => {
@@ -180,6 +189,67 @@ export default function SocialMediaOverrideBridge() {
     setEvent(payload.event);
     window.dispatchEvent(new CustomEvent("playnice:social-media-updated", { detail: { eventId: event.id, channel, source } }));
     return { updated: payload.event, entry, auditWarning: payload.audit_warning || "" };
+  };
+
+  const updateCarousel = async (items, action = "set_carousel") => {
+    if (!event || busyChannel || immutable) return;
+    setBusyChannel("carousel");
+    setError("");
+    setMessage("");
+    try {
+      const payload = await callMediaEventApi({ id: event.id, channel: "instagram_feed", action,
+        items: items.map((item) => ({ src: mediaUrl(item), storage_path: item.storage_path, width: item.width, height: item.height, bytes: item.bytes })) });
+      setEvent(payload.event);
+      setMessage(action === "clear_carousel" ? "Carousel removed; normal single-photo workflow restored." : "Carousel saved · review and approval required.");
+      window.dispatchEvent(new CustomEvent("playnice:social-media-updated", { detail: { eventId: event.id, channel: "instagram_feed", carousel: true } }));
+    } catch (error) { setError(error?.message || String(error)); }
+    finally { setBusyChannel(""); }
+  };
+
+  const uploadCarousel = async (files) => {
+    if (!event || immutable || busyChannel || !files.length) return;
+    if (carouselItems.length + files.length > 10) { setError("Maximum 10 carousel photos."); return; }
+    setBusyChannel("carousel");
+    setError("");
+    setMessage("");
+    const uploadedPaths = [];
+    try {
+      const next = [...carouselItems];
+      for (const file of files) {
+        const preset = { ...IMAGE_OPTIMIZER_PRESETS.socialFeed,
+          width: 1080, height: 1350, fit: "strict", ratioTolerance: 0.015,
+          backgroundPattern: "", centerVisibleObject: false, maxBytes: 700000 };
+        const optimized = await optimizeImage(file, preset);
+        const storagePath = `${event.id}/carousel-${Date.now()}-${Math.random().toString(36).slice(2, 9)}.jpg`;
+        const { error: uploadError } = await supabase.storage.from(BUCKET).upload(storagePath, optimized.blob,
+          { contentType: "image/jpeg", cacheControl: "31536000", upsert: false });
+        if (uploadError) throw new Error(uploadError.message || "Carousel upload failed.");
+        uploadedPaths.push(storagePath);
+        const { data } = supabase.storage.from(BUCKET).getPublicUrl(storagePath);
+        next.push({ src: data.publicUrl, storage_path: storagePath,
+          width: optimized.width, height: optimized.height, bytes: optimized.blob.size });
+      }
+      const payload = await callMediaEventApi({ id: event.id, channel: "instagram_feed", action: "set_carousel", items: next });
+      setEvent(payload.event);
+      setMessage(`${next.length} carousel images uploaded · approve after checking the order.`);
+      window.dispatchEvent(new CustomEvent("playnice:social-media-updated", { detail: { eventId: event.id, channel: "instagram_feed", carousel: true } }));
+    } catch (error) {
+      if (uploadedPaths.length) await supabase.storage.from(BUCKET).remove(uploadedPaths).catch(() => {});
+      setError(error?.message || String(error));
+    } finally { setBusyChannel(""); }
+  };
+
+  const approveCarousel = async () => {
+    if (!event || busyChannel || immutable || carouselItems.length < 2) return;
+    setBusyChannel("carousel");
+    setError("");
+    try {
+      const payload = await callMediaEventApi({ id: event.id, channel: "instagram_feed", action: "approve_carousel" });
+      setEvent(payload.event);
+      setMessage("All carousel images and their order approved for Instagram and Facebook.");
+      window.dispatchEvent(new CustomEvent("playnice:social-media-updated", { detail: { eventId: event.id, channel: "instagram_feed", approval: true } }));
+    } catch (error) { setError(error?.message || String(error)); }
+    finally { setBusyChannel(""); }
   };
 
   const upload = async (channel, sourceFile) => {
@@ -266,7 +336,43 @@ export default function SocialMediaOverrideBridge() {
         <div><span>SOCIAL ASSET GENERATOR</span><strong>Generate safely or upload channel-specific creative</strong></div>
         <small>Uploaded channel-specific creative has priority. Generated assets preserve the full source, add the subtle PlayNice pattern and adapt a protected dark zone to the product, so nothing is cropped.</small>
       </div>
-      <div className="social-media-override-grid">
+      {(event.source_type === "custom" || carouselActive) ? <div className="social-carousel-panel">
+        <div className="social-media-override-head"><div><span>CAROUSEL · INSTAGRAM + FACEBOOK</span>
+          <strong>{carouselActive ? `${carouselItems.length} / 10 images` : "Create a multi-photo post"}</strong></div>
+          <small>4:5 · 1080 × 1350 · no crop · manual publish only</small></div>
+        <div className="social-carousel-gallery">
+          {carouselItems.map((item, index) => <div className="social-carousel-tile" key={item.storage_path || index}>
+            <img src={mediaUrl(item)} alt={`Carousel page ${index + 1}`} />
+            <strong>{String(index + 1).padStart(2, "0")} / {carouselItems.length}</strong>
+            <div>
+              <button type="button" disabled={immutable || Boolean(busyChannel) || index === 0} onClick={() => {
+                const next = [...carouselItems]; [next[index - 1], next[index]] = [next[index], next[index - 1]]; updateCarousel(next);
+              }} aria-label="Move photo left">←</button>
+              <button type="button" disabled={immutable || Boolean(busyChannel) || index === carouselItems.length - 1} onClick={() => {
+                const next = [...carouselItems]; [next[index + 1], next[index]] = [next[index], next[index + 1]]; updateCarousel(next);
+              }} aria-label="Move photo right">→</button>
+              <button type="button" disabled={immutable || Boolean(busyChannel)} onClick={() => {
+                const next = carouselItems.filter((_, i) => i !== index);
+                updateCarousel(next, next.length ? "set_carousel" : "clear_carousel");
+              }} aria-label="Remove photo">×</button>
+            </div>
+          </div>)}
+        </div>
+        <div className="social-carousel-actions">
+          <label className={immutable ? "disabled" : ""}><input type="file" accept={ACCEPT} multiple
+            disabled={immutable || Boolean(busyChannel) || carouselItems.length >= 10}
+            onChange={(e) => { const files = Array.from(e.target.files || []); e.target.value = ""; if (files.length) uploadCarousel(files); }} />
+            {busyChannel === "carousel" ? "Working…" : carouselActive ? "Add more photos" : "Upload carousel photos"}
+          </label>
+          {carouselActive ? <>
+            <button type="button" disabled={immutable || Boolean(busyChannel) || carouselItems.length < 2 || carouselApproved}
+              onClick={approveCarousel}>{carouselApproved ? "Carousel approved ✓" : "Approve all images & order"}</button>
+            <button type="button" disabled={immutable || Boolean(busyChannel)} onClick={() => updateCarousel([], "clear_carousel")}>Return to single image</button>
+          </> : null}
+        </div>
+        <small>Changes to any image or its position invalidate visual approval. Review both captions in the Social Publisher below.</small>
+      </div> : null}
+      {!carouselActive ? <div className="social-media-override-grid">
         {CHANNELS.filter((channel) => !Array.isArray(event.channels) || !event.channels.length || event.channels.includes(channel.key)).map((channel) => {
           const override = overrides[channel.key];
           const generatedAsset = generated[channel.key];
@@ -300,7 +406,7 @@ export default function SocialMediaOverrideBridge() {
             </label>
           </div>;
         })}
-      </div>
+      </div> : null}
       {message ? <div className="social-media-override-message ok">{message}</div> : null}
       {error ? <div className="social-media-override-message error">{error}</div> : null}
     </section>,

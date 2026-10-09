@@ -634,6 +634,7 @@ function SocialWorkspace() {
                 <div className="social-channel-head"><span>{title}</span><em>{snapshotLocked ? "APPROVED" : "EDITABLE"}</em></div>
                 <div className="social-media-frame">
                   {src ? <img src={src} alt="" /> : <div className="social-media-placeholder">No channel asset selected</div>}
+                  {Array.isArray(draft[key]?.carousel) ? <span className="social-carousel-count">{draft[key].carousel.length} images · carousel</span> : null}
                   <div className={`social-media-meta ${readiness.status}`}><span>{media?.format || "no asset"}</span><strong>{readiness.label}</strong></div>
                 </div>
                 <textarea value={caption} disabled={saving || immutable} onChange={(event) => updateCaption(key, event.target.value)} maxLength={2200} />

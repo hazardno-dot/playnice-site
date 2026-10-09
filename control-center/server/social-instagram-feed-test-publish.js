@@ -1,5 +1,9 @@
 import {
   buildInstagramFeedCreateRequest,
+  buildInstagramCarouselChildRequests,
+  buildInstagramCarouselCreateRequest,
+  buildFacebookCarouselPhotoRequests,
+  buildFacebookCarouselFeedRequest,
   parseInstagramFeedCreateResponse,
   buildInstagramFeedPublishRequest,
   parseInstagramFeedPublishResponse,
@@ -213,6 +217,33 @@ async function publishInstagram(event, admin, pageToken, credentialSource) {
   }
   if (!event.approved_content?.instagram_feed) return { status: 409, body: { error: "Approved Instagram Feed snapshot is required." } };
 
+  if (Array.isArray(event.approved_content.instagram_feed.carousel)) {
+    const childRequests = buildInstagramCarouselChildRequests({ content: event.approved_content });
+    const mediaChecks = [];
+    const children = [];
+    for (const request of childRequests) {
+      mediaChecks.push(await probeImage(request.body.image_url, "Instagram Feed"));
+      const created = await metaPost(request, pageToken);
+      children.push(parseInstagramFeedCreateResponse(created).media_id);
+    }
+    const parentRequest = buildInstagramCarouselCreateRequest({ content: event.approved_content, children });
+    const parent = await metaPost(parentRequest, pageToken);
+    const { media_id } = parseInstagramFeedCreateResponse(parent);
+    const processing = await waitForInstagramMedia(media_id, pageToken);
+    const publishRequest = buildInstagramFeedPublishRequest({ creation_id: media_id });
+    await sleep(FEED_PUBLISH_INITIAL_DELAY_MS);
+    // Never retry an ambiguous carousel publish response automatically: it might already be live.
+    const result = parseInstagramFeedPublishResponse(await metaPost(publishRequest, pageToken));
+    await writeAudit(admin.token, event, admin.user.id, "test_instagram_feed_published", {
+      channel: "instagram_feed", test_only: true, carousel: true, image_count: children.length,
+      media_id, child_media_ids: children, post_id: result.post_id, source_id: event.source_id,
+      processing_attempts: processing.attempts, credential_source: credentialSource,
+      content_types: mediaChecks.map((check) => check.content_type),
+    });
+    const archivedEvent = await finalizePublishedEvent(admin.token, event);
+    return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true,
+      event_id: event.id, archived: Boolean(archivedEvent), processing, result: { ...result, media_id } } };
+  }
   const createRequest = buildInstagramFeedCreateRequest({ content: event.approved_content });
   const mediaCheck = await probeImage(createRequest.body.image_url, "Instagram Feed");
   const createPayload = await metaPost(createRequest, pageToken);
@@ -302,6 +333,27 @@ async function publishFacebookPage(event, admin, pageToken, credentialSource) {
   }
   if (!event.approved_content?.facebook) return { status: 409, body: { error: "Approved Facebook snapshot is required." } };
 
+  if (Array.isArray(event.approved_content.facebook.carousel)) {
+    const photoRequests = buildFacebookCarouselPhotoRequests({ content: event.approved_content });
+    const photoIds = [];
+    for (const request of photoRequests) {
+      await probeImage(request.body.url, "Facebook Page");
+      const photo = await metaPost(request, pageToken);
+      if (!photo?.id) throw new Error("Facebook did not return an unpublished photo id.");
+      photoIds.push(String(photo.id));
+    }
+    const feed = buildFacebookCarouselFeedRequest({ content: event.approved_content, photo_ids: photoIds });
+    const response = await metaPost(feed, pageToken);
+    if (!response?.id) throw new Error("Facebook did not return a multi-photo post id.");
+    const result = { ok: true, channel: "facebook", post_id: String(response.id), media_id: photoIds[0], provider_id: String(response.id) };
+    await writeAudit(admin.token, event, admin.user.id, "test_facebook_published", {
+      channel: "facebook", test_only: true, carousel: true, image_count: photoIds.length,
+      media_id: photoIds[0], photo_ids: photoIds, post_id: result.post_id, source_id: event.source_id,
+      credential_source: credentialSource,
+    });
+    const archivedEvent = await finalizePublishedEvent(admin.token, event);
+    return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, archived: Boolean(archivedEvent), result } };
+  }
   const request = buildFacebookPhotoRequest({ content: event.approved_content });
   const mediaCheck = await probeImage(request.body.url, "Facebook Page");
   const payload = await metaPost(request, pageToken);
