@@ -182,6 +182,12 @@ function SocialWorkspace() {
     }, { ...generated });
   }, [selected, generated]);
   const mediaReadiness = useMemo(() => validateSocialDraftMedia(draft || {}), [draft]);
+  const carouselActive = Boolean(selected?.metadata?.social_carousel);
+  const carouselApproved = carouselActive && ["instagram_feed", "facebook"].every((channel) => {
+    const urls = (draft?.[channel]?.carousel || []).map((item) => item?.src || item?.url || "");
+    const approved = selected?.metadata?.social_media_approval?.[channel];
+    return urls.length >= 2 && Boolean(approved?.approved) && JSON.stringify(approved?.carousel_urls || []) === JSON.stringify(urls);
+  });
   const activeChannelKeys = useMemo(() => {
     const configured = Array.isArray(selected?.channels) ? selected.channels.filter((channel) => CHANNELS.some(([key]) => key === channel)) : [];
     return configured.length ? configured : CHANNELS.map(([key]) => key);
@@ -623,7 +629,7 @@ function SocialWorkspace() {
       <article className="social-detail">
         {selected && draft ? <>
           <div className="social-detail-head"><div><span>{label(selected.source_type)} / {label(selected.event_type)}</span><h3>{draft.headline}</h3><p>{selected.source_url || selected.source_id}</p></div><div><strong>{selected.status}</strong><small>{fmt(selected.created_at)}</small>{selected.approved_at ? <small>approved {fmt(selected.approved_at)}</small> : null}</div></div>
-          <div className="social-channel-grid">
+          <div className={`social-channel-grid ${carouselActive ? "social-channel-grid-carousel" : ""}`}>
             {CHANNELS.filter(([key]) => activeChannelKeys.includes(key)).map(([key, title]) => {
               const media = draft[key]?.media || null;
               const src = mediaSrc(media);
@@ -648,9 +654,11 @@ function SocialWorkspace() {
             })}
           </div>
           <div className={`social-media-readiness ${scopedMediaReadiness.ok ? "ready" : "blocked"}`}>
-            <div><span>MEDIA READINESS</span><strong>{scopedMediaReadiness.ok ? "READY CHECK CAN RUN" : "READY BLOCKED"}</strong></div>
+            <div><span>MEDIA READINESS</span><strong>{!scopedMediaReadiness.ok ? "READY BLOCKED" : carouselActive && !carouselApproved ? "VISUAL APPROVAL REQUIRED" : "READY CHECK CAN RUN"}</strong></div>
             <p>{scopedMediaReadiness.ok
-              ? scopedMediaReadiness.fallback.length
+              ? carouselActive && !carouselApproved
+                ? "Review all carousel images and their order, then select Approve all images & order. Both channel captions remain editable above."
+                : scopedMediaReadiness.fallback.length
                 ? `${scopedMediaReadiness.fallback.length} active channel(s) use a fallback asset. Backend verifies public image availability before approval.`
                 : activeChannelKeys.length === 1
                   ? `${label(activeChannelKeys[0])} media is ready. Backend verifies public image availability before approval.`
