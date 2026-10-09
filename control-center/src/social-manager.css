@@ -129,3 +129,6 @@
 .social-idle-workspace h3 { font-size:25px; margin:0; }
 .social-idle-workspace p { max-width:440px; margin:0 0 12px; color:#95a7b1; line-height:1.6; }
 .social-idle-workspace button { padding:11px 23px; cursor:pointer; }
+
+/* Idle state deliberately has no duplicate CTA; creation lives in the top toolbar. */
+.social-idle-workspace { min-height:300px; }
