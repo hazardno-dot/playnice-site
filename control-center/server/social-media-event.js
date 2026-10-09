@@ -71,7 +71,7 @@ export default async function handler(req, res) {
         bytes: Number(item?.bytes) || null, storage_path: String(item?.storage_path || ""),
       }));
       if (items.some((item) => !item.src.startsWith("https://") || item.width !== 1080 || item.height !== 1350 || !item.storage_path.startsWith(`${event.id}/`) ||
-        item.src !== `${SUPABASE_URL.replace(/\\/$/, "")}/storage/v1/object/public/social-media/${item.storage_path}`)) {
+        item.src !== `${(SUPABASE_URL.endsWith("/") ? SUPABASE_URL.slice(0, -1) : SUPABASE_URL)}/storage/v1/object/public/social-media/${item.storage_path}`)) {
         return json(res, 400, { error: "Each carousel asset must be an uploaded public JPEG at 1080 × 1350." });
       }
       const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
