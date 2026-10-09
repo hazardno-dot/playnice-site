@@ -798,7 +798,7 @@ function SocialWorkspace() {
         {!selected ? <div className="social-idle-workspace">
           <span>SOCIAL PUBLISHER</span><h3>Select a post to edit</h3>
           <p>Choose an existing campaign from the queue, or create a new Single image or Carousel post.</p>
-          <button type="button" className="social-create-product" onClick={() => setNewPostPickerOpen(true)}>+ New post</button>
+
         </div> : null}
       </article>
     </div> : <section className="social-empty-workspace">
