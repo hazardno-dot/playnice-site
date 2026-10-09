@@ -99,6 +99,7 @@ function SocialWorkspace() {
   const [sourcePicker, setSourcePicker] = useState({ open: false, type: "", items: [], query: "", loading: false });
   const [publishedAction, setPublishedAction] = useState("");
   const [publishedMessage, setPublishedMessage] = useState("");
+  const [campaignSuccess, setCampaignSuccess] = useState("");
   const [publishedError, setPublishedError] = useState("");
 
   const load = async () => {
@@ -147,9 +148,18 @@ function SocialWorkspace() {
       load();
     };
     window.addEventListener("playnice:social-media-updated", handleSocialMediaUpdated);
+    const onCampaignComplete = (event) => {
+      if (!event.detail?.event_id) return;
+      setCampaignSuccess("Campaign successfully published to Instagram and Facebook.");
+      setFilter("all");
+      setSelectedId("");
+      load();
+    };
+    window.addEventListener("playnice:social-campaign-published", onCampaignComplete);
     const channel = supabase.channel("social-events-manager").on("postgres_changes", { event: "*", schema: "public", table: "social_events" }, load).subscribe();
     return () => {
       window.removeEventListener("playnice:social-media-updated", handleSocialMediaUpdated);
+      window.removeEventListener("playnice:social-campaign-published", onCampaignComplete);
       supabase.removeChannel(channel);
     };
   }, []);
@@ -564,6 +574,11 @@ function SocialWorkspace() {
 
     {error ? <div className="social-error">Social schema is not active in Supabase yet: {error}</div> : null}
     {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
+    {campaignSuccess ? <div role="status" className="social-campaign-success">
+      <strong>✓ {campaignSuccess}</strong>
+      <span>The campaign has been archived and removed from the active queue.</span>
+      <button type="button" onClick={() => setCampaignSuccess("")} aria-label="Dismiss campaign confirmation">×</button>
+    </div> : null}
 
     <div className="social-toolbar">
       <div className="social-filter-bar">
