@@ -95,10 +95,12 @@ function SocialWorkspace() {
   const [feedDryRunLoading, setFeedDryRunLoading] = useState(false);
   const [feedDryRunError, setFeedDryRunError] = useState("");
   const [productPickerOpen, setProductPickerOpen] = useState(false);
+  const [newPostPickerOpen, setNewPostPickerOpen] = useState(false);
   const [productQuery, setProductQuery] = useState("");
   const [sourcePicker, setSourcePicker] = useState({ open: false, type: "", items: [], query: "", loading: false });
   const [publishedAction, setPublishedAction] = useState("");
   const [publishedMessage, setPublishedMessage] = useState("");
+  const [campaignSuccess, setCampaignSuccess] = useState("");
   const [publishedError, setPublishedError] = useState("");
 
   const load = async () => {
@@ -147,9 +149,18 @@ function SocialWorkspace() {
       load();
     };
     window.addEventListener("playnice:social-media-updated", handleSocialMediaUpdated);
+    const onCampaignComplete = (event) => {
+      if (!event.detail?.event_id) return;
+      setCampaignSuccess("Campaign successfully published to Instagram and Facebook.");
+      setFilter("all");
+      setSelectedId("");
+      load();
+    };
+    window.addEventListener("playnice:social-campaign-published", onCampaignComplete);
     const channel = supabase.channel("social-events-manager").on("postgres_changes", { event: "*", schema: "public", table: "social_events" }, load).subscribe();
     return () => {
       window.removeEventListener("playnice:social-media-updated", handleSocialMediaUpdated);
+      window.removeEventListener("playnice:social-campaign-published", onCampaignComplete);
       supabase.removeChannel(channel);
     };
   }, []);
@@ -166,7 +177,7 @@ function SocialWorkspace() {
       .slice(0, 60);
   }, [productQuery]);
   const visible = useMemo(() => filter === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)) : filter === "published" ? events.filter((event) => event.status === "published") : filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [events, activeEvents, filter]);
-  const selected = visible.find((event) => event.id === selectedId) || visible[0] || null;
+  const selected = visible.find((event) => event.id === selectedId) || null;
   const generated = useMemo(() => {
     if (!selected) return null;
     try { return generateSocialDraft(selected); } catch { return null; }
@@ -182,6 +193,12 @@ function SocialWorkspace() {
     }, { ...generated });
   }, [selected, generated]);
   const mediaReadiness = useMemo(() => validateSocialDraftMedia(draft || {}), [draft]);
+  const carouselActive = Boolean(selected?.metadata?.social_carousel);
+  const carouselApproved = carouselActive && ["instagram_feed", "facebook"].every((channel) => {
+    const urls = (draft?.[channel]?.carousel || []).map((item) => item?.src || item?.url || "");
+    const approved = selected?.metadata?.social_media_approval?.[channel];
+    return urls.length >= 2 && Boolean(approved?.approved) && JSON.stringify(approved?.carousel_urls || []) === JSON.stringify(urls);
+  });
   const activeChannelKeys = useMemo(() => {
     const configured = Array.isArray(selected?.channels) ? selected.channels.filter((channel) => CHANNELS.some(([key]) => key === channel)) : [];
     return configured.length ? configured : CHANNELS.map(([key]) => key);
@@ -194,7 +211,7 @@ function SocialWorkspace() {
   const sourceLink = useMemo(() => publicSourceUrl(selected?.source_url), [selected?.source_url]);
 
   useEffect(() => {
-    if (visible.length && !visible.some((event) => event.id === selectedId)) setSelectedId(visible[0].id);
+    if (selectedId && !visible.some((event) => event.id === selectedId)) setSelectedId("");
   }, [visible, selectedId]);
 
   useEffect(() => {
@@ -478,7 +495,7 @@ function SocialWorkspace() {
     }
   };
 
-  const createBlankPost = async () => {
+  const createBlankPost = async (postType = "single") => {
     setSaving(true);
     setActionError("");
     try {
@@ -491,8 +508,18 @@ function SocialWorkspace() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Could not create blank Social draft (${response.status}).`);
       setFilter("all");
-      await load();
       const eventId = payload.event?.id || payload.event_id || "";
+      if (eventId && postType === "carousel") {
+        const setup = await fetch("/api/social-media-event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ id: eventId, channel: "instagram_feed", action: "start_carousel" }),
+        });
+        const result = await setup.json().catch(() => ({}));
+        if (!setup.ok) throw new Error(result.error || "Could not initialize carousel.");
+      }
+      setNewPostPickerOpen(false);
+      await load();
       if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
     } catch (createError) {
       setActionError(createError.message || String(createError));
@@ -558,22 +585,46 @@ function SocialWorkspace() {
 
     {error ? <div className="social-error">Social schema is not active in Supabase yet: {error}</div> : null}
     {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
+    {campaignSuccess ? <div role="status" className="social-campaign-success">
+      <strong>✓ {campaignSuccess}</strong>
+      <span>The campaign has been archived and removed from the active queue.</span>
+      <button type="button" onClick={() => setCampaignSuccess("")} aria-label="Dismiss campaign confirmation">×</button>
+    </div> : null}
 
-    <div className="social-toolbar">
-      <div className="social-filter-bar">
-        {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
+    <div className="social-toolbar social-toolbar-v2">
+      <div className="social-filter-bar" role="group" aria-label="Filter social campaigns">
+        {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>
+          <span>{label(value)}</span>{value !== "all" ? <em>{value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}</em> : null}
+        </button>)}
       </div>
       <div className="social-create-group">
-        <span>CREATE POST FROM / NEW</span>
+        <span>CREATE POST</span>
         <div>
-          <button type="button" className="social-create-product" disabled={saving} onClick={createBlankPost}>{saving ? "Working…" : "New draft"}</button>
-          <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Product"}</button>
-          <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>{saving ? "Working…" : "Hero"}</button>
-          <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>{saving ? "Working…" : "Journal"}</button>
+          <button type="button" className="social-create-product" disabled={saving} onClick={() => setNewPostPickerOpen(true)}>+ New post</button>
+          <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>Product</button>
+          <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>Hero</button>
+          <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>
         </div>
       </div>
     </div>
-
+    {newPostPickerOpen ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setNewPostPickerOpen(false); }}>
+      <section className="social-product-picker social-new-post-picker" role="dialog" aria-modal="true" aria-label="Choose post type">
+        <div className="social-product-picker-head">
+          <div><span>NEW SOCIAL POST</span><h3>Choose your post format</h3><p>Select the workflow before uploading any media.</p></div>
+          <button type="button" disabled={saving} onClick={() => setNewPostPickerOpen(false)}>Close</button>
+        </div>
+        <div className="social-post-choice-grid">
+          <button type="button" disabled={saving} onClick={() => createBlankPost("single")}>
+            <strong>▣ Single image</strong><span>Custom / Manual Post</span>
+            <small>One image per channel · Instagram Feed, Story and Facebook.</small>
+          </button>
+          <button type="button" disabled={saving} onClick={() => createBlankPost("carousel")}>
+            <strong>▤ Carousel</strong><span>Multiple photos</span>
+            <small>2–10 ordered 4:5 photos · Instagram Feed + Facebook.</small>
+          </button>
+        </div>
+      </section>
+    </div> : null}
 
     {sourcePicker.open ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setSourcePicker({ open: false, type: "", items: [], query: "", loading: false }); }}>
       <section className="social-product-picker" role="dialog" aria-modal="true" aria-label={`Create ${sourcePicker.type} post`}>
@@ -623,7 +674,7 @@ function SocialWorkspace() {
       <article className="social-detail">
         {selected && draft ? <>
           <div className="social-detail-head"><div><span>{label(selected.source_type)} / {label(selected.event_type)}</span><h3>{draft.headline}</h3><p>{selected.source_url || selected.source_id}</p></div><div><strong>{selected.status}</strong><small>{fmt(selected.created_at)}</small>{selected.approved_at ? <small>approved {fmt(selected.approved_at)}</small> : null}</div></div>
-          <div className="social-channel-grid">
+          <div className={`social-channel-grid ${carouselActive ? "social-channel-grid-carousel" : ""}`}>
             {CHANNELS.filter(([key]) => activeChannelKeys.includes(key)).map(([key, title]) => {
               const media = draft[key]?.media || null;
               const src = mediaSrc(media);
@@ -634,6 +685,7 @@ function SocialWorkspace() {
                 <div className="social-channel-head"><span>{title}</span><em>{snapshotLocked ? "APPROVED" : "EDITABLE"}</em></div>
                 <div className="social-media-frame">
                   {src ? <img src={src} alt="" /> : <div className="social-media-placeholder">No channel asset selected</div>}
+                  {Array.isArray(draft[key]?.carousel) ? <span className="social-carousel-count">{draft[key].carousel.length} images · carousel</span> : null}
                   <div className={`social-media-meta ${readiness.status}`}><span>{media?.format || "no asset"}</span><strong>{readiness.label}</strong></div>
                 </div>
                 <textarea value={caption} disabled={saving || immutable} onChange={(event) => updateCaption(key, event.target.value)} maxLength={2200} />
@@ -647,9 +699,11 @@ function SocialWorkspace() {
             })}
           </div>
           <div className={`social-media-readiness ${scopedMediaReadiness.ok ? "ready" : "blocked"}`}>
-            <div><span>MEDIA READINESS</span><strong>{scopedMediaReadiness.ok ? "READY CHECK CAN RUN" : "READY BLOCKED"}</strong></div>
+            <div><span>MEDIA READINESS</span><strong>{!scopedMediaReadiness.ok ? "READY BLOCKED" : carouselActive && !carouselApproved ? "VISUAL APPROVAL REQUIRED" : "READY CHECK CAN RUN"}</strong></div>
             <p>{scopedMediaReadiness.ok
-              ? scopedMediaReadiness.fallback.length
+              ? carouselActive && !carouselApproved
+                ? "Review all carousel images and their order, then select Approve all images & order. Both channel captions remain editable above."
+                : scopedMediaReadiness.fallback.length
                 ? `${scopedMediaReadiness.fallback.length} active channel(s) use a fallback asset. Backend verifies public image availability before approval.`
                 : activeChannelKeys.length === 1
                   ? `${label(activeChannelKeys[0])} media is ready. Backend verifies public image availability before approval.`
@@ -741,13 +795,18 @@ function SocialWorkspace() {
 
           <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"} · manual controlled</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Automatic scheduler-to-Meta publishing remains disabled. Controlled manual channel publishing is available when its environment flag is enabled.">Auto publish locked · manual enabled</button></div>
         </> : null}
+        {!selected ? <div className="social-idle-workspace">
+          <span>SOCIAL PUBLISHER</span><h3>Select a post to edit</h3>
+          <p>Choose an existing campaign from the queue, or create a new Single image or Carousel post.</p>
+
+        </div> : null}
       </article>
     </div> : <section className="social-empty-workspace">
       <span>SOCIAL QUEUE</span>
       <h3>No active social posts</h3>
       <p>Create a clean campaign draft, or start from a Product, Hero visual or Journal article.</p>
       <div>
-        <button type="button" className="social-create-product" disabled={saving} onClick={createBlankPost}>{saving ? "Working…" : "New draft"}</button>
+        <button type="button" className="social-create-product" disabled={saving} onClick={() => setNewPostPickerOpen(true)}>{saving ? "Working…" : "+ New post"}</button>
         <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>Product</button>
         <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>Hero</button>
         <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>

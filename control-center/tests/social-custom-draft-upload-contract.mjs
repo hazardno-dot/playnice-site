@@ -17,7 +17,7 @@ assert.equal(blank.facebook.media, null);
 
 const socialManager = fs.readFileSync("control-center/src/SocialManager.jsx", "utf8");
 assert.ok(socialManager.includes('source_type: "custom"'), "Social Manager must create a standalone custom draft.");
-assert.ok(socialManager.includes('New draft'), "Social Manager must expose a New draft action.");
+assert.ok(socialManager.includes('+ New post') && socialManager.includes('Choose your post format') && socialManager.includes('createBlankPost("carousel")'), "Social Manager must expose a post-format picker and carousel creation.");
 assert.ok(socialManager.includes('data-social-event-id={event.id}'), "Social queue rows must expose the exact event id for media bridges.");
 
 const bridge = fs.readFileSync("control-center/src/SocialMediaOverrideBridge.jsx", "utf8");

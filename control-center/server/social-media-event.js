@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     const channel = String(req.body?.channel || "").trim();
     if (!id) return json(res, 400, { error: "Social event id is required." });
     if (!channelAllowed(channel)) return json(res, 400, { error: "Unsupported Social channel." });
-    if (!["set_media", "approve_visual"].includes(action)) return json(res, 400, { error: "Unsupported Social media action." });
+    if (!["set_media", "approve_visual", "start_carousel", "set_carousel", "clear_carousel", "approve_carousel"].includes(action)) return json(res, 400, { error: "Unsupported Social media action." });
 
     const eventRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}&select=*&limit=1`, auth.token);
     if (!eventRes.ok) return json(res, 400, { error: "Could not load Social event." });
@@ -60,7 +60,74 @@ export default async function handler(req, res) {
     let auditAction;
     let auditDetails;
 
-    if (action === "set_media") {
+    if (action === "start_carousel") {
+      if (event.source_type !== "custom" || event.metadata?.social_carousel) return json(res, 409, { error: "Carousel setup requires a fresh manual draft." });
+      const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
+      patch = {
+        channels: ["instagram_feed", "facebook"], draft_content: null,
+        metadata: { ...metadata, social_carousel: true, carousel_original_channels: event.channels },
+      };
+      auditAction = "social_carousel_started";
+      auditDetails = { channels: patch.channels };
+    } else if (action === "set_carousel") {
+      if (event.source_type !== "custom") return json(res, 409, { error: "Carousel v1 is available for manual blank Social posts." });
+      const supplied = req.body?.items;
+      if (!Array.isArray(supplied) || supplied.length < 1 || supplied.length > 10) return json(res, 400, { error: "Choose 1–10 images while editing; 2–10 required for approval." });
+      const items = supplied.map((item, index) => ({
+        src: mediaUrl(item), url: mediaUrl(item), format: "4:5",
+        source: "social_carousel", carousel_index: index,
+        width: Number(item?.width), height: Number(item?.height),
+        bytes: Number(item?.bytes) || null, storage_path: String(item?.storage_path || ""),
+      }));
+      if (items.some((item) => !item.src.startsWith("https://") || item.width !== 1080 || item.height !== 1350 || !item.storage_path.startsWith(`${event.id}/`) ||
+        item.src !== `${(SUPABASE_URL.endsWith("/") ? SUPABASE_URL.slice(0, -1) : SUPABASE_URL)}/storage/v1/object/public/social-media/${item.storage_path}`)) {
+        return json(res, 400, { error: "Each carousel asset must be an uploaded public JPEG at 1080 × 1350." });
+      }
+      const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
+      const approvals = { ...(metadata.social_media_approval || {}) };
+      delete approvals.instagram_feed;
+      delete approvals.facebook;
+      patch = {
+        media: [...(Array.isArray(event.media) ? event.media : []).filter((item) => item?.source !== "social_carousel"),
+          ...["instagram_feed", "facebook"].flatMap((carouselChannel) => items.map((item) => ({ ...item, channel: carouselChannel })))],
+        channels: ["instagram_feed", "facebook"],
+        draft_content: event.draft_content || null,
+        approved_content: null,
+        metadata: { ...metadata, social_carousel: true,
+          carousel_original_channels: metadata.carousel_original_channels || event.channels,
+          social_media_approval: approvals },
+      };
+      auditAction = "social_carousel_updated";
+      auditDetails = { image_count: items.length, channels: patch.channels };
+    } else if (action === "clear_carousel") {
+      const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
+      const approvals = { ...(metadata.social_media_approval || {}) };
+      delete approvals.instagram_feed;
+      delete approvals.facebook;
+      patch = {
+        media: (Array.isArray(event.media) ? event.media : []).filter((item) => item?.source !== "social_carousel"),
+        channels: Array.isArray(metadata.carousel_original_channels) ? metadata.carousel_original_channels : ["instagram_feed", "instagram_story", "facebook"],
+        metadata: { ...metadata, social_carousel: false, social_media_approval: approvals },
+        draft_content: event.draft_content || null, approved_content: null,
+      };
+      auditAction = "social_carousel_cleared";
+      auditDetails = {};
+    } else if (action === "approve_carousel") {
+      if (!event.metadata?.social_carousel) return json(res, 409, { error: "Carousel mode is not active." });
+      const media = Array.isArray(event.media) ? event.media : [];
+      const urls = media.filter((item) => item?.source === "social_carousel" && item?.channel === "instagram_feed")
+        .sort((a, b) => a.carousel_index - b.carousel_index).map(mediaUrl);
+      if (urls.length < 2 || urls.length > 10) return json(res, 409, { error: "Carousel approval needs 2–10 uploaded images." });
+      const facebookUrls = media.filter((item) => item?.source === "social_carousel" && item?.channel === "facebook")
+        .sort((a, b) => a.carousel_index - b.carousel_index).map(mediaUrl);
+      if (JSON.stringify(urls) !== JSON.stringify(facebookUrls)) return json(res, 409, { error: "Instagram/Facebook carousel assets differ." });
+      const metadata = event.metadata;
+      const approval = { approved: true, src: urls[0], carousel_urls: urls, approved_at: new Date().toISOString(), approved_by: auth.user.id };
+      patch = { metadata: { ...metadata, social_media_approval: { ...(metadata.social_media_approval || {}),
+        instagram_feed: approval, facebook: approval } } };
+      auditAction = "social_carousel_visual_approved";
+      auditDetails = { image_count: urls.length, channels: ["instagram_feed", "facebook"] };
+    } else if (action === "set_media") {
       const entry = req.body?.entry && typeof req.body.entry === "object" ? req.body.entry : null;
       const source = String(entry?.source || "");
       if (!entry || !["social_upload", "social_generated"].includes(source)) return json(res, 400, { error: "Invalid Social media entry." });

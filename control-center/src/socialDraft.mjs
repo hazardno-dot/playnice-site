@@ -72,10 +72,28 @@ export function classifySocialMedia(media, channel = "instagram_feed") {
   };
 }
 
+export function socialCarouselItems(event = {}, channel = "instagram_feed") {
+  if (!event?.metadata?.social_carousel || !["instagram_feed", "facebook"].includes(channel)) return [];
+  return (Array.isArray(event.media) ? event.media : [])
+    .filter((item) => item?.source === "social_carousel" && item?.channel === channel)
+    .sort((a, b) => Number(a.carousel_index) - Number(b.carousel_index))
+    .map((item) => ({ ...item, src: siteUrl(mediaSrc(item)) }));
+}
+
+export function validateCarouselMedia(items = []) {
+  if (!Array.isArray(items) || items.length < 2 || items.length > 10) {
+    return { status: "missing", label: "2–10 IMAGES REQUIRED", blocking: true, reason: "Carousel requires 2–10 images." };
+  }
+  if (items.some((item) => !/^https:\/\//i.test(mediaSrc(item)) || mediaFormat(item) !== "4:5")) {
+    return { status: "missing", label: "INVALID CAROUSEL", blocking: true, reason: "Carousel images must be public HTTPS 4:5 assets." };
+  }
+  return { status: "ideal", label: "CAROUSEL", blocking: false, origin: "uploaded", reason: null };
+}
+
 export function validateSocialDraftMedia(draft = {}) {
   const channels = ["instagram_feed", "instagram_story", "facebook"];
   const results = channels.reduce((out, channel) => {
-    out[channel] = classifySocialMedia(draft?.[channel]?.media || null, channel);
+    out[channel] = Array.isArray(draft?.[channel]?.carousel) ? validateCarouselMedia(draft[channel].carousel) : classifySocialMedia(draft?.[channel]?.media || null, channel);
     return out;
   }, {});
   const blocking = channels.filter((channel) => results[channel].blocking);
@@ -172,11 +190,19 @@ function customDraft(event) {
 }
 
 export function generateSocialDraft(event = {}) {
-  if (event.source_type === "product") return productDraft(event);
-  if (event.source_type === "hero") return heroDraft(event);
-  if (event.source_type === "journal") return journalDraft(event);
-  if (event.source_type === "custom") return customDraft(event);
-  throw new Error(`No social draft generator for ${event.source_type || "unknown source"}`);
+  let generated;
+  if (event.source_type === "product") generated = productDraft(event);
+  else if (event.source_type === "hero") generated = heroDraft(event);
+  else if (event.source_type === "journal") generated = journalDraft(event);
+  else if (event.source_type === "custom") generated = customDraft(event);
+  else throw new Error(`No social draft generator for ${event.source_type || "unknown source"}`);
+  if (event?.metadata?.social_carousel) {
+    for (const channel of ["instagram_feed", "facebook"]) {
+      const carousel = socialCarouselItems(event, channel);
+      generated[channel] = { ...generated[channel], carousel, media: carousel[0] || null };
+    }
+  }
+  return generated;
 }
 
 export { SITE_ORIGIN, productCore };

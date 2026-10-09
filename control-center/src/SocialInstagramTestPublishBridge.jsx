@@ -110,12 +110,15 @@ export default function SocialInstagramTestPublishBridge() {
   }, []);
 
   const eventTitle = useMemo(() => titleFor(event), [event]);
+  const carouselSize = event?.approved_content?.instagram_feed?.carousel?.length || 0;
 
+  const publishLock = useRef(false);
   const publish = async () => {
-    if (!event || loading || published) return;
-    const confirmed = window.confirm(`REAL INSTAGRAM POST\n\nPublish the approved Instagram Feed for “${eventTitle}” to @playnice.me now?\n\nThis creates a real public Instagram post. Facebook, Story and scheduler remain locked.`);
+    if (!event || loading || published || publishLock.current) return;
+    const confirmed = window.confirm(`REAL INSTAGRAM POST\n\nPublish the approved ${carouselSize ? `${carouselSize}-image carousel` : "Instagram Feed"} for “${eventTitle}” to @playnice.me now?\n\nThis creates a real public Instagram post. Facebook, Story and scheduler remain locked.`);
     if (!confirmed) return;
 
+    publishLock.current = true;
     setLoading(true);
     setMessage("");
     setError("");
@@ -138,10 +141,20 @@ export default function SocialInstagramTestPublishBridge() {
       completedEventRef.current = event;
       setPublished({ created_at: payload?.published_at || new Date().toISOString(), details: payload?.result || {} });
       setMessage(`Published Instagram Feed post · ${payload?.result?.post_id || "Meta post created"}`);
-      await loadEvent();
+      if (payload?.archived) {
+        // Both configured channels are published; close the active campaign immediately.
+        completedEventRef.current = null;
+        setEvent(null);
+        window.dispatchEvent(new CustomEvent("playnice:social-campaign-published", {
+          detail: { event_id: event.id, channels: ["instagram_feed", "facebook"] },
+        }));
+      } else {
+        await loadEvent();
+      }
     } catch (publishError) {
       setError(publishError?.message || String(publishError));
     } finally {
+      publishLock.current = false;
       setLoading(false);
     }
   };
@@ -152,7 +165,7 @@ export default function SocialInstagramTestPublishBridge() {
       <div className="social-instagram-test-copy">
         <span>INSTAGRAM FEED · MANUAL PUBLISH</span>
         <strong>{event ? eventTitle : "No approved JPEG publish candidate"}</strong>
-        <p>{event ? "Approved JPEG media is ready for controlled manual publishing." : "Create a Social post, approve its Feed visual, then mark it READY."}</p>
+        <p>{event ? (Array.isArray(event.approved_content?.instagram_feed?.carousel) ? `Approved carousel · ${event.approved_content.instagram_feed.carousel.length} images · controlled manual publishing.` : "Approved JPEG media is ready for controlled manual publishing.") : "Create a Social post, approve its Feed visual, then mark it READY."}</p>
       </div>
       <div className="social-instagram-test-actions">
         {message ? <small className="ok">{message}</small> : null}

@@ -140,7 +140,11 @@ function validateVisualApprovals(event, draftContent) {
   for (const channel of channels) {
     const src = String(draftContent?.[channel]?.media?.src || draftContent?.[channel]?.media?.url || "").trim();
     const approval = approvals?.[channel];
-    const approved = Boolean(approval?.approved) && String(approval?.src || "").trim() === src;
+    const carousel = draftContent?.[channel]?.carousel;
+    const approved = Array.isArray(carousel)
+      ? Boolean(approval?.approved) && carousel.length >= 2 &&
+        JSON.stringify(approval?.carousel_urls || []) === JSON.stringify(carousel.map((item) => String(item?.src || item?.url || "").trim()))
+      : Boolean(approval?.approved) && String(approval?.src || "").trim() === src;
     verified[channel] = approved;
     if (!approved) missing.push(channel);
   }
@@ -166,8 +170,14 @@ async function validateReadyMedia(event, draftContent) {
   const visualApproval = validateVisualApprovals(event, draftContent);
   const remote = {};
   for (const channel of channels) {
-    const src = draftContent?.[channel]?.media?.src || draftContent?.[channel]?.media?.url || "";
-    remote[channel] = await probePublicImage(src);
+    const carousel = draftContent?.[channel]?.carousel;
+    if (Array.isArray(carousel)) {
+      const checks = await Promise.all(carousel.map((item) => probePublicImage(item?.src || item?.url || "")));
+      remote[channel] = { ok: checks.every((check) => check.ok), reason: checks.find((check) => !check.ok)?.reason || null, images: checks.length };
+    } else {
+      const src = draftContent?.[channel]?.media?.src || draftContent?.[channel]?.media?.url || "";
+      remote[channel] = await probePublicImage(src);
+    }
   }
   const failed = channels.filter((channel) => !remote[channel]?.ok);
   if (failed.length) {

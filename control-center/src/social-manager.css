@@ -94,3 +94,41 @@
 
 .social-published-channel-actions.republish{grid-template-columns:1fr}
 .social-published-channel-actions button.republish{border-color:#416b55;background:#142019;color:#b9dbc8}
+
+/* Carousel creatives are reviewed in the gallery; keep captions without duplicate large photo panels. */
+.social-channel-grid-carousel .social-media-frame { display: none; }
+.social-channel-grid-carousel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.social-channel-grid-carousel .social-channel-card { min-width: 0; }
+@media (max-width: 900px) { .social-channel-grid-carousel { grid-template-columns: minmax(0, 1fr); } }
+
+/* Full campaign publication confirmation, visible without a page refresh. */
+.social-campaign-success { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px; margin: 12px 0; border: 1px solid rgba(101, 181, 139, .45); border-radius: 9px; background: rgba(29, 87, 62, .17); color: #d7f4df; }
+.social-campaign-success strong { font-size: 14px; }
+.social-campaign-success span { font-size: 13px; color: #b7d4c2; }
+.social-campaign-success button { margin-left: auto; padding: 3px 9px; border: 0; background: transparent; color: inherit; cursor: pointer; font-size: 20px; }
+
+/* Publisher toolbar + explicit post format picker */
+.social-toolbar-v2 { display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; padding:14px 16px; }
+.social-toolbar-v2 .social-filter-bar { display:flex; gap:5px; flex-wrap:wrap; align-items:center; }
+.social-toolbar-v2 .social-filter-bar button { display:inline-flex; align-items:center; gap:7px; min-height:36px; padding:7px 11px; white-space:nowrap; }
+.social-toolbar-v2 .social-filter-bar em { font-size:11px; font-style:normal; line-height:1; padding:4px 6px; border:1px solid rgba(175,190,200,.25); border-radius:6px; }
+.social-toolbar-v2 .social-create-group { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.social-toolbar-v2 .social-create-group > div { display:flex; gap:6px; flex-wrap:wrap; }
+.social-toolbar-v2 .social-create-group button { min-height:36px; padding:7px 14px; white-space:nowrap; }
+.social-new-post-picker { max-width:680px; width:min(680px,calc(100vw - 32px)); }
+.social-post-choice-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:15px; }
+.social-post-choice-grid > button { text-align:left; display:flex; flex-direction:column; gap:9px; min-height:155px; border:1px solid #3c4850; border-radius:10px; background:#121b21; color:#e8eced; padding:18px; cursor:pointer; }
+.social-post-choice-grid > button:hover,.social-post-choice-grid > button:focus-visible { border-color:#c9a66e; background:#1b252c; }
+.social-post-choice-grid strong { font-size:18px; }
+.social-post-choice-grid span { font-size:14px; font-weight:600; }
+.social-post-choice-grid small { font-size:13px; color:#a5b0b7; line-height:1.5; }
+@media(max-width:680px) { .social-post-choice-grid { grid-template-columns:1fr; } }
+
+.social-idle-workspace { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; min-height:360px; gap:12px; padding:32px; }
+.social-idle-workspace > span { font-size:11px; letter-spacing:.16em; color:#9aaebd; }
+.social-idle-workspace h3 { font-size:25px; margin:0; }
+.social-idle-workspace p { max-width:440px; margin:0 0 12px; color:#95a7b1; line-height:1.6; }
+.social-idle-workspace button { padding:11px 23px; cursor:pointer; }
+
+/* Idle state deliberately has no duplicate CTA; creation lives in the top toolbar. */
+.social-idle-workspace { min-height:300px; }
