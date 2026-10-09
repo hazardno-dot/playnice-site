@@ -143,7 +143,16 @@ export default function SocialFacebookTestPublishBridge() {
       completedEventRef.current = event;
       setPublished({ created_at: payload?.published_at || new Date().toISOString(), details: payload?.result || {} });
       setMessage(`Published Facebook post · ${payload?.result?.post_id || "Meta post created"}`);
-      await loadEvent();
+      if (payload?.archived) {
+        // Both configured channels are published; close the active campaign immediately.
+        completedEventRef.current = null;
+        setEvent(null);
+        window.dispatchEvent(new CustomEvent("playnice:social-campaign-published", {
+          detail: { event_id: event.id, channels: ["instagram_feed", "facebook"] },
+        }));
+      } else {
+        await loadEvent();
+      }
     } catch (publishError) {
       setError(publishError?.message || String(publishError));
     } finally {
