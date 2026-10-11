@@ -92,6 +92,25 @@ function customerWatchFor(order, watches) {
   ) || null;
 }
 
+function normalizeGiftFragrance(value) {
+  return String(value || "")
+    .normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\b(eau de parfum|eau de toilette|eau de cologne|extrait de parfum|edp|edt|parfum|extrait|cologne)\b/g, " ")
+    .replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
+}
+
+function sameGiftFragrance(left, right) {
+  const a = normalizeGiftFragrance(left);
+  const b = normalizeGiftFragrance(right);
+  if (!a || !b) return false;
+  const aWords = a.split(" ");
+  const bWords = b.split(" ");
+  // Permit descriptive suffixes, never compare by the last word alone.
+  return a === b || (Math.min(aWords.length, bWords.length) >= 2 &&
+    (a.startsWith(b + " ") || b.startsWith(a + " ")));
+}
+
 function parseLegacyGift(value) {
   const text = String(value || "").trim();
   if (!text) return { sampleName: "", sampleSize: "2ml", extraGift: "" };
@@ -336,9 +355,9 @@ function OrdersWorkspace() {
   }, [customerGiftHistory]);
 
   const repeatedGiftHistory = useMemo(() => {
-    const key = normalizeCustomerKey(giftSampleName);
+    const key = normalizeGiftFragrance(giftSampleName);
     if (!key) return [];
-    return customerGiftHistory.filter((entry) => normalizeCustomerKey(entry.sampleName) === key);
+    return customerGiftHistory.filter((entry) => sameGiftFragrance(entry.sampleName, key));
   }, [customerGiftHistory, giftSampleName]);
 
   const mutate = async (body, key) => {
@@ -436,13 +455,20 @@ function OrdersWorkspace() {
     mutate({ action: "clear_customer_watch", watch_id: selectedWatch.id }, "customer-watch-clear");
   };
 
-  const saveGiftSample = () => mutate({
-    action: "set_gift_sample",
-    id: selected.id,
-    sample_name: giftSampleName,
-    sample_size: giftSampleName ? giftSampleSize : "",
-    extra_gift: giftExtra
-  }, "gift");
+  const saveGiftSample = () => {
+    if (repeatedGiftHistory.length && !window.confirm(
+      "This customer has already received this fragrance as a gift (" +
+      repeatedGiftHistory.map((entry) => entry.order_id).join(", ") +
+      ").\\n\\nSave the repeated gift anyway?"
+    )) return;
+    mutate({
+      action: "set_gift_sample",
+      id: selected.id,
+      sample_name: giftSampleName,
+      sample_size: giftSampleName ? giftSampleSize : "",
+      extra_gift: giftExtra
+    }, "gift");
+  };
 
   const toggleGiftUnlock = (event) => {
     const next = event.target.checked;
@@ -651,7 +677,7 @@ function OrdersWorkspace() {
               <em>{selectedHistory.prior.length} previous · {selectedHistory.delivered} delivered</em>
             </summary>
             <div className="orders-customer-history-body">
-              <p>{selectedHistory.delivered} delivered · {money(selectedHistory.spent)} fragrance spend (shipping excluded). VIP: 3 delivered orders or €150 delivered fragrance spend.</p>
+              <p>{selectedHistory.delivered} delivered · {money(selectedHistory.spent)} fragrance spend (shipping excluded).</p>
               {!selectedHistory.prior.length ? <p>No prior orders matched by phone or email.</p> : selectedHistory.prior.map((past) => {
                 const data = past.source_payload || {};
                 const legacy = parseLegacyGift(data.freeGift);
