@@ -39,6 +39,12 @@
     vertical-align: middle;
   }
 
+  /* Match the site language: the original product badge already uses tr.justIn. */
+  html[lang="sr"] .premium-product-card:has(.product-new-badge)
+    .product-category-default::after {
+    content: "NOVO";
+  }
+
   /* Give the scent-profile label slightly less visual weight so the bottle
      remains the primary object in the media stage. */
   .premium-product-card .product-floating-badge {
