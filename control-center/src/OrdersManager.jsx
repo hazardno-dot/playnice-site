@@ -92,6 +92,25 @@ function customerWatchFor(order, watches) {
   ) || null;
 }
 
+function normalizeGiftFragrance(value) {
+  return String(value || "")
+    .normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\b(eau de parfum|eau de toilette|eau de cologne|extrait de parfum|edp|edt|parfum|extrait|cologne)\b/g, " ")
+    .replace(/[^a-z0-9]+/g, " ").trim().replace(/\s+/g, " ");
+}
+
+function sameGiftFragrance(left, right) {
+  const a = normalizeGiftFragrance(left);
+  const b = normalizeGiftFragrance(right);
+  if (!a || !b) return false;
+  const aWords = a.split(" ");
+  const bWords = b.split(" ");
+  // Permit descriptive suffixes, never compare by the last word alone.
+  return a === b || (Math.min(aWords.length, bWords.length) >= 2 &&
+    (a.startsWith(b + " ") || b.startsWith(a + " ")));
+}
+
 function parseLegacyGift(value) {
   const text = String(value || "").trim();
   if (!text) return { sampleName: "", sampleSize: "2ml", extraGift: "" };
@@ -115,6 +134,41 @@ function syncLabel(order) {
   if (status === "failed") return "Backup sync failed";
   if (status === "pending") return "Backup sync pending";
   return "Google backup synced";
+}
+
+
+const FINAL_SALE_STATUSES = new Set(["DELIVERED"]);
+const IGNORED_CUSTOMER_EMAILS = new Set(["", "no_email", "none", "n/a", "null"]);
+function customerIdentity(order) {
+  const data = order?.source_payload || {};
+  const email = normalizeCustomerKey(data.email);
+  return {
+    email: IGNORED_CUSTOMER_EMAILS.has(email) ? "" : email,
+    phone: normalizePhoneKey(data.phone)
+  };
+}
+function sameCustomer(left, right) {
+  const a = customerIdentity(left);
+  const b = customerIdentity(right);
+  return Boolean((a.phone && b.phone && a.phone === b.phone) ||
+    (a.email && b.email && a.email === b.email));
+}
+function eligibleCustomerOrder(order) {
+  return order?.environment !== "preview" && order?.status !== "DUPLICATE" &&
+    order?.origin !== "regression_test" && !String(order?.order_id || "").startsWith("PNTEST");
+}
+function customerHistory(orders, selected) {
+  if (!selected || !eligibleCustomerOrder(selected)) return { prior: [], delivered: 0, spent: 0, vip: false };
+  const related = orders.filter((order) => eligibleCustomerOrder(order) && sameCustomer(order, selected));
+  const prior = related.filter((order) => order.id !== selected.id).sort((a, b) =>
+    String(b.created_at || "").localeCompare(String(a.created_at || "")));
+  const fulfilled = related.filter((order) => FINAL_SALE_STATUSES.has(order.status));
+  const spent = fulfilled.reduce((sum, order) => {
+    const payload = order.source_payload || {};
+    const amount = Number(payload.subtotal);
+    return sum + (Number.isFinite(amount) ? amount : Math.max(0, Number(payload.total || 0) - Number(payload.shipping || 0)));
+  }, 0);
+  return { prior, delivered: fulfilled.length, spent, vip: fulfilled.length >= 3 || spent >= 150 };
 }
 
 function OrdersWorkspace() {
@@ -158,6 +212,7 @@ function OrdersWorkspace() {
 
   const selected = orders.find((order) => order.id === selectedId) || null;
   const selectedWatch = useMemo(() => customerWatchFor(selected, customerWatches), [selected, customerWatches]);
+  const selectedHistory = useMemo(() => customerHistory(orders, selected), [orders, selected]);
 
   useEffect(() => {
     const data = selected?.source_payload || {};
@@ -300,9 +355,9 @@ function OrdersWorkspace() {
   }, [customerGiftHistory]);
 
   const repeatedGiftHistory = useMemo(() => {
-    const key = normalizeCustomerKey(giftSampleName);
+    const key = normalizeGiftFragrance(giftSampleName);
     if (!key) return [];
-    return customerGiftHistory.filter((entry) => normalizeCustomerKey(entry.sampleName) === key);
+    return customerGiftHistory.filter((entry) => sameGiftFragrance(entry.sampleName, key));
   }, [customerGiftHistory, giftSampleName]);
 
   const mutate = async (body, key) => {
@@ -400,13 +455,20 @@ function OrdersWorkspace() {
     mutate({ action: "clear_customer_watch", watch_id: selectedWatch.id }, "customer-watch-clear");
   };
 
-  const saveGiftSample = () => mutate({
-    action: "set_gift_sample",
-    id: selected.id,
-    sample_name: giftSampleName,
-    sample_size: giftSampleName ? giftSampleSize : "",
-    extra_gift: giftExtra
-  }, "gift");
+  const saveGiftSample = () => {
+    if (repeatedGiftHistory.length && !window.confirm(
+      "This customer has already received this fragrance as a gift (" +
+      repeatedGiftHistory.map((entry) => entry.order_id).join(", ") +
+      ").\\n\\nSave the repeated gift anyway?"
+    )) return;
+    mutate({
+      action: "set_gift_sample",
+      id: selected.id,
+      sample_name: giftSampleName,
+      sample_size: giftSampleName ? giftSampleSize : "",
+      extra_gift: giftExtra
+    }, "gift");
+  };
 
   const toggleGiftUnlock = (event) => {
     const next = event.target.checked;
@@ -572,8 +634,9 @@ function OrdersWorkspace() {
           {loading ? <div className="orders-empty">Loading orders…</div> : filtered.length ? filtered.map((order) => {
             const data = order.source_payload || {};
             const customerWatch = customerWatchFor(order, customerWatches);
+            const history = customerHistory(orders, order);
             return <button type="button" key={order.id} className={`orders-row status-row-${String(order.status || "").toLowerCase()} ${customerWatch ? "customer-watch-row" : ""} ${selectedId === order.id ? "active" : ""}`} onClick={() => setSelectedId(order.id)}>
-              <div className="orders-row-main"><strong>{order.order_id}{customerWatch ? <em className="customer-watch-badge">{WATCH_BADGES[customerWatch.level] || "WATCH"}</em> : null}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
+              <div className="orders-row-main"><strong>{order.order_id}{customerWatch ? <em className="customer-watch-badge">{WATCH_BADGES[customerWatch.level] || "WATCH"}</em> : null}{history.vip ? <em className="orders-loyalty-badge vip">VIP</em> : history.prior.length ? <em className="orders-loyalty-badge returning">RETURNING</em> : null}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
               <div className="orders-row-side"><strong>{money(data.total)}</strong><span className={"order-status status-" + String(order.status || "").toLowerCase()}>{STATUS_LABELS[order.status] || order.status}</span><time>{dateTime(order.created_at)}</time></div>
             </button>;
           }) : <div className="orders-empty">No orders match this filter.</div>}
@@ -606,6 +669,28 @@ function OrdersWorkspace() {
               <p>{payload.orderSource || payload.source || "webshop"}</p>
             </section>
           </div>
+
+          <details className="orders-customer-history" key={"history:" + selected.id} defaultOpen={selectedHistory.prior.length > 0}>
+            <summary>
+              <span>CUSTOMER HISTORY</span>
+              <strong>{selectedHistory.vip ? "VIP CUSTOMER" : selectedHistory.prior.length ? "RETURNING CUSTOMER" : "First order"}</strong>
+              <em>{selectedHistory.prior.length} previous · {selectedHistory.delivered} delivered</em>
+            </summary>
+            <div className="orders-customer-history-body">
+              <p>{selectedHistory.delivered} delivered · {money(selectedHistory.spent)} fragrance spend (shipping excluded).</p>
+              {!selectedHistory.prior.length ? <p>No prior orders matched by phone or email.</p> : selectedHistory.prior.map((past) => {
+                const data = past.source_payload || {};
+                const legacy = parseLegacyGift(data.freeGift);
+                const sample = Array.isArray(data.giftSamples) ? data.giftSamples[0] : null;
+                const gift = sample?.name ? sample.name + " · " + (sample.size || "2ml") : data.freeGift || "No gift recorded";
+                return <div className="orders-customer-history-entry" key={past.id}>
+                  <button type="button" onClick={() => setSelectedId(past.id)}>{past.order_id} · {dateTime(past.created_at)} · {STATUS_LABELS[past.status] || past.status}</button>
+                  <span>{itemSummary(data.items)}</span>
+                  <small>Gift: {gift}{legacy.extraGift && sample?.name ? " + " + legacy.extraGift : ""}</small>
+                </div>;
+              })}
+            </div>
+          </details>
 
           <details
             key={selected.id + ":" + (selectedWatch?.id || "none")}
