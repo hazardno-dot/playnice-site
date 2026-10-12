@@ -98,6 +98,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/red-fruits.webp",
     fallback: "•",
   },
+  "lychee": {
+    sr: "Liči",
+    en: "Lychee",
+    image: "/note-map/lychee.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
