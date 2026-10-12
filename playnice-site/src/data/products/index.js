@@ -3088,6 +3088,32 @@ export const products = [
       heart: ["violet","sandalwood","white-woods"],
       base: ["vetiver","musk","ambroxan"]
     }
+  },
+  {
+    id: 110,
+    addedAt: "2026-10-12T22:39:54.934Z",
+    slug: "armaf-club-de-nuit-maleka",
+    name: "Armaf Club de Nuit Maleka Eau de Parfum",
+    modalName: "Armaf Club de Nuit Maleka EDP",
+    shortName: "CDN Maleka",
+    category: "Arabian",
+    image: "/products/armaf-club-de-nuit-maleka.png",
+    sizes: {"5ml":5,"10ml":9,"20ml":17},
+    badge: "SIGNATURE",
+    rating: 8.2,
+    ratingLabel: "Well Loved",
+    season: "all",
+    moods: ["date","rich","signature"],
+    recommendations: ["narciso-rodriguez-poudree","nishane-hundred-silent-ways-x","ysl-black-opium-le-parfum"],
+    inspiredBy: {
+      name: "Original Armaf creation",
+      short: "Original floral-fruity DNA"
+    },
+    noteMap: {
+      top: ["lychee","bergamot","pink-pepper"],
+      heart: ["orris"],
+      base: ["praline","sandalwood","ambroxan"]
+    }
   }
 
 ];

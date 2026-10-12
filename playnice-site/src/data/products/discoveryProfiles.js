@@ -3292,6 +3292,37 @@ export const discoveryProfiles = {
     "cleanliness": 8.2,
     "versatility": 8.5,
     "gourmandness": 0.8
+  },
+
+  "armaf-club-de-nuit-maleka": {
+    "date": 9.2,
+    "casual": 8,
+    "citrus": 4.5,
+    "office": 7.5,
+    "unisex": 3.5,
+    "warmth": 6.5,
+    "aquatic": 0,
+    "dryness": 3,
+    "evening": 8.5,
+    "powdery": 8.3,
+    "airiness": 5.8,
+    "darkness": 2.5,
+    "elegance": 8.8,
+    "feminine": 9.2,
+    "florality": 7,
+    "freshness": 5.8,
+    "longevity": 7.5,
+    "masculine": 1.8,
+    "spiciness": 2.5,
+    "sweetness": 7.5,
+    "woodiness": 4.5,
+    "creaminess": 7,
+    "fruitiness": 8.2,
+    "projection": 7.2,
+    "aromaticity": 2,
+    "cleanliness": 5.5,
+    "versatility": 8,
+    "gourmandness": 6.8
   }
 };
 

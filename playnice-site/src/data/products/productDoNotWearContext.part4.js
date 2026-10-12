@@ -134,6 +134,10 @@ export default [
   {
     "sr": "Na zimskom sastanku sa upravnikom zgrade, kada pokušavate da objasnite zašto grejanje opet ne radi. Milestone miriše na more, sunce i bezbrižnost. Čovek već misli da ste bili na odmoru dok su ostali sedeli u hladnim stanovima.",
     "en": "At a winter meeting with your building manager, explaining why the heating still doesn't work. Milestone smells of sea, sunshine and carefree days. He already suspects you were on holiday while everyone else was freezing."
+  },
+  {
+    "sr": "Na degustaciji skupih kolača, ako planirate obilno prskanje. Liči, praline i puderasti iris mogu da se umešaju u mirise sa tanjira. Poslastičar se potrudio da napravite razliku između tri krema. Nemojte mu otežavati posao.",
+    "en": "At a fine pastry tasting, especially if you plan to overspray. Lychee, praline and powdery orris can compete with the aromas on your plate. The pastry chef worked hard to make those three creams taste different. Give them a chance."
   }
 
 ];

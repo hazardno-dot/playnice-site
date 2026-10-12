@@ -3407,6 +3407,55 @@ export const productCopy = {
       "en": "For lovers of salty marine freshness, juicy fruit and an elegant musky finish.",
       "sr": "Za ljubitelje slankaste morske svežine, sočnog voća i elegantnog mošusnog završetka."
     }
+  },
+
+  "Armaf Club de Nuit Maleka Eau de Parfum": {
+    "miniTag": {
+      "en": "🌸 Fruity / Powdery",
+      "sr": "🌸 Voćni / Puderast"
+    },
+    "card": {
+      "en": "Juicy lychee, powdery orris and praline in a soft elegant scent.",
+      "sr": "Sočan liči, puderasti iris i praline u mekom, elegantnom mirisu."
+    },
+    "modal": {
+      "en": "Lychee, bergamot and pink pepper open bright and fruity. Powdery orris adds elegance, while praline, sandalwood and ambroxan give a warm, creamy finish.",
+      "sr": "Liči, bergamot i roze biber otvaraju voćno i sveže. Puderasti iris donosi eleganciju, a praline, sandalovina i ambroksan topao, kremast završetak."
+    },
+    "scentType": {
+      "en": "Fruity floral powdery",
+      "sr": "Voćno-cvetni puderasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "liči",
+        "iris",
+        "praline",
+        "sandalovina"
+      ],
+      "en": [
+        "lychee",
+        "orris",
+        "praline",
+        "sandalwood"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Voćni",
+        "Puderast",
+        "Elegantan"
+      ],
+      "en": [
+        "Fruity",
+        "Powdery",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For those who love juicy fruit, soft powdery orris and warm creamy sweetness.",
+      "sr": "Za one koji vole sočno voće, nežan puderasti iris i toplu, kremastu slatkoću."
+    }
   }
 };
 

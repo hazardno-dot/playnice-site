@@ -451,5 +451,10 @@ export const productWearContext = {
   "Armaf Club de Nuit Milestone Eau de Parfum": {
     "sr": "Proleće, leto, more, posao i elegantne dnevne prilike.",
     "en": "Spring, summer, seaside, work and elegant daytime wear."
+  },
+
+  "Armaf Club de Nuit Maleka Eau de Parfum": {
+    "sr": "Proleće, jesen, dejt, svečani ručak i elegantno veče.",
+    "en": "Spring, autumn, dates, special lunches and elegant evenings."
   }
 };
