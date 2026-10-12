@@ -134,6 +134,10 @@ const entries = [
   {
     "sr": "Bela lanena košulja, svetle pantalone i dobre mokasine. Može i jednostavna majica. Zlatna bočica nije poziv da obučete zlatni sako. Ostavimo nešto i za ljude koji nastupaju u Las Vegasu.",
     "en": "A white linen shirt, light trousers and good loafers. A simple T-shirt works too. The gold bottle is not an invitation to wear a gold blazer. Leave something for the performers in Las Vegas."
+  },
+  {
+    "sr": "Svilena bluza, elegantne pantalone ili jednostavna haljina. Nežni tonovi, dobar nakit i malo samopouzdanja. Maleka već ima kraljevsko ime; kruna je zaista nepotrebna.",
+    "en": "A silk blouse, tailored trousers or a simple dress. Soft colours, good jewellery and a little confidence. Maleka already has a royal name; an actual crown is entirely unnecessary."
   }
 
 ];
