@@ -3323,6 +3323,37 @@ export const discoveryProfiles = {
     "cleanliness": 5.5,
     "versatility": 8,
     "gourmandness": 6.8
+  },
+
+  "armani-i-will": {
+    "date": 9.2,
+    "casual": 7.5,
+    "citrus": 5,
+    "office": 7.5,
+    "unisex": 4,
+    "warmth": 8.2,
+    "aquatic": 0,
+    "dryness": 5.3,
+    "evening": 9,
+    "powdery": 4.5,
+    "airiness": 3.8,
+    "darkness": 6.3,
+    "elegance": 9,
+    "feminine": 2,
+    "florality": 2.5,
+    "freshness": 6,
+    "longevity": 8.5,
+    "masculine": 9,
+    "spiciness": 5,
+    "sweetness": 6.8,
+    "woodiness": 8.2,
+    "creaminess": 6.5,
+    "fruitiness": 1.2,
+    "projection": 8,
+    "aromaticity": 7.5,
+    "cleanliness": 5.5,
+    "versatility": 7.8,
+    "gourmandness": 4
   }
 };
 

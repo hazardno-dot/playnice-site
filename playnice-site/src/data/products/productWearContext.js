@@ -456,5 +456,10 @@ export const productWearContext = {
   "Armaf Club de Nuit Maleka Eau de Parfum": {
     "sr": "Proleće, jesen, dejt, svečani ručak i elegantno veče.",
     "en": "Spring, autumn, dates, special lunches and elegant evenings."
+  },
+
+  "Giorgio Armani I Will Eau de Parfum": {
+    "sr": "Posao, večernji izlazak, dejt i hladniji dani.",
+    "en": "Work, evenings, dates and cooler days."
   }
 };
