@@ -32,12 +32,9 @@ export const BASE_HERO_SLIDES = [
     "desktopImage": "/hero/slide-9.jpg",
     "mobileImage": "/hero/mobile/slide-9-mobile.jpg",
     "alt": "PlayNice limited stock fragrance campaign hero banner",
-    "actionPrimary": "collection",
-    "actionCollection": [
-      "swiss-arabian-musk-01",
-      "gisada-luxury-collection-royal"
-    ],
-    "collectionTitle": "SOFT. BOLD. LUXURY."
+    "actionPrimary": "product",
+    "actionProductSlug": "armani-i-will",
+    "preferredSize": "5ml"
   },
   {
     "id": 6,
