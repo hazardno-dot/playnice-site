@@ -1,5 +1,32 @@
 export const exhibitionItems = [
   {
+    "id": "hero-9-playnice-limited-stock-fragrance-campaign-hero-banne",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "PlayNice limited stock fragrance campaign hero banner",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-9-playnice-limited-stock-fragrance-campaign-hero-banne-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-9-playnice-limited-stock-fragrance-campaign-hero-banne.jpg",
+        "format": "wide",
+        "alt": "PlayNice limited stock fragrance campaign hero banner"
+      }
+    ]
+  },
+
+  {
     "id": "hero-3-rayhaan-nocturno-elixir-bleu-de-chanel-l-exclusif-al",
     "year": 2026,
     "period": "sep-dec-2026",
