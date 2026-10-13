@@ -3114,6 +3114,32 @@ export const products = [
       heart: ["orris"],
       base: ["praline","sandalwood","ambroxan"]
     }
+  },
+  {
+    id: 111,
+    addedAt: "2026-10-13T21:47:52.186Z",
+    slug: "armani-i-will",
+    name: "Giorgio Armani I Will Eau de Parfum",
+    modalName: "Giorgio Armani I Will EDP",
+    shortName: "Armani I Will",
+    category: "Designer",
+    image: "/products/armani-i-will.png",
+    sizes: {"2ml":6,"5ml":14,"10ml":25},
+    badge: "TRENDING",
+    rating: 8.5,
+    ratingLabel: "Well Loved",
+    season: "all",
+    moods: ["date","rich","signature"],
+    recommendations: ["tom-ford-noir-extreme","tom-ford-ombre-leather-parfum","christian-dior-sauvage-edp"],
+    inspiredBy: {
+      name: "Original Armani creation",
+      short: "Original Armani DNA"
+    },
+    noteMap: {
+      top: ["bergamot","cardamom"],
+      heart: ["lavender","violet-leaf","sage"],
+      base: ["vanilla","leather","woody-notes","patchouli"]
+    }
   }
 
 ];

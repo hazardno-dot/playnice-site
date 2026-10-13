@@ -138,6 +138,10 @@ export default [
   {
     "sr": "Na degustaciji skupih kolača, ako planirate obilno prskanje. Liči, praline i puderasti iris mogu da se umešaju u mirise sa tanjira. Poslastičar se potrudio da napravite razliku između tri krema. Nemojte mu otežavati posao.",
     "en": "At a fine pastry tasting, especially if you plan to overspray. Lychee, praline and powdery orris can compete with the aromas on your plate. The pastry chef worked hard to make those three creams taste different. Give them a chance."
+  },
+  {
+    "sr": "Kada ne znate kuda ste krenuli. Armani I Will traži malo samopouzdanja, a kada ga imate, nebo je granica. Zapravo, zaboravite sve što smo rekli. Ako imate dovoljno samopouzdanja, nosite ga kad god poželite.",
+    "en": "When you don't know where you're going. Armani I Will demands a little confidence, and once you have it, the sky's the limit. Actually, forget everything we just said. If you're confident enough, wear it whenever you want."
   }
 
 ];

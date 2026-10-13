@@ -3456,6 +3456,55 @@ export const productCopy = {
       "en": "For those who love juicy fruit, soft powdery orris and warm creamy sweetness.",
       "sr": "Za one koji vole sočno voće, nežan puderasti iris i toplu, kremastu slatkoću."
     }
+  },
+
+  "Giorgio Armani I Will Eau de Parfum": {
+    "miniTag": {
+      "en": "🔥 Vanilla / Leather",
+      "sr": "🔥 Vanila / Koža"
+    },
+    "card": {
+      "en": "Bergamot, aromatic lavender and warm vanilla over leather and woods.",
+      "sr": "Bergamot, lavanda i topla vanila na podlozi kože i drveta."
+    },
+    "modal": {
+      "en": "Fresh bergamot and cardamom lead into lavender and violet leaf. Vanilla, leather and woods create a warm, confident, masculine finish.",
+      "sr": "Svež bergamot i kardamom otvaraju priču. Lavanda i list ljubičice donose eleganciju, dok vanila, koža i drvo daju topao, muževan završetak."
+    },
+    "scentType": {
+      "en": "Ambery woody",
+      "sr": "Drvenasto-ambarni"
+    },
+    "dominantNotes": {
+      "sr": [
+        "bergamot",
+        "lavanda",
+        "vanila",
+        "koža"
+      ],
+      "en": [
+        "bergamot",
+        "lavender",
+        "vanilla",
+        "leather"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Aromatičan",
+        "Drvenast",
+        "Elegantan"
+      ],
+      "en": [
+        "Aromatic",
+        "Woody",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For those who love refined masculine vanilla, aromatic freshness and warm leather.",
+      "sr": "Za ljubitelje elegantne muške vanile, aromatične svežine i toplog kožnog akorda."
+    }
   }
 };
 

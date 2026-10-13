@@ -138,6 +138,10 @@ const entries = [
   {
     "sr": "Svilena bluza, elegantne pantalone ili jednostavna haljina. Nežni tonovi, dobar nakit i malo samopouzdanja. Maleka već ima kraljevsko ime; kruna je zaista nepotrebna.",
     "en": "A silk blouse, tailored trousers or a simple dress. Soft colours, good jewellery and a little confidence. Maleka already has a royal name; an actual crown is entirely unnecessary."
+  },
+  {
+    "sr": "Bela košulja, tamne pantalone, kožni kaiš i dobar sat. Ili jednostavno crna majica i kvalitetna jakna. I Will ne traži smoking, ali traži da znate gde ste krenuli. Ili makar da izgledate kao da znate.",
+    "en": "A white shirt, dark trousers, a leather belt and a good watch. Or simply a black tee and a quality jacket. I Will doesn't require a tuxedo, but it helps to look like you know exactly where you're going."
   }
 
 ];
