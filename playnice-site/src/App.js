@@ -5412,6 +5412,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           <MobileProductPage
             product={selectedProduct}
             lang={lang}
+            freeShippingThreshold={FREE_SHIPPING_THRESHOLD}
             selectedSize={selectedSize}
             onSelectSize={(size) => {
               setSelectedSize(size);

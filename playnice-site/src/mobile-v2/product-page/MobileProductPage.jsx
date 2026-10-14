@@ -113,6 +113,7 @@ const getRecommendations = (product) => {
 export default function MobileProductPage({
   product,
   lang = "sr",
+  freeShippingThreshold,
   selectedSize,
   onSelectSize,
   onAddToCart,
@@ -627,8 +628,8 @@ export default function MobileProductPage({
           <summary>{lang === "sr" ? "Dostava" : "Delivery"}<span>+</span></summary>
           <p>
             {lang === "sr"
-              ? "Dostava širom Crne Gore. Plaćanje pouzećem. Besplatna dostava za porudžbine preko €39."
-              : "Delivery across Montenegro. Cash on delivery. Free delivery on orders over €39."}
+              ? `Dostava širom Crne Gore. Plaćanje pouzećem. Besplatna dostava za porudžbine preko €${freeShippingThreshold}.`
+              : `Delivery across Montenegro. Cash on delivery. Free delivery on orders over €${freeShippingThreshold}.`}
           </p>
         </details>
       </section>
