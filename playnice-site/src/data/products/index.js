@@ -3126,7 +3126,7 @@ export const products = [
     image: "/products/armani-i-will.png",
     sizes: {"2ml":6,"5ml":14,"10ml":25},
     badge: "TRENDING",
-    rating: 8.5,
+    rating: 8.6,
     ratingLabel: "Well Loved",
     season: "all",
     moods: ["date","rich","signature"],
