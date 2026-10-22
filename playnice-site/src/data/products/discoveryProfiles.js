@@ -3385,6 +3385,37 @@ export const discoveryProfiles = {
     "cleanliness": 7.1,
     "versatility": 8.7,
     "gourmandness": 5.8
+  },
+
+  "bujairami-hectic": {
+    "date": 7.5,
+    "casual": 9.3,
+    "citrus": 9.5,
+    "office": 9.2,
+    "unisex": 8.5,
+    "warmth": 4.5,
+    "aquatic": 0.5,
+    "dryness": 6.8,
+    "evening": 7,
+    "powdery": 1.5,
+    "airiness": 8.5,
+    "darkness": 2,
+    "elegance": 8.5,
+    "feminine": 4,
+    "florality": 2.3,
+    "freshness": 9.2,
+    "longevity": 7.8,
+    "masculine": 6.5,
+    "spiciness": 6.3,
+    "sweetness": 2.5,
+    "woodiness": 6.8,
+    "creaminess": 2,
+    "fruitiness": 4.5,
+    "projection": 7.5,
+    "aromaticity": 8.7,
+    "cleanliness": 9.1,
+    "versatility": 9.1,
+    "gourmandness": 0.5
   }
 };
 
