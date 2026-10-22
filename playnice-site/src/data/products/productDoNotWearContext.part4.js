@@ -142,6 +142,10 @@ export default [
   {
     "sr": "Kada ne znate kuda ste krenuli. Armani I Will traži malo samopouzdanja, a kada ga imate, nebo je granica. Zapravo, zaboravite sve što smo rekli. Ako imate dovoljno samopouzdanja, nosite ga kad god poželite.",
     "en": "When you don't know where you're going. Armani I Will demands a little confidence, and once you have it, the sky's the limit. Actually, forget everything we just said. If you're confident enough, wear it whenever you want."
+  },
+  {
+    "sr": "Kada vam je skromnost najvažnija osobina. Parfem koji se zove Too Damn Good baš i ne pokušava da bude neprimetan. Srećom, njegova voćna svežina, nežne praline i elegantna drvenasta baza imaju dovoljno pokrića za tako samouvereno ime. Samo nemojte očekivati da svi ostali budu jednako skromni u komplimentima.",
+    "en": "When modesty is your defining quality. A fragrance called Too Damn Good isn't exactly trying to stay unnoticed. Fortunately, its fruity freshness, soft praline and elegant woody base give that confident name something to stand on. Just don't expect everyone else to be modest with compliments."
   }
 
 ];
