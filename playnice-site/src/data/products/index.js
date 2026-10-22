@@ -3140,6 +3140,32 @@ export const products = [
       heart: ["lavender","violet-leaf","sage"],
       base: ["vanilla","leather","woody-notes","patchouli"]
     }
+  },
+  {
+    id: 112,
+    addedAt: "2026-10-22T07:31:30.859Z",
+    slug: "bujairami-too-damn-good",
+    name: "Bujairami Too Damn Good Extrait de Parfum",
+    modalName: "Bujairami Too Damn Good Extrait",
+    shortName: "Too Damn Good",
+    category: "Niche",
+    image: "/products/bujairami-too-damn-good.png",
+    sizes: {"5ml":6.5,"10ml":12,"20ml":22},
+    badge: "EDITOR'S CHOICE",
+    rating: 8.5,
+    ratingLabel: "Well Loved",
+    season: "all",
+    moods: ["date","clean","signature"],
+    recommendations: ["essential-parfums-orange-x-santal","nishane-hundred-silent-ways-x","essential-parfums-nice-bergamote"],
+    inspiredBy: {
+      name: "Byredo Bal d'Afrique Absolu",
+      short: "Bal d'Afrique Absolu DNA"
+    },
+    noteMap: {
+      top: ["black-currant","bergamot","lemon"],
+      heart: ["praline","musk","violet"],
+      base: ["black-amber","vetiver","cedarwood"]
+    }
   }
 
 ];

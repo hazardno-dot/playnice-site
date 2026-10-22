@@ -3505,6 +3505,55 @@ export const productCopy = {
       "en": "For those who love refined masculine vanilla, aromatic freshness and warm leather.",
       "sr": "Za ljubitelje elegantne muške vanile, aromatične svežine i toplog kožnog akorda."
     }
+  },
+
+  "Bujairami Too Damn Good Extrait de Parfum": {
+    "miniTag": {
+      "en": "🍇 Fruity / Woody",
+      "sr": "🍇 Voćni / Drvenasti"
+    },
+    "card": {
+      "en": "Juicy blackcurrant, praline and violet over warm woods.",
+      "sr": "Sočna ribizla, praline i ljubičica na toploj drvenastoj bazi."
+    },
+    "modal": {
+      "en": "Blackcurrant, bergamot and lemon open bright and juicy. Praline and violet add soft sweetness, while musk, vetiver and cedar leave an elegant trail.",
+      "sr": "Crna ribizla, bergamot i limun daju sočan početak. Praline i ljubičica unose meku slatkoću, dok mošus, vetiver i kedar ostavljaju elegantan trag."
+    },
+    "scentType": {
+      "en": "Fruity woody",
+      "sr": "Voćno-drvenasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "crna ribizla",
+        "praline",
+        "ljubičica",
+        "vetiver"
+      ],
+      "en": [
+        "blackcurrant",
+        "praline",
+        "violet",
+        "vetiver"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Voćni",
+        "Puderast",
+        "Drvenast"
+      ],
+      "en": [
+        "Fruity",
+        "Powdery",
+        "Woody"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of juicy fruit, soft praline sweetness and a clean woody drydown.",
+      "sr": "Za ljubitelje sočnog voća, nežne slatkoće pralina i čiste, drvenaste završnice."
+    }
   }
 };
 

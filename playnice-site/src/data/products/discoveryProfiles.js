@@ -3354,6 +3354,37 @@ export const discoveryProfiles = {
     "cleanliness": 5.5,
     "versatility": 7.8,
     "gourmandness": 4
+  },
+
+  "bujairami-too-damn-good": {
+    "date": 8.8,
+    "casual": 9,
+    "citrus": 7.4,
+    "office": 8,
+    "unisex": 9.5,
+    "warmth": 6.1,
+    "aquatic": 0,
+    "dryness": 4.7,
+    "evening": 8.2,
+    "powdery": 6.5,
+    "airiness": 6.9,
+    "darkness": 3.2,
+    "elegance": 8.3,
+    "feminine": 5.5,
+    "florality": 5.2,
+    "freshness": 7.7,
+    "longevity": 7.7,
+    "masculine": 5.5,
+    "spiciness": 2.5,
+    "sweetness": 6.6,
+    "woodiness": 6.8,
+    "creaminess": 6.3,
+    "fruitiness": 8.4,
+    "projection": 7.5,
+    "aromaticity": 5,
+    "cleanliness": 7.1,
+    "versatility": 8.7,
+    "gourmandness": 5.8
   }
 };
 

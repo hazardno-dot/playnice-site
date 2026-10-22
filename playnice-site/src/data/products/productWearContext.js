@@ -461,5 +461,10 @@ export const productWearContext = {
   "Giorgio Armani I Will Eau de Parfum": {
     "sr": "Posao, večernji izlazak, dejt i hladniji dani.",
     "en": "Work, evenings, dates and cooler days."
+  },
+
+  "Bujairami Too Damn Good Extrait de Parfum": {
+    "sr": "Svakodnevno, za dejt, grad i prijatne večeri.",
+    "en": "Everyday wear, dates, city outings and relaxed evenings."
   }
 };

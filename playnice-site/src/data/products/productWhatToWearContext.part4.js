@@ -142,6 +142,10 @@ const entries = [
   {
     "sr": "Bela košulja, tamne pantalone, kožni kaiš i dobar sat. Ili jednostavno crna majica i kvalitetna jakna. I Will ne traži smoking, ali traži da znate gde ste krenuli. Ili makar da izgledate kao da znate.",
     "en": "A white shirt, dark trousers, a leather belt and a good watch. Or simply a black tee and a quality jacket. I Will doesn't require a tuxedo, but it helps to look like you know exactly where you're going."
+  },
+  {
+    "sr": "Bela majica, kvalitetne farmerke, lagana jakna ili košulja sa zavrnutim rukavima. Ovaj miris ne traži crveni tepih. Dovoljno je da se pojavite, izgledate opušteno i prepustite ostalima da procene da li je ime parfema opravdano.",
+    "en": "A white T-shirt, good jeans, a light jacket or a shirt with rolled-up sleeves. This scent doesn't need a red carpet. Just show up, look relaxed and let everyone else decide whether its name is justified."
   }
 
 ];
