@@ -3166,6 +3166,32 @@ export const products = [
       heart: ["praline","musk","violet"],
       base: ["black-amber","vetiver","cedarwood"]
     }
+  },
+  {
+    id: 113,
+    addedAt: "2026-10-22T07:42:44.670Z",
+    slug: "bujairami-hectic",
+    name: "Bujairami Hectic Extrait de Parfum",
+    modalName: "Bujairami Hectic Extrait",
+    shortName: "Hectic",
+    category: "Niche",
+    image: "/products/bujairami-hectic.png",
+    sizes: {"5ml":6.5,"10ml":12,"20ml":22},
+    badge: "CROWD FAVORITE",
+    rating: 8.5,
+    ratingLabel: "Well Loved",
+    season: "summer",
+    moods: ["clean","summer","signature"],
+    recommendations: ["essential-parfums-nice-bergamote","essential-parfums-orange-x-santal","armaf-club-de-nuit-sillage"],
+    inspiredBy: {
+      name: "Louis Vuitton Imagination",
+      short: "Imagination DNA"
+    },
+    noteMap: {
+      top: ["citron","calabrian-bergamot","orange"],
+      heart: ["ginger","cinnamon","neroli"],
+      base: ["black-tea","ambroxan","guaiac-wood","olibanum"]
+    }
   }
 
 ];

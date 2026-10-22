@@ -146,6 +146,10 @@ export default [
   {
     "sr": "Kada vam je skromnost najvažnija osobina. Parfem koji se zove Too Damn Good baš i ne pokušava da bude neprimetan. Srećom, njegova voćna svežina, nežne praline i elegantna drvenasta baza imaju dovoljno pokrića za tako samouvereno ime. Samo nemojte očekivati da svi ostali budu jednako skromni u komplimentima.",
     "en": "When modesty is your defining quality. A fragrance called Too Damn Good isn't exactly trying to stay unnoticed. Fortunately, its fruity freshness, soft praline and elegant woody base give that confident name something to stand on. Just don't expect everyone else to be modest with compliments."
+  },
+  {
+    "sr": "Kada želite da svi misle da ste u potpunom haosu. Hectic se možda tako zove, ali njegovi citrusi, đumbir i čisti čajni akordi odaju sasvim drugačiji utisak. Možete zakasniti na tri sastanka, izgubiti ključeve i zaboraviti zašto ste ušli u sobu, ali ćete makar mirisati kao čovek koji ima plan. Ne možemo garantovati da će vam to pomoći.",
+    "en": "When you want everyone to think your life is complete chaos. Despite its name, Hectic smells fresh, sharp and remarkably put together. You can miss three meetings, lose your keys and forget why you entered a room, but you'll still smell like someone with a plan. Whether that helps is another matter."
   }
 
 ];

@@ -146,6 +146,10 @@ const entries = [
   {
     "sr": "Bela majica, kvalitetne farmerke, lagana jakna ili košulja sa zavrnutim rukavima. Ovaj miris ne traži crveni tepih. Dovoljno je da se pojavite, izgledate opušteno i prepustite ostalima da procene da li je ime parfema opravdano.",
     "en": "A white T-shirt, good jeans, a light jacket or a shirt with rolled-up sleeves. This scent doesn't need a red carpet. Just show up, look relaxed and let everyone else decide whether its name is justified."
+  },
+  {
+    "sr": "Bela košulja, svetle pantalone, čiste patike i sat koji pokazuje tačno vreme, čak i kada vi kasnite. Hectic najbolje ide uz jednostavnu, urednu garderobu i onu vrstu opuštenosti zbog koje izgleda kao da ništa ne radite na silu.",
+    "en": "A white shirt, light trousers, clean sneakers and a watch that tells the right time, even when you're running late. Hectic works best with simple, polished clothes and the kind of relaxed confidence that never looks forced."
   }
 
 ];

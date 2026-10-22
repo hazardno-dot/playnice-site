@@ -3554,6 +3554,55 @@ export const productCopy = {
       "en": "For lovers of juicy fruit, soft praline sweetness and a clean woody drydown.",
       "sr": "Za ljubitelje sočnog voća, nežne slatkoće pralina i čiste, drvenaste završnice."
     }
+  },
+
+  "Bujairami Hectic Extrait de Parfum": {
+    "miniTag": {
+      "en": "🍊 Citrus / Tea",
+      "sr": "🍊 Citrusni / Čajni"
+    },
+    "card": {
+      "en": "Bright citrus, ginger and black tea over a clean woody base.",
+      "sr": "Svetli citrusi, đumbir i crni čaj na čistoj drvenastoj bazi."
+    },
+    "modal": {
+      "en": "Citron, bergamot and orange open bright and fresh. Ginger, cinnamon and neroli add character, while black tea, ambroxan and woods leave a dry trail.",
+      "sr": "Citron, bergamot i pomorandža otvaraju sveže i vedro. Đumbir, cimet i neroli daju karakter, dok crni čaj, ambroksan i drvo ostavljaju suv trag."
+    },
+    "scentType": {
+      "en": "Citrus aromatic",
+      "sr": "Citrusno-aromatični"
+    },
+    "dominantNotes": {
+      "sr": [
+        "citron",
+        "đumbir",
+        "crni čaj",
+        "ambroksan"
+      ],
+      "en": [
+        "citron",
+        "ginger",
+        "black tea",
+        "ambroxan"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Citrusni",
+        "Začinski",
+        "Čist"
+      ],
+      "en": [
+        "Citrus",
+        "Spicy",
+        "Clean"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of bright citrus, ginger, black tea and refined woody freshness.",
+      "sr": "Za ljubitelje živih citrusa, đumbira, crnog čaja i elegantne drvenaste svežine."
+    }
   }
 };
 
