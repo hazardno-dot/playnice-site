@@ -104,6 +104,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/lychee.webp",
     fallback: "•",
   },
+  "black-amber": {
+    sr: "Crni amber",
+    en: "Black Amber",
+    image: "/note-map/black-amber.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
