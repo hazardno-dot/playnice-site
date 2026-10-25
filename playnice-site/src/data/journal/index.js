@@ -2044,5 +2044,173 @@ Ne mora baš sve odmah na internet.
     ],
     links: [
     ]
+  },
+  {
+    id: 23,
+    date: {
+      en: "25 Okt",
+      sr: "25 Okt"
+    },
+    image: "/journal/article23.webp",
+    title: {
+      en: "Milica, It's Really Over.",
+      sr: "Milice, stvarno je gotovo."
+    },
+    excerpt: {
+      en: "Scientists are working on technology that could one day send smells through our phones. Fascinating, honestly — until you remember ex-girlfriends, angry neighbours and that friend you still owe twenty euros.",
+      sr: "Naučnici rade na tehnologiji koja bi jednog dana mogla da nam šalje mirise preko telefona. Iskreno, to zvuči fascinantno — dok se ne setiš bivših devojaka, komšija i ljudi kojima duguješ dvadeset evra."
+    },
+    content: {
+      en: `This morning I read that scientists are working on technology that would allow us to send smells over a distance. Like a photo, a message, or that cat video my friend has already sent me three times, even though I told him all three times that I had already seen it.
+
+Smell through the phone.
+
+I’m sitting there, drinking coffee, trying to imagine what that would look like in real life. Someone sends you a photo from the Maldives, you open the message, and suddenly your phone smells like the ocean. Wonderful. The only problem is that I already know enough people I would never trust with the power to send me anything that can be sensed with a nose.
+
+And then there are ex-girlfriends.
+
+Imagine getting a message at eleven at night: “Do you remember this smell?”
+
+Yes, Milica, I remember. I remember the perfume and the credit I practically took out to buy it for you. I’m just asking you nicely not to start this all over again.
+
+Milica, by the way, was a wonderful girl. She just had a remarkable talent for turning an ordinary question into an international incident. Once she asked whether I liked her new haircut, and I, completely unaware of the danger, said that I had also liked the previous one. The next three days of my life were spent explaining what I had actually meant, while she tried to determine whether I had ever truly loved a woman in my life.
+
+Now imagine giving a person like that the ability to send smells.
+
+First, her perfume would arrive, just to check whether I was still emotionally available. Then the smell of the restaurant where we had our first argument. Then the smell of my favourite jumper that she kept after the breakup. And once I finally gathered the courage not to answer, she would probably send me the smell of burnt lunch with a message saying, “There. That’s what our relationship smelled like.”
+
+And Milica is not the only one who worries me.
+
+I have a friend I’ve owed twenty euros to for six years. It’s not that I don’t want to pay him back. It’s just that we’ve both forgotten about it so many times that now it would almost feel rude to interrupt the tradition. He reminds me regularly, usually when we’re out with other people, and I can already picture him sending me the smell of fresh banknotes on the first of every month, and for my birthday, the smell of an empty wallet.
+
+And what if you’ve seriously offended someone? Today an angry neighbour can leave you a passive-aggressive note or refuse to greet your wife in the lift. Tomorrow he’ll be able to send you the smell of his football shoes straight into your living room while you’re having dinner with guests. And how exactly do you explain to people that this isn’t your apartment, but an act of revenge by the man from the third floor whose parking spot you stole last summer?
+
+Of course, the technology will probably come with some sort of protection. Blocking unwanted smells, parental controls, maybe even a premium subscription for better nostrils. Knowing the way apps work today, the free version will probably let you smell only half of the fragrance, while the base notes will require 9.99 a month.
+
+But jokes aside, I have to admit that the whole idea fascinates me a little.
+
+There are certain smells that can take me back twenty or thirty years in a second. The smell of petrol at an old gas station, freshly cut grass, the sea after summer rain, or some perfume I can’t seem to find anymore. All it takes is one accidental whiff and suddenly I remember people, places and moments I was certain had disappeared from my mind forever.
+
+That’s why I understand why someone would want to build technology like this. It would be beautiful to send a friend who lives thousands of kilometres away the smell of the morning coffee you used to drink together. Or to send someone who hasn’t been home in years the smell of their own yard after the rain.
+
+There is only one thing that scientists, no matter how clever they are, may never manage to fit into a phone.
+
+They can send me the smell of the perfume Milica wore the night we met, but they cannot send me the moment she smiled, walked over to me and said something so unexpected that I forgot my own name.
+
+That, apparently, is still a job for real life.
+
+And while I’m thinking about all this, my phone rings.
+
+Milica.
+
+We haven’t spoken in almost two years.
+
+I answer, slightly confused, and she asks if I’ve seen the news about sending smells through phones.
+
+I say I have.
+
+“Great,” she says. “Just so you know, when that thing starts working, I’ve got something for you.”
+
+I ask her what.
+
+“You’ll remember.”
+
+And she hangs up.
+
+So, dear scientists, I wish you every success with your work, but I kindly ask you not to rush this particular technology.
+
+And if you absolutely must finish it, I have only one request.
+
+Before accepting a smell, the phone should be required to ask: “Are you sure you want to go through this again?”
+
+Because I, gentlemen, am not.
+
+—
+
+Charlie
+
+Remember. PlayNice.`,
+      sr: `Jutros sam pročitao da naučnici rade na tehnologiji koja će omogućiti da miris pošaljemo na daljinu. Kao fotografiju, poruku ili onaj video sa mačkom koji mi prijatelj šalje već treći put, iako sam mu sva tri puta rekao da sam ga video.
+
+Miris preko telefona.
+
+Sedim, pijem kafu i pokušavam da zamislim kako bi to izgledalo u praksi. Neko ti pošalje fotografiju sa Maldiva, ti otvoriš poruku, a iz telefona zamiriše okean. Divno. Samo što ja već poznajem dovoljno ljudi kojima nikada ne bih dao mogućnost da mi pošalju bilo šta što se može osetiti nosem.
+
+A tek bivše devojke.
+
+Zamisli da ti u jedanaest uveče stigne poruka: „Sećaš li se ovog mirisa?“
+
+Sećam se, Milice. I parfema i kredita koji sam podigao da bih ga kupio. Samo te molim da ne počinjemo ponovo.
+
+Milica je, inače, bila divna devojka, samo što je imala neobičan talenat da od običnog pitanja napravi međunarodni incident. Jednom me je pitala da li mi se sviđa njena nova frizura, a ja sam, potpuno nesvestan opasnosti, rekao da mi se sviđala i prethodna. Naredna tri dana proveo sam objašnjavajući šta sam zapravo mislio, dok je ona pokušavala da ustanovi da li sam ikada u životu zaista voleo neku ženu.
+
+I sad zamislite da takvoj osobi date mogućnost da šalje mirise.
+
+Prvo bi stigao njen parfem, čisto da proveri da li sam još emotivno dostupan. Zatim miris restorana u kojem smo se prvi put posvađali, pa miris mog omiljenog džempera koji je zadržala nakon raskida. A kad bih konačno skupio hrabrost da ne odgovorim, verovatno bi mi poslala miris zagorelog ručka uz poruku: „Eto, tako je izgledala naša veza.“
+
+I nije Milica jedina koja me brine.
+
+Imam prijatelja kojem već šest godina dugujem dvadeset evra. Nije da ne želim da mu vratim, nego smo obojica toliko puta zaboravili na taj dug da bi sada bilo neprijatno pokvariti tradiciju. Čovek me redovno podseća, uglavnom kada smo u društvu, i već mogu da zamislim kako mi svakog prvog u mesecu šalje miris novčanica, a za rođendan miris praznog novčanika.
+
+A šta tek ako si se nekome ozbiljno zamerio? Danas ti ljut komšija može ostaviti neprijatnu poruku na vratima ili ti ne pozdraviti ženu u liftu. Sutra će moći da ti pošalje miris svojih patika posle fudbala, direktno u dnevnu sobu, dok večeraš sa gostima. I kako da objasniš ljudima da to nije tvoj stan, nego osveta čoveka sa trećeg sprata kojem si prošlog leta zauzeo parking?
+
+Naravno, tehnologija će verovatno imati i neku zaštitu. Blokiranje neželjenih mirisa, roditeljsku kontrolu, možda čak i pretplatu za premium nosnice. Poznajući način na koji danas funkcionišu aplikacije, besplatna verzija će ti omogućavati da osetiš samo polovinu parfema, dok će za bazne note tražiti 9,99 evra mesečno.
+
+Ali šalu na stranu, moram priznati da me cela ideja pomalo fascinira.
+
+Postoje mirisi koji me u sekundi vrate dvadeset ili trideset godina unazad. Miris benzina na staroj pumpi, tek pokošene trave, mora posle letnje kiše ili nekog parfema koji više ne mogu nigde da pronađem. Dovoljno je da ih slučajno osetim i odjednom se setim ljudi, mesta i događaja za koje sam bio siguran da su zauvek nestali iz moje glave.
+
+I zato razumem zašto neko želi da napravi takvu tehnologiju. Bilo bi lepo da prijatelju koji živi hiljadama kilometara daleko možeš da pošalješ miris jutarnje kafe koju ste nekada zajedno pili. Ili da nekome ko godinama nije bio kod kuće pošalješ miris njegovog dvorišta posle kiše.
+
+Samo postoji jedna stvar koju naučnici, koliko god bili pametni, možda nikada neće uspeti da spakuju u telefon.
+
+Mogu da mi pošalju miris parfema koji je Milica nosila one večeri kada smo se upoznali, ali ne mogu da mi pošalju onaj trenutak kada se nasmejala, prišla mi i rekla nešto toliko neočekivano da sam zaboravio kako se zovem.
+
+To je, izgleda, i dalje posao za stvarni život.
+
+I dok razmišljam o svemu tome, telefon mi zazvoni.
+
+Milica.
+
+Nismo se čuli skoro dve godine.
+
+Javljam se, pomalo zbunjen, a ona me pita jesam li video vest o slanju mirisa preko telefona.
+
+Kažem da jesam.
+
+„E, super“, odgovara. „Samo da znaš, kad to proradi, imam nešto za tebe.“
+
+Pitam je šta.
+
+„Setićeš se.“
+
+I prekine vezu.
+
+Eto, dragi naučnici, želim vam mnogo uspeha u daljem radu, ali vas najljubaznije molim da sa tom tehnologijom ne žurite.
+
+A ako baš morate da je završite, imam samo jedan zahtev.
+
+Neka telefon, pre nego što prihvati miris, obavezno pita: „Da li ste sigurni da želite ponovo da prolazite kroz ovo?“
+
+Jer ja, gospodo, nisam.
+
+—
+
+Čarli
+
+Remember. PlayNice.`
+    },
+    relatedProducts: [
+    ],
+    links: [
+      {
+        label: {
+          en: "Read the source",
+          sr: "Pročitaj izvor"
+        },
+        url: "https://www.reuters.com/science/new-scentronic-technology-can-detect-transmit-aromas-remotely-2026-10-23/",
+        external: true
+      }
+    ]
   }
 ];
