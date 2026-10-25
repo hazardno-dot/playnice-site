@@ -8,3 +8,11 @@
 .journal-image-picker{grid-column:2;justify-self:end;margin-left:auto}
 .journal-image-upload>img{grid-column:1/-1;justify-self:end}
 @media(max-width:720px){.journal-image-upload{grid-template-columns:minmax(0,1fr) auto}.journal-image-picker{grid-column:2}.journal-image-upload>img{grid-column:1/-1;max-width:220px;justify-self:start}}
+
+/* Keep upload control flush to the right padding of the Journal Image panel. */
+.journal-editor .journal-image-upload{display:flex!important;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:12px}
+.journal-editor .journal-image-upload-copy{flex:1 1 280px;min-width:0}
+.journal-editor .journal-image-picker{flex:0 0 auto;margin-left:auto!important;align-self:center}
+.journal-editor .journal-image-upload>img{flex:0 0 120px;margin-left:auto}
+.journal-editor .journal-image-result,.journal-editor .journal-image-error{flex:1 1 100%}
+@media(max-width:720px){.journal-editor .journal-image-upload-copy{flex-basis:100%}.journal-editor .journal-image-picker{margin-left:auto!important}}
