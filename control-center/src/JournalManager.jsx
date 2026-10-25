@@ -119,7 +119,7 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
 
     <section className="journal-editor-section">
       <div className="journal-link-editor-head"><span>BULK ARTICLE INPUT</span><button type="button" onClick={() => { if (bulkOpen) setBulkOpen(false); else { const { mediaStage: ignored, ...article } = draft; setBulkText(JSON.stringify(article, null, 2)); setBulkError(""); setBulkOpen(true); } }}>{bulkOpen ? "Close" : "Bulk input / export"}</button></div>
-      <p style={{ fontSize: 11, color: "#91a298", margin: 0 }}>Paste one JSON article. Import updates the editor only; Save draft is still required. Article ID and staged media are protected.</p>
+      <p style={{ fontSize: 11, color: "#91a298", margin: 0 }}>Paste one JSON article. Import updates the editor only; Save draft is still required. Article ID and staged media are protected. CTA links are included in the JSON <code>links</code> array, with SR/EN labels and a <code>url</code> or <code>action</code> destination.</p>
       {bulkOpen ? <>
         <textarea aria-label="Journal bulk JSON" spellCheck={false} value={bulkText} onChange={(event) => setBulkText(event.target.value)} style={{ minHeight: 290, fontFamily: "monospace" }} />
         {bulkError ? <pre role="alert" style={{ whiteSpace: "pre-wrap", color: "#efb0b0" }}>{bulkError}</pre> : null}
@@ -135,8 +135,9 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
         {mediaError ? <div className="journal-image-error">{mediaError}</div> : null}
       </div>
     </section>
-    <details className="journal-manual-fields" open={manualOpen} onToggle={(event) => setManualOpen(event.currentTarget.open)}>
-      <summary>Edit fields · manual editor</summary>
+    <div className="journal-manual-fields">
+      <button type="button" className="journal-manual-toggle" aria-expanded={manualOpen} onClick={() => setManualOpen((current) => !current)}>{manualOpen ? "▾" : "▸"} Edit fields · manual editor</button>
+      {manualOpen ? <div className="journal-manual-content">
     <section className="journal-editor-section"><span>IDENTITY</span><div className="journal-editor-grid"><label><span>Article ID · locked</span><input value={draft.id} disabled /></label><label><span>Image path · automatic</span><input value={draft.image || ""} readOnly placeholder={`/journal/article${draft.id}.webp`} /></label><label><span>Date · SR</span><input value={draft.date?.sr || ""} onChange={(event) => setPair("date", "sr", event.target.value)} /></label><label><span>Date · EN</span><input value={draft.date?.en || ""} onChange={(event) => setPair("date", "en", event.target.value)} /></label></div>
 
     </section>
@@ -162,7 +163,8 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
     </section>
 
 
-    </details>
+      </div> : null}
+    </div>
     <div className="journal-editor-actions bottom"><button onClick={onCancel} disabled={saving || mediaBusy}>Cancel</button><button className="primary" onClick={() => onSave(draft)} disabled={saving || mediaBusy || blocked}>{saving ? "Saving…" : mediaBusy ? "Image processing…" : blocked ? "Fix validation" : "Save draft"}</button></div>
   </div>;
 }
