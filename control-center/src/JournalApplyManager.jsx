@@ -28,6 +28,7 @@ export default function JournalApplyManager() {
   const [row, setRow] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [mergeNotice, setMergeNotice] = useState("");
 
   useEffect(() => {
     const mainStage = document.querySelector(".main-stage");
@@ -147,6 +148,29 @@ export default function JournalApplyManager() {
     finally { setBusy(false); }
   };
 
+  const checkMergeStatus = async () => {
+    setBusy(true); setError(""); setMergeNotice("");
+    try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+      if (sessionError || !token) throw sessionError || new Error("Authenticated admin session required.");
+      const response = await fetch("/api/sync-journal-publish-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ article_id: articleId }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "Merge status check failed.");
+      if (result.status === "published") {
+        setMergeNotice("Published merge confirmed. Refreshing Journal.");
+        window.location.reload();
+      } else {
+        setMergeNotice("Not yet confirmed as published. Check the GitHub PR and live production deployment.");
+      }
+    } catch (checkError) { setError(checkError.message || String(checkError)); }
+    finally { setBusy(false); }
+  };
+
   const preparationShapeValid = Boolean(row.prepared_at && (row.baseline_snapshot?.source_block || row.baseline_snapshot?.mode === "insert"));
   const prepared = Boolean(preparationShapeValid && (!row.reviewed_at || new Date(row.prepared_at).getTime() >= new Date(row.reviewed_at).getTime()));
   const hasPr = Boolean(row.apply_branch && row.apply_pr_number);
@@ -158,8 +182,10 @@ export default function JournalApplyManager() {
     <div className="journal-controlled-copy"><span>JOURNAL CONTROLLED APPLY</span><strong>{stateLabel}</strong><small>{liveArticle ? "Existing article · exact source-block drift guard" : "New article · sequential ID + exact Journal source SHA guard"} · no automatic merge.</small></div>
     <div className="journal-controlled-actions">
       {error ? <span className="journal-controlled-error">{error}</span> : null}
+      {mergeNotice ? <span role="status" className="journal-controlled-error">{mergeNotice}</span> : null}
       {hasPr ? <>
         <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open draft PR ↗</a>
+        <button type="button" disabled={busy} onClick={checkMergeStatus}>{busy ? "Checking…" : "Check merge status"}</button>
         {prepared
           ? <button className="primary" disabled={busy} onClick={() => callApply("refresh")}>{busy ? "Refreshing…" : "Refresh draft PR"}</button>
           : <button className="primary" disabled={busy || noChanges} onClick={() => callApply("prepare")}>{busy ? "Preparing…" : noChanges ? "No changes to apply" : "Prepare refresh"}</button>}

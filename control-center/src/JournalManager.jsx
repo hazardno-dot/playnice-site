@@ -18,6 +18,13 @@ const linkMode = (link) => Object.prototype.hasOwnProperty.call(link || {}, "url
 
 function JournalEditor({ initial, onCancel, onSave, saving }) {
   const [draft, setDraft] = useState(() => normalizeJournalDraftPayload(initial));
+  const [bulkOpen, setBulkOpen] = useState(() => !initial?.title?.sr && !initial?.title?.en);
+  const [manualOpen, setManualOpen] = useState(false);
+  const [bulkText, setBulkText] = useState(() => {
+    const { mediaStage: ignored, ...article } = normalizeJournalDraftPayload(initial);
+    return JSON.stringify(article, null, 2);
+  });
+  const [bulkError, setBulkError] = useState("");
   const [mediaBusy, setMediaBusy] = useState(false);
   const [mediaError, setMediaError] = useState("");
   const [mediaInfo, setMediaInfo] = useState(null);
@@ -42,6 +49,23 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
   const removeLink = (index) => setDraft((current) => ({ ...current, links: (Array.isArray(current.links) ? current.links : []).filter((_, itemIndex) => itemIndex !== index) }));
   const audit = useMemo(() => auditJournalArticles([draft], productSlugs), [draft]);
   const blocked = audit.errors.length > 0;
+  const applyBulk = () => {
+    try {
+      const input = JSON.parse(bulkText);
+      if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("Expected a single JSON article object.");
+      if (Number(input.id) !== Number(draft.id)) throw new Error("Article ID cannot change in bulk input.");
+      const candidate = { ...draft };
+      for (const key of ["date", "image", "title", "excerpt", "content", "series", "relatedProducts", "links"]) {
+        if (Object.prototype.hasOwnProperty.call(input, key)) candidate[key] = input[key];
+      }
+      const normalized = normalizeJournalDraftPayload(candidate);
+      const issues = auditJournalArticles([normalized], productSlugs).errors;
+      if (issues.length) throw new Error(issues.map((issue) => issue.field + ": " + issue.message).join("\n"));
+      setDraft(normalized);
+      setBulkError("");
+      setBulkOpen(false);
+    } catch (error) { setBulkError(error.message || String(error)); }
+  };
 
   useEffect(() => () => {
     if (mediaPreviewRef.current) URL.revokeObjectURL(mediaPreviewRef.current);
@@ -93,7 +117,16 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
 
     {audit.issues.length ? <div className="journal-editor-issues">{audit.issues.map((issue, index) => <div key={`${issue.field}-${index}`} className={issue.level}><strong>{issue.field}</strong><span>{issue.message}</span></div>)}</div> : null}
 
-    <section className="journal-editor-section"><span>IDENTITY</span><div className="journal-editor-grid"><label><span>Article ID · locked</span><input value={draft.id} disabled /></label><label><span>Image path · automatic</span><input value={draft.image || ""} readOnly placeholder={`/journal/article${draft.id}.webp`} /></label><label><span>Date · SR</span><input value={draft.date?.sr || ""} onChange={(event) => setPair("date", "sr", event.target.value)} /></label><label><span>Date · EN</span><input value={draft.date?.en || ""} onChange={(event) => setPair("date", "en", event.target.value)} /></label></div>
+    <section className="journal-editor-section">
+      <div className="journal-link-editor-head"><span>BULK ARTICLE INPUT</span><button type="button" onClick={() => { if (bulkOpen) setBulkOpen(false); else { const { mediaStage: ignored, ...article } = draft; setBulkText(JSON.stringify(article, null, 2)); setBulkError(""); setBulkOpen(true); } }}>{bulkOpen ? "Close" : "Bulk input / export"}</button></div>
+      <p style={{ fontSize: 11, color: "#91a298", margin: 0 }}>Paste one JSON article. Import updates the editor only; Save draft is still required. Article ID and staged media are protected. CTA links are included in the JSON <code>links</code> array, with SR/EN labels and a <code>url</code> or <code>action</code> destination.</p>
+      {bulkOpen ? <>
+        <textarea aria-label="Journal bulk JSON" spellCheck={false} value={bulkText} onChange={(event) => setBulkText(event.target.value)} style={{ minHeight: 290, fontFamily: "monospace" }} />
+        {bulkError ? <pre role="alert" style={{ whiteSpace: "pre-wrap", color: "#efb0b0" }}>{bulkError}</pre> : null}
+        <div className="journal-editor-actions"><button type="button" className="primary" onClick={applyBulk}>Apply to editor</button></div>
+      </> : null}
+    </section>
+    <section className="journal-editor-section"><span>JOURNAL IMAGE</span>
       <div className="journal-image-upload">
         <div className="journal-image-upload-copy"><strong>JOURNAL IMAGE</strong><span>JPG / PNG / WebP → optimized WebP · max 1600px edge · target ≤ 500 KB</span><code>{draft.image || `/journal/article${draft.id}.webp`}</code></div>
         <label className={`journal-image-picker ${mediaBusy ? "busy" : ""}`}><input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" disabled={mediaBusy} onChange={(event) => uploadImage(event.target.files?.[0] || null)} /><strong>{mediaBusy ? "Optimizing + staging…" : draft.image ? "Replace image" : "Upload image"}</strong></label>
@@ -101,6 +134,12 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
         {mediaInfo ? <div className="journal-image-result"><span>{mediaInfo.width} × {mediaInfo.height}px</span><span>{formatImageBytes(mediaInfo.originalBytes)} → <strong>{formatImageBytes(mediaInfo.bytes)}</strong></span></div> : null}
         {mediaError ? <div className="journal-image-error">{mediaError}</div> : null}
       </div>
+    </section>
+    <div className="journal-manual-fields">
+      <button type="button" className="journal-manual-toggle" aria-expanded={manualOpen} onClick={() => setManualOpen((current) => !current)}>{manualOpen ? "▾" : "▸"} Edit fields · manual editor</button>
+      {manualOpen ? <div className="journal-manual-content">
+    <section className="journal-editor-section"><span>IDENTITY</span><div className="journal-editor-grid"><label><span>Article ID · locked</span><input value={draft.id} disabled /></label><label><span>Image path · automatic</span><input value={draft.image || ""} readOnly placeholder={`/journal/article${draft.id}.webp`} /></label><label><span>Date · SR</span><input value={draft.date?.sr || ""} onChange={(event) => setPair("date", "sr", event.target.value)} /></label><label><span>Date · EN</span><input value={draft.date?.en || ""} onChange={(event) => setPair("date", "en", event.target.value)} /></label></div>
+
     </section>
 
     {["title", "excerpt", "content"].map((field) => <section className="journal-editor-section" key={field}><span>{field.toUpperCase()}</span><div className="journal-editor-lang"><label><span>{field} · SR</span><textarea value={draft[field]?.sr || ""} onChange={(event) => setPair(field, "sr", event.target.value)} /></label><label><span>{field} · EN</span><textarea value={draft[field]?.en || ""} onChange={(event) => setPair(field, "en", event.target.value)} /></label></div></section>)}
@@ -123,6 +162,9 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
       })}</div> : <div className="journal-link-empty">No CTA links configured for this article.</div>}
     </section>
 
+
+      </div> : null}
+    </div>
     <div className="journal-editor-actions bottom"><button onClick={onCancel} disabled={saving || mediaBusy}>Cancel</button><button className="primary" onClick={() => onSave(draft)} disabled={saving || mediaBusy || blocked}>{saving ? "Saving…" : mediaBusy ? "Image processing…" : blocked ? "Fix validation" : "Save draft"}</button></div>
   </div>;
 }
