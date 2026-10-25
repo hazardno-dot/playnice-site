@@ -14,7 +14,7 @@ const productSlugs = products.map((product) => product.slug);
 const langPair = (value) => ({ sr: String(value?.sr || ""), en: String(value?.en || "") });
 const csvList = (value) => Array.isArray(value) ? value : String(value || "").split(",").map((item) => item.trim()).filter(Boolean);
 const emptyLink = () => ({ label: { sr: "", en: "" }, action: "" });
-const linkMode = (link) => link?.url ? "url" : "action";
+const linkMode = (link) => Object.prototype.hasOwnProperty.call(link || {}, "url") ? "url" : "action";
 
 function JournalEditor({ initial, onCancel, onSave, saving }) {
   const [draft, setDraft] = useState(() => normalizeJournalDraftPayload(initial));
