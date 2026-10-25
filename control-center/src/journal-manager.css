@@ -3,7 +3,8 @@
 .journal-manual-toggle{width:100%;border:0;background:transparent;color:#dfe5e1;font-size:13px;font-weight:600;text-align:left;padding:13px 0;cursor:pointer}
 .journal-manual-toggle:hover,.journal-manual-toggle:focus-visible{color:#85dfac}
 .journal-manual-content{display:grid;gap:15px;padding-top:8px}
-.journal-image-upload{grid-template-columns:minmax(0,1fr) auto}
-.journal-image-picker{grid-column:2;justify-self:end}
-.journal-image-upload>img{grid-column:2;justify-self:end}
+.journal-image-upload{grid-template-columns:minmax(0,1fr) auto;justify-content:stretch}
+.journal-image-upload-copy{grid-column:1;min-width:0}
+.journal-image-picker{grid-column:2;justify-self:end;margin-left:auto}
+.journal-image-upload>img{grid-column:1/-1;justify-self:end}
 @media(max-width:720px){.journal-image-upload{grid-template-columns:minmax(0,1fr) auto}.journal-image-picker{grid-column:2}.journal-image-upload>img{grid-column:1/-1;max-width:220px;justify-self:start}}
