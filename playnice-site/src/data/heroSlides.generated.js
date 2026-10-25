@@ -4,15 +4,18 @@
 
 export const BASE_HERO_SLIDES = [
   {
-    "id": 3,
+    "id": 5,
     "kind": "imageOnly",
-    "image": "/hero/slide-3.jpg",
-    "desktopImage": "/hero/slide-3.jpg",
-    "mobileImage": "/hero/mobile/slide-3-mobile.jpg",
-    "alt": "SUCCESS DOESN’T HAVE A SEASON.",
-    "actionPrimary": "product",
-    "actionProductSlug": "creed-aventus-cologne",
-    "preferredSize": "5ml"
+    "image": "/hero/slide-5.jpg",
+    "desktopImage": "/hero/slide-5.jpg",
+    "mobileImage": "/hero/mobile/slide-5-mobile.jpg",
+    "alt": "A NEW NAME IN MONTENEGRO.  BUJAIRAMI HAS ARRIVED.",
+    "actionPrimary": "collection",
+    "actionCollection": [
+      "bujairami-too-damn-good",
+      "bujairami-hectic"
+    ],
+    "collectionTitle": "Discover Bujairami. Discover something different."
   },
   {
     "id": 12,
@@ -58,6 +61,17 @@ export const BASE_HERO_SLIDES = [
     "manifestoType": "confidence"
   },
   {
+    "id": 3,
+    "kind": "imageOnly",
+    "image": "/hero/slide-3.jpg",
+    "desktopImage": "/hero/slide-3.jpg",
+    "mobileImage": "/hero/mobile/slide-3-mobile.jpg",
+    "alt": "SUCCESS DOESN’T HAVE A SEASON.",
+    "actionPrimary": "product",
+    "actionProductSlug": "creed-aventus-cologne",
+    "preferredSize": "5ml"
+  },
+  {
     "id": 4,
     "kind": "imageOnly",
     "image": "/hero/slide-4.jpg",
@@ -66,21 +80,6 @@ export const BASE_HERO_SLIDES = [
     "alt": "PlayNice Premium Fragrance House – gentleman with fragrance",
     "actionPrimary": "manifesto",
     "manifestoType": "playnice-mission"
-  },
-  {
-    "id": 5,
-    "kind": "imageOnly",
-    "image": "/hero/slide-5.jpg",
-    "desktopImage": "/hero/slide-5.jpg",
-    "mobileImage": "/hero/mobile/slide-5-mobile.jpg",
-    "alt": "Još ih niste probali? – PlayNice izbor parfema",
-    "actionPrimary": "collection",
-    "actionCollection": [
-      "armaf-club-de-nuit-intense-overdose",
-      "narciso-rodriguez-for-him-bleu-noir-extreme-edt",
-      "french-avenue-ravine-ginger-edp"
-    ],
-    "collectionTitle": "Još ih niste probali?"
   },
   {
     "id": 1,

@@ -1,5 +1,32 @@
 export const exhibitionItems = [
   {
+    "id": "hero-5-jo-ih-niste-probali-playnice-izbor-parfema",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "Još ih niste probali? – PlayNice izbor parfema",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-5-jo-ih-niste-probali-playnice-izbor-parfema-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-5-jo-ih-niste-probali-playnice-izbor-parfema.jpg",
+        "format": "wide",
+        "alt": "Još ih niste probali? – PlayNice izbor parfema"
+      }
+    ]
+  },
+
+  {
     "id": "hero-9-playnice-limited-stock-fragrance-campaign-hero-banne",
     "year": 2026,
     "period": "sep-dec-2026",
