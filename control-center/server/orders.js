@@ -275,7 +275,7 @@ function buildMirror(order) {
     fulfillmentStatus: order.status,
     legacyStatus: legacyStatusFor(order.status),
     trackingNumber: order.tracking_number || "",
-    courierPaid: order.courier_payment_status || "N/A",
+    courierPaid: order.status === "CANCELLED" && order.courier_payment_status !== "PAID" ? "CANCELLED" : (order.courier_payment_status || "N/A"),
     courierPaidAt: order.courier_paid_at || null,
     deliveryIssue: order.delivery_issue || "",
     freeGift: String(order.source_payload?.freeGift || ""),
