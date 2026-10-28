@@ -24,6 +24,7 @@ const money = (value) => {
 
 const COURIER_FEE = 4;
 const courierPayout = (order) => Math.max(0, Number(order?.source_payload?.total || 0) - COURIER_FEE);
+const courierDisplayStatus = (order) => order?.status === "CANCELLED" && order?.courier_payment_status !== "PAID" ? "CANCELLED" : (order?.courier_payment_status || "N/A");
 
 const dateTime = (value) => {
   if (!value) return "—";
@@ -875,14 +876,16 @@ function OrdersWorkspace() {
           </section>
 
           <section className="orders-payment">
-            <div className="orders-section-title"><span>COURIER / COD</span><strong>{selected.courier_payment_status || "N/A"}</strong></div>
+            <div className="orders-section-title"><span>COURIER / COD</span><strong>{courierDisplayStatus(selected)}</strong></div>
             <div className="orders-payment-row">
               <div>
                 <strong>{money(payload.total)}</strong>
                 <span>{selected.courier_payment_status === "PAID"
                   ? "Courier payout received " + dateTime(selected.courier_paid_at)
-                  : selected.courier_payment_status === "PENDING"
-                    ? "Waiting for courier payout"
+                  : selected.status === "CANCELLED"
+                    ? "No courier payout required"
+                    : selected.courier_payment_status === "PENDING"
+                      ? "Waiting for courier payout"
                     : "No courier payout tracking for this historical order"}</span>
               </div>
               {editable && selected.courier_payment_status === "PAID" && !selected.courier_batch_id ? <button type="button" onClick={() => setPayment("PENDING")} disabled={Boolean(busy)}>
