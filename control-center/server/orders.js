@@ -199,7 +199,7 @@ function inventoryGiftItems(payload) {
   return legacy ? [{ product_name: canonicalProductName(legacy[1]), ml: Number(legacy[2]) }] : [];
 }
 
-function buildInventoryAnalytics(orders, stockRows) {
+function buildInventoryAnalytics(orders, stockRows, commerce) {
   const tracked = new Map((Array.isArray(stockRows) ? stockRows : []).map((row) => [
     canonicalProductName(row.product_name).toLowerCase(),
     {
@@ -274,7 +274,7 @@ async function readOrderAnalytics(token) {
   ]);
   return {
     ...(analytics || {}),
-    inventory: buildInventoryAnalytics(orderData.orders, inventoryStock)
+    inventory: buildInventoryAnalytics(orderData.orders, inventoryStock, analytics)
   };
 }
 
