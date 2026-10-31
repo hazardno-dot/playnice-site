@@ -1,6 +1,5 @@
 // Production redeploy trigger: env refresh.
 import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
-import { products as catalogProducts } from "../../playnice-site/src/data/products/index.js";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -206,21 +205,7 @@ function buildInventoryAnalytics(orders, stockRows) {
     }
   ]));
 
-  for (const product of catalogProducts) {
-    const key = canonicalProductName(product.name).toLowerCase();
-    if (tracked.has(key)) continue;
-    tracked.set(key, {
-      product_name: canonicalProductName(product.name),
-      tracking_started_at: "1970-01-01T00:00:00Z",
-      opening_balance_ml: 100,
-      restock_ml: 0,
-      stock_in_ml: 100,
-      manual_out_ml: 0,
-      consumed_since_tracking_ml: 0,
-      estimated: true,
-      provisional: true
-    });
-  }
+  const historical = new Map();
 
   for (const order of Array.isArray(orders) ? orders : []) {
     if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED"].includes(order.status)) continue;
@@ -229,7 +214,11 @@ function buildInventoryAnalytics(orders, stockRows) {
     const payload = order.source_payload || {};
     const entries = [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)];
     for (const entry of entries) {
-      const row = tracked.get(String(entry.product_name || "").toLowerCase());
+      const key = String(entry.product_name || "").toLowerCase();
+      const prior = historical.get(key) || { product_name: entry.product_name, ml: 0 };
+      prior.ml += Number(entry.ml || 0);
+      historical.set(key, prior);
+      const row = tracked.get(key);
       if (!row || (!row.estimated && new Date(consumedAt) < new Date(row.tracking_started_at))) continue;
       row.consumed_since_tracking_ml += Number(entry.ml || 0);
     }
@@ -249,6 +238,7 @@ function buildInventoryAnalytics(orders, stockRows) {
   return {
     tracked_count: rows.filter((row) => !row.estimated).length,
     estimated_count: rows.filter((row) => row.estimated).length,
+    historical_consumption: [...historical.values()],
     low_count: rows.filter((row) => row.stock_status === "LOW").length,
     depleted_count: rows.filter((row) => row.stock_status === "DEPLETED").length,
     remaining_total_ml: Math.round((rows.reduce((sum, row) => sum + Math.max(0, row.remaining_ml), 0) + Number.EPSILON) * 100) / 100,
