@@ -157,3 +157,41 @@
 .conversion-centered-kpis{width:100%;max-width:1000px;margin-inline:auto;grid-template-columns:repeat(4,minmax(0,1fr))}
 @media(max-width:900px){.conversion-centered-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.ga4-product-heading-actions{justify-content:flex-start}.ga4-product-heading-actions small{display:none}}
+
+/* Inventory v2 controls and keyboard-accessible selection */
+.inventory-intelligence .inventory-filter-toolbar{display:grid;gap:10px;margin:14px 0}
+.inventory-intelligence .inventory-filter-toolbar label{display:grid;gap:7px;min-width:0}
+.inventory-intelligence .inventory-filter-toolbar label>span{font-size:11px;letter-spacing:.08em;color:#9bb6a5}
+.inventory-intelligence .inventory-filter-toolbar input,
+.inventory-intelligence .inventory-form select{width:100%;min-width:0;box-sizing:border-box;appearance:auto;background:#0b1511!important;color:#e2eee6!important;border:1px solid rgba(116,190,147,.26)!important;border-radius:8px;padding:11px 12px;font:inherit;outline:none}
+.inventory-intelligence .inventory-form select option{background:#0b1511;color:#e2eee6}
+.inventory-intelligence .inventory-filter-toolbar input:focus-visible,
+.inventory-intelligence .inventory-form select:focus-visible{border-color:#83d9a7!important;outline:2px solid rgba(131,217,167,.26)}
+.inventory-intelligence .inventory-sort-controls{display:flex;flex-wrap:wrap;gap:8px}
+.inventory-intelligence .inventory-sort-controls button{border:1px solid rgba(110,192,145,.28);background:rgba(110,192,145,.06);border-radius:8px;color:#cde7d6;font-size:12px;padding:8px 12px;cursor:pointer}
+.inventory-intelligence .inventory-sort-controls button[aria-pressed="true"]{border-color:#83d9a7;background:rgba(110,192,145,.15);color:#b7f4cf}
+.inventory-intelligence .inventory-select-row{width:100%;font:inherit;color:inherit;text-align:inherit;border-left:3px solid transparent;cursor:pointer}
+.inventory-intelligence .inventory-select-row.is-selected{border-left-color:#8ae9b5;background:rgba(82,182,123,.13);box-shadow:inset 0 0 0 1px rgba(138,233,181,.18)}
+.inventory-intelligence .inventory-select-row:hover{background:rgba(82,182,123,.07)}
+.inventory-intelligence .inventory-select-row:focus-visible{outline:2px solid #8ae9b5;outline-offset:-2px}
+
+/* Restore native button reset for stock rows (browser default is white). */
+.inventory-intelligence button.inventory-select-row{
+  appearance:none;-webkit-appearance:none;
+  display:grid;width:100%;box-sizing:border-box;
+  background:transparent!important;color:#dde9df!important;
+  border:0;border-bottom:1px solid rgba(255,255,255,.075);
+  border-left:3px solid transparent;border-radius:0;
+  font:inherit;text-align:left;padding:10px 6px;
+}
+.inventory-intelligence button.inventory-select-row strong{color:#dcece1}
+.inventory-intelligence button.inventory-select-row small{color:#91ab9b}
+.inventory-intelligence button.inventory-select-row>span{color:#dcece1}
+.inventory-intelligence button.inventory-select-row:hover{background:rgba(80,175,116,.08)!important}
+.inventory-intelligence button.inventory-select-row.is-selected,
+.inventory-intelligence button.inventory-select-row.is-selected:hover{
+  background:rgba(73,157,106,.19)!important;
+  border-left-color:#8ae9b5;
+  box-shadow:inset 0 0 0 1px rgba(138,233,181,.19);
+}
+.inventory-intelligence button.inventory-select-row:focus-visible{outline:2px solid #8ae9b5;outline-offset:-2px}

@@ -75,8 +75,13 @@ export default function AnalyticsManager() {
     } catch(e) {setGa4Message(e.message||"Could not import this CSV.");}
   };
   const [inventoryProduct, setInventoryProduct] = useState("");
+  const [inventorySearch, setInventorySearch] = useState("");
+  const [inventorySort, setInventorySort] = useState("name");
+  const [inventoryDescending, setInventoryDescending] = useState(false);
   const [inventoryMl, setInventoryMl] = useState("");
   const [inventoryNote, setInventoryNote] = useState("");
+  const [inventoryMode, setInventoryMode] = useState("in");
+  const [inventoryReason, setInventoryReason] = useState("PRIVATE_GIFT");
   const [inventoryBusy, setInventoryBusy] = useState(false);
   const [inventoryNotice, setInventoryNotice] = useState("");
 
@@ -138,9 +143,33 @@ export default function AnalyticsManager() {
   const fullBottles = data.orderAnalytics?.full_bottles || [];
   const giftProducts = data.orderAnalytics?.gifts || [];
   const inventory = data.orderAnalytics?.inventory || {};
-  const inventoryRows = inventory.rows || [];
+  const historicalByName = new Map((inventory.historical_consumption || []).map((row) => [String(row.product_name || "").toLowerCase(), Number(row.ml || 0)]));
+  const storedByName = new Map((inventory.rows || []).map((row) => [String(row.product_name || "").toLowerCase(), row]));
+  const inventoryRows = products.map((product) => {
+    const stored = storedByName.get(String(product.name).toLowerCase());
+    if (stored) return stored;
+    const used = historicalByName.get(String(product.name).toLowerCase()) || 0;
+    const remaining = Math.round((100 - used) * 100) / 100;
+    return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
+  });
+  const visibleInventoryRows = inventoryRows
+    .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
+    .sort((a, b) => {
+      const direction = inventoryDescending ? -1 : 1;
+      const nameOrder = a.product_name.localeCompare(b.product_name);
+      if (inventorySort === "remaining") {
+        const amountOrder = Number(a.remaining_ml) - Number(b.remaining_ml);
+        return direction * (amountOrder || nameOrder);
+      }
+      return direction * nameOrder;
+    });
+  const toggleInventorySort = (field) => {
+    if (inventorySort === field) setInventoryDescending((previous) => !previous);
+    else { setInventorySort(field); setInventoryDescending(field === "remaining"); }
+  };
   const inventoryTrackedNames = new Set(inventoryRows.map((row) => String(row.product_name || "").toLowerCase()));
-  const inventoryIsTracked = inventoryTrackedNames.has(String(inventoryProduct || "").toLowerCase());
+  const selectedInventoryRow = inventoryRows.find((row) => String(row.product_name || "").toLowerCase() === String(inventoryProduct || "").toLowerCase());
+  const inventoryIsTracked = Boolean(selectedInventoryRow && !selectedInventoryRow.provisional);
 
   const addInventoryStock = async () => {
     const quantity = Number(inventoryMl);
@@ -160,7 +189,8 @@ export default function AnalyticsManager() {
           Authorization: "Bearer " + sessionData.session.access_token
         },
         body: JSON.stringify({
-          action: "add_inventory_stock",
+          action: inventoryMode === "out" ? "manual_inventory_out" : "add_inventory_stock",
+          ...(inventoryMode === "out" ? { reason: inventoryReason } : {}),
           product_name: inventoryProduct,
           quantity_ml: quantity,
           note: inventoryNote
@@ -169,11 +199,7 @@ export default function AnalyticsManager() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || "Could not record inventory stock.");
       setData((current) => ({ ...current, orderAnalytics: payload.analytics || current.orderAnalytics }));
-      setInventoryNotice(
-        payload.inventory_event?.event_type === "OPENING"
-          ? "Opening balance recorded."
-          : "Restock recorded."
-      );
+      setInventoryNotice(payload.inventory_event?.event_type === "MANUAL_OUT" ? "Manual removal recorded." : payload.inventory_event?.event_type === "OPENING" ? "Opening balance recorded." : "New bottle recorded.");
       setInventoryMl("");
       setInventoryNote("");
     } catch (inventoryError) {
@@ -254,7 +280,7 @@ export default function AnalyticsManager() {
       <div className="ranking-list">{salesBySource.length ? salesBySource.map(row=><div className="ranking-row source-row" key={row.order_source}><div><strong>{row.order_source}</strong><small>{number(row.orders)} delivered orders</small></div><span>{money(row.revenue)}</span></div>) : <p className="conversion-empty">No delivered source data yet.</p>}</div>
     </article>
     <article className="analytics-panel"><div className="analytics-panel-head"><div><span>COMPLETED SALES</span><h3>Top selling fragrances</h3></div><small>Delivered only · not product views</small></div>
-      <div className="ranking-list">{topProducts.filter(row=>Number(row.sold_units)>0).slice().sort((a,b)=>Number(b.sold_units)-Number(a.sold_units)).slice(0,8).map(row=><div className="ranking-row source-row" key={row.product_name}><div><strong>{row.product_name}</strong><small>{number(row.sold_units)} sold units</small></div><span>{money(row.revenue)}</span></div>)}</div>
+      <div className="ranking-list">{topProducts.filter(row=>Number(row.sold_units)>0).slice().sort((a,b)=>Number(b.sold_units)-Number(a.sold_units)).slice(0,8).map(row=><div className="ranking-row source-row" key={row.product_name}><div><strong>{row.product_name}</strong> <small>{row.estimated ? "ESTIMATED" : "VERIFIED"}</small><small>{number(row.sold_units)} sold units</small></div><span>{money(row.revenue)}</span></div>)}</div>
     </article>
   </div>
 </section> : module === "Commerce" ? <>
@@ -383,7 +409,7 @@ export default function AnalyticsManager() {
         <div>
           <span>STOCK / CONSUMPTION</span>
           <h2>Fragrance inventory</h2>
-          <p>Current measured stock, restocks and decant consumption after tracking starts.</p>
+          <p>Measured balance + restocks minus shipped decants, gifts and manual removals.</p>
         </div>
         <div className="sales-head-meta">
           <span className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</span>
@@ -394,34 +420,43 @@ export default function AnalyticsManager() {
         <article className="analytics-panel sales-wide inventory-panel">
           <div className="analytics-panel-head">
             <div><span>INVENTORY</span><h3>Inventory watch</h3></div>
-            <small>Current measured stock · decant consumption after tracking starts</small>
+            <small>Full catalog · measured + provisional stock · low alert ≤20 ml</small>
           </div>
 
           <div className="inventory-summary">
-            <div><span>TRACKED</span><strong>{number(inventory.tracked_count)}</strong></div>
-            <div><span>LOW STOCK</span><strong>{number(inventory.low_count)}</strong></div>
-            <div><span>DEPLETED</span><strong>{number(inventory.depleted_count)}</strong></div>
-            <div><span>REMAINING</span><strong>{number(inventory.remaining_total_ml, 1)} ml</strong></div>
+            <div><span>MEASURED</span><strong>{number(inventory.tracked_count)}</strong></div><div><span>ESTIMATED</span><strong>{number(inventoryRows.filter((row) => row.estimated).length)}</strong></div>
+            <div><span>LOW STOCK</span><strong>{number(inventoryRows.filter((row) => row.stock_status === "LOW").length)}</strong></div>
+            <div><span>DEPLETED</span><strong>{number(inventoryRows.filter((row) => ["DEPLETED", "REVIEW"].includes(row.stock_status)).length)}</strong></div>
+            <div><span>REMAINING</span><strong>{number(inventoryRows.reduce((sum, row) => sum + Math.max(0, Number(row.remaining_ml || 0)), 0), 1)} ml</strong></div>
           </div>
 
+          <p className="analytics-note">Provisional rows assume an original 100 ml bottle and deduct recorded historical shipments. They are estimates, not confirmed physical stock. A negative figure means the assumed bottle size is insufficient.</p>
+          <div className="inventory-filter-toolbar">
+            <label><span>SEARCH INVENTORY · {inventoryRows.length} FRAGRANCES</span><input type="search" value={inventorySearch} onChange={(event)=>setInventorySearch(event.target.value)} placeholder="Find a fragrance…" /></label>
+            <div className="inventory-sort-controls" role="group" aria-label="Sort inventory">
+              <button type="button" aria-pressed={inventorySort === "name"} onClick={() => toggleInventorySort("name")}>Fragrance {inventorySort === "name" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
+              <button type="button" aria-pressed={inventorySort === "remaining"} onClick={() => toggleInventorySort("remaining")}>Remaining ml {inventorySort === "remaining" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
+            </div>
+          </div>
           <div className="inventory-list">
-            {inventoryRows.length ? inventoryRows.map((row) => <div className={"inventory-row stock-" + String(row.stock_status || "ok").toLowerCase()} key={row.product_name}>
+            {visibleInventoryRows.length ? visibleInventoryRows.map((row) => <button type="button" className={"inventory-row inventory-select-row stock-" + String(row.stock_status || "ok").toLowerCase() + (inventoryProduct === row.product_name ? " is-selected" : "")} key={row.product_name} onClick={() => {setInventoryProduct(row.product_name);setInventoryNotice("");}} aria-pressed={inventoryProduct === row.product_name} title="Select fragrance for stock management">
               <div>
                 <strong>{row.product_name}</strong>
-                <small>Opening {number(row.opening_balance_ml, 1)} ml · restocked {number(row.restock_ml, 1)} ml · consumed {number(row.consumed_since_tracking_ml, 1)} ml</small>
+                <small>{row.estimated ? "PROVISIONAL · 100 ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
               </div>
               <span>{number(row.remaining_ml, 1)} ml</span>
-              {row.stock_status === "OK" ? null : <em>{row.stock_status}</em>}
-            </div>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
+              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
+            </button>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
           </div>
         </article>
 
         <article className="analytics-panel inventory-entry-panel">
           <div className="analytics-panel-head">
-            <div><span>STOCK LEDGER</span><h3>{inventoryIsTracked ? "Add stock" : "Start tracking"}</h3></div>
-            <small>{inventoryIsTracked ? "Restock" : "Current physical balance"}</small>
+            <div><span>STOCK LEDGER</span><h3>{inventoryMode === "out" ? "Remove stock" : inventoryIsTracked ? "Add bottle" : "Verify physical stock"}</h3></div>
+            <small>{inventoryMode === "out" ? "Non-order use" : inventoryIsTracked ? "New bottle" : "Current physical balance"}</small>
           </div>
           <div className="inventory-form">
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}><button type="button" aria-pressed={inventoryMode==="in"} onClick={() => setInventoryMode("in")}>+ New bottle</button><button type="button" aria-pressed={inventoryMode==="out"} onClick={() => setInventoryMode("out")}>− Manual removal</button></div>
             <label>
               <span>FRAGRANCE</span>
               <input list="inventory-products" value={inventoryProduct} onChange={(event) => setInventoryProduct(event.target.value)} placeholder="Search fragrance…" />
@@ -429,18 +464,20 @@ export default function AnalyticsManager() {
                 {[...products].sort((a,b) => String(a.name).localeCompare(String(b.name))).map((product) => <option value={product.name} key={product.slug} />)}
               </datalist>
             </label>
+            {inventoryMode === "in" ? <label><span>BOTTLE SIZE PRESET</span><select value="" onChange={(event) => setInventoryMl(event.target.value)}><option value="">Choose size…</option>{[50,80,100,120].map((ml) => <option key={ml} value={ml}>{ml} ml</option>)}</select></label> : null}
             <label>
-              <span>{inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
-              <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
+              <span>{inventoryMode === "out" ? "REMOVE ML" : inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
+              <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryMode === "out" ? "e.g. 10" : inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
             </label>
+            {inventoryMode === "out" ? <label><span>REASON</span><select value={inventoryReason} onChange={(event)=>setInventoryReason(event.target.value)}><option value="PRIVATE_GIFT">Private gift</option><option value="TESTING">Testing / sample</option><option value="DECANT_LOSS">Decant loss</option><option value="OTHER">Other</option></select></label> : null}
             <label>
               <span>NOTE · OPTIONAL</span>
               <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
             </label>
-            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0)}>
-              {inventoryBusy ? "Saving…" : inventoryIsTracked ? "+ Add stock" : "Start tracking"}
+            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !inventoryIsTracked)}>
+              {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : inventoryIsTracked ? "+ Add bottle" : "Verify balance"}
             </button>
-            <p>First entry is the current physical balance. Future entries add stock; packed orders and gift samples reduce the estimate automatically.</p>
+            <p>For provisional rows, verify the current physical balance first; this avoids double counting historical shipments. Once verified, new bottles add stock and manual removals cover gifts outside orders. Returned orders are excluded.</p>
             {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
           </div>
         </article>

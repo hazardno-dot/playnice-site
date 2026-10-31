@@ -199,9 +199,13 @@ function buildInventoryAnalytics(orders, stockRows) {
       opening_balance_ml: Number(row.opening_balance_ml || 0),
       restock_ml: Number(row.restock_ml || 0),
       stock_in_ml: Number(row.stock_in_ml || 0),
+      manual_out_ml: Number(row.manual_out_ml || 0),
+      estimated: Boolean(row.estimated),
       consumed_since_tracking_ml: 0
     }
   ]));
+
+  const historical = new Map();
 
   for (const order of Array.isArray(orders) ? orders : []) {
     if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED"].includes(order.status)) continue;
@@ -210,25 +214,31 @@ function buildInventoryAnalytics(orders, stockRows) {
     const payload = order.source_payload || {};
     const entries = [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)];
     for (const entry of entries) {
-      const row = tracked.get(String(entry.product_name || "").toLowerCase());
-      if (!row || new Date(consumedAt) < new Date(row.tracking_started_at)) continue;
+      const key = String(entry.product_name || "").toLowerCase();
+      const prior = historical.get(key) || { product_name: entry.product_name, ml: 0 };
+      prior.ml += Number(entry.ml || 0);
+      historical.set(key, prior);
+      const row = tracked.get(key);
+      if (!row || (!row.estimated && new Date(consumedAt) < new Date(row.tracking_started_at))) continue;
       row.consumed_since_tracking_ml += Number(entry.ml || 0);
     }
   }
 
   const rows = [...tracked.values()].map((row) => {
     const consumed = Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
-    const remaining = Math.round((row.stock_in_ml - consumed + Number.EPSILON) * 100) / 100;
+    const remaining = Math.round((row.stock_in_ml - consumed - row.manual_out_ml + Number.EPSILON) * 100) / 100;
     return {
       ...row,
       consumed_since_tracking_ml: consumed,
       remaining_ml: remaining,
-      stock_status: remaining <= 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK"
+      stock_status: remaining < 0 && row.estimated ? "REVIEW" : remaining <= 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK"
     };
   }).sort((a, b) => a.remaining_ml - b.remaining_ml || a.product_name.localeCompare(b.product_name));
 
   return {
-    tracked_count: rows.length,
+    tracked_count: rows.filter((row) => !row.estimated).length,
+    estimated_count: rows.filter((row) => row.estimated).length,
+    historical_consumption: [...historical.values()],
     low_count: rows.filter((row) => row.stock_status === "LOW").length,
     depleted_count: rows.filter((row) => row.stock_status === "DEPLETED").length,
     remaining_total_ml: Math.round((rows.reduce((sum, row) => sum + Math.max(0, row.remaining_ml), 0) + Number.EPSILON) * 100) / 100,
@@ -248,6 +258,16 @@ async function readOrderAnalytics(token) {
   };
 }
 
+async function recordInventoryManualOut(token, body) {
+  const quantityMl = Number(body?.quantity_ml);
+  if (!Number.isFinite(quantityMl) || quantityMl <= 0 || quantityMl > 5000) throw new Error("Invalid manual removal quantity.");
+  return rpc("record_control_center_inventory_manual_out", token, {
+    p_product_name: cleanText(body?.product_name, 180),
+    p_quantity_ml: quantityMl,
+    p_reason: cleanText(body?.reason, 40),
+    p_note: cleanText(body?.note, 260) || null
+  });
+}
 async function recordInventoryStock(token, body) {
   const productName = cleanText(body?.product_name, 180);
   const quantityMl = Number(body?.quantity_ml);
@@ -746,6 +766,10 @@ export default async function handler(req, res) {
 
     const action = String(req.body?.action || "").trim();
 
+    if (action === "manual_inventory_out") {
+      const inventory_event = await recordInventoryManualOut(auth.token, req.body);
+      return json(res, 200, { ok: true, inventory_event, analytics: await readOrderAnalytics(auth.token) });
+    }
     if (action === "add_inventory_stock") {
       const inventory_event = await recordInventoryStock(auth.token, req.body);
       return json(res, 200, {

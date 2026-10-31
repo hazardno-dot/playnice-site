@@ -30,7 +30,9 @@ for (const token of [
   'consumed_since_tracking_ml',
   'CURRENT ML',
   'add_inventory_stock',
-  'Start tracking',
+  'Verify balance',
+  'Manual removal',
+  'BOTTLE SIZE PRESET',
   'Inventory watch',
   '/api/orders?view=analytics',
 ]) {
