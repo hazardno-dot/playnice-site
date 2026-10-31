@@ -164,6 +164,14 @@ function inventorySaleItems(items) {
   for (const item of Array.isArray(items) ? items : []) {
     const qty = Math.max(1, Number(item?.quantity || 1));
     const bundles = Array.isArray(item?.bundleItems) ? item.bundleItems : [];
+    const bundleMatch = String(item?.size || "").match(/^\s*([0-9]+(?:\.[0-9]+)?)\s*ml\s*[×xX]\s*([0-9]+)\s*$/i);
+    if (bundleMatch && String(item?.name || "").includes(" / ")) {
+      const names = String(item.name).split(/\s*\/\s*/);
+      if (names.length === Number(bundleMatch[2])) {
+        for (const name of names) out.push({product_name:canonicalProductName(name),ml:Number(bundleMatch[1])*qty});
+      }
+      continue;
+    }
     if (bundles.length) {
       for (const bundle of bundles) {
         const sizeMl = parseMl(bundle?.size);
