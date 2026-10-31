@@ -30,7 +30,7 @@ for (const token of [
   'consumed_since_tracking_ml',
   'CURRENT ML',
   'add_inventory_stock',
-  'Verify balance',
+  '+ Add bottle',
   'Manual removal',
   'BOTTLE SIZE PRESET',
   'Inventory watch',

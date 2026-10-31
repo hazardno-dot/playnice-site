@@ -134,9 +134,10 @@ const PRODUCT_ALIASES = new Map([
   ["afnan supremacy collector's edition pour homme eau de parfum", "Afnan Supremacy Collector's Edition Pour Homme Eau de Parfum"],
   ["afnan turathi blue", "Afnan Turathi Blue Homme Eau de Parfum"],
   ["afnan turathi blue homme eau de parfum", "Afnan Turathi Blue Homme Eau de Parfum"],
-  ["arabiat prestige marwa edp", "Arabiyat Prestige Marwa"],
-  ["arabiyat p. marwa", "Arabiyat Prestige Marwa"],
-  ["arabiyat prestige marwa", "Arabiyat Prestige Marwa"],
+  ["arabiat prestige marwa edp", "Arabiyat Prestige Marwa Eau de Parfum"],
+  ["arabiyat p. marwa", "Arabiyat Prestige Marwa Eau de Parfum"],
+  ["arabiyat prestige marwa", "Arabiyat Prestige Marwa Eau de Parfum"],
+  ["arabiyat prestige marwa eau de parfum", "Arabiyat Prestige Marwa Eau de Parfum"],
   ["french avenue ravine ginger edp", "French Avenue Ravine Ginger Extrait de Parfum"],
   ["the french avenue ravine ginger extrait de parfum", "French Avenue Ravine Ginger Extrait de Parfum"],
   ["french avenue ravine ginger extrait de parfum", "French Avenue Ravine Ginger Extrait de Parfum"],
@@ -145,7 +146,16 @@ const PRODUCT_ALIASES = new Map([
   ["rayhaan pacific aura eau de parfum", "Rayhaan Pacific Aura Eau de Parfum"],
   ["afnan 9am", "Afnan 9 AM Eau de Parfum"],
   ["afnan 9 am eau de parfum", "Afnan 9 AM Eau de Parfum"],
-  ["kadlaj island dreams", "Khadlaj Island Dreams"]
+  ["rayhaan aquatica", "Rayhaan Aquatica Eau de Parfum"],
+  ["rayhaan aquatica eau de parfum", "Rayhaan Aquatica Eau de Parfum"],
+  ["french avenue safari breeze", "French Avenue Safari Breeze Eau de Parfum"],
+  ["lattafa dynasty", "Lattafa Dynasty Eau de Parfum"],
+  ["narciso poudrée", "Narciso Rodriguez NARCISO Poudrée Eau de Parfum"],
+  ["armaf sillage", "Armaf Club de Nuit Sillage Eau de Parfum"],
+  ["armaf club de nuit intense overdose edp", "Armaf Club de Nuit Intense Overdose Eau de Parfum"],
+  ["paris corner north stag expressions ii deux", "Paris Corner North Stag Expressions II Deux Extrait de Parfum"],
+  ["kadlaj island dreams", "Khadlaj Island Dreams Extrait de Parfum"],
+  ["khadlaj island dreams", "Khadlaj Island Dreams Extrait de Parfum"]
 ]);
 
 function canonicalProductName(value) {
@@ -163,6 +173,14 @@ function inventorySaleItems(items) {
   for (const item of Array.isArray(items) ? items : []) {
     const qty = Math.max(1, Number(item?.quantity || 1));
     const bundles = Array.isArray(item?.bundleItems) ? item.bundleItems : [];
+    const bundleMatch = String(item?.size || "").match(/^\s*([0-9]+(?:\.[0-9]+)?)\s*ml\s*[×xX]\s*([0-9]+)\s*$/i);
+    if (bundleMatch && String(item?.name || "").includes(" / ")) {
+      const names = String(item.name).split(/\s*\/\s*/);
+      if (names.length === Number(bundleMatch[2])) {
+        for (const name of names) out.push({product_name:canonicalProductName(name),ml:Number(bundleMatch[1])*qty});
+      }
+      continue;
+    }
     if (bundles.length) {
       for (const bundle of bundles) {
         const sizeMl = parseMl(bundle?.size);
@@ -174,6 +192,15 @@ function inventorySaleItems(items) {
     if (sizeMl > 0 && sizeMl < 50) out.push({ product_name: canonicalProductName(item?.name), ml: sizeMl * qty });
   }
   return out;
+}
+
+function inventoryResaleBottles(items) {
+  return (Array.isArray(items) ? items : []).flatMap((item) => {
+    const sizeMl = Number(item?.sizeMl || 0) || parseMl(item?.size);
+    const quantity = Number(item?.quantity || 1);
+    if (!(sizeMl >= 50) || !Number.isFinite(quantity) || quantity <= 0) return [];
+    return [{ product_name: canonicalProductName(item.name), ml: sizeMl * quantity }];
+  });
 }
 
 function inventoryGiftItems(payload) {
@@ -189,7 +216,7 @@ function inventoryGiftItems(payload) {
   return legacy ? [{ product_name: canonicalProductName(legacy[1]), ml: Number(legacy[2]) }] : [];
 }
 
-function buildInventoryAnalytics(orders, stockRows) {
+function buildInventoryAnalytics(orders, stockRows, commerce) {
   const tracked = new Map((Array.isArray(stockRows) ? stockRows : []).map((row) => [
     canonicalProductName(row.product_name).toLowerCase(),
     {
@@ -206,6 +233,18 @@ function buildInventoryAnalytics(orders, stockRows) {
   ]));
 
   const historical = new Map();
+  const resale = new Map();
+  for (const item of commerce.full_bottles || []) {
+    const product_name = canonicalProductName(item.product_name);
+    const key = product_name.toLowerCase();
+    resale.set(key, {product_name,ml:Number(item.ml || 0)});
+  }
+  for (const item of commerce.top_products || []) {
+    const product_name = canonicalProductName(item.product_name);
+    const key = product_name.toLowerCase();
+    const fullBottleMl = resale.get(key)?.ml || 0;
+    historical.set(key, {product_name,ml:Math.max(0,Number(item.total_ml_out || 0)-fullBottleMl),sold_ml:Number(item.sold_ml || 0)-fullBottleMl,gift_ml:Number(item.gift_ml || 0)});
+  }
 
   for (const order of Array.isArray(orders) ? orders : []) {
     if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED"].includes(order.status)) continue;
@@ -215,9 +254,6 @@ function buildInventoryAnalytics(orders, stockRows) {
     const entries = [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)];
     for (const entry of entries) {
       const key = String(entry.product_name || "").toLowerCase();
-      const prior = historical.get(key) || { product_name: entry.product_name, ml: 0 };
-      prior.ml += Number(entry.ml || 0);
-      historical.set(key, prior);
       const row = tracked.get(key);
       if (!row || (!row.estimated && new Date(consumedAt) < new Date(row.tracking_started_at))) continue;
       row.consumed_since_tracking_ml += Number(entry.ml || 0);
@@ -225,10 +261,14 @@ function buildInventoryAnalytics(orders, stockRows) {
   }
 
   const rows = [...tracked.values()].map((row) => {
-    const consumed = Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
+    const consumed = row.estimated
+      ? Number(historical.get(row.product_name.toLowerCase())?.ml || 0)
+      : Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
     const remaining = Math.round((row.stock_in_ml - consumed - row.manual_out_ml + Number.EPSILON) * 100) / 100;
     return {
       ...row,
+      resale_in_ml: resale.get(row.product_name.toLowerCase())?.ml || 0,
+      resale_out_ml: resale.get(row.product_name.toLowerCase())?.ml || 0,
       consumed_since_tracking_ml: consumed,
       remaining_ml: remaining,
       stock_status: remaining < 0 && row.estimated ? "REVIEW" : remaining <= 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK"
@@ -239,6 +279,7 @@ function buildInventoryAnalytics(orders, stockRows) {
     tracked_count: rows.filter((row) => !row.estimated).length,
     estimated_count: rows.filter((row) => row.estimated).length,
     historical_consumption: [...historical.values()],
+    resale_bottles: [...resale.values()],
     low_count: rows.filter((row) => row.stock_status === "LOW").length,
     depleted_count: rows.filter((row) => row.stock_status === "DEPLETED").length,
     remaining_total_ml: Math.round((rows.reduce((sum, row) => sum + Math.max(0, row.remaining_ml), 0) + Number.EPSILON) * 100) / 100,
@@ -254,7 +295,7 @@ async function readOrderAnalytics(token) {
   ]);
   return {
     ...(analytics || {}),
-    inventory: buildInventoryAnalytics(orderData.orders, inventoryStock)
+    inventory: buildInventoryAnalytics(orderData.orders, inventoryStock, analytics)
   };
 }
 
@@ -768,6 +809,17 @@ export default async function handler(req, res) {
 
     if (action === "manual_inventory_out") {
       const inventory_event = await recordInventoryManualOut(auth.token, req.body);
+      return json(res, 200, { ok: true, inventory_event, analytics: await readOrderAnalytics(auth.token) });
+    }
+    if (action === "add_estimated_inventory_bottle") {
+      const productName = cleanText(req.body?.product_name, 180);
+      const quantityMl = Number(req.body?.quantity_ml);
+      if (!productName || !Number.isFinite(quantityMl) || quantityMl <= 0 || quantityMl > 5000) throw new Error("Invalid bottle quantity.");
+      const inventory_event = await rpc("record_control_center_estimated_bottle", auth.token, {
+        p_product_name: productName,
+        p_quantity_ml: quantityMl,
+        p_note: cleanText(req.body?.note, 300) || null
+      });
       return json(res, 200, { ok: true, inventory_event, analytics: await readOrderAnalytics(auth.token) });
     }
     if (action === "add_inventory_stock") {

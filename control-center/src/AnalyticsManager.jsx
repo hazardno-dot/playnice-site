@@ -145,12 +145,14 @@ export default function AnalyticsManager() {
   const inventory = data.orderAnalytics?.inventory || {};
   const historicalByName = new Map((inventory.historical_consumption || []).map((row) => [String(row.product_name || "").toLowerCase(), Number(row.ml || 0)]));
   const storedByName = new Map((inventory.rows || []).map((row) => [String(row.product_name || "").toLowerCase(), row]));
+  const resaleByName = new Map((inventory.resale_bottles || []).map((row) => [String(row.product_name || "").toLowerCase(), Number(row.ml || 0)]));
   const inventoryRows = products.map((product) => {
     const stored = storedByName.get(String(product.name).toLowerCase());
     if (stored) return stored;
     const used = historicalByName.get(String(product.name).toLowerCase()) || 0;
     const remaining = Math.round((100 - used) * 100) / 100;
-    return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
+    const resaleMl = resaleByName.get(String(product.name).toLowerCase()) || 0;
+    return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, resale_in_ml: resaleMl, resale_out_ml: resaleMl, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
   });
   const visibleInventoryRows = inventoryRows
     .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
@@ -189,7 +191,7 @@ export default function AnalyticsManager() {
           Authorization: "Bearer " + sessionData.session.access_token
         },
         body: JSON.stringify({
-          action: inventoryMode === "out" ? "manual_inventory_out" : "add_inventory_stock",
+          action: inventoryMode === "out" ? "manual_inventory_out" : inventoryIsTracked ? "add_inventory_stock" : "add_estimated_inventory_bottle",
           ...(inventoryMode === "out" ? { reason: inventoryReason } : {}),
           product_name: inventoryProduct,
           quantity_ml: quantity,
@@ -444,7 +446,11 @@ export default function AnalyticsManager() {
                 <strong>{row.product_name}</strong>
                 <small>{row.estimated ? "PROVISIONAL · 100 ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
               </div>
-              <span>{number(row.remaining_ml, 1)} ml</span>
+              <div className="inventory-volume-cells">
+                <span><small>TOTAL</small><strong>{number(Number(row.opening_balance_ml || 0) + Number(row.restock_ml || 0) + Number(row.resale_in_ml || 0), 1)} ml</strong></span>
+                <span><small>OUT</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0) + Number(row.resale_out_ml || 0), 1)} ml</strong></span>
+                <span className="inventory-volume-remaining"><small>REMAINING</small><strong>{number(row.remaining_ml, 1)} ml</strong></span>
+              </div>
               {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
             </button>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
           </div>
@@ -464,7 +470,7 @@ export default function AnalyticsManager() {
                 {[...products].sort((a,b) => String(a.name).localeCompare(String(b.name))).map((product) => <option value={product.name} key={product.slug} />)}
               </datalist>
             </label>
-            {inventoryMode === "in" ? <label><span>BOTTLE SIZE PRESET</span><select value="" onChange={(event) => setInventoryMl(event.target.value)}><option value="">Choose size…</option>{[50,80,100,120].map((ml) => <option key={ml} value={ml}>{ml} ml</option>)}</select></label> : null}
+            {inventoryMode === "in" ? <label><span>BOTTLE SIZE PRESET</span><select value="" onChange={(event) => setInventoryMl(event.target.value)}><option value="">Choose size…</option>{[30,50,60,80,90,100,120,150,180,200].map((ml) => <option key={ml} value={ml}>{ml} ml</option>)}</select></label> : null}
             <label>
               <span>{inventoryMode === "out" ? "REMOVE ML" : inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
               <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryMode === "out" ? "e.g. 10" : inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
@@ -475,9 +481,9 @@ export default function AnalyticsManager() {
               <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
             </label>
             <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !inventoryIsTracked)}>
-              {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : inventoryIsTracked ? "+ Add bottle" : "Verify balance"}
+              {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : "+ Add bottle"}
             </button>
-            <p>For provisional rows, verify the current physical balance first; this avoids double counting historical shipments. Once verified, new bottles add stock and manual removals cover gifts outside orders. Returned orders are excluded.</p>
+            <p>New bottles add to the historical 100 ml estimate without resetting past orders. You may also enter a custom ml amount. Manual removal is available after a measured opening is recorded.</p>
             {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
           </div>
         </article>
