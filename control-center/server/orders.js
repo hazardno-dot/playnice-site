@@ -228,6 +228,8 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
       stock_in_ml: Number(row.stock_in_ml || 0),
       manual_out_ml: Number(row.manual_out_ml || 0),
       estimated: Boolean(row.estimated),
+      baseline_verified: Boolean(row.baseline_verified),
+      historical_baseline: Boolean(row.historical_baseline),
       consumed_since_tracking_ml: 0
     }
   ]));
@@ -261,7 +263,7 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
   }
 
   const rows = [...tracked.values()].map((row) => {
-    const consumed = row.estimated
+    const consumed = row.historical_baseline
       ? Number(historical.get(row.product_name.toLowerCase())?.ml || 0)
       : Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
     const remaining = Math.round((row.stock_in_ml - consumed - row.manual_out_ml + Number.EPSILON) * 100) / 100;
@@ -810,6 +812,17 @@ export default async function handler(req, res) {
     if (action === "manual_inventory_out") {
       const inventory_event = await recordInventoryManualOut(auth.token, req.body);
       return json(res, 200, { ok: true, inventory_event, analytics: await readOrderAnalytics(auth.token) });
+    }
+    if (action === "verify_inventory_baseline") {
+      const productName = cleanText(req.body?.product_name, 180);
+      const quantityMl = Number(req.body?.quantity_ml);
+      if (!productName || !Number.isFinite(quantityMl) || quantityMl <= 0 || quantityMl > 5000) throw new Error("Invalid baseline ml.");
+      const inventory_event = await rpc("set_control_center_inventory_baseline", auth.token, {
+        p_product_name: productName,
+        p_quantity_ml: quantityMl,
+        p_note: cleanText(req.body?.note, 250) || null
+      });
+      return json(res, 200, {ok:true, inventory_event, analytics:await readOrderAnalytics(auth.token)});
     }
     if (action === "add_estimated_inventory_bottle") {
       const productName = cleanText(req.body?.product_name, 180);
