@@ -145,12 +145,14 @@ export default function AnalyticsManager() {
   const inventory = data.orderAnalytics?.inventory || {};
   const historicalByName = new Map((inventory.historical_consumption || []).map((row) => [String(row.product_name || "").toLowerCase(), Number(row.ml || 0)]));
   const storedByName = new Map((inventory.rows || []).map((row) => [String(row.product_name || "").toLowerCase(), row]));
+  const resaleByName = new Map((inventory.resale_bottles || []).map((row) => [String(row.product_name || "").toLowerCase(), Number(row.ml || 0)]));
   const inventoryRows = products.map((product) => {
     const stored = storedByName.get(String(product.name).toLowerCase());
     if (stored) return stored;
     const used = historicalByName.get(String(product.name).toLowerCase()) || 0;
     const remaining = Math.round((100 - used) * 100) / 100;
-    return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
+    const resaleMl = resaleByName.get(String(product.name).toLowerCase()) || 0;
+    return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, resale_in_ml: resaleMl, resale_out_ml: resaleMl, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
   });
   const visibleInventoryRows = inventoryRows
     .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
@@ -445,8 +447,8 @@ export default function AnalyticsManager() {
                 <small>{row.estimated ? "PROVISIONAL · 100 ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
               </div>
               <div className="inventory-volume-cells">
-                <span><small>TOTAL</small><strong>{number(Number(row.opening_balance_ml || 0) + Number(row.restock_ml || 0), 1)} ml</strong></span>
-                <span><small>OUT</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0), 1)} ml</strong></span>
+                <span><small>TOTAL</small><strong>{number(Number(row.opening_balance_ml || 0) + Number(row.restock_ml || 0) + Number(row.resale_in_ml || 0), 1)} ml</strong></span>
+                <span><small>OUT</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0) + Number(row.resale_out_ml || 0), 1)} ml</strong></span>
                 <span className="inventory-volume-remaining"><small>REMAINING</small><strong>{number(row.remaining_ml, 1)} ml</strong></span>
               </div>
               {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
