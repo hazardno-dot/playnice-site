@@ -151,7 +151,11 @@ const PRODUCT_ALIASES = new Map([
   ["french avenue safari breeze", "French Avenue Safari Breeze Eau de Parfum"],
   ["lattafa dynasty", "Lattafa Dynasty Eau de Parfum"],
   ["narciso poudrée", "Narciso Rodriguez NARCISO Poudrée Eau de Parfum"],
-  ["kadlaj island dreams", "Khadlaj Island Dreams"]
+  ["armaf sillage", "Armaf Club de Nuit Sillage Eau de Parfum"],
+  ["armaf club de nuit intense overdose edp", "Armaf Club de Nuit Intense Overdose Eau de Parfum"],
+  ["paris corner north stag expressions ii deux", "Paris Corner North Stag Expressions II Deux Extrait de Parfum"],
+  ["kadlaj island dreams", "Khadlaj Island Dreams Extrait de Parfum"],
+  ["khadlaj island dreams", "Khadlaj Island Dreams Extrait de Parfum"]
 ]);
 
 function canonicalProductName(value) {
