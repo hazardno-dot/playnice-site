@@ -208,3 +208,23 @@
 /* Inventory: align quantity sort control over numeric columns. */
 .inventory-intelligence .inventory-sort-controls{justify-content:flex-end;padding-right:4px}
 @media(max-width:700px){.inventory-intelligence .inventory-sort-controls{justify-content:flex-start}}
+
+/* Keep the stock editor accessible while scrolling a long fragrance catalog.
+   At narrower widths the panels stack and normal document scrolling resumes. */
+@media(min-width:901px){
+  .inventory-grid{align-items:start}
+  .inventory-grid>.inventory-entry-panel{
+    position:sticky;
+    top:196px;
+    align-self:start;
+    max-height:calc(100vh - 208px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(125,184,147,.45) transparent;
+    z-index:2;
+  }
+}
+@media(max-width:900px){
+  .inventory-grid>.inventory-entry-panel{position:static;max-height:none;overflow:visible}
+}
