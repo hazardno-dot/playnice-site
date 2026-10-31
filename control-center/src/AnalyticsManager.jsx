@@ -445,9 +445,9 @@ export default function AnalyticsManager() {
                 <small>{row.estimated ? "PROVISIONAL · 100 ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
               </div>
               <div className="inventory-volume-cells">
-                <span><small>UKUPNO</small><strong>{number(Number(row.opening_balance_ml || 0) + Number(row.restock_ml || 0), 1)} ml</strong></span>
-                <span><small>IZAŠLO</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0), 1)} ml</strong></span>
-                <span className="inventory-volume-remaining"><small>PREOSTALO</small><strong>{number(row.remaining_ml, 1)} ml</strong></span>
+                <span><small>TOTAL</small><strong>{number(Number(row.opening_balance_ml || 0) + Number(row.restock_ml || 0), 1)} ml</strong></span>
+                <span><small>OUT</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0), 1)} ml</strong></span>
+                <span className="inventory-volume-remaining"><small>REMAINING</small><strong>{number(row.remaining_ml, 1)} ml</strong></span>
               </div>
               {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
             </button>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
