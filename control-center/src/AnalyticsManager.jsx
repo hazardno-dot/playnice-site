@@ -189,7 +189,7 @@ export default function AnalyticsManager() {
           Authorization: "Bearer " + sessionData.session.access_token
         },
         body: JSON.stringify({
-          action: inventoryMode === "out" ? "manual_inventory_out" : "add_inventory_stock",
+          action: inventoryMode === "out" ? "manual_inventory_out" : inventoryIsTracked ? "add_inventory_stock" : "add_estimated_inventory_bottle",
           ...(inventoryMode === "out" ? { reason: inventoryReason } : {}),
           product_name: inventoryProduct,
           quantity_ml: quantity,
@@ -468,7 +468,7 @@ export default function AnalyticsManager() {
                 {[...products].sort((a,b) => String(a.name).localeCompare(String(b.name))).map((product) => <option value={product.name} key={product.slug} />)}
               </datalist>
             </label>
-            {inventoryMode === "in" ? <label><span>BOTTLE SIZE PRESET</span><select value="" onChange={(event) => setInventoryMl(event.target.value)}><option value="">Choose size…</option>{[50,80,100,120].map((ml) => <option key={ml} value={ml}>{ml} ml</option>)}</select></label> : null}
+            {inventoryMode === "in" ? <label><span>BOTTLE SIZE PRESET</span><select value="" onChange={(event) => setInventoryMl(event.target.value)}><option value="">Choose size…</option>{[30,50,60,80,90,100,120,150,180,200].map((ml) => <option key={ml} value={ml}>{ml} ml</option>)}</select></label> : null}
             <label>
               <span>{inventoryMode === "out" ? "REMOVE ML" : inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
               <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryMode === "out" ? "e.g. 10" : inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
@@ -479,9 +479,9 @@ export default function AnalyticsManager() {
               <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
             </label>
             <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !inventoryIsTracked)}>
-              {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : inventoryIsTracked ? "+ Add bottle" : "Verify balance"}
+              {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : "+ Add bottle"}
             </button>
-            <p>For provisional rows, verify the current physical balance first; this avoids double counting historical shipments. Once verified, new bottles add stock and manual removals cover gifts outside orders. Returned orders are excluded.</p>
+            <p>New bottles add to the historical 100 ml estimate without resetting past orders. You may also enter a custom ml amount. Manual removal is available after a measured opening is recorded.</p>
             {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
           </div>
         </article>
