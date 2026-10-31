@@ -1,5 +1,6 @@
 // Production redeploy trigger: env refresh.
 import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
+import { products as catalogProducts } from "../../playnice-site/src/data/products/index.js";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -200,9 +201,26 @@ function buildInventoryAnalytics(orders, stockRows) {
       restock_ml: Number(row.restock_ml || 0),
       stock_in_ml: Number(row.stock_in_ml || 0),
       manual_out_ml: Number(row.manual_out_ml || 0),
+      estimated: Boolean(row.estimated),
       consumed_since_tracking_ml: 0
     }
   ]));
+
+  for (const product of catalogProducts) {
+    const key = canonicalProductName(product.name).toLowerCase();
+    if (tracked.has(key)) continue;
+    tracked.set(key, {
+      product_name: canonicalProductName(product.name),
+      tracking_started_at: "1970-01-01T00:00:00Z",
+      opening_balance_ml: 100,
+      restock_ml: 0,
+      stock_in_ml: 100,
+      manual_out_ml: 0,
+      consumed_since_tracking_ml: 0,
+      estimated: true,
+      provisional: true
+    });
+  }
 
   for (const order of Array.isArray(orders) ? orders : []) {
     if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED"].includes(order.status)) continue;
@@ -212,7 +230,7 @@ function buildInventoryAnalytics(orders, stockRows) {
     const entries = [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)];
     for (const entry of entries) {
       const row = tracked.get(String(entry.product_name || "").toLowerCase());
-      if (!row || new Date(consumedAt) < new Date(row.tracking_started_at)) continue;
+      if (!row || (!row.estimated && new Date(consumedAt) < new Date(row.tracking_started_at))) continue;
       row.consumed_since_tracking_ml += Number(entry.ml || 0);
     }
   }
@@ -224,12 +242,13 @@ function buildInventoryAnalytics(orders, stockRows) {
       ...row,
       consumed_since_tracking_ml: consumed,
       remaining_ml: remaining,
-      stock_status: remaining <= 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK"
+      stock_status: remaining < 0 && row.estimated ? "REVIEW" : remaining <= 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK"
     };
   }).sort((a, b) => a.remaining_ml - b.remaining_ml || a.product_name.localeCompare(b.product_name));
 
   return {
-    tracked_count: rows.length,
+    tracked_count: rows.filter((row) => !row.estimated).length,
+    estimated_count: rows.filter((row) => row.estimated).length,
     low_count: rows.filter((row) => row.stock_status === "LOW").length,
     depleted_count: rows.filter((row) => row.stock_status === "DEPLETED").length,
     remaining_total_ml: Math.round((rows.reduce((sum, row) => sum + Math.max(0, row.remaining_ml), 0) + Number.EPSILON) * 100) / 100,
