@@ -146,6 +146,11 @@ const PRODUCT_ALIASES = new Map([
   ["rayhaan pacific aura eau de parfum", "Rayhaan Pacific Aura Eau de Parfum"],
   ["afnan 9am", "Afnan 9 AM Eau de Parfum"],
   ["afnan 9 am eau de parfum", "Afnan 9 AM Eau de Parfum"],
+  ["rayhaan aquatica", "Rayhaan Aquatica Eau de Parfum"],
+  ["rayhaan aquatica eau de parfum", "Rayhaan Aquatica Eau de Parfum"],
+  ["french avenue safari breeze", "French Avenue Safari Breeze Eau de Parfum"],
+  ["lattafa dynasty", "Lattafa Dynasty Eau de Parfum"],
+  ["narciso poudrée", "Narciso Rodriguez NARCISO Poudrée Eau de Parfum"],
   ["kadlaj island dreams", "Khadlaj Island Dreams"]
 ]);
 
