@@ -176,6 +176,15 @@ function inventorySaleItems(items) {
   return out;
 }
 
+function inventoryResaleBottles(items) {
+  return (Array.isArray(items) ? items : []).flatMap((item) => {
+    const sizeMl = Number(item?.sizeMl || 0) || parseMl(item?.size);
+    const quantity = Number(item?.quantity || 1);
+    if (!(sizeMl >= 50) || !Number.isFinite(quantity) || quantity <= 0) return [];
+    return [{ product_name: canonicalProductName(item.name), ml: sizeMl * quantity }];
+  });
+}
+
 function inventoryGiftItems(payload) {
   const samples = Array.isArray(payload?.giftSamples) ? payload.giftSamples : [];
   if (samples.length) {
@@ -206,6 +215,7 @@ function buildInventoryAnalytics(orders, stockRows) {
   ]));
 
   const historical = new Map();
+  const resale = new Map();
 
   for (const order of Array.isArray(orders) ? orders : []) {
     if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED"].includes(order.status)) continue;
@@ -213,6 +223,12 @@ function buildInventoryAnalytics(orders, stockRows) {
     if (!consumedAt) continue;
     const payload = order.source_payload || {};
     const entries = [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)];
+    for (const bottle of inventoryResaleBottles(payload.items)) {
+      const key = bottle.product_name.toLowerCase();
+      const previous = resale.get(key) || { product_name: bottle.product_name, ml: 0 };
+      previous.ml += bottle.ml;
+      resale.set(key, previous);
+    }
     for (const entry of entries) {
       const key = String(entry.product_name || "").toLowerCase();
       const prior = historical.get(key) || { product_name: entry.product_name, ml: 0 };
@@ -229,6 +245,8 @@ function buildInventoryAnalytics(orders, stockRows) {
     const remaining = Math.round((row.stock_in_ml - consumed - row.manual_out_ml + Number.EPSILON) * 100) / 100;
     return {
       ...row,
+      resale_in_ml: resale.get(row.product_name.toLowerCase())?.ml || 0,
+      resale_out_ml: resale.get(row.product_name.toLowerCase())?.ml || 0,
       consumed_since_tracking_ml: consumed,
       remaining_ml: remaining,
       stock_status: remaining < 0 && row.estimated ? "REVIEW" : remaining <= 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK"
@@ -239,6 +257,7 @@ function buildInventoryAnalytics(orders, stockRows) {
     tracked_count: rows.filter((row) => !row.estimated).length,
     estimated_count: rows.filter((row) => row.estimated).length,
     historical_consumption: [...historical.values()],
+    resale_bottles: [...resale.values()],
     low_count: rows.filter((row) => row.stock_status === "LOW").length,
     depleted_count: rows.filter((row) => row.stock_status === "DEPLETED").length,
     remaining_total_ml: Math.round((rows.reduce((sum, row) => sum + Math.max(0, row.remaining_ml), 0) + Number.EPSILON) * 100) / 100,
