@@ -174,3 +174,24 @@
 .inventory-intelligence .inventory-select-row.is-selected{border-left-color:#8ae9b5;background:rgba(82,182,123,.13);box-shadow:inset 0 0 0 1px rgba(138,233,181,.18)}
 .inventory-intelligence .inventory-select-row:hover{background:rgba(82,182,123,.07)}
 .inventory-intelligence .inventory-select-row:focus-visible{outline:2px solid #8ae9b5;outline-offset:-2px}
+
+/* Restore native button reset for stock rows (browser default is white). */
+.inventory-intelligence button.inventory-select-row{
+  appearance:none;-webkit-appearance:none;
+  display:grid;width:100%;box-sizing:border-box;
+  background:transparent!important;color:#dde9df!important;
+  border:0;border-bottom:1px solid rgba(255,255,255,.075);
+  border-left:3px solid transparent;border-radius:0;
+  font:inherit;text-align:left;padding:10px 6px;
+}
+.inventory-intelligence button.inventory-select-row strong{color:#dcece1}
+.inventory-intelligence button.inventory-select-row small{color:#91ab9b}
+.inventory-intelligence button.inventory-select-row>span{color:#dcece1}
+.inventory-intelligence button.inventory-select-row:hover{background:rgba(80,175,116,.08)!important}
+.inventory-intelligence button.inventory-select-row.is-selected,
+.inventory-intelligence button.inventory-select-row.is-selected:hover{
+  background:rgba(73,157,106,.19)!important;
+  border-left-color:#8ae9b5;
+  box-shadow:inset 0 0 0 1px rgba(138,233,181,.19);
+}
+.inventory-intelligence button.inventory-select-row:focus-visible{outline:2px solid #8ae9b5;outline-offset:-2px}
