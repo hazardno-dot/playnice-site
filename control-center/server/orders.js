@@ -217,6 +217,17 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
 
   const historical = new Map();
   const resale = new Map();
+  for (const item of commerce.full_bottles || []) {
+    const product_name = canonicalProductName(item.product_name);
+    const key = product_name.toLowerCase();
+    resale.set(key, {product_name,ml:Number(item.ml || 0)});
+  }
+  for (const item of commerce.top_products || []) {
+    const product_name = canonicalProductName(item.product_name);
+    const key = product_name.toLowerCase();
+    const fullBottleMl = resale.get(key)?.ml || 0;
+    historical.set(key, {product_name,ml:Math.max(0,Number(item.total_ml_out || 0)-fullBottleMl),sold_ml:Number(item.sold_ml || 0)-fullBottleMl,gift_ml:Number(item.gift_ml || 0)});
+  }
 
   for (const order of Array.isArray(orders) ? orders : []) {
     if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED"].includes(order.status)) continue;
