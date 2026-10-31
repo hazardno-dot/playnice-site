@@ -77,6 +77,8 @@ export default function AnalyticsManager() {
   const [inventoryProduct, setInventoryProduct] = useState("");
   const [inventoryMl, setInventoryMl] = useState("");
   const [inventoryNote, setInventoryNote] = useState("");
+  const [inventoryMode, setInventoryMode] = useState("in");
+  const [inventoryReason, setInventoryReason] = useState("PRIVATE_GIFT");
   const [inventoryBusy, setInventoryBusy] = useState(false);
   const [inventoryNotice, setInventoryNotice] = useState("");
 
@@ -160,7 +162,8 @@ export default function AnalyticsManager() {
           Authorization: "Bearer " + sessionData.session.access_token
         },
         body: JSON.stringify({
-          action: "add_inventory_stock",
+          action: inventoryMode === "out" ? "manual_inventory_out" : "add_inventory_stock",
+          ...(inventoryMode === "out" ? { reason: inventoryReason } : {}),
           product_name: inventoryProduct,
           quantity_ml: quantity,
           note: inventoryNote
@@ -169,11 +172,7 @@ export default function AnalyticsManager() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || "Could not record inventory stock.");
       setData((current) => ({ ...current, orderAnalytics: payload.analytics || current.orderAnalytics }));
-      setInventoryNotice(
-        payload.inventory_event?.event_type === "OPENING"
-          ? "Opening balance recorded."
-          : "Restock recorded."
-      );
+      setInventoryNotice(payload.inventory_event?.event_type === "MANUAL_OUT" ? "Manual removal recorded." : payload.inventory_event?.event_type === "OPENING" ? "Opening balance recorded." : "New bottle recorded.");
       setInventoryMl("");
       setInventoryNote("");
     } catch (inventoryError) {
@@ -383,7 +382,7 @@ export default function AnalyticsManager() {
         <div>
           <span>STOCK / CONSUMPTION</span>
           <h2>Fragrance inventory</h2>
-          <p>Current measured stock, restocks and decant consumption after tracking starts.</p>
+          <p>Measured balance + restocks minus shipped decants, gifts and manual removals.</p>
         </div>
         <div className="sales-head-meta">
           <span className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</span>
@@ -408,20 +407,21 @@ export default function AnalyticsManager() {
             {inventoryRows.length ? inventoryRows.map((row) => <div className={"inventory-row stock-" + String(row.stock_status || "ok").toLowerCase()} key={row.product_name}>
               <div>
                 <strong>{row.product_name}</strong>
-                <small>Opening {number(row.opening_balance_ml, 1)} ml · restocked {number(row.restock_ml, 1)} ml · consumed {number(row.consumed_since_tracking_ml, 1)} ml</small>
+                <small>Opening {number(row.opening_balance_ml, 1)} ml · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
               </div>
               <span>{number(row.remaining_ml, 1)} ml</span>
-              {row.stock_status === "OK" ? null : <em>{row.stock_status}</em>}
+              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status}</em>}
             </div>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
           </div>
         </article>
 
         <article className="analytics-panel inventory-entry-panel">
           <div className="analytics-panel-head">
-            <div><span>STOCK LEDGER</span><h3>{inventoryIsTracked ? "Add stock" : "Start tracking"}</h3></div>
-            <small>{inventoryIsTracked ? "Restock" : "Current physical balance"}</small>
+            <div><span>STOCK LEDGER</span><h3>{inventoryMode === "out" ? "Remove stock" : inventoryIsTracked ? "Add bottle" : "Start tracking"}</h3></div>
+            <small>{inventoryMode === "out" ? "Non-order use" : inventoryIsTracked ? "New bottle" : "Current physical balance"}</small>
           </div>
           <div className="inventory-form">
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}><button type="button" aria-pressed={inventoryMode==="in"} onClick={() => setInventoryMode("in")}>+ New bottle</button><button type="button" aria-pressed={inventoryMode==="out"} onClick={() => setInventoryMode("out")}>− Manual removal</button></div>
             <label>
               <span>FRAGRANCE</span>
               <input list="inventory-products" value={inventoryProduct} onChange={(event) => setInventoryProduct(event.target.value)} placeholder="Search fragrance…" />
@@ -430,17 +430,18 @@ export default function AnalyticsManager() {
               </datalist>
             </label>
             <label>
-              <span>{inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
+              <span>{inventoryMode === "out" ? "REMOVE ML" : inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
               <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
             </label>
+            {inventoryMode === "out" ? <label><span>REASON</span><select value={inventoryReason} onChange={(event)=>setInventoryReason(event.target.value)}><option value="PRIVATE_GIFT">Private gift</option><option value="TESTING">Testing / sample</option><option value="DECANT_LOSS">Decant loss</option><option value="OTHER">Other</option></select></label> : null}
             <label>
               <span>NOTE · OPTIONAL</span>
               <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
             </label>
-            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0)}>
-              {inventoryBusy ? "Saving…" : inventoryIsTracked ? "+ Add stock" : "Start tracking"}
+            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !inventoryIsTracked)}>
+              {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : inventoryIsTracked ? "+ Add bottle" : "Start tracking"}
             </button>
-            <p>First entry is the current physical balance. Future entries add stock; packed orders and gift samples reduce the estimate automatically.</p>
+            <p>First entry is the current measured balance. New bottles add stock, packed orders and included gifts subtract automatically, and manual removals cover gifts outside orders. Returned orders are excluded.</p>
             {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
           </div>
         </article>
