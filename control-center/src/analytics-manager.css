@@ -204,3 +204,7 @@
 .inventory-intelligence .inventory-volume-cells strong{font-size:14px;font-family:Georgia,serif;font-weight:500;color:#d7e6dc;white-space:nowrap}
 .inventory-intelligence .inventory-volume-remaining strong{color:#b4efcb}
 @media(max-width:700px){.inventory-intelligence button.inventory-select-row{grid-template-columns:minmax(0,1fr)!important}.inventory-intelligence .inventory-volume-cells{text-align:left;gap:12px}.inventory-intelligence .inventory-volume-cells strong{font-size:13px}}
+
+/* Inventory: align quantity sort control over numeric columns. */
+.inventory-intelligence .inventory-sort-controls{justify-content:flex-end;padding-right:4px}
+@media(max-width:700px){.inventory-intelligence .inventory-sort-controls{justify-content:flex-start}}
