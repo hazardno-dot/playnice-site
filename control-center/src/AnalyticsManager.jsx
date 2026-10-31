@@ -76,6 +76,8 @@ export default function AnalyticsManager() {
   };
   const [inventoryProduct, setInventoryProduct] = useState("");
   const [inventorySearch, setInventorySearch] = useState("");
+  const [inventorySort, setInventorySort] = useState("name");
+  const [inventoryDescending, setInventoryDescending] = useState(false);
   const [inventoryMl, setInventoryMl] = useState("");
   const [inventoryNote, setInventoryNote] = useState("");
   const [inventoryMode, setInventoryMode] = useState("in");
@@ -150,7 +152,21 @@ export default function AnalyticsManager() {
     const remaining = Math.round((100 - used) * 100) / 100;
     return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
   });
-  const visibleInventoryRows = inventoryRows.filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()));
+  const visibleInventoryRows = inventoryRows
+    .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
+    .sort((a, b) => {
+      const direction = inventoryDescending ? -1 : 1;
+      const nameOrder = a.product_name.localeCompare(b.product_name);
+      if (inventorySort === "remaining") {
+        const amountOrder = Number(a.remaining_ml) - Number(b.remaining_ml);
+        return direction * (amountOrder || nameOrder);
+      }
+      return direction * nameOrder;
+    });
+  const toggleInventorySort = (field) => {
+    if (inventorySort === field) setInventoryDescending((previous) => !previous);
+    else { setInventorySort(field); setInventoryDescending(field === "remaining"); }
+  };
   const inventoryTrackedNames = new Set(inventoryRows.map((row) => String(row.product_name || "").toLowerCase()));
   const selectedInventoryRow = inventoryRows.find((row) => String(row.product_name || "").toLowerCase() === String(inventoryProduct || "").toLowerCase());
   const inventoryIsTracked = Boolean(selectedInventoryRow && !selectedInventoryRow.provisional);
@@ -415,16 +431,22 @@ export default function AnalyticsManager() {
           </div>
 
           <p className="analytics-note">Provisional rows assume an original 100 ml bottle and deduct recorded historical shipments. They are estimates, not confirmed physical stock. A negative figure means the assumed bottle size is insufficient.</p>
-          <label style={{display:"block",margin:"12px 0"}}><span style={{display:"block",marginBottom:6}}>SEARCH INVENTORY · {inventoryRows.length} FRAGRANCES</span><input type="search" style={{width:"100%"}} value={inventorySearch} onChange={(event)=>setInventorySearch(event.target.value)} placeholder="Find a fragrance…" /></label>
+          <div className="inventory-filter-toolbar">
+            <label><span>SEARCH INVENTORY · {inventoryRows.length} FRAGRANCES</span><input type="search" value={inventorySearch} onChange={(event)=>setInventorySearch(event.target.value)} placeholder="Find a fragrance…" /></label>
+            <div className="inventory-sort-controls" role="group" aria-label="Sort inventory">
+              <button type="button" aria-pressed={inventorySort === "name"} onClick={() => toggleInventorySort("name")}>Fragrance {inventorySort === "name" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
+              <button type="button" aria-pressed={inventorySort === "remaining"} onClick={() => toggleInventorySort("remaining")}>Remaining ml {inventorySort === "remaining" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
+            </div>
+          </div>
           <div className="inventory-list">
-            {visibleInventoryRows.length ? visibleInventoryRows.map((row) => <div className={"inventory-row stock-" + String(row.stock_status || "ok").toLowerCase()} key={row.product_name} onClick={() => setInventoryProduct(row.product_name)} style={{cursor:"pointer"}} title="Select fragrance for stock management">
+            {visibleInventoryRows.length ? visibleInventoryRows.map((row) => <button type="button" className={"inventory-row inventory-select-row stock-" + String(row.stock_status || "ok").toLowerCase() + (inventoryProduct === row.product_name ? " is-selected" : "")} key={row.product_name} onClick={() => {setInventoryProduct(row.product_name);setInventoryNotice("");}} aria-pressed={inventoryProduct === row.product_name} title="Select fragrance for stock management">
               <div>
                 <strong>{row.product_name}</strong>
                 <small>{row.estimated ? "PROVISIONAL · 100 ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
               </div>
               <span>{number(row.remaining_ml, 1)} ml</span>
               {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
-            </div>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
+            </button>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
           </div>
         </article>
 
