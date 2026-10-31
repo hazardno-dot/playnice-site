@@ -242,22 +242,6 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
     historical.set(key, {product_name,ml:Math.max(0,Number(item.total_ml_out || 0)-fullBottleMl),sold_ml:Number(item.sold_ml || 0)-fullBottleMl,gift_ml:Number(item.gift_ml || 0)});
   }
 
-  // Use complete delivered history as the fallback for products outside Commerce top 30.
-  // Top-30 values below are overwritten by Commerce's canonical aggregates.
-  const fallbackHistory = new Map();
-  for (const order of Array.isArray(orders) ? orders : []) {
-    if (order.status !== "DELIVERED") continue;
-    const payload = order.source_payload || {};
-    for (const entry of [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)]) {
-      const key = String(entry.product_name || "").toLowerCase();
-      if (!key) continue;
-      fallbackHistory.set(key, (fallbackHistory.get(key) || 0) + Number(entry.ml || 0));
-    }
-  }
-  for (const [key, ml] of fallbackHistory) {
-    if (!historical.has(key)) historical.set(key, { product_name:key, ml:Math.round(ml*100)/100 });
-  }
-
   for (const order of Array.isArray(orders) ? orders : []) {
     if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED"].includes(order.status)) continue;
     const consumedAt = order.packed_at || order.shipped_at || order.updated_at || order.created_at;
