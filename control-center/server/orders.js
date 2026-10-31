@@ -770,6 +770,17 @@ export default async function handler(req, res) {
       const inventory_event = await recordInventoryManualOut(auth.token, req.body);
       return json(res, 200, { ok: true, inventory_event, analytics: await readOrderAnalytics(auth.token) });
     }
+    if (action === "add_estimated_inventory_bottle") {
+      const productName = cleanText(req.body?.product_name, 180);
+      const quantityMl = Number(req.body?.quantity_ml);
+      if (!productName || !Number.isFinite(quantityMl) || quantityMl <= 0 || quantityMl > 5000) throw new Error("Invalid bottle quantity.");
+      const inventory_event = await rpc("record_control_center_estimated_bottle", auth.token, {
+        p_product_name: productName,
+        p_quantity_ml: quantityMl,
+        p_note: cleanText(req.body?.note, 300) || null
+      });
+      return json(res, 200, { ok: true, inventory_event, analytics: await readOrderAnalytics(auth.token) });
+    }
     if (action === "add_inventory_stock") {
       const inventory_event = await recordInventoryStock(auth.token, req.body);
       return json(res, 200, {
