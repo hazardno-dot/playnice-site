@@ -199,6 +199,7 @@ function buildInventoryAnalytics(orders, stockRows) {
       opening_balance_ml: Number(row.opening_balance_ml || 0),
       restock_ml: Number(row.restock_ml || 0),
       stock_in_ml: Number(row.stock_in_ml || 0),
+      manual_out_ml: Number(row.manual_out_ml || 0),
       consumed_since_tracking_ml: 0
     }
   ]));
@@ -218,7 +219,7 @@ function buildInventoryAnalytics(orders, stockRows) {
 
   const rows = [...tracked.values()].map((row) => {
     const consumed = Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
-    const remaining = Math.round((row.stock_in_ml - consumed + Number.EPSILON) * 100) / 100;
+    const remaining = Math.round((row.stock_in_ml - consumed - row.manual_out_ml + Number.EPSILON) * 100) / 100;
     return {
       ...row,
       consumed_since_tracking_ml: consumed,
@@ -248,6 +249,16 @@ async function readOrderAnalytics(token) {
   };
 }
 
+async function recordInventoryManualOut(token, body) {
+  const quantityMl = Number(body?.quantity_ml);
+  if (!Number.isFinite(quantityMl) || quantityMl <= 0 || quantityMl > 5000) throw new Error("Invalid manual removal quantity.");
+  return rpc("record_control_center_inventory_manual_out", token, {
+    p_product_name: cleanText(body?.product_name, 180),
+    p_quantity_ml: quantityMl,
+    p_reason: cleanText(body?.reason, 40),
+    p_note: cleanText(body?.note, 260) || null
+  });
+}
 async function recordInventoryStock(token, body) {
   const productName = cleanText(body?.product_name, 180);
   const quantityMl = Number(body?.quantity_ml);
@@ -746,6 +757,10 @@ export default async function handler(req, res) {
 
     const action = String(req.body?.action || "").trim();
 
+    if (action === "manual_inventory_out") {
+      const inventory_event = await recordInventoryManualOut(auth.token, req.body);
+      return json(res, 200, { ok: true, inventory_event, analytics: await readOrderAnalytics(auth.token) });
+    }
     if (action === "add_inventory_stock") {
       const inventory_event = await recordInventoryStock(auth.token, req.body);
       return json(res, 200, {
