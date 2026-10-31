@@ -140,7 +140,15 @@ export default function AnalyticsManager() {
   const fullBottles = data.orderAnalytics?.full_bottles || [];
   const giftProducts = data.orderAnalytics?.gifts || [];
   const inventory = data.orderAnalytics?.inventory || {};
-  const inventoryRows = inventory.rows || [];
+  const historicalByName = new Map((inventory.historical_consumption || []).map((row) => [String(row.product_name || "").toLowerCase(), Number(row.ml || 0)]));
+  const storedByName = new Map((inventory.rows || []).map((row) => [String(row.product_name || "").toLowerCase(), row]));
+  const inventoryRows = products.map((product) => {
+    const stored = storedByName.get(String(product.name).toLowerCase());
+    if (stored) return stored;
+    const used = historicalByName.get(String(product.name).toLowerCase()) || 0;
+    const remaining = Math.round((100 - used) * 100) / 100;
+    return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
+  });
   const inventoryTrackedNames = new Set(inventoryRows.map((row) => String(row.product_name || "").toLowerCase()));
   const selectedInventoryRow = inventoryRows.find((row) => String(row.product_name || "").toLowerCase() === String(inventoryProduct || "").toLowerCase());
   const inventoryIsTracked = Boolean(selectedInventoryRow && !selectedInventoryRow.provisional);
