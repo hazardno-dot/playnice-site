@@ -262,7 +262,7 @@ export default function AnalyticsManager() {
       <div className="ranking-list">{salesBySource.length ? salesBySource.map(row=><div className="ranking-row source-row" key={row.order_source}><div><strong>{row.order_source}</strong><small>{number(row.orders)} delivered orders</small></div><span>{money(row.revenue)}</span></div>) : <p className="conversion-empty">No delivered source data yet.</p>}</div>
     </article>
     <article className="analytics-panel"><div className="analytics-panel-head"><div><span>COMPLETED SALES</span><h3>Top selling fragrances</h3></div><small>Delivered only · not product views</small></div>
-      <div className="ranking-list">{topProducts.filter(row=>Number(row.sold_units)>0).slice().sort((a,b)=>Number(b.sold_units)-Number(a.sold_units)).slice(0,8).map(row=><div className="ranking-row source-row" key={row.product_name}><div><strong>{row.product_name}</strong><small>{number(row.sold_units)} sold units</small></div><span>{money(row.revenue)}</span></div>)}</div>
+      <div className="ranking-list">{topProducts.filter(row=>Number(row.sold_units)>0).slice().sort((a,b)=>Number(b.sold_units)-Number(a.sold_units)).slice(0,8).map(row=><div className="ranking-row source-row" key={row.product_name}><div><strong>{row.product_name}</strong> <small>{row.estimated ? "ESTIMATED" : "VERIFIED"}</small><small>{number(row.sold_units)} sold units</small></div><span>{money(row.revenue)}</span></div>)}</div>
     </article>
   </div>
 </section> : module === "Commerce" ? <>
@@ -406,10 +406,10 @@ export default function AnalyticsManager() {
           </div>
 
           <div className="inventory-summary">
-            <div><span>MEASURED</span><strong>{number(inventory.tracked_count)}</strong></div><div><span>ESTIMATED</span><strong>{number(inventory.estimated_count)}</strong></div>
-            <div><span>LOW STOCK</span><strong>{number(inventory.low_count)}</strong></div>
-            <div><span>DEPLETED</span><strong>{number(inventory.depleted_count)}</strong></div>
-            <div><span>REMAINING</span><strong>{number(inventory.remaining_total_ml, 1)} ml</strong></div>
+            <div><span>MEASURED</span><strong>{number(inventory.tracked_count)}</strong></div><div><span>ESTIMATED</span><strong>{number(inventoryRows.filter((row) => row.estimated).length)}</strong></div>
+            <div><span>LOW STOCK</span><strong>{number(inventoryRows.filter((row) => row.stock_status === "LOW").length)}</strong></div>
+            <div><span>DEPLETED</span><strong>{number(inventoryRows.filter((row) => ["DEPLETED", "REVIEW"].includes(row.stock_status)).length)}</strong></div>
+            <div><span>REMAINING</span><strong>{number(inventoryRows.reduce((sum, row) => sum + Math.max(0, Number(row.remaining_ml || 0)), 0), 1)} ml</strong></div>
           </div>
 
           <p className="analytics-note">Provisional rows assume an original 100 ml bottle and deduct recorded historical shipments. They are estimates, not confirmed physical stock. A negative figure means the assumed bottle size is insufficient.</p>
@@ -449,10 +449,10 @@ export default function AnalyticsManager() {
               <span>NOTE · OPTIONAL</span>
               <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
             </label>
-            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !selectedInventoryRow)}>
+            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !inventoryIsTracked)}>
               {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : inventoryIsTracked ? "+ Add bottle" : "Verify balance"}
             </button>
-            <p>First entry is the current measured balance. New bottles add stock, packed orders and included gifts subtract automatically, and manual removals cover gifts outside orders. Returned orders are excluded.</p>
+            <p>For provisional rows, verify the current physical balance first; this avoids double counting historical shipments. Once verified, new bottles add stock and manual removals cover gifts outside orders. Returned orders are excluded.</p>
             {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
           </div>
         </article>
