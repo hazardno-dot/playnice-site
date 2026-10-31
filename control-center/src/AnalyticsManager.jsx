@@ -142,7 +142,8 @@ export default function AnalyticsManager() {
   const inventory = data.orderAnalytics?.inventory || {};
   const inventoryRows = inventory.rows || [];
   const inventoryTrackedNames = new Set(inventoryRows.map((row) => String(row.product_name || "").toLowerCase()));
-  const inventoryIsTracked = inventoryTrackedNames.has(String(inventoryProduct || "").toLowerCase());
+  const selectedInventoryRow = inventoryRows.find((row) => String(row.product_name || "").toLowerCase() === String(inventoryProduct || "").toLowerCase());
+  const inventoryIsTracked = Boolean(selectedInventoryRow && !selectedInventoryRow.provisional);
 
   const addInventoryStock = async () => {
     const quantity = Number(inventoryMl);
@@ -393,31 +394,32 @@ export default function AnalyticsManager() {
         <article className="analytics-panel sales-wide inventory-panel">
           <div className="analytics-panel-head">
             <div><span>INVENTORY</span><h3>Inventory watch</h3></div>
-            <small>Current measured stock · decant consumption after tracking starts</small>
+            <small>Full catalog · measured + provisional stock · low alert ≤20 ml</small>
           </div>
 
           <div className="inventory-summary">
-            <div><span>TRACKED</span><strong>{number(inventory.tracked_count)}</strong></div>
+            <div><span>MEASURED</span><strong>{number(inventory.tracked_count)}</strong></div><div><span>ESTIMATED</span><strong>{number(inventory.estimated_count)}</strong></div>
             <div><span>LOW STOCK</span><strong>{number(inventory.low_count)}</strong></div>
             <div><span>DEPLETED</span><strong>{number(inventory.depleted_count)}</strong></div>
             <div><span>REMAINING</span><strong>{number(inventory.remaining_total_ml, 1)} ml</strong></div>
           </div>
 
+          <p className="analytics-note">Provisional rows assume an original 100 ml bottle and deduct recorded historical shipments. They are estimates, not confirmed physical stock. A negative figure means the assumed bottle size is insufficient.</p>
           <div className="inventory-list">
             {inventoryRows.length ? inventoryRows.map((row) => <div className={"inventory-row stock-" + String(row.stock_status || "ok").toLowerCase()} key={row.product_name}>
               <div>
                 <strong>{row.product_name}</strong>
-                <small>Opening {number(row.opening_balance_ml, 1)} ml · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
+                <small>{row.estimated ? "PROVISIONAL · 100 ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
               </div>
               <span>{number(row.remaining_ml, 1)} ml</span>
-              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status}</em>}
+              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
             </div>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
           </div>
         </article>
 
         <article className="analytics-panel inventory-entry-panel">
           <div className="analytics-panel-head">
-            <div><span>STOCK LEDGER</span><h3>{inventoryMode === "out" ? "Remove stock" : inventoryIsTracked ? "Add bottle" : "Start tracking"}</h3></div>
+            <div><span>STOCK LEDGER</span><h3>{inventoryMode === "out" ? "Remove stock" : inventoryIsTracked ? "Add bottle" : "Verify physical stock"}</h3></div>
             <small>{inventoryMode === "out" ? "Non-order use" : inventoryIsTracked ? "New bottle" : "Current physical balance"}</small>
           </div>
           <div className="inventory-form">
@@ -429,17 +431,18 @@ export default function AnalyticsManager() {
                 {[...products].sort((a,b) => String(a.name).localeCompare(String(b.name))).map((product) => <option value={product.name} key={product.slug} />)}
               </datalist>
             </label>
+            {inventoryMode === "in" ? <label><span>BOTTLE SIZE PRESET</span><select value="" onChange={(event) => setInventoryMl(event.target.value)}><option value="">Choose size…</option>{[50,80,100,120].map((ml) => <option key={ml} value={ml}>{ml} ml</option>)}</select></label> : null}
             <label>
               <span>{inventoryMode === "out" ? "REMOVE ML" : inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
-              <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
+              <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryMode === "out" ? "e.g. 10" : inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
             </label>
             {inventoryMode === "out" ? <label><span>REASON</span><select value={inventoryReason} onChange={(event)=>setInventoryReason(event.target.value)}><option value="PRIVATE_GIFT">Private gift</option><option value="TESTING">Testing / sample</option><option value="DECANT_LOSS">Decant loss</option><option value="OTHER">Other</option></select></label> : null}
             <label>
               <span>NOTE · OPTIONAL</span>
               <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
             </label>
-            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !inventoryIsTracked)}>
-              {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : inventoryIsTracked ? "+ Add bottle" : "Start tracking"}
+            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !selectedInventoryRow)}>
+              {inventoryBusy ? "Saving…" : inventoryMode === "out" ? "− Record removal" : inventoryIsTracked ? "+ Add bottle" : "Verify balance"}
             </button>
             <p>First entry is the current measured balance. New bottles add stock, packed orders and included gifts subtract automatically, and manual removals cover gifts outside orders. Returned orders are excluded.</p>
             {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
