@@ -204,7 +204,7 @@ function buildInventoryAnalytics(orders, stockRows) {
   ]));
 
   for (const order of Array.isArray(orders) ? orders : []) {
-    if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED"].includes(order.status)) continue;
+    if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED"].includes(order.status)) continue;
     const consumedAt = order.packed_at || order.shipped_at || order.updated_at || order.created_at;
     if (!consumedAt) continue;
     const payload = order.source_payload || {};
