@@ -235,17 +235,8 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
     if (!consumedAt) continue;
     const payload = order.source_payload || {};
     const entries = [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)];
-    for (const bottle of inventoryResaleBottles(payload.items)) {
-      const key = bottle.product_name.toLowerCase();
-      const previous = resale.get(key) || { product_name: bottle.product_name, ml: 0 };
-      previous.ml += bottle.ml;
-      resale.set(key, previous);
-    }
     for (const entry of entries) {
       const key = String(entry.product_name || "").toLowerCase();
-      const prior = historical.get(key) || { product_name: entry.product_name, ml: 0 };
-      prior.ml += Number(entry.ml || 0);
-      historical.set(key, prior);
       const row = tracked.get(key);
       if (!row || (!row.estimated && new Date(consumedAt) < new Date(row.tracking_started_at))) continue;
       row.consumed_since_tracking_ml += Number(entry.ml || 0);
@@ -253,7 +244,9 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
   }
 
   const rows = [...tracked.values()].map((row) => {
-    const consumed = Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
+    const consumed = row.estimated
+      ? Number(historical.get(row.product_name.toLowerCase())?.ml || 0)
+      : Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
     const remaining = Math.round((row.stock_in_ml - consumed - row.manual_out_ml + Number.EPSILON) * 100) / 100;
     return {
       ...row,
