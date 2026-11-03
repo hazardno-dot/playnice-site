@@ -19,6 +19,14 @@ assert.equal(children[0].body.is_carousel_item, "true");
 const parent = buildInstagramCarouselCreateRequest({ instagram_account_id: "123", content, children: ["a", "b"] });
 assert.equal(parent.body.media_type, "CAROUSEL");
 assert.equal(parent.body.children, "a,b");
+assert.throws(
+  () => buildInstagramCarouselCreateRequest({ instagram_account_id: "123", content: { instagram_feed: { caption: "  " } }, children: ["a", "b"] }),
+  /Instagram caption is missing/
+);
+assert.throws(
+  () => buildInstagramCarouselCreateRequest({ instagram_account_id: "123", content, children: ["a"] }),
+  /2–10 valid photo containers/
+);
 const fbPhotos = buildFacebookCarouselPhotoRequests({ facebook_page_id: "123", content });
 assert.equal(fbPhotos[0].body.published, "false");
 const fbFeed = buildFacebookCarouselFeedRequest({ facebook_page_id: "123", content, photo_ids: ["a", "b"] });

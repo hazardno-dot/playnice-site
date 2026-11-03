@@ -74,7 +74,9 @@ export function buildInstagramCarouselCreateRequest(input = {}) {
   const igAccountId = cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID);
   const caption = cleanString(instagramFeedContent(input)?.caption || input.caption);
   const children = input.children;
-  if (!igAccountId || !caption || !Array.isArray(children) || children.length < 2 || children.length > 10 || children.some((id) => !cleanString(id))) throw new Error("Invalid Instagram carousel parent.");
+  if (!igAccountId) throw new Error("Instagram account ID is missing. Check the Meta connection.");
+  if (!caption) throw new Error("Instagram caption is missing. Save the draft, approve it and mark it Ready before publishing.");
+  if (!Array.isArray(children) || children.length < 2 || children.length > 10 || children.some((id) => !cleanString(id))) throw new Error("Instagram carousel requires 2–10 valid photo containers.");
   return { method: "POST", url: graphUrl(`${igAccountId}/media`), auth: "bearer",
     body: { media_type: "CAROUSEL", children: children.join(","), caption } };
 }
