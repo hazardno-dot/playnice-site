@@ -200,6 +200,7 @@ async function finalizePublishedEvent(token, event) {
 
   const response = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(event.id)}`, token, {
     method: "PATCH",
+    headers: { Prefer: "return=representation" },
     body: JSON.stringify({
       status: "published",
       published_at: publishedAt,
