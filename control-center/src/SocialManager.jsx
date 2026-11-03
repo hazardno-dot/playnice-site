@@ -36,7 +36,16 @@ const AUDIT_LABELS = {
 const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 const mediaSrc = (media) => media?.url || media?.src || "";
-const eventTitle = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.payload?.alt || event?.source_id;
+const eventTitle = (event) => {
+  const title = event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.payload?.alt;
+  if (title) return title;
+  if (event?.source_type === "custom") {
+    const caption = event?.approved_content?.instagram_feed?.caption || event?.draft_content?.instagram_feed?.caption || event?.approved_content?.facebook?.caption || event?.draft_content?.facebook?.caption || "";
+    const firstLine = String(caption).split(/\r?\n/).map((line) => line.trim()).find(Boolean);
+    if (firstLine) return firstLine.slice(0, 90);
+  }
+  return event?.source_id;
+};
 const isExplicitTestEvent = (event) => Boolean(event?.metadata?.test || event?.metadata?.replay || String(event?.source_id || "").includes("--shadow-test-") || String(event?.source_id || "").includes("--shadow-replay-"));
 const PUBLISH_AUDIT_ACTIONS = {
   instagram_feed: "test_instagram_feed_published",
@@ -166,6 +175,16 @@ function SocialWorkspace() {
   }, []);
 
   const activeEvents = useMemo(() => events.filter((event) => !["cancelled", "published"].includes(event.status)), [events]);
+  // All is the full timeline, with recent live posts first; Draft/Ready remain separate filters.
+  const allEvents = useMemo(() => [...events]
+    .sort((a, b) => {
+      const publishedA = a.status === "published" ? 1 : 0;
+      const publishedB = b.status === "published" ? 1 : 0;
+      if (publishedA !== publishedB) return publishedB - publishedA;
+      const dateA = Date.parse((publishedA ? a.published_at : null) || a.updated_at || a.created_at || "") || 0;
+      const dateB = Date.parse((publishedB ? b.published_at : null) || b.updated_at || b.created_at || "") || 0;
+      return dateB - dateA;
+    }), [events]);
   const counts = useMemo(() => events.reduce((out, event) => ({ ...out, [event.status]: (out[event.status] || 0) + 1 }), {}), [events]);
   const productCandidates = useMemo(() => {
     const q = productQuery.trim().toLowerCase();
@@ -176,7 +195,7 @@ function SocialWorkspace() {
       .sort((a, b) => String(a.shortName || a.name || "").localeCompare(String(b.shortName || b.name || "")))
       .slice(0, 60);
   }, [productQuery]);
-  const visible = useMemo(() => filter === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)) : filter === "published" ? events.filter((event) => event.status === "published") : filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [events, activeEvents, filter]);
+  const visible = useMemo(() => filter === "all" ? allEvents : filter === "archived" ? allEvents.filter((event) => ["cancelled", "published"].includes(event.status)) : filter === "published" ? allEvents.filter((event) => event.status === "published") : allEvents.filter((event) => event.status === filter), [allEvents, filter]);
   const selected = visible.find((event) => event.id === selectedId) || null;
   const generated = useMemo(() => {
     if (!selected) return null;
@@ -587,7 +606,7 @@ function SocialWorkspace() {
     {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
     {campaignSuccess ? <div role="status" className="social-campaign-success">
       <strong>✓ {campaignSuccess}</strong>
-      <span>The campaign has been archived and removed from the active queue.</span>
+      <span>The campaign is available under Published and All.</span>
       <button type="button" onClick={() => setCampaignSuccess("")} aria-label="Dismiss campaign confirmation">×</button>
     </div> : null}
 
