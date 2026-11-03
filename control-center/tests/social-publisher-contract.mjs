@@ -125,6 +125,9 @@ const socialManager = fs.readFileSync(path.join(root, "control-center/src/Social
 for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Delete draft", "Discard test event", "archived", "CREATE POST", "+ New post", "Choose your post format", "Single image", "Carousel", "Product", "Hero", "Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
+assert.ok(socialManager.includes('filter === "all" ? allEvents'), "All must include published posts as well as active drafts.");
+assert.ok(socialManager.includes('a.status === "published" ? 1 : 0'), "All should prioritize recently published campaigns.");
+assert.ok(socialManager.includes('approved_content?.instagram_feed?.caption'), "Custom post queue title should use its saved caption instead of an opaque ID.");
 assert.ok(socialManager.includes("No active social posts"), "Empty Social workspace must use the compact active-queue empty state.");
 assert.ok(socialManager.includes('"MANUAL MODE"'), "Social header must expose manual publishing mode instead of the global no-publish label.");
 assert.ok(socialManager.includes('setProductPickerOpen(true)'), "Product create action must open the Product picker.");
