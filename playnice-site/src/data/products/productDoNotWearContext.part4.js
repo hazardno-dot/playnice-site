@@ -150,6 +150,10 @@ export default [
   {
     "sr": "Kada želite da svi misle da ste u potpunom haosu. Hectic se možda tako zove, ali njegovi citrusi, đumbir i čisti čajni akordi odaju sasvim drugačiji utisak. Možete zakasniti na tri sastanka, izgubiti ključeve i zaboraviti zašto ste ušli u sobu, ali ćete makar mirisati kao čovek koji ima plan. Ne možemo garantovati da će vam to pomoći.",
     "en": "When you want everyone to think your life is complete chaos. Despite its name, Hectic smells fresh, sharp and remarkably put together. You can miss three meetings, lose your keys and forget why you entered a room, but you'll still smell like someone with a plan. Whether that helps is another matter."
+  },
+  {
+    "sr": "Kada planirate da ostanete neprimećeni. Xerjoff Naxos nema baš mnogo razumevanja za takve planove. Med, duvan i vanila imaju običaj da privuku pažnju čak i kada vi ćutite. Ako ste već odlučili da se sakrijete u poslednjem redu, možda je trebalo da izaberete neki drugi parfem. Ili da ostanete kod kuće.",
+    "en": "When you're planning to go unnoticed. Xerjoff Naxos isn't particularly interested in that plan. Honey, tobacco and vanilla tend to attract attention even when you say nothing. If you've chosen to hide in the back row, perhaps another fragrance would have been wiser. Or staying home."
   }
 
 ];

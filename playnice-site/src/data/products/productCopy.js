@@ -3603,6 +3603,55 @@ export const productCopy = {
       "en": "For lovers of bright citrus, ginger, black tea and refined woody freshness.",
       "sr": "Za ljubitelje živih citrusa, đumbira, crnog čaja i elegantne drvenaste svežine."
     }
+  },
+
+  "Xerjoff Naxos Eau de Parfum": {
+    "miniTag": {
+      "en": "🍯 Honey / Tobacco",
+      "sr": "🍯 Medni / Duvanski"
+    },
+    "card": {
+      "en": "Honey, lavender and tobacco wrapped in vanilla and tonka.",
+      "sr": "Med, lavanda i duvan u raskošnom zagrljaju vanile i tonke."
+    },
+    "modal": {
+      "en": "Bergamot, lemon and lavender open fresh. Honey, cinnamon and jasmine add warmth, while tobacco, vanilla and tonka leave a rich, smooth, lasting trail.",
+      "sr": "Bergamot, limun i lavanda otvaraju sveže. Med, cimet i jasmin daju raskošnu toplinu, dok duvan, vanila i tonka ostavljaju bogat, mekan i dug trag."
+    },
+    "scentType": {
+      "en": "Aromatic gourmand",
+      "sr": "Aromatično-gurmanski"
+    },
+    "dominantNotes": {
+      "sr": [
+        "med",
+        "duvan",
+        "lavanda",
+        "vanila"
+      ],
+      "en": [
+        "honey",
+        "tobacco",
+        "lavender",
+        "vanilla"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Medni",
+        "Aromatičan",
+        "Elegantan"
+      ],
+      "en": [
+        "Honeyed",
+        "Aromatic",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of rich honey, warm tobacco and vanilla balanced by aromatic freshness.",
+      "sr": "Za ljubitelje raskošnog meda, toplog duvana i vanile, sa elegantnom aromatičnom svežinom."
+    }
   }
 };
 
