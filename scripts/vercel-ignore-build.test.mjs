@@ -13,7 +13,8 @@ const matrix = [
   ["Hero generated data", ["playnice-site/src/data/heroSlides.generated.js"], true, false],
   ["Shared Exhibition data", ["playnice-site/src/data/exhibition.js"], true, true],
   ["Shared Exhibition asset", ["playnice-site/public/exhibition/2026/hero/example.jpg"], true, true],
-  ["Journal source", ["playnice-site/src/data/journal/index.js"], true, false],
+  ["Journal source", ["playnice-site/src/data/journal/index.js"], true, true],
+  ["Journal image only", ["playnice-site/public/journal/article24.webp"], true, false],
   ["Note Map source", ["playnice-site/src/features/note-map/TheNoteMapImpl.jsx"], true, true],
   ["Note Map asset", ["playnice-site/public/note-map/pomelo.webp"], true, false],
   ["GitHub workflow only", [".github/workflows/control-center-apply-regression.yml"], false, false],
@@ -35,6 +36,11 @@ assert.deepEqual(classifyPath("playnice-site/src/data/products/productCopy.js"),
   storefront: true,
   controlCenter: true,
   reason: "shared-product-data",
+});
+assert.deepEqual(classifyPath("playnice-site/src/data/journal/index.js"), {
+  storefront: true,
+  controlCenter: true,
+  reason: "shared-journal-source",
 });
 assert.deepEqual(classifyPath("playnice-site/src/features/note-map/TheNoteMapImpl.jsx"), {
   storefront: true,

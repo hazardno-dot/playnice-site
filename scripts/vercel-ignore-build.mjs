@@ -10,6 +10,7 @@ const NO_BUILD_EXACT = new Set([
 
 const ROUTER_SOURCE = "scripts/vercel-ignore-build.mjs";
 const CC_EXTERNAL_PRODUCT_PREFIX = "playnice-site/src/data/products/";
+const CC_EXTERNAL_JOURNAL_SOURCE = "playnice-site/src/data/journal/index.js";
 const CC_EXTERNAL_NOTE_MAP_SOURCE = "playnice-site/src/features/note-map/TheNoteMapImpl.jsx";
 const CC_EXTERNAL_EXHIBITION_DATA = "playnice-site/src/data/exhibition.js";
 const CC_EXTERNAL_EXHIBITION_ASSET_PREFIX = "playnice-site/public/exhibition/";
@@ -35,12 +36,15 @@ export function classifyPath(path) {
 
   if (file.startsWith("playnice-site/")) {
     const sharedProductData = file.startsWith(CC_EXTERNAL_PRODUCT_PREFIX) && !CC_EXTERNAL_EXCLUDE.test(file);
+    const sharedJournalSource = file === CC_EXTERNAL_JOURNAL_SOURCE;
     const sharedNoteMapSource = file === CC_EXTERNAL_NOTE_MAP_SOURCE;
     const sharedExhibitionData = file === CC_EXTERNAL_EXHIBITION_DATA;
     const sharedExhibitionAsset = file.startsWith(CC_EXTERNAL_EXHIBITION_ASSET_PREFIX);
-    const controlCenter = sharedProductData || sharedNoteMapSource || sharedExhibitionData || sharedExhibitionAsset;
+    const controlCenter = sharedProductData || sharedJournalSource || sharedNoteMapSource || sharedExhibitionData || sharedExhibitionAsset;
     const reason = sharedProductData
       ? "shared-product-data"
+      : sharedJournalSource
+        ? "shared-journal-source"
       : sharedNoteMapSource
         ? "shared-note-map-source"
         : sharedExhibitionData
