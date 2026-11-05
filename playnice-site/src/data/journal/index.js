@@ -2212,5 +2212,206 @@ Remember. PlayNice.`
         external: true
       }
     ]
+  },
+  {
+    id: 24,
+    date: {
+      en: "05 Nov",
+      sr: "05 Nov"
+    },
+    image: "/journal/article24.webp",
+    title: {
+      en: "The name you kept asking for.",
+      sr: "Ime koje ste uporno tražili."
+    },
+    excerpt: {
+      en: "Xerjoff Naxos topped the Community list with 20 votes. Spectre Ghost made it too. Two more reasons to keep the requests coming.",
+      sr: "Xerjoff Naxos je sa 20 glasova osvojio vrh Community liste. Stigao je i Spectre Ghost. Još dva razloga da nastavimo da predlažemo i glasamo."
+    },
+    content: {
+      en: `In our previous Community story, we left a few names on the wishlist.
+
+Naxos. Torino21. Imagination.
+
+We didn't know which one would be the next to move from the left side of the screen to the right.
+
+Now we know at least one.
+
+Xerjoff Naxos — 20 votes.
+
+Twenty times, someone visited our website, found Community Requests, and decided that this particular fragrance deserved a place in the PlayNice collection.
+
+Twenty votes. Number one on the leaderboard.
+
+A fairly convincing result.
+
+If we'd been holding an election, we probably would have had to arrange an official car for it by now.
+
+Fortunately, Naxos only needed a shelf.
+
+And now it has one.
+
+But it didn't arrive alone.
+
+French Avenue Spectre Ghost — 8 votes.
+
+Another familiar name from the Community list. Another fragrance that went from a suggestion to an actual part of our collection.
+
+Two different fragrances. Twenty-eight votes. Two new reasons to explore the Shop.
+
+Naxos arrived as the most wanted. Spectre Ghost proved that you don't necessarily have to finish first on the leaderboard to make it into the collection.
+
+After all, we've already established that Community isn't a football league.
+
+No relegation. No transfer windows.
+
+And sometimes, someone from the middle of the table turns out to be quite a signing.
+
+When we started Community Series back in June, we had two fragrances that joined the collection thanks to your requests.
+
+Soon there were four.
+
+Then eight.
+
+And the number has kept growing.
+
+Fragrances that were once just names on a wishlist now have their own place in the PlayNice collection.
+
+And perhaps that's the most interesting part of this whole story.
+
+You don't need to know anyone at PlayNice. You don't need to send emails, write formal requests, or explain why your favourite fragrance is the greatest thing ever created.
+
+Although, if you ask someone who loves Naxos, be prepared for a very detailed explanation.
+
+All you need to do is visit Community, suggest a fragrance you'd like to see in the collection, or support a name that's already there.
+
+The rest is part of the game.
+
+And the game is getting more interesting.
+
+There are already some serious contenders on the list. New suggestions keep appearing. Some names collect votes quickly, while others gradually find their supporters.
+
+That's exactly why we enjoy checking what's happening there.
+
+You never quite know whether you'll find an obvious favourite, a completely unexpected suggestion, or a fragrance whose name we'll have to learn how to pronounce before we can even discuss it.
+
+And now it's your turn.
+
+Visit Community. Explore the list. Support a suggestion. Add your own.
+
+You might discover a fragrance you didn't even know existed.
+
+You might find twenty other people who want exactly the same thing.
+
+Or perhaps your next suggestion will become the subject of a future Community story.
+
+After all, that's exactly how Naxos started.
+
+As someone's suggestion.
+
+And look at it now.
+
+— Charlie`,
+      sr: `U prethodnoj priči ostavili smo nekoliko imena na Community listi.
+
+Naxos. Torino21. Imagination.
+
+Nismo znali koje će sledeće preći sa leve strane ekrana na desnu.
+
+Sada znamo bar za jedno.
+
+Xerjoff Naxos — 20 glasova.
+
+Dvadeset puta neko je došao na naš sajt, pronašao Community Requests i odlučio da baš taj parfem zaslužuje mesto u PlayNice kolekciji.
+
+Dvadeset glasova. Prvo mesto na listi.
+
+Prilično ubedljiv rezultat.
+
+Da smo organizovali izbore, verovatno bismo već morali da mu obezbedimo službeni automobil.
+
+Srećom, Naxosu je dovoljna polica.
+
+I sada ima svoju.
+
+Ali nije stigao sam.
+
+French Avenue Spectre Ghost — 8 glasova.
+
+Još jedno poznato ime sa Community liste, još jedan parfem koji je od predloga postao deo naše kolekcije.
+
+Dva različita mirisa. Dvadeset osam glasova. Dva nova razloga da zavirite u Shop.
+
+Naxos je stigao kao najtraženiji. Spectre Ghost pokazao je da ne morate nužno biti prvi na tabeli da biste završili u kolekciji.
+
+Uostalom, već smo naučili da Community nije fudbalska liga.
+
+Nema ispadanja iz takmičenja. Nema prelaznog roka.
+
+A poneko sa sredine tabele ume ozbiljno da iznenadi.
+
+Kada smo u junu započeli Community Series, imali smo dva parfema koja su stigla zahvaljujući vašim predlozima.
+
+Ubrzo su postala četiri.
+
+Zatim osam.
+
+A broj je nastavio da raste.
+
+Parfemi koji su nekada bili samo imena na listi želja danas imaju svoje mesto u PlayNice kolekciji.
+
+I možda je baš to najzanimljiviji deo cele priče.
+
+Ne morate da poznajete nekoga iz PlayNice. Ne morate da šaljete mejlove, pišete molbe ili objašnjavate zašto je baš vaš omiljeni parfem najbolji na svetu.
+
+Mada, ako pitate nekoga ko voli Naxos, budite spremni na vrlo detaljno objašnjenje.
+
+Dovoljno je da posetite Community, upišete ime parfema koji biste voleli da vidite u kolekciji ili podržite neki od postojećih predloga.
+
+Ostalo je deo igre.
+
+A igra postaje sve zanimljivija.
+
+Na listi se već nalaze imena koja imaju ozbiljnu podršku. Pojavljuju se novi predlozi. Neki brzo skupljaju glasove, drugi polako pronalaze svoje pristalice.
+
+I baš zato volimo da pogledamo šta se tamo dešava.
+
+Nikada ne znamo da li će nas dočekati očekivani favorit, neko potpuno novo ime ili parfem za koji ćemo prvo morati da proverimo kako se pravilno izgovara.
+
+A sada je red na vas.
+
+Posetite Community. Pogledajte listu. Podržite neki predlog. Dodajte svoj.
+
+Možda ćete otkriti parfem za koji niste ni znali da postoji.
+
+Možda ćete pronaći još dvadeset ljudi koji žele isto što i vi.
+
+A možda će baš vaše sledeće pitanje postati naslov neke buduće Community priče.
+
+Na kraju krajeva, Naxos je počeo upravo tako.
+
+Kao nečiji predlog.
+
+A pogledajte ga sada.
+
+— Charlie`
+    },
+    series: {
+      en: "Community Series",
+      sr: "Community Series"
+    },
+    relatedProducts: [
+      "xerjoff-naxos",
+      "french-avenue-spectre-ghost"
+    ],
+    links: [
+      {
+        label: {
+          en: "Request the next fragrance",
+          sr: "Predloži sledeći parfem"
+        },
+        action: "scent-request"
+      }
+    ]
   }
 ];
