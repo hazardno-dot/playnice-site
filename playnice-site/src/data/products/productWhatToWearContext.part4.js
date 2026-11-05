@@ -150,6 +150,10 @@ const entries = [
   {
     "sr": "Bela košulja, svetle pantalone, čiste patike i sat koji pokazuje tačno vreme, čak i kada vi kasnite. Hectic najbolje ide uz jednostavnu, urednu garderobu i onu vrstu opuštenosti zbog koje izgleda kao da ništa ne radite na silu.",
     "en": "A white shirt, light trousers, clean sneakers and a watch that tells the right time, even when you're running late. Hectic works best with simple, polished clothes and the kind of relaxed confidence that never looks forced."
+  },
+  {
+    "sr": "Tamno odelo, kašmirski džemper, kvalitetan kaput ili jednostavna crna košulja. Naxos voli eleganciju, ali ne zahteva posebnu ceremoniju. Dobar sat, miran korak i malo samopouzdanja sasvim su dovoljni. Kravata je opciona. Utisak nije.",
+    "en": "A dark suit, cashmere sweater, fine coat or a simple black shirt. Naxos appreciates elegance without demanding a ceremony. A good watch, an unhurried step and some confidence are quite enough. The tie is optional. The impression isn't."
   }
 
 ];

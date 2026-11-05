@@ -3416,6 +3416,37 @@ export const discoveryProfiles = {
     "cleanliness": 9.1,
     "versatility": 9.1,
     "gourmandness": 0.5
+  },
+
+  "xerjoff-naxos": {
+    "date": 9.5,
+    "casual": 7.5,
+    "citrus": 6.5,
+    "office": 6,
+    "unisex": 8.5,
+    "warmth": 9,
+    "aquatic": 0,
+    "dryness": 4,
+    "evening": 9.5,
+    "powdery": 5.5,
+    "airiness": 4,
+    "darkness": 6,
+    "elegance": 9.5,
+    "feminine": 4.5,
+    "florality": 4,
+    "freshness": 6,
+    "longevity": 9,
+    "masculine": 7,
+    "spiciness": 6,
+    "sweetness": 8.5,
+    "woodiness": 5.5,
+    "creaminess": 7.5,
+    "fruitiness": 2,
+    "projection": 8.5,
+    "aromaticity": 8.5,
+    "cleanliness": 5.5,
+    "versatility": 8,
+    "gourmandness": 8.5
   }
 };
 

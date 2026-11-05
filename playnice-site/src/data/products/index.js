@@ -3192,6 +3192,32 @@ export const products = [
       heart: ["ginger","cinnamon","neroli"],
       base: ["black-tea","ambroxan","guaiac-wood","olibanum"]
     }
+  },
+  {
+    id: 114,
+    addedAt: "2026-11-05T19:37:02.487Z",
+    slug: "xerjoff-naxos",
+    name: "Xerjoff Naxos Eau de Parfum",
+    modalName: "Xerjoff Naxos EDP",
+    shortName: "Xerjoff Naxos",
+    category: "Niche",
+    image: "/products/xerjoff-naxos.png",
+    sizes: {"2ml":9,"5ml":20,"10ml":36},
+    badge: "LUXURY PICK",
+    rating: 9.2,
+    ratingLabel: "Well Loved",
+    season: "winter",
+    moods: ["date","rich","signature"],
+    recommendations: ["tom-ford-noir-extreme","swiss-arabian-tobacco-01","lattafa-khamrah-qahwa"],
+    inspiredBy: {
+      name: "Original Xerjoff creation",
+      short: "Original Xerjoff DNA"
+    },
+    noteMap: {
+      top: ["lemon","bergamot","lavender","olibanum"],
+      heart: ["jasmine-sambac","honey","cinnamon","cashmere"],
+      base: ["vanilla","tobacco-leaf","tonka-bean"]
+    }
   }
 
 ];

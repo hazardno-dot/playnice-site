@@ -471,5 +471,10 @@ export const productWearContext = {
   "Bujairami Hectic Extrait de Parfum": {
     "sr": "Posao, putovanja, leto, svakodnevno i gradske šetnje.",
     "en": "Work, travel, summer, everyday wear and city walks."
+  },
+
+  "Xerjoff Naxos Eau de Parfum": {
+    "sr": "Jesen, zima, elegantne večeri, dejt i posebne prilike.",
+    "en": "Autumn, winter, elegant evenings, dates and special occasions."
   }
 };
