@@ -503,7 +503,7 @@ async function mutateOrder(token, body) {
 
   if (!mutation?.order?.id || !mutation?.mirror) throw new Error("Supabase order mutation returned an incomplete result.");
 
-  const mirrorResult = await mirrorWithAudit(token, mutation.order, mutation.mirror);
+  const mirrorResult = await mirrorWithAudit(token, mutation.order, buildMirror(mutation.order));
   const emailResult = action === "set_status"
     ? await sendPackedStatusEmail(token, mutation.order, previousStatus)
     : { status_email_status: "not_applicable", status_email_warning: null };
