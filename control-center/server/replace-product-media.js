@@ -123,6 +123,13 @@ function thumbPathFromShopPath(shopPath) {
   return `/products/thumbs/${filename}`;
 }
 
+async function findReplacementPr(slug) {
+  const pulls = await github(`/repos/${OWNER}/${REPO_NAME}/pulls?state=all&sort=created&direction=desc&per_page=50`);
+  if (!Array.isArray(pulls)) return null;
+  const title = `Control Center: Replace media · ${slug}`;
+  const prefix = `cc-product-media-replace-${slug}-`;
+  return pulls.find((pr) => pr?.title === title || String(pr?.head?.ref || "").startsWith(prefix)) || null;
+}
 async function writeFile({ path, content, label, slug }, branch) {
   const current = await githubFile(path, branch);
   if (!current?.sha) throw new Error(`${label} target no longer exists on the replacement branch.`);
@@ -156,20 +163,42 @@ async function handler(req, res) {
 
     if (req.method === "GET") {
       const prNumber = Number(req.query?.pr_number || 0);
-      if (!Number.isInteger(prNumber) || prNumber <= 0) return json(res, 400, { error: "A valid pr_number is required." });
-      const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls/${prNumber}`);
+      const requestedSlug = String(req.query?.product_slug || "").trim().toLowerCase();
+      let pr = null;
+
+      if (Number.isInteger(prNumber) && prNumber > 0) {
+        pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls/${prNumber}`);
+      } else if (/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSlug)) {
+        pr = await findReplacementPr(requestedSlug);
+      } else {
+        return json(res, 400, { error: "A valid pr_number or product_slug is required." });
+      }
+
       return json(res, 200, {
         ok: true,
-        pr_number: prNumber,
+        found: Boolean(pr),
+        pr_number: pr?.number || null,
         state: pr?.state || "",
+        draft: Boolean(pr?.draft),
         merged: Boolean(pr?.merged_at),
         merged_at: pr?.merged_at || null,
         pr_url: pr?.html_url || "",
+        product_slug: requestedSlug || null,
       });
     }
 
     const slug = String(req.body?.product_slug || "").trim().toLowerCase();
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return json(res, 400, { error: "A valid product_slug is required." });
+
+    const existingReplacementPr = await findReplacementPr(slug);
+    if (existingReplacementPr && existingReplacementPr.state === "open" && !existingReplacementPr.merged_at) {
+      return json(res, 409, {
+        error: `A replacement preview already exists for ${slug}.`,
+        pr_number: existingReplacementPr.number,
+        pr_url: existingReplacementPr.html_url || "",
+        state: existingReplacementPr.state,
+      });
+    }
 
     const shopPath = normalizeShopPath(req.body?.existing_shop_path);
     const justInPath = thumbPathFromShopPath(shopPath);
