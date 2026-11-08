@@ -3221,7 +3221,7 @@ export const products = [
   },
   {
     id: 115,
-    addedAt: "2026-11-08T14:17:19.155Z",
+    addedAt: "2026-11-08T14:26:02.414Z",
     slug: "dolce-gabbana-the-one-for-men-edp",
     name: "Dolce & Gabbana The One for Men Eau de Parfum",
     modalName: "Dolce & Gabbana The One for Men EDP",
