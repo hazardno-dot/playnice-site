@@ -79,14 +79,14 @@ function QualityReport({ report, enhanced }) {
   </div>;
 }
 
-function ReplaceCard({ label, path, file, info, preview, optimizing, onPick, contract, qualityReport, enhanced }) {
+function ReplaceCard({ label, path, file, info, preview, optimizing, locked, onPick, contract, qualityReport, enhanced }) {
   return <div className={`product-media-card product-media-replace-card ${file ? "has-file" : ""}`}>
     <div className="product-media-card-head">
       <span>{label}</span>
       <code title={path || "No existing path"}>{path || "No existing path"}</code>
     </div>
     <label className="product-media-picker">
-      <input type="file" accept={PRODUCT_SOURCE_ACCEPT} disabled={optimizing} onChange={(event) => onPick(event.target.files?.[0] || null)} />
+      <input type="file" accept={PRODUCT_SOURCE_ACCEPT} disabled={optimizing || locked} onChange={(event) => onPick(event.target.files?.[0] || null)} />
       <strong>{optimizing ? "Checking + optimizing…" : file ? "Choose another image" : "Choose replacement"}</strong>
       <small>{file && info
         ? `${info.originalWidth} × ${info.originalHeight}px · ${formatImageBytes(info.originalBytes)} → ${info.width} × ${info.height}px · ${formatImageBytes(info.bytes)}`
@@ -129,6 +129,7 @@ export default function ProductMediaReplaceBridge() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
+  const [mergeNotice, setMergeNotice] = useState("");
 
   useEffect(() => {
     const mainStage = document.querySelector(".main-stage");
@@ -171,7 +172,7 @@ export default function ProductMediaReplaceBridge() {
     if (justInPreviewRef.current) URL.revokeObjectURL(justInPreviewRef.current);
     shopPreviewRef.current = ""; justInPreviewRef.current = "";
     setShopPreview(""); setJustInPreview("");
-    setCopiedPath(""); setError(""); setResult(null); setOptimizing("");
+    setCopiedPath(""); setError(""); setResult(null); setMergeNotice(""); setOptimizing("");
   }, [slug]);
 
   useEffect(() => () => {
@@ -191,6 +192,7 @@ export default function ProductMediaReplaceBridge() {
   };
 
   const pick = async (variant, sourceFile) => {
+    if (result?.pr_number) return;
     setError(""); setResult(null);
     const isShop = variant === "shop";
     const setFile = isShop ? setShopFile : setJustInFile;
@@ -239,6 +241,54 @@ export default function ProductMediaReplaceBridge() {
     }
   };
 
+  const resetReplacementState = () => {
+    setOpen(false);
+    setShopFile(null); setJustInFile(null); setShopInfo(null); setJustInInfo(null);
+    setShopQuality(null); setJustInQuality(null); setShopEnhanced(false); setJustInEnhanced(false);
+    if (shopPreviewRef.current) URL.revokeObjectURL(shopPreviewRef.current);
+    if (justInPreviewRef.current) URL.revokeObjectURL(justInPreviewRef.current);
+    shopPreviewRef.current = ""; justInPreviewRef.current = "";
+    setShopPreview(""); setJustInPreview("");
+    setCopiedPath(""); setResult(null); setOptimizing("");
+  };
+
+  useEffect(() => {
+    const prNumber = Number(result?.pr_number || 0);
+    if (!prNumber) return;
+
+    let cancelled = false;
+    let timer = 0;
+
+    const checkMerge = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) return;
+        const response = await fetch(`/api/replace-product-media?pr_number=${encodeURIComponent(prNumber)}`, {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        const body = await readResponse(response);
+        if (!response.ok) throw new Error(body?.error || "Could not check replacement PR status.");
+        if (!cancelled && body?.merged) {
+          resetReplacementState();
+          setMergeNotice(`Replacement merged successfully · PR #${prNumber}`);
+          window.setTimeout(() => setMergeNotice(""), 5000);
+          return;
+        }
+      } catch {
+        // Keep the created-preview state intact and retry later.
+      }
+      if (!cancelled) timer = window.setTimeout(checkMerge, 8000);
+    };
+
+    const onFocus = () => checkMerge();
+    checkMerge();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      window.removeEventListener("focus", onFocus);
+    };
+  }, [result?.pr_number]);
   const replaceMedia = async () => {
     if (!slug || !shopPath || !shopFile || !justInFile) return;
     setBusy(true); setError(""); setResult(null);
@@ -279,6 +329,7 @@ export default function ProductMediaReplaceBridge() {
       </div>
       <button type="button" className="secondary" onClick={() => setOpen((value) => !value)}>{open ? "Close" : "Replace existing media"}</button>
     </div>
+    {mergeNotice ? <div className="product-media-merge-notice">{mergeNotice}</div> : null}
 
     {open ? <>
       <div className="product-media-replace-note">Source filename does not matter. Control Center keeps the existing filenames below and replaces only their image content.</div>
@@ -297,6 +348,7 @@ export default function ProductMediaReplaceBridge() {
           qualityReport={shopQuality}
           enhanced={shopEnhanced}
           optimizing={optimizing === "shop"}
+          locked={Boolean(result?.pr_number)}
           onPick={(file) => pick("shop", file)}
           contract={`JPG / PNG / WebP → quality check + gentle enhancement → 600 × 600 PNG · same filename · target ≤ ${formatImageBytes(SHOP_PRESET.maxBytes)}`}
         />
@@ -309,6 +361,7 @@ export default function ProductMediaReplaceBridge() {
           qualityReport={justInQuality}
           enhanced={justInEnhanced}
           optimizing={optimizing === "just-in"}
+          locked={Boolean(result?.pr_number)}
           onPick={(file) => pick("just-in", file)}
           contract={`JPG / PNG / WebP → quality check + gentle enhancement → 320 × 320 WebP · same basename · target ≤ ${formatImageBytes(JUST_IN_PRESET.maxBytes)}`}
         />
@@ -320,8 +373,8 @@ export default function ProductMediaReplaceBridge() {
         {result.pr_url ? <a href={result.pr_url} target="_blank" rel="noreferrer">Open draft PR #{result.pr_number} ↗</a> : null}
       </div> : null}
       <div className="product-media-actions">
-        <button type="button" className="primary" disabled={busy || Boolean(optimizing) || !validExistingPath || !shopFile || !justInFile} onClick={replaceMedia}>
-          {busy ? "Creating replacement preview…" : "Create replacement preview"}
+        <button type="button" className="primary" disabled={busy || Boolean(optimizing) || Boolean(result?.pr_number) || !validExistingPath || !shopFile || !justInFile} onClick={replaceMedia}>
+          {busy ? "Creating replacement preview…" : result?.pr_number ? "Replacement preview created" : "Create replacement preview"}
         </button>
       </div>
     </> : null}
