@@ -154,6 +154,10 @@ const entries = [
   {
     "sr": "Tamno odelo, kašmirski džemper, kvalitetan kaput ili jednostavna crna košulja. Naxos voli eleganciju, ali ne zahteva posebnu ceremoniju. Dobar sat, miran korak i malo samopouzdanja sasvim su dovoljni. Kravata je opciona. Utisak nije.",
     "en": "A dark suit, cashmere sweater, fine coat or a simple black shirt. Naxos appreciates elegance without demanding a ceremony. A good watch, an unhurried step and some confidence are quite enough. The tie is optional. The impression isn't."
+  },
+  {
+    "sr": "Tamna košulja, dobro skrojene pantalone, kožne cipele i sat bez previše dokazivanja. Ili obična bela košulja sa zavrnutim rukavima. The One najbolje funkcioniše kada izgledate kao da niste proveli dva sata pred ogledalom, čak i ako jeste.",
+    "en": "A dark shirt, tailored trousers, leather shoes and an understated watch. Or a simple white shirt with rolled-up sleeves. The One works best when you look like you haven't spent two hours in front of the mirror, even if you have."
   }
 
 ];
