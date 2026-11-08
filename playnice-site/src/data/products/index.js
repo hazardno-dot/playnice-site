@@ -3218,6 +3218,32 @@ export const products = [
       heart: ["jasmine-sambac","honey","cinnamon","cashmere"],
       base: ["vanilla","tobacco-leaf","tonka-bean"]
     }
+  },
+  {
+    id: 115,
+    addedAt: "2026-11-08T14:26:02.414Z",
+    slug: "dolce-gabbana-the-one-for-men-edp",
+    name: "Dolce & Gabbana The One for Men Eau de Parfum",
+    modalName: "Dolce & Gabbana The One for Men EDP",
+    shortName: "D&G The One EDP",
+    category: "Designer",
+    image: "/products/dolce-gabbana-the-one-for-men-edp.png",
+    sizes: {"2ml":4,"5ml":9,"10ml":16},
+    badge: "DATE NIGHT",
+    rating: 8.7,
+    ratingLabel: "Well Loved",
+    season: "winter",
+    moods: ["date","rich","signature"],
+    recommendations: ["dolce-gabbana-the-one-for-men-edt","tom-ford-noir-extreme","givenchy-gentleman-reserve-privee"],
+    inspiredBy: {
+      name: "Original Dolce & Gabbana creation",
+      short: "Original The One DNA"
+    },
+    noteMap: {
+      top: ["grapefruit","coriander","basil"],
+      heart: ["ginger","cardamom","orange-blossom"],
+      base: ["tobacco","amber","cedarwood"]
+    }
   }
 
 ];

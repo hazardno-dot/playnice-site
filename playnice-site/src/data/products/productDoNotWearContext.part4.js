@@ -154,6 +154,10 @@ export default [
   {
     "sr": "Kada planirate da ostanete neprimećeni. Xerjoff Naxos nema baš mnogo razumevanja za takve planove. Med, duvan i vanila imaju običaj da privuku pažnju čak i kada vi ćutite. Ako ste već odlučili da se sakrijete u poslednjem redu, možda je trebalo da izaberete neki drugi parfem. Ili da ostanete kod kuće.",
     "en": "When you're planning to go unnoticed. Xerjoff Naxos isn't particularly interested in that plan. Honey, tobacco and vanilla tend to attract attention even when you say nothing. If you've chosen to hide in the back row, perhaps another fragrance would have been wiser. Or staying home."
+  },
+  {
+    "sr": "Kada očekujete da će vas osetiti na drugom kraju restorana. The One nema nameru da nadjača muziku, razgovor i sve ostale goste. Njegovi začini, duvan i topli amber mnogo su zanimljiviji izbliza. Uostalom, ako želite da ostavite utisak na nekoga za susednim stolom, možda je bolje da mu prvo priđete.",
+    "en": "When you expect to be noticed from across the restaurant. The One has no intention of competing with the music, conversation and every other guest. Its spices, tobacco and warm amber are far more interesting up close. Besides, if you want to impress someone at the next table, perhaps you should introduce yourself first."
   }
 
 ];

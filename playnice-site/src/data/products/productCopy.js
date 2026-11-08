@@ -3652,6 +3652,55 @@ export const productCopy = {
       "en": "For lovers of rich honey, warm tobacco and vanilla balanced by aromatic freshness.",
       "sr": "Za ljubitelje raskošnog meda, toplog duvana i vanile, sa elegantnom aromatičnom svežinom."
     }
+  },
+
+  "Dolce & Gabbana The One for Men Eau de Parfum": {
+    "miniTag": {
+      "en": "🥃 Tobacco / Spicy",
+      "sr": "🥃 Duvanski / Začinski"
+    },
+    "card": {
+      "en": "Grapefruit and spices lead into warm tobacco, amber and cedar.",
+      "sr": "Grejpfrut i začini otvaraju put duvanu, amberu i toplom kedru."
+    },
+    "modal": {
+      "en": "Grapefruit, coriander and basil open fresh. Ginger, cardamom and orange blossom add warmth, while tobacco, amber and cedar create an intimate finish.",
+      "sr": "Grejpfrut, korijander i bosiljak otvaraju sveže. Đumbir, kardamom i cvet pomorandže donose toplinu, a duvan, amber i kedar zavodljiv završetak."
+    },
+    "scentType": {
+      "en": "Spicy amber",
+      "sr": "Začinsko-ambarni"
+    },
+    "dominantNotes": {
+      "sr": [
+        "duvan",
+        "amber",
+        "kardamom",
+        "đumbir"
+      ],
+      "en": [
+        "tobacco",
+        "amber",
+        "cardamom",
+        "ginger"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Začinski",
+        "Topao",
+        "Elegantan"
+      ],
+      "en": [
+        "Spicy",
+        "Warm",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of warm tobacco, spices and refined scents that never need to shout.",
+      "sr": "Za ljubitelje toplog duvana, začina i elegantnih mirisa koji ne moraju da viču."
+    }
   }
 };
 

@@ -476,5 +476,10 @@ export const productWearContext = {
   "Xerjoff Naxos Eau de Parfum": {
     "sr": "Jesen, zima, elegantne večeri, dejt i posebne prilike.",
     "en": "Autumn, winter, elegant evenings, dates and special occasions."
+  },
+
+  "Dolce & Gabbana The One for Men Eau de Parfum": {
+    "sr": "Dejt, večera, jesenje veče i posebne prilike.",
+    "en": "Dates, dinners, autumn evenings and special occasions."
   }
 };

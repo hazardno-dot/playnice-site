@@ -3447,6 +3447,37 @@ export const discoveryProfiles = {
     "cleanliness": 5.5,
     "versatility": 8,
     "gourmandness": 8.5
+  },
+
+  "dolce-gabbana-the-one-for-men-edp": {
+    "date": 9.5,
+    "casual": 7.5,
+    "citrus": 5.5,
+    "office": 7.5,
+    "unisex": 3.5,
+    "warmth": 8.5,
+    "aquatic": 0,
+    "dryness": 5,
+    "evening": 9.2,
+    "powdery": 3,
+    "airiness": 3.5,
+    "darkness": 6,
+    "elegance": 9,
+    "feminine": 2,
+    "florality": 3,
+    "freshness": 5.5,
+    "longevity": 6.5,
+    "masculine": 9,
+    "spiciness": 8,
+    "sweetness": 6.2,
+    "woodiness": 7,
+    "creaminess": 5.2,
+    "fruitiness": 3,
+    "projection": 5.5,
+    "aromaticity": 7,
+    "cleanliness": 5,
+    "versatility": 8,
+    "gourmandness": 3
   }
 };
 
