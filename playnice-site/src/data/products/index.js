@@ -2198,7 +2198,7 @@ export const products = [
     shortName: "Shiyaaka Snow",
     category: "Arabian",
     image: "/products/khadlaj-shiyaaka-snow.png",
-    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     badge: "MOST WANTED",
     rating: 8.8,
     ratingLabel: "Luxury Fresh",
