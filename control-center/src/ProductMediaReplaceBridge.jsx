@@ -130,6 +130,7 @@ export default function ProductMediaReplaceBridge() {
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
   const [mergeNotice, setMergeNotice] = useState("");
+  const [workflowChecking, setWorkflowChecking] = useState(false);
 
   useEffect(() => {
     const mainStage = document.querySelector(".main-stage");
@@ -172,7 +173,7 @@ export default function ProductMediaReplaceBridge() {
     if (justInPreviewRef.current) URL.revokeObjectURL(justInPreviewRef.current);
     shopPreviewRef.current = ""; justInPreviewRef.current = "";
     setShopPreview(""); setJustInPreview("");
-    setCopiedPath(""); setError(""); setResult(null); setMergeNotice(""); setOptimizing("");
+    setCopiedPath(""); setError(""); setResult(null); setMergeNotice(""); setWorkflowChecking(Boolean(slug)); setOptimizing("");
   }, [slug]);
 
   useEffect(() => () => {
@@ -180,6 +181,51 @@ export default function ProductMediaReplaceBridge() {
     if (justInPreviewRef.current) URL.revokeObjectURL(justInPreviewRef.current);
   }, []);
 
+  useEffect(() => {
+    if (!slug) { setWorkflowChecking(false); return; }
+    let cancelled = false;
+
+    const loadPersistentReplacement = async () => {
+      setWorkflowChecking(true);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) return;
+        const response = await fetch(`/api/replace-product-media?product_slug=${encodeURIComponent(slug)}`, {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        const body = await readResponse(response);
+        if (!response.ok) throw new Error(body?.error || "Could not load replacement workflow state.");
+        if (cancelled || !body?.found) return;
+
+        if (body.state === "open" && !body.merged) {
+          setResult({
+            pr_number: body.pr_number,
+            pr_url: body.pr_url,
+            product_slug: slug,
+            shop_path: shopPath,
+            just_in_path: thumbPathFromShopPath(shopPath),
+            persisted: true,
+          });
+          return;
+        }
+
+        if (body.merged && body.merged_at) {
+          const mergedAt = new Date(body.merged_at).getTime();
+          if (Number.isFinite(mergedAt) && Date.now() - mergedAt < 15 * 60 * 1000) {
+            setMergeNotice(`Replacement merged successfully · PR #${body.pr_number}`);
+            window.setTimeout(() => setMergeNotice(""), 5000);
+          }
+        }
+      } catch (statusError) {
+        if (!cancelled) setError(statusError.message || String(statusError));
+      } finally {
+        if (!cancelled) setWorkflowChecking(false);
+      }
+    };
+
+    loadPersistentReplacement();
+    return () => { cancelled = true; };
+  }, [slug, shopPath]);
   const copyPath = async (path, key) => {
     if (!path) return;
     try {
@@ -192,7 +238,7 @@ export default function ProductMediaReplaceBridge() {
   };
 
   const pick = async (variant, sourceFile) => {
-    if (result?.pr_number) return;
+    if (result?.pr_number || workflowChecking) return;
     setError(""); setResult(null);
     const isShop = variant === "shop";
     const setFile = isShop ? setShopFile : setJustInFile;
@@ -348,7 +394,7 @@ export default function ProductMediaReplaceBridge() {
           qualityReport={shopQuality}
           enhanced={shopEnhanced}
           optimizing={optimizing === "shop"}
-          locked={Boolean(result?.pr_number)}
+          locked={workflowChecking || Boolean(result?.pr_number)}
           onPick={(file) => pick("shop", file)}
           contract={`JPG / PNG / WebP → quality check + gentle enhancement → 600 × 600 PNG · same filename · target ≤ ${formatImageBytes(SHOP_PRESET.maxBytes)}`}
         />
@@ -361,7 +407,7 @@ export default function ProductMediaReplaceBridge() {
           qualityReport={justInQuality}
           enhanced={justInEnhanced}
           optimizing={optimizing === "just-in"}
-          locked={Boolean(result?.pr_number)}
+          locked={workflowChecking || Boolean(result?.pr_number)}
           onPick={(file) => pick("just-in", file)}
           contract={`JPG / PNG / WebP → quality check + gentle enhancement → 320 × 320 WebP · same basename · target ≤ ${formatImageBytes(JUST_IN_PRESET.maxBytes)}`}
         />
@@ -369,12 +415,12 @@ export default function ProductMediaReplaceBridge() {
       {error ? <div className="product-media-error">{error}</div> : null}
       {result ? <div className="product-media-replace-result">
         <div><span>REPLACEMENT PREVIEW CREATED</span><strong>Product data unchanged</strong></div>
-        <small>{result.shop_path} + {result.just_in_path}</small>
+        <small>{result.shop_path || shopPath} + {result.just_in_path || justInPath}</small>
         {result.pr_url ? <a href={result.pr_url} target="_blank" rel="noreferrer">Open draft PR #{result.pr_number} ↗</a> : null}
       </div> : null}
       <div className="product-media-actions">
-        <button type="button" className="primary" disabled={busy || Boolean(optimizing) || Boolean(result?.pr_number) || !validExistingPath || !shopFile || !justInFile} onClick={replaceMedia}>
-          {busy ? "Creating replacement preview…" : result?.pr_number ? "Replacement preview created" : "Create replacement preview"}
+        <button type="button" className="primary" disabled={busy || workflowChecking || Boolean(optimizing) || Boolean(result?.pr_number) || !validExistingPath || !shopFile || !justInFile} onClick={replaceMedia}>
+          {busy ? "Creating replacement preview…" : workflowChecking ? "Checking replacement status…" : result?.pr_number ? "Replacement preview created" : "Create replacement preview"}
         </button>
       </div>
     </> : null}
