@@ -154,6 +154,15 @@ export default function AnalyticsManager() {
     const resaleMl = resaleByName.get(String(product.name).toLowerCase()) || 0;
     return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, resale_in_ml: resaleMl, resale_out_ml: resaleMl, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
   });
+  // Audit-only readiness view. This is not live shadow telemetry or checkout enforcement.
+  // Baseline size verification does not prove current available-to-sell stock.
+  const protectionAudit = inventoryRows.reduce((acc, row) => {
+    if (row.provisional || row.estimated) acc.provisional += 1;
+    else if (!row.baseline_verified) acc.unverified += 1;
+    else if (!Number.isFinite(Number(row.remaining_ml)) || Number(row.remaining_ml) < 0) acc.inconsistent += 1;
+    else acc.reviewable += 1;
+    return acc;
+  }, { provisional: 0, unverified: 0, inconsistent: 0, reviewable: 0 });
   const visibleInventoryRows = inventoryRows
     .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
     .sort((a, b) => {
@@ -419,6 +428,19 @@ export default function AnalyticsManager() {
           <small>Supabase canonical inventory ledger</small>
         </div>
       </div>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / AUDIT</span><h3>Protection readiness</h3></div><small>Audit only · no live blocking · no checkout changes</small></div>
+        <div className="inventory-summary">
+          <div><span>PROVISIONAL</span><strong>{number(protectionAudit.provisional)}</strong></div>
+          <div><span>UNVERIFIED</span><strong>{number(protectionAudit.unverified)}</strong></div>
+          <div><span>REVIEWABLE</span><strong>{number(protectionAudit.reviewable)}</strong></div>
+          <div><span>INCONSISTENT</span><strong>{number(protectionAudit.inconsistent)}</strong></div>
+        </div>
+        <p className="analytics-note">No customer restrictions are active. Reviewable means the inventory entry has a verified original bottle capacity and a nonnegative calculated balance; it does NOT certify current sellable stock, reservation accuracy or product mapping. NEW orders are not reserved in this display. Shadow Mode event counts are not available yet, and no live add-to-cart events are being monitored.</p>
+        {protectionAudit.provisional || protectionAudit.unverified || protectionAudit.inconsistent
+          ? <p className="analytics-note">Next: reconcile physical balances and identifiers before enabling actual background checks or restrictions.</p>
+          : <p className="analytics-note">All visible rows passed these preliminary checks only. Transactional validation and checkout concurrency tests are still required.</p>}
+      </article>
       <div className="sales-grid inventory-grid">
         <article className="analytics-panel sales-wide inventory-panel">
           <div className="analytics-panel-head">
