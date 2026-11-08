@@ -138,14 +138,12 @@ async function writeFile({ path, content, label, slug }, branch) {
 }
 
 async function handler(req, res) {
-  if (req.method !== "POST") return json(res, 405, { error: "Method not allowed." });
+  if (!["GET","POST"].includes(req.method)) return json(res, 405, { error: "Method not allowed." });
   if (!SUPABASE_URL || !SUPABASE_KEY || !GITHUB_TOKEN) return json(res, 500, { error: "Product media environment is incomplete." });
 
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
-  const slug = String(req.body?.product_slug || "").trim().toLowerCase();
   if (!token) return json(res, 401, { error: "Admin session required." });
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return json(res, 400, { error: "A valid product_slug is required." });
 
   try {
     const userResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` } });
@@ -155,6 +153,23 @@ async function handler(req, res) {
     const adminResponse = await supabaseFetch(`/rest/v1/admin_users?user_id=eq.${encodeURIComponent(user.id)}&select=user_id`, token);
     const admins = await readJson(adminResponse, "Supabase admin lookup");
     if (!adminResponse.ok || !Array.isArray(admins) || !admins.length) return json(res, 403, { error: "PlayNice admin access required." });
+
+    if (req.method === "GET") {
+      const prNumber = Number(req.query?.pr_number || 0);
+      if (!Number.isInteger(prNumber) || prNumber <= 0) return json(res, 400, { error: "A valid pr_number is required." });
+      const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls/${prNumber}`);
+      return json(res, 200, {
+        ok: true,
+        pr_number: prNumber,
+        state: pr?.state || "",
+        merged: Boolean(pr?.merged_at),
+        merged_at: pr?.merged_at || null,
+        pr_url: pr?.html_url || "",
+      });
+    }
+
+    const slug = String(req.body?.product_slug || "").trim().toLowerCase();
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return json(res, 400, { error: "A valid product_slug is required." });
 
     const shopPath = normalizeShopPath(req.body?.existing_shop_path);
     const justInPath = thumbPathFromShopPath(shopPath);
