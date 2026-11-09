@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
 import HeaderNext, { CartIcon } from "./features/header/HeaderNext";
+import FragranceVoiceDictation from "./features/discovery/FragranceVoiceDictation";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import {
   buildEcommerceItem,
@@ -5805,7 +5806,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             handleDiscoverySearch();
           }}
         >
-          <div className="playnice-discovery-input-wrap">
+          <div className={`playnice-discovery-input-wrap ${discoveryQuery ? "has-clear" : ""}`}>
             <span className="playnice-discovery-search-icon" aria-hidden="true">
               ✦
             </span>
@@ -5827,6 +5828,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 lang === "sr"
                   ? "Opiši kakav parfem tražiš"
                   : "Describe the fragrance you are looking for"
+              }
+            />
+
+            <FragranceVoiceDictation
+              lang={lang}
+              onTranscript={(spokenText) =>
+                setDiscoveryQuery((previous) =>
+                  [previous.trim(), spokenText].filter(Boolean).join(" ")
+                )
               }
             />
 
