@@ -58,3 +58,76 @@
 @media (prefers-reduced-motion: reduce) {
   .playnice-discovery-input-wrap .playnice-fi-voice.is-listening { animation: none; }
 }
+
+/* Clear, localized recording feedback; no audio is stored or transmitted by PlayNice. */
+.playnice-discovery-input-wrap .playnice-fi-voice.is-listening {
+  isolation: isolate;
+  overflow: visible;
+  animation: playnice-fi-mic-pulse 1.3s ease-in-out infinite;
+}
+.playnice-discovery-input-wrap .playnice-fi-voice.is-listening::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 1px solid rgba(234,185,108,.7);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: playnice-fi-voice-ring 1.8s ease-out infinite;
+}
+.playnice-discovery-input-wrap .playnice-fi-voice.is-listening::after {
+  content: attr(data-listening-label);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 8px;
+  border: 1px solid rgba(234,185,108,.45);
+  border-radius: 99px;
+  background: #241b14;
+  color: #f5d28e;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+}
+.playnice-fi-voice-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 18px;
+}
+.playnice-fi-voice-wave span {
+  width: 2px;
+  height: 5px;
+  border-radius: 2px;
+  background: currentColor;
+  animation: playnice-fi-wave 850ms ease-in-out infinite alternate;
+}
+.playnice-fi-voice-wave span:nth-child(2),
+.playnice-fi-voice-wave span:nth-child(4) {
+  animation-delay: -380ms;
+}
+.playnice-fi-voice-wave span:nth-child(3) {
+  animation-delay: -610ms;
+}
+.playnice-fi-voice-wave span:nth-child(5) {
+  animation-delay: -180ms;
+}
+@keyframes playnice-fi-wave {
+  from { height: 4px; }
+  to { height: 17px; }
+}
+@keyframes playnice-fi-voice-ring {
+  0% { opacity: .9; transform: scale(.85); }
+  100% { opacity: 0; transform: scale(1.28); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .playnice-discovery-input-wrap .playnice-fi-voice.is-listening,
+  .playnice-discovery-input-wrap .playnice-fi-voice.is-listening::before,
+  .playnice-fi-voice-wave span { animation: none; }
+  .playnice-fi-voice-wave span { height: 12px; }
+}
