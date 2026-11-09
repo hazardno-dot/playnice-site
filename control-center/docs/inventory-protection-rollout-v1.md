@@ -65,3 +65,9 @@ Queries were SELECT-only; no Production rows or schema were changed.
 - Even with both flags enabled in Preview, the receiver only validates a small anonymous payload and returns `UNKNOWN / AUTHORITATIVE_STOCK_NOT_CONFIGURED`; it **does not persist, authenticate stock or evaluate inventory**. No customer identity or physical quantity is exposed.
 - The observer now sums supported decant sizes already in the same cart plus the intended addition. Non-decant products and ambiguous cart state are skipped; Discovery Set, hero full bottles and checkout require separate mapping.
 - This is **diagnostic transport preparation, not live Shadow Mode monitoring**. Before real event ingestion: implement trustworthy server-side catalog/stock reads, snapshot consistency, rate limiting, forged-traffic handling, retention, and audited writes to the isolated telemetry table.
+
+## Transaction audit and verified-balance safeguard (2026-11-09)
+- Live `create_or_get_checkout_order` uses advisory transaction lock scoped to **environment + checkout fingerprint**. It deduplicates identical submissions; it does NOT serialise purchases of the same fragrance by different customers and therefore does not prevent overselling. Do not assume duplicate protection is stock protection.
+- Atomic stock reservation will require a separate reviewed database transaction and per-product locking, plus strict idempotent behavior; do not change checkout order RPC as part of preliminary Shadow Mode.
+- Shadow decision model now requires `currentBalanceVerified=true`, `snapshotConsistent=true`, `mappingVerified=true` and `estimated=false`. A `baseline_verified` bottle-capacity flag alone explicitly cannot yield ALLOW/WOULD_BLOCK.
+- Added runtime tests verifying the Preview diagnostic endpoint returns 204 when disabled, UNKNOWN/202 when Preview-enabled, and refuses malformed payloads. No persistence is enabled.
