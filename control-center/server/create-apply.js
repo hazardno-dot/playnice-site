@@ -450,7 +450,7 @@ async function resolveEditorialContextIndex(productName, expectedIndex) {
   return index;
 }
 
-async function patchEditorialContext(prefix, label, index, baselineContext, approvedContext, branch) {
+async function patchEditorialContext(prefix, label, index, baselineContext, approvedContext, stageFile) {
   let offset = 0;
   for (let part = 1; part <= 4; part += 1) {
     const filePath = `playnice-site/src/data/products/${prefix}.part${part}.js`;
@@ -461,15 +461,7 @@ async function patchEditorialContext(prefix, label, index, baselineContext, appr
       const target = blocks[index - offset];
       const nextBlock = patchWearBlock(target.block, baselineContext, approvedContext, label);
       const nextSource = source.slice(0, target.start) + nextBlock + source.slice(target.end);
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
-        method: "PUT",
-        body: JSON.stringify({
-          message: `Control Center apply: editorial context index ${index} (${label})`,
-          content: Buffer.from(nextSource, "utf8").toString("base64"),
-          sha: file.sha,
-          branch,
-        }),
-      });
+      stageFile(filePath, nextSource);
       return filePath;
     }
     offset += blocks.length;
@@ -627,14 +619,17 @@ export default async function handler(req, res) {
         return json(res, 409, { error: "Existing preview PR is closed or no longer matches the stored apply branch. Return to draft and create a new preview." });
       }
       branch = draft.apply_branch;
-      await github(`/repos/${OWNER}/${REPO_NAME}/git/refs/heads/${encodeURIComponent(branch)}`, {
-        method: "PATCH",
-        body: JSON.stringify({ sha: baseSha, force: true }),
-      });
     } else {
       branch = `cc-apply-${safeSlug}-${stamp}`;
-      await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }) });
     }
+
+    // Prepare every changed source in memory. Do not push intermediate commits:
+    // one Git ref update after all validations produces one Preview cycle.
+    const stagedFiles = new Map();
+    const stageFile = (filePath, nextSource) => {
+      if (stagedFiles.has(filePath)) throw new Error(`Duplicate staged product path: ${filePath}`);
+      stagedFiles.set(filePath, nextSource);
+    };
     const changedFiles = [];
 
     if (identityChanges.length || coreChanges.length || discountChange.changed || inspiredByChanges.length || noteMapChanges.length || recommendationChanges.length) {
@@ -658,7 +653,7 @@ export default async function handler(req, res) {
         ...noteMapChanges.map((c) => `noteMap.${c.field}`),
         ...recommendationChanges.map(() => "recommendations"),
       ].join(", ");
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
+      stageFile(filePath, nextSource);
       changedFiles.push(filePath);
     }
     const oldProductName = String(baselineCore.name || "");
@@ -675,7 +670,7 @@ export default async function handler(req, res) {
       let nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
       if (nameChanged) nextSource = renameNamedObjectKey(nextSource, oldProductName, newProductName, "Wear Context");
       const summary = [...(nameChanged ? ["identity.name"] : []), ...wearChanges.map((c) => `wear.${c.field}`)].join(", ");
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
+      stageFile(filePath, nextSource);
       changedFiles.push(filePath);
     }
 
@@ -683,11 +678,11 @@ export default async function handler(req, res) {
       if (!oldProductName) throw new Error("Editorial context apply requires a stable product name.");
       const contextIndex = await resolveEditorialContextIndex(oldProductName, baseline.editorialContextIndex);
       if (doNotWearChanges.length) {
-        const filePath = await patchEditorialContext("productDoNotWearContext", "Do Not Wear", contextIndex, baselineDoNotWear, approvedDoNotWear, branch);
+        const filePath = await patchEditorialContext("productDoNotWearContext", "Do Not Wear", contextIndex, baselineDoNotWear, approvedDoNotWear, stageFile);
         changedFiles.push(filePath);
       }
       if (whatToWearChanges.length) {
-        const filePath = await patchEditorialContext("productWhatToWearContext", "What To Wear", contextIndex, baselineWhatToWear, approvedWhatToWear, branch);
+        const filePath = await patchEditorialContext("productWhatToWearContext", "What To Wear", contextIndex, baselineWhatToWear, approvedWhatToWear, stageFile);
         changedFiles.push(filePath);
       }
     }
@@ -702,7 +697,7 @@ export default async function handler(req, res) {
       let nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
       if (nameChanged) nextSource = renameNamedObjectKey(nextSource, oldProductName, newProductName, "Product Copy");
       const summary = [...(nameChanged ? ["identity.name"] : []), ...copyChanges.map((c) => `copy.${c.field}`)].join(", ");
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
+      stageFile(filePath, nextSource);
       changedFiles.push(filePath);
     }
     if (discoveryChanges.length) {
@@ -713,8 +708,51 @@ export default async function handler(req, res) {
       const nextBlock = patchDiscoveryBlock(located.block, baseline.discovery || {}, approved.discovery || {});
       const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
       const summary = discoveryChanges.map((c) => `discovery.${c.field}`).join(", ");
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
+      stageFile(filePath, nextSource);
       changedFiles.push(filePath);
+    }
+
+    if (!stagedFiles.size || stagedFiles.size !== changedFiles.length) {
+      return json(res, 409, { error: "Product apply produced an incomplete or empty staged file set." });
+    }
+
+    // Validate again immediately before publishing the branch ref. A concurrent
+    // main update must never be silently overwritten by this prepared patch.
+    const latestMain = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
+    if (latestMain.object.sha !== baseSha) {
+      return json(res, 409, { error: "LIVE DRIFT: main changed during Product Apply. Prepare again before retrying." });
+    }
+    const baseCommit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${baseSha}`);
+    const treeEntries = [];
+    for (const [filePath, nextSource] of stagedFiles) {
+      const blob = await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
+        method: "POST",
+        body: JSON.stringify({ content: nextSource, encoding: "utf-8" }),
+      });
+      treeEntries.push({ path: filePath, mode: "100644", type: "blob", sha: blob.sha });
+    }
+    const tree = await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`, {
+      method: "POST",
+      body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: treeEntries }),
+    });
+    const commit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits`, {
+      method: "POST",
+      body: JSON.stringify({
+        message: `Control Center apply: ${slug} (${changes.length} approved changes, atomic)`,
+        tree: tree.sha,
+        parents: [baseSha],
+      }),
+    });
+    if (existingApply) {
+      await github(`/repos/${OWNER}/${REPO_NAME}/git/refs/heads/${encodeURIComponent(branch)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ sha: commit.sha, force: true }),
+      });
+    } else {
+      await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, {
+        method: "POST",
+        body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: commit.sha }),
+      });
     }
 
     const changeLines = changes.map((c) => `- ${c.section} · ${String(c.field).toUpperCase()}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
