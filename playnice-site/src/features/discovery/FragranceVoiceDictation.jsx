@@ -99,6 +99,7 @@ export default function FragranceVoiceDictation({ lang, onTranscript }) {
         className={`playnice-fi-voice ${listening ? "is-listening" : ""}`}
         onClick={toggle}
         aria-pressed={listening}
+        data-listening-label={lang === "sr" ? "SLUŠAM..." : "LISTENING..."}
         aria-label={lang === "sr"
           ? (listening ? "Zaustavi diktiranje" : "Diktiraj pitanje")
           : (listening ? "Stop dictation" : "Dictate your question")}
@@ -106,10 +107,16 @@ export default function FragranceVoiceDictation({ lang, onTranscript }) {
           ? (listening ? "Zaustavi diktiranje" : "Diktiraj pitanje")
           : (listening ? "Stop dictation" : "Dictate your question")}
       >
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <rect x="9" y="2.5" width="6" height="12" rx="3" />
-          <path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8" />
-        </svg>
+        {listening ? (
+          <span className="playnice-fi-voice-wave" aria-hidden="true">
+            <span /><span /><span /><span /><span />
+          </span>
+        ) : (
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="9" y="2.5" width="6" height="12" rx="3" />
+            <path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8" />
+          </svg>
+        )}
       </button>
       {error && <span className="playnice-fi-voice-error" role="status">{error}</span>}
       {listening && <span className="playnice-fi-voice-sr-only" role="status">{lang === "sr" ? "Slušam..." : "Listening..."}</span>}
