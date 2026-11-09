@@ -7,15 +7,17 @@ const RESERVED = new Set(["NEW"]);
 const CONSUMED = new Set(["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED"]);
 const CLOSED = new Set(["CANCELLED","DUPLICATE"]);
 
-export function classifyInventoryObligation(status, { packedAt = null } = {}) {
+export function classifyInventoryObligation(status, { everPacked = null } = {}) {
   const code = String(status || "").trim().toUpperCase();
   if (RESERVED.has(code)) {
     // PACKED -> NEW rollback is supported by the current order workflow.
     // A previously packed order cannot silently restore physical stock.
-    return packedAt ? "RECONCILIATION_REQUIRED" : "RESERVED";
+    // The current DB may clear packed_at on rollback, so an independent
+    // authoritative order-history flag is required to distinguish this case.
+    return everPacked === true ? "RECONCILIATION_REQUIRED" : everPacked === false ? "RESERVED" : "UNKNOWN";
   }
   if (CONSUMED.has(code)) return "CONSUMED";
-  if (CLOSED.has(code)) return packedAt ? "RECONCILIATION_REQUIRED" : "RELEASED";
+  if (CLOSED.has(code)) return everPacked === true ? "RECONCILIATION_REQUIRED" : everPacked === false ? "RELEASED" : "UNKNOWN";
   return "UNKNOWN";
 }
 
@@ -32,7 +34,7 @@ export function calculateInventoryObligations(orders, productKey) {
     const orderId = String(order.orderId || "").trim();
     if (!orderId || ids.has(orderId)) return { valid:false, reason:"DUPLICATE_OR_MISSING_ORDER_ID" };
     ids.add(orderId);
-    const state = classifyInventoryObligation(order.status, { packedAt:order.packedAt });
+    const state = classifyInventoryObligation(order.status, { everPacked:order.everPacked });
     if (state === "UNKNOWN") { unknownOrders.push(orderId); continue; }
     if (state === "RELEASED") continue;
     if (!Array.isArray(order.items)) return { valid:false, reason:"MISSING_ITEMS" };
