@@ -71,3 +71,11 @@ Queries were SELECT-only; no Production rows or schema were changed.
 - Atomic stock reservation will require a separate reviewed database transaction and per-product locking, plus strict idempotent behavior; do not change checkout order RPC as part of preliminary Shadow Mode.
 - Shadow decision model now requires `currentBalanceVerified=true`, `snapshotConsistent=true`, `mappingVerified=true` and `estimated=false`. A `baseline_verified` bottle-capacity flag alone explicitly cannot yield ALLOW/WOULD_BLOCK.
 - Added runtime tests verifying the Preview diagnostic endpoint returns 204 when disabled, UNKNOWN/202 when Preview-enabled, and refuses malformed payloads. No persistence is enabled.
+
+## Reservation lifecycle prototype checkpoint
+- Added `control-center/lib/inventory-reservation-lifecycle.mjs` as a **pure offline proposal**; no code path imports it into checkout, Control Center APIs, or Production.
+- NEW requires a verified `everPacked=false` history and counts as reserved. PACKED/SHIPPED/OUT_FOR_DELIVERY/DELIVERED/DELIVERY_FAILED/RETURNED remain consumed. CANCELLED before any packing releases reserved ml.
+- A `PACKED -> NEW` rollback, or cancellation after physical preparation, is flagged `RECONCILIATION_REQUIRED`; never silently re-credit ml.
+- Current status changes may reset `packed_at`. Thus `packed_at` alone **cannot establish historical packing**. An authoritative historical transition record or durable flag is required before applying the model to real orders.
+- Unknown prior packing history is UNKNOWN rather than an assumed reservation or released stock. Special gift, mixed discovery bundles, manual order changes, direct returns and legacy orders require full contract mapping.
+- Real atomic reservations still require a new reviewed transaction design. The model does **not** prevent overselling today.
