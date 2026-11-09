@@ -39,7 +39,11 @@ export function evaluateInventoryShadow({ productKey, items, stock, reservedMl }
   if (!stock || normalizedKey(stock.productKey) !== normalizedKey(productKey)) {
     return { decision: "UNKNOWN", reason: "NO_MATCHING_STOCK", requestedMl };
   }
-  if (stock.estimated || stock.baselineVerified !== true || stock.mappingVerified !== true) {
+  // BASELINE_SET proves original bottle capacity, not measured remaining stock.
+  // A trusted physical balance AND a reconciled order snapshot are both required.
+  // Preview-only calculations cannot assert ALLOW based on capacity alone.
+  if (stock.estimated || stock.currentBalanceVerified !== true ||
+      stock.snapshotConsistent !== true || stock.mappingVerified !== true) {
     return { decision: "UNKNOWN", reason: "UNVERIFIED_STOCK", requestedMl };
   }
   if (!finiteNonNegative(stock.physicalMl) || !finiteNonNegative(reservedMl)) {
