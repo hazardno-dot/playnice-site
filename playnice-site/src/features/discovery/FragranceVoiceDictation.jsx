@@ -32,6 +32,7 @@ export default function FragranceVoiceDictation({ lang, onTranscript }) {
         old.onend = null;
         old.abort();
       }
+      setListening(false);
     };
   }, [lang]);
 
