@@ -110,6 +110,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/black-amber.webp",
     fallback: "•",
   },
+  "tarocco-orange": {
+    sr: "Taroko pomorandža",
+    en: "Tarocco Orange",
+    image: "/note-map/tarocco-orange.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
