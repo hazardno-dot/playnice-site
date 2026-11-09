@@ -80,7 +80,9 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .playnice-discovery-input-wrap .playnice-fi-voice.is-listening,
-  .playnice-discovery-input-wrap .playnice-fi-voice.is-listening::before,
+  .playnice-discovery-input-wrap .playnice-fi-voice.is-listening::before {
+    animation: none;
+  }
 }
 
 /* The live signal is rendered inside the search field, not above the dialog. */
