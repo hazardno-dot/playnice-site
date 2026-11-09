@@ -478,8 +478,7 @@ export const productWearContext = {
     "en": "Autumn, winter, elegant evenings, dates and special occasions."
   },
 
-  "Dolce & Gabbana The One for Men Eau de Parfum": {
-    "sr": "Dejt, večera, jesenje veče i posebne prilike.",
-    "en": "Dates, dinners, autumn evenings and special occasions."
-  }
+  "Dolce & Gabbana The One for Men Eau de Parfum (2025)": {
+    "sr": "Dejt, večera, posao i elegantne večernje prilike.",
+    "en": "Dates, dinner, work and elegant evening occasions."}
 };
