@@ -15,7 +15,9 @@
   cursor: pointer;
   transition: background 150ms ease, border-color 150ms ease;
 }
-.playnice-discovery-input-wrap.has-clear .playnice-fi-voice { right: 39px; }
+/* The mic stays fixed on the right whether or not the query can be cleared. */
+.playnice-discovery-input-wrap.has-clear .playnice-fi-voice { right: 8px; }
+.playnice-discovery-input-wrap .playnice-discovery-clear { right: 43px; }
 .playnice-discovery-input-wrap .playnice-fi-voice:hover,
 .playnice-discovery-input-wrap .playnice-fi-voice:focus-visible {
   border-color: rgba(235,202,125,.75);
@@ -97,7 +99,7 @@
   opacity: 0;
   transition: opacity 160ms ease;
 }
-.playnice-discovery-input-wrap.has-clear .playnice-fi-live-waveform { right: 74px; }
+.playnice-discovery-input-wrap.has-clear .playnice-fi-live-waveform { right: 78px; }
 .playnice-discovery-input-wrap .playnice-fi-live-waveform.is-available { opacity: 1; }
 .playnice-fi-live-waveform canvas { display: block; width: 100px; height: 26px; }
 .playnice-discovery-input-wrap:has(.playnice-fi-live-waveform.is-available) input {
@@ -105,4 +107,17 @@
 }
 .playnice-discovery-input-wrap.has-clear:has(.playnice-fi-live-waveform.is-available) input {
   padding-right: 182px;
+}
+
+/* Search CTA typography: keep the pill dimensions but give the label prominence. */
+.playnice-discovery-search .playnice-discovery-submit {
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: 0.045em;
+  line-height: 1.15;
+}
+@media (max-width: 680px) {
+  .playnice-discovery-search .playnice-discovery-submit {
+    font-size: 13.5px;
+  }
 }
