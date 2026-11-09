@@ -1,0 +1,12 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const browser = fs.readFileSync("playnice-site/src/features/cart/inventoryShadowObserver.js","utf8");
+const dashboard = fs.readFileSync("control-center/src/AnalyticsManager.jsx","utf8");
+assert.match(browser, /REACT_APP_INVENTORY_SHADOW_ENABLED/);
+assert.match(browser, /enabled\s*=\s*process\.env\.REACT_APP_INVENTORY_SHADOW_ENABLED\s*===\s*"true"/);
+assert.match(browser, /\.catch\(\(\)\s*=>\s*\{\}\)/);
+assert.match(browser, /sizeMl >= 50/);
+assert.match(dashboard, /get_control_center_inventory_protection_shadow/);
+assert.match(dashboard, /NOT CONFIGURED/);
+assert.match(dashboard, /No live customer-cart checks are being recorded/);
+console.log("PASS shadow observation transport remains disabled and dashboard admits no data");
