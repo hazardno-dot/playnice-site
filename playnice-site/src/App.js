@@ -7260,7 +7260,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       {lang === "sr" ? "Brend ili parfem" : "Brand or fragrance"}
     </label>
 
-    <div className="compact-search-shell">
+    <div className="compact-search-shell shop-voice-search">
       <span className="compact-search-icon" aria-hidden="true">
         ⌕
       </span>
@@ -7279,6 +7279,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   setHeroCollectionFilter(null);
   setHeroCollectionTitle("");
 }}
+      />
+      <FragranceVoiceDictation
+        lang={lang}
+        onTranscript={(spokenText) => {
+          setSearchTerm(spokenText);
+          setHeroCollectionFilter(null);
+          setHeroCollectionTitle("");
+        }}
       />
     </div>
   </div>
