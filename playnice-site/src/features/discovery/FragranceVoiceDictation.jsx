@@ -60,14 +60,21 @@ function LiveVoiceWaveform({ active }) {
           if (cancelled) return;
           analyser.getByteFrequencyData(frequencies);
           ctx.clearRect(0, 0, width, height);
-          ctx.fillStyle = "#e8bd72";
           for (let i = 0; i < count; i += 1) {
             const bin = Math.min(frequencies.length - 1, Math.floor(3 + Math.pow(i / count, 1.6) * 72));
             const magnitude = frequencies[bin] / 255;
             const barHeight = 2 + Math.min(1, magnitude * 2.6) * 21;
             const x = i * step + 2;
             const y = (height - barHeight) / 2;
-            ctx.globalAlpha = 0.45 + Math.min(0.55, magnitude * 1.6);
+            // Match-flame palette: warm gold at the base, amber/orange
+            // through the body and a restrained ember-red at loud peaks.
+            const flame = ctx.createLinearGradient(x, y + barHeight, x, y);
+            flame.addColorStop(0, "#e5b85e");
+            flame.addColorStop(0.48, "#f6aa39");
+            flame.addColorStop(0.78, magnitude > 0.22 ? "#f37427" : "#e9bb65");
+            flame.addColorStop(1, magnitude > 0.45 ? "#e24b2b" : magnitude > 0.22 ? "#ff8a32" : "#f3c66b");
+            ctx.fillStyle = flame;
+            ctx.globalAlpha = 0.58 + Math.min(0.42, magnitude * 1.5);
             ctx.fillRect(x, y, 2.2, barHeight);
           }
           ctx.globalAlpha = 1;
