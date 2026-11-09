@@ -52,3 +52,10 @@ Queries were SELECT-only; no Production rows or schema were changed.
 - Validate normalized product identity against canonical catalog and real inventory; classify all uncertain baselines and source errors as UNKNOWN.
 - Add a read-only admin-only dashboard for real server-recorded events, distinguish 0 events from unavailable telemetry, and avoid claims of live coverage before ingestion is active.
 - Configure privacy-safe retention/purge and alert thresholds before enabling instrumentation.
+
+## Dormant integration checkpoint (PR #536)
+- Control Center shows optional authenticated telemetry results only when the RPC exists. Otherwise it explicitly reports NOT CONFIGURED (not zero checks).
+- `playnice-site/src/features/cart/inventoryShadowObserver.js` is wired to ordinary fragrance add-to-cart and cart quantity increases. It sends **no requests by default**; `REACT_APP_INVENTORY_SHADOW_ENABLED` must explicitly equal `true` at build time.
+- The matching `/api/inventory-shadow` ingestion endpoint is **not implemented yet**. Do not enable that flag until the endpoint, validation, rate limits, product mapping and deployed migration are tested. This is a dormant hook, NOT real-time monitoring.
+- Discovery bundles and checkout have not been instrumented. Their special cases require separate validated mapping before ingestion.
+- Diagnostic transport is best-effort only, never awaited by cart mutation. No customer checkout logic, stock mutation or blocking code was changed.
