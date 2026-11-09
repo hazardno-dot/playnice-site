@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import FragranceVoiceDictation from "../../features/discovery/FragranceVoiceDictation";
 
 const MOBILE_QUERY = "(max-width: 640px)";
 
@@ -247,7 +248,7 @@ export default function MobileShopV2({
 
             {panel === "search" && (
               <div className="mobile-shop-search-panel">
-                <div>
+                <div className="shop-voice-mobile-shell">
                   <span aria-hidden="true">⌕</span>
                   <input
                     id="mobile-shop-search-proxy"
@@ -266,13 +267,18 @@ export default function MobileShopV2({
                   {searchTerm && (
                     <button
                       type="button"
-                      onClick={() => {
-                        onSearchTermChange?.("");
-                      }}
+                      className="shop-voice-mobile-clear"
+                      onClick={() => onSearchTermChange?.("")}
                     >
                       {copy.clear}
                     </button>
                   )}
+                  <FragranceVoiceDictation
+                    lang={lang}
+                    onTranscript={(spokenText) => {
+                      onSearchTermChange?.(spokenText);
+                    }}
+                  />
                 </div>
               </div>
             )}
