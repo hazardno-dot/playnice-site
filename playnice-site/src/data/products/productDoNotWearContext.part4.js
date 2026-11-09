@@ -156,8 +156,7 @@ export default [
     "en": "When you're planning to go unnoticed. Xerjoff Naxos isn't particularly interested in that plan. Honey, tobacco and vanilla tend to attract attention even when you say nothing. If you've chosen to hide in the back row, perhaps another fragrance would have been wiser. Or staying home."
   },
   {
-    "sr": "Kada očekujete da će vas osetiti na drugom kraju restorana. The One nema nameru da nadjača muziku, razgovor i sve ostale goste. Njegovi začini, duvan i topli amber mnogo su zanimljiviji izbliza. Uostalom, ako želite da ostavite utisak na nekoga za susednim stolom, možda je bolje da mu prvo priđete.",
-    "en": "When you expect to be noticed from across the restaurant. The One has no intention of competing with the music, conversation and every other guest. Its spices, tobacco and warm amber are far more interesting up close. Besides, if you want to impress someone at the next table, perhaps you should introduce yourself first."
-  }
+    "sr": "Kada želite da parfem obavi sav posao umesto vas. Novi The One ima više samopouzdanja od svog prethodnika, ali citrusi, aromatična žalfija i topli duvan ipak nisu zamena za dobar razgovor. Ako vam se neko dopadne za susednim stolom, priđite. Nemojte čekati da amber započne razgovor.",
+    "en": "When you expect your fragrance to do all the work. The new The One has more confidence than its predecessor, but bright citrus, aromatic sage and warm tobacco are no substitute for a good conversation. If someone catches your eye at the next table, introduce yourself. Don't wait for amber to make the first move."}
 
 ];
