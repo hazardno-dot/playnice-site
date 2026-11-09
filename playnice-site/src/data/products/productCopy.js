@@ -3654,53 +3654,48 @@ export const productCopy = {
     }
   },
 
-  "Dolce & Gabbana The One for Men Eau de Parfum": {
+  "Dolce & Gabbana The One for Men Eau de Parfum (2025)": {
     "miniTag": {
-      "en": "🥃 Tobacco / Spicy",
-      "sr": "🥃 Duvanski / Začinski"
-    },
+      "en": "🍊 Citrus / Amber",
+      "sr": "🍊 Citrusni / Ambarni"},
     "card": {
-      "en": "Grapefruit and spices lead into warm tobacco, amber and cedar.",
-      "sr": "Grejpfrut i začini otvaraju put duvanu, amberu i toplom kedru."
-    },
+      "en": "Tarocco orange, clary sage and warm tobacco with amber.",
+      "sr": "Tarocco pomorandža, žalfija i topli duvan sa amberom."},
     "modal": {
-      "en": "Grapefruit, coriander and basil open fresh. Ginger, cardamom and orange blossom add warmth, while tobacco, amber and cedar create an intimate finish.",
-      "sr": "Grejpfrut, korijander i bosiljak otvaraju sveže. Đumbir, kardamom i cvet pomorandže donose toplinu, a duvan, amber i kedar zavodljiv završetak."
-    },
+      "en": "Tarocco orange, grapefruit and cardamom open bright. Clary sage, geranium and patchouli add depth, while tobacco, amber and cedar leave a warm trail.",
+      "sr": "Tarocco pomorandža, grejpfrut i kardamom otvaraju sveže. Žalfija, geranijum i pačuli daju dubinu, a duvan, amber i kedar topao, elegantan trag."},
     "scentType": {
-      "en": "Spicy amber",
-      "sr": "Začinsko-ambarni"
-    },
+      "en": "Woody aromatic",
+      "sr": "Drvenasto-aromatični"},
     "dominantNotes": {
       "sr": [
+        "pomorandža",
+        "žalfija",
         "duvan",
-        "amber",
-        "kardamom",
-        "đumbir"
+        "amber"
       ],
       "en": [
+        "orange",
+        "clary sage",
         "tobacco",
-        "amber",
-        "cardamom",
-        "ginger"
+        "amber"
       ]
     },
     "tags": {
       "sr": [
-        "Začinski",
-        "Topao",
-        "Elegantan"
+        "Citrusni",
+        "Aromatičan",
+        "Topao"
       ],
       "en": [
-        "Spicy",
-        "Warm",
-        "Elegant"
+        "Citrus",
+        "Aromatic",
+        "Warm"
       ]
     },
     "whyChoose": {
-      "en": "For lovers of warm tobacco, spices and refined scents that never need to shout.",
-      "sr": "Za ljubitelje toplog duvana, začina i elegantnih mirisa koji ne moraju da viču."
-    }
+      "en": "For lovers of bright citrus, aromatic sage and a warm tobacco-amber drydown.",
+      "sr": "Za ljubitelje citrusne svežine, aromatične žalfije i toplog duvansko-ambarnog završetka."}
   }
 };
 

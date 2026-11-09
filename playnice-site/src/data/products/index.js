@@ -3223,9 +3223,9 @@ export const products = [
     id: 115,
     addedAt: "2026-11-08T14:26:02.414Z",
     slug: "dolce-gabbana-the-one-for-men-edp",
-    name: "Dolce & Gabbana The One for Men Eau de Parfum",
+    name: "Dolce & Gabbana The One for Men Eau de Parfum (2025)",
     modalName: "Dolce & Gabbana The One for Men EDP",
-    shortName: "D&G The One EDP",
+    shortName: "D&G The One EDP (2025)",
     category: "Designer",
     image: "/products/dolce-gabbana-the-one-for-men-edp.png",
     sizes: {"2ml":4,"5ml":9,"10ml":16},
@@ -3240,8 +3240,8 @@ export const products = [
       short: "Original The One DNA"
     },
     noteMap: {
-      top: ["grapefruit","coriander","basil"],
-      heart: ["ginger","cardamom","orange-blossom"],
+      top: ["tarocco-orange","grapefruit","cardamom"],
+      heart: ["clary-sage","geranium","patchouli"],
       base: ["tobacco","amber","cedarwood"]
     }
   }
