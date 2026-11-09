@@ -163,6 +163,10 @@ export default function AnalyticsManager() {
     else acc.reviewable += 1;
     return acc;
   }, { provisional: 0, unverified: 0, inconsistent: 0, reviewable: 0 });
+  const pendingAuditRows = inventoryRows
+    .filter((row) => Number(row.pending_new_ml || 0) > 0)
+    .sort((a, b) => Number(b.pending_new_ml || 0) - Number(a.pending_new_ml || 0));
+  const pendingUnmatched = inventory.pending_new_unmatched || [];
   const visibleInventoryRows = inventoryRows
     .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
     .sort((a, b) => {
@@ -440,6 +444,26 @@ export default function AnalyticsManager() {
         {protectionAudit.provisional || protectionAudit.unverified || protectionAudit.inconsistent
           ? <p className="analytics-note">Next: reconcile physical balances and identifiers before enabling actual background checks or restrictions.</p>
           : <p className="analytics-note">All visible rows passed these preliminary checks only. Transactional validation and checkout concurrency tests are still required.</p>}
+      </article>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head">
+          <div><span>INVENTORY PROTECTION / NEW ORDER DEMAND</span><h3>Pending stock audit</h3></div>
+          <small>Read-only snapshot · not a reservation system</small>
+        </div>
+        <div className="inventory-summary">
+          <div><span>NEW ORDER DEMAND</span><strong>{number(inventory.pending_new_total_ml || 0, 1)} ml</strong></div>
+          <div><span>TRACKED FRAGRANCES</span><strong>{number(pendingAuditRows.length)}</strong></div>
+          <div><span>UNMATCHED NAMES</span><strong>{number(pendingUnmatched.length)}</strong></div>
+        </div>
+        <p className="analytics-note">Calculated from unfulfilled NEW order decants. Preview and PNTEST orders are excluded. This is not an atomic reservation, does not include future orders or unconfirmed gifts, and does not affect remaining inventory or public availability.</p>
+        {pendingAuditRows.length ? <div className="inventory-list">
+          {pendingAuditRows.slice(0, 12).map((row) => <div className="inventory-row" key={row.product_name}>
+            <div><strong>{row.product_name}</strong><small>Current calculated balance {number(row.remaining_ml, 1)} ml · NEW order demand {number(row.pending_new_ml, 1)} ml</small></div>
+            <div className="inventory-volume-cells"><span className="inventory-volume-remaining"><small>IF RESERVED</small><strong>{number(row.hypothetical_after_new_ml, 1)} ml</strong></span></div>
+            {Number(row.hypothetical_after_new_ml) < 0 ? <em>REVIEW DEMAND</em> : null}
+          </div>)}
+        </div> : <p className="analytics-note">No matched NEW order decant demand in the current snapshot.</p>}
+        {pendingUnmatched.length ? <p className="analytics-note">Attention: {pendingUnmatched.length} name(s) from NEW orders have no matching tracked inventory record. Check catalog mapping before enabling enforcement.</p> : null}
       </article>
       <div className="sales-grid inventory-grid">
         <article className="analytics-panel sales-wide inventory-panel">
