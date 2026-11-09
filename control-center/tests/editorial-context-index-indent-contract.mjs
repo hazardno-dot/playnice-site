@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 const server = fs.readFileSync("control-center/server/create-apply.js", "utf8");
 const wear = fs.readFileSync("playnice-site/src/data/products/productWearContext.js", "utf8");
-const pattern = /^[ \\t]{2,}("(?:\\\\.|[^"\\\\])*")[ \\t]*:[ \\t]*\\{/gm;
+const pattern = /^[ \t]{2,}("(?:\\.|[^"\\])*")[ \t]*:[ \t]*\{/gm;
 const names = [...wear.matchAll(pattern)].map((match) => JSON.parse(match[1]));
 const name = "Dolce & Gabbana The One for Men Eau de Parfum";
 assert.ok(server.includes('^[ \\t]{2,}'), "server must accept variably-indented wear keys");
