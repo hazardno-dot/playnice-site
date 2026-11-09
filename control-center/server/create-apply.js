@@ -401,7 +401,7 @@ function contextChangesBetween(section, baselineContext = {}, approvedContext = 
 }
 
 function wearContextProductNames(source) {
-  return [...source.matchAll(/^\s{2}("(?:\\.|[^"\\])*")\s*:\s*\{/gm)].map((match) => {
+  return [...source.matchAll(/^[ \t]{2,}("(?:\\.|[^"\\])*")[ \t]*:[ \t]*\{/gm)].map((match) => {
     try { return JSON.parse(match[1]); } catch { return ""; }
   }).filter(Boolean);
 }
