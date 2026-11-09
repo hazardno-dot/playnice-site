@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { calculateRequestedMl, evaluateInventoryShadow } from "../lib/inventory-protection-shadow.mjs";
 
-const stock = { productKey: "naxos", physicalMl: 80, baselineVerified: true, mappingVerified: true, estimated: false };
+const stock = { productKey: "naxos", physicalMl: 80, currentBalanceVerified: true, snapshotConsistent: true, mappingVerified: true, estimated: false };
 const item = (sizeMl, quantity, productKey = "naxos") => ({ productKey, sizeMl, quantity });
 const check = (items, overrides = {}) => evaluateInventoryShadow({
   productKey: "naxos", items, stock, reservedMl: 0, ...overrides
@@ -18,7 +18,9 @@ assert.equal(check([item(20, 4)], { reservedMl: 20 }).decision, "WOULD_BLOCK");
 assert.equal(check([item(20, 1)], { stock: null }).decision, "UNKNOWN");
 assert.equal(check([item(20, 1)], { stock: { ...stock, estimated: true } }).decision, "UNKNOWN");
 assert.equal(check([item(20, 1)], { stock: { ...stock, mappingVerified: false } }).decision, "UNKNOWN");
-assert.equal(check([item(20, 1)], { stock: { ...stock, baselineVerified: false } }).decision, "UNKNOWN");
+assert.equal(check([item(20, 1)], { stock: { ...stock, currentBalanceVerified: false } }).decision, "UNKNOWN");
+assert.equal(check([item(20, 1)], { stock: { ...stock, snapshotConsistent: false } }).decision, "UNKNOWN");
+assert.equal(check([item(20, 1)], { stock: { ...stock, baselineVerified: true, currentBalanceVerified: false } }).decision, "UNKNOWN");
 assert.equal(check([item(20, 1)], { reservedMl: 81 }).decision, "UNKNOWN");
 assert.equal(check([item(20, 1)], { reservedMl: null }).decision, "UNKNOWN");
 assert.equal(check([item(20, 1)], { stock: { ...stock, physicalMl: NaN } }).decision, "UNKNOWN");
