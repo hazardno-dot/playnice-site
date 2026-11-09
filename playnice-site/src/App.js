@@ -2846,8 +2846,8 @@ const goToHomeSection = (selector, block = "start") => {
     source: "ADD_TO_CART",
     product,
     size,
-    quantity: cart.filter((item) => item.id === product.id && item.size === label)
-      .reduce((sum, item) => sum + Number(item.quantity || 0), 0) + 1
+    cart,
+    extraCount: 1
   });
 
   setCart((prev) => {
@@ -3117,7 +3117,7 @@ const addHeroBottleToCart = () => {
       const product = item && products.find((candidate) => candidate.id === item.id);
       if (item && product) observeInventoryCartIntent({
         source: "CART_QUANTITY", product, size: item.size,
-        quantity: Number(item.quantity || 0) + Number(delta)
+        cart, extraCount: Number(delta)
       });
     }
     if (Number(delta) < 0) {
