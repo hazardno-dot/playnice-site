@@ -5,6 +5,98 @@ import "./FragranceVoiceDictation.css";
  * Browser speech-to-text only. Never submits the query: the user reviews
  * the transcript and explicitly presses Find.
  */
+
+// The waveform reads microphone levels locally through Web Audio.
+// It does not record, store or upload the sampled audio.
+function LiveVoiceWaveform({ active }) {
+  const canvasRef = useRef(null);
+  const [available, setAvailable] = useState(false);
+
+  useEffect(() => {
+    if (!active) {
+      setAvailable(false);
+      return undefined;
+    }
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass || !navigator.mediaDevices?.getUserMedia) return undefined;
+
+    let cancelled = false;
+    let stream;
+    let audioContext;
+    let frame = 0;
+
+    const start = async () => {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        if (cancelled) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+        audioContext = new AudioContextClass();
+        const source = audioContext.createMediaStreamSource(stream);
+        const analyser = audioContext.createAnalyser();
+        analyser.fftSize = 512;
+        analyser.smoothingTimeConstant = 0.7;
+        source.connect(analyser);
+        if (audioContext.state === "suspended") await audioContext.resume();
+        if (cancelled) return;
+
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const width = 100;
+        const height = 26;
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.scale(dpr, dpr);
+        const frequencies = new Uint8Array(analyser.frequencyBinCount);
+        const count = 24;
+        const step = 4;
+        setAvailable(true);
+
+        const draw = () => {
+          if (cancelled) return;
+          analyser.getByteFrequencyData(frequencies);
+          ctx.clearRect(0, 0, width, height);
+          ctx.fillStyle = "#e8bd72";
+          for (let i = 0; i < count; i += 1) {
+            const bin = Math.min(frequencies.length - 1, Math.floor(3 + Math.pow(i / count, 1.6) * 72));
+            const magnitude = frequencies[bin] / 255;
+            const barHeight = 2 + Math.min(1, magnitude * 2.6) * 21;
+            const x = i * step + 2;
+            const y = (height - barHeight) / 2;
+            ctx.globalAlpha = 0.45 + Math.min(0.55, magnitude * 1.6);
+            ctx.fillRect(x, y, 2.2, barHeight);
+          }
+          ctx.globalAlpha = 1;
+          frame = window.requestAnimationFrame(draw);
+        };
+        draw();
+      } catch {
+        // Dictation may still work even if direct microphone level access is unavailable.
+        setAvailable(false);
+      }
+    };
+    start();
+
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+      if (stream) stream.getTracks().forEach((track) => track.stop());
+      if (audioContext) audioContext.close().catch(() => {});
+    };
+  }, [active]);
+
+  if (!active) return null;
+  return (
+    <span className={`playnice-fi-live-waveform ${available ? "is-available" : ""}`} aria-hidden="true">
+      <canvas ref={canvasRef} width="100" height="26" />
+    </span>
+  );
+}
+
 export default function FragranceVoiceDictation({ lang, onTranscript }) {
   const recognitionRef = useRef(null);
   const onTranscriptRef = useRef(onTranscript);
@@ -99,7 +191,6 @@ export default function FragranceVoiceDictation({ lang, onTranscript }) {
         className={`playnice-fi-voice ${listening ? "is-listening" : ""}`}
         onClick={toggle}
         aria-pressed={listening}
-        data-listening-label={lang === "sr" ? "SLUŠAM..." : "LISTENING..."}
         aria-label={lang === "sr"
           ? (listening ? "Zaustavi diktiranje" : "Diktiraj pitanje")
           : (listening ? "Stop dictation" : "Dictate your question")}
@@ -107,17 +198,12 @@ export default function FragranceVoiceDictation({ lang, onTranscript }) {
           ? (listening ? "Zaustavi diktiranje" : "Diktiraj pitanje")
           : (listening ? "Stop dictation" : "Dictate your question")}
       >
-        {listening ? (
-          <span className="playnice-fi-voice-wave" aria-hidden="true">
-            <span /><span /><span /><span /><span />
-          </span>
-        ) : (
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <rect x="9" y="2.5" width="6" height="12" rx="3" />
-            <path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8" />
-          </svg>
-        )}
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="9" y="2.5" width="6" height="12" rx="3" />
+          <path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8" />
+        </svg>
       </button>
+      <LiveVoiceWaveform active={listening} />
       {error && <span className="playnice-fi-voice-error" role="status">{error}</span>}
       {listening && <span className="playnice-fi-voice-sr-only" role="status">{lang === "sr" ? "Slušam..." : "Listening..."}</span>}
     </>
