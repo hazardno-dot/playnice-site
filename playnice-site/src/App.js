@@ -24,6 +24,7 @@ import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
 import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
 import { getJournalArticleSlug } from "./lib/journalSlug";
 import { registerProductActions } from "./lib/productActionsGateway";
+import { observeInventoryCartIntent } from "./features/cart/inventoryShadowObserver";
 import {
   SITE_BASE_URL,
   getProductSlug,
@@ -2840,6 +2841,15 @@ const goToHomeSection = (selector, block = "start") => {
     currency: "EUR"
   });
 
+  // Optional passive observer: currently disabled, must never alter a cart mutation.
+  observeInventoryCartIntent({
+    source: "ADD_TO_CART",
+    product,
+    size,
+    quantity: cart.filter((item) => item.id === product.id && item.size === label)
+      .reduce((sum, item) => sum + Number(item.quantity || 0), 0) + 1
+  });
+
   setCart((prev) => {
     const existing = prev.find((item) => item.key === key);
 
@@ -3102,6 +3112,14 @@ const addHeroBottleToCart = () => {
 };
 
   const updateQuantity = (key, delta) => {
+    if (Number(delta) > 0) {
+      const item = cart.find((candidate) => candidate.key === key);
+      const product = item && products.find((candidate) => candidate.id === item.id);
+      if (item && product) observeInventoryCartIntent({
+        source: "CART_QUANTITY", product, size: item.size,
+        quantity: Number(item.quantity || 0) + Number(delta)
+      });
+    }
     if (Number(delta) < 0) {
       const item = cart.find(
         (candidate) =>
