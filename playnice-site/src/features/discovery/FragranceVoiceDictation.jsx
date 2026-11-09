@@ -8,12 +8,12 @@ import "./FragranceVoiceDictation.css";
 
 // The waveform reads microphone levels locally through Web Audio.
 // It does not record, store or upload the sampled audio.
-function LiveVoiceWaveform({ active }) {
+function LiveVoiceWaveform({ active, allowMicrophoneCapture = true }) {
   const canvasRef = useRef(null);
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
-    if (!active) {
+    if (!active || !allowMicrophoneCapture) {
       setAvailable(false);
       return undefined;
     }
@@ -94,9 +94,9 @@ function LiveVoiceWaveform({ active }) {
       if (stream) stream.getTracks().forEach((track) => track.stop());
       if (audioContext) audioContext.close().catch(() => {});
     };
-  }, [active]);
+  }, [active, allowMicrophoneCapture]);
 
-  if (!active) return null;
+  if (!active || !allowMicrophoneCapture) return null;
   return (
     <span className={`playnice-fi-live-waveform ${available ? "is-available" : ""}`} aria-hidden="true">
       <canvas ref={canvasRef} width="100" height="26" />
@@ -107,6 +107,9 @@ function LiveVoiceWaveform({ active }) {
 export default function FragranceVoiceDictation({ lang, onTranscript }) {
   const recognitionRef = useRef(null);
   const onTranscriptRef = useRef(onTranscript);
+  const [isAndroid] = useState(() =>
+    typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent || "")
+  );
   const [supported, setSupported] = useState(false);
   const [listening, setListening] = useState(false);
   const [error, setError] = useState("");
@@ -151,15 +154,27 @@ export default function FragranceVoiceDictation({ lang, onTranscript }) {
     session.interimResults = false;
     session.maxAlternatives = 1;
 
+    // Some Android speech providers deliver an unfinalized result immediately
+    // before onend. Preserve it until the session ends instead of losing text.
+    let lastCandidate = "";
+    let committed = false;
+    let failed = false;
+    const commit = (text) => {
+      const normalized = String(text || "").trim();
+      if (!normalized || committed || failed || recognitionRef.current !== session) return;
+      committed = true;
+      onTranscriptRef.current(normalized);
+    };
     session.onresult = (event) => {
-      const transcript = Array.from(event.results || [])
-        .filter((result) => result.isFinal)
-        .map((result) => result[0]?.transcript || "")
-        .join(" ")
-        .trim();
-      if (transcript) onTranscriptRef.current(transcript);
+      const results = Array.from(event.results || []);
+      const transcript = results.map((result) => result[0]?.transcript || "")
+        .join(" ").trim();
+      if (!transcript) return;
+      lastCandidate = transcript;
+      if (results.some((result) => result.isFinal)) commit(transcript);
     };
     session.onerror = (event) => {
+      failed = true;
       if (event.error !== "aborted") {
         const messages = {
           "not-allowed": lang === "sr" ? "Dozvoli pristup mikrofonu u browseru." : "Allow microphone access in your browser.",
@@ -173,8 +188,14 @@ export default function FragranceVoiceDictation({ lang, onTranscript }) {
     };
     session.onend = () => {
       if (recognitionRef.current === session) {
+        if (!failed && !committed && lastCandidate) commit(lastCandidate);
         recognitionRef.current = null;
         setListening(false);
+        if (!failed && !committed) {
+          setError(lang === "sr"
+            ? "Govor nije pretvoren u tekst. Pokušaj ponovo."
+            : "Speech was not transcribed. Please try again.");
+        }
       }
     };
 
@@ -210,7 +231,7 @@ export default function FragranceVoiceDictation({ lang, onTranscript }) {
           <path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4m-4 0h8" />
         </svg>
       </button>
-      <LiveVoiceWaveform active={listening} />
+      <LiveVoiceWaveform active={listening} allowMicrophoneCapture={!isAndroid} />
       {error && <span className="playnice-fi-voice-error" role="status">{error}</span>}
       {listening && <span className="playnice-fi-voice-sr-only" role="status">{lang === "sr" ? "Slušam..." : "Listening..."}</span>}
     </>
