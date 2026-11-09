@@ -74,53 +74,6 @@
   pointer-events: none;
   animation: playnice-fi-voice-ring 1.8s ease-out infinite;
 }
-.playnice-discovery-input-wrap .playnice-fi-voice.is-listening::after {
-  content: attr(data-listening-label);
-  position: absolute;
-  bottom: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 5px 8px;
-  border: 1px solid rgba(234,185,108,.45);
-  border-radius: 99px;
-  background: #241b14;
-  color: #f5d28e;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  line-height: 1;
-  white-space: nowrap;
-  pointer-events: none;
-  box-shadow: 0 6px 18px rgba(0,0,0,.28);
-}
-.playnice-fi-voice-wave {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  height: 18px;
-}
-.playnice-fi-voice-wave span {
-  width: 2px;
-  height: 5px;
-  border-radius: 2px;
-  background: currentColor;
-  animation: playnice-fi-wave 850ms ease-in-out infinite alternate;
-}
-.playnice-fi-voice-wave span:nth-child(2),
-.playnice-fi-voice-wave span:nth-child(4) {
-  animation-delay: -380ms;
-}
-.playnice-fi-voice-wave span:nth-child(3) {
-  animation-delay: -610ms;
-}
-.playnice-fi-voice-wave span:nth-child(5) {
-  animation-delay: -180ms;
-}
-@keyframes playnice-fi-wave {
-  from { height: 4px; }
-  to { height: 17px; }
-}
 @keyframes playnice-fi-voice-ring {
   0% { opacity: .9; transform: scale(.85); }
   100% { opacity: 0; transform: scale(1.28); }
@@ -128,6 +81,26 @@
 @media (prefers-reduced-motion: reduce) {
   .playnice-discovery-input-wrap .playnice-fi-voice.is-listening,
   .playnice-discovery-input-wrap .playnice-fi-voice.is-listening::before,
-  .playnice-fi-voice-wave span { animation: none; }
-  .playnice-fi-voice-wave span { height: 12px; }
+}
+
+/* The live signal is rendered inside the search field, not above the dialog. */
+.playnice-discovery-input-wrap .playnice-fi-live-waveform {
+  position: absolute;
+  right: 43px;
+  top: 50%;
+  width: 100px;
+  height: 26px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+.playnice-discovery-input-wrap.has-clear .playnice-fi-live-waveform { right: 74px; }
+.playnice-discovery-input-wrap .playnice-fi-live-waveform.is-available { opacity: 1; }
+.playnice-fi-live-waveform canvas { display: block; width: 100px; height: 26px; }
+.playnice-discovery-input-wrap:has(.playnice-fi-live-waveform.is-available) input {
+  padding-right: 150px;
+}
+.playnice-discovery-input-wrap.has-clear:has(.playnice-fi-live-waveform.is-available) input {
+  padding-right: 182px;
 }
