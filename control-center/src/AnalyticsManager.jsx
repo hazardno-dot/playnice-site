@@ -29,6 +29,9 @@ export default function AnalyticsManager() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [data, setData] = useState({ orderAnalytics: {} });
+  const [shadowReport, setShadowReport] = useState(null);
+  const [shadowState, setShadowState] = useState("NOT_CONFIGURED");
+
   const [ga4, setGa4] = useState(() => {
     try { const value=JSON.parse(localStorage.getItem("playnice_cc_ga4_events_v1")||"null");return value?.version===1 ? value : null; }
     catch { return null; }
@@ -118,6 +121,22 @@ export default function AnalyticsManager() {
         const orderAnalytics = await loadOrderAnalytics();
         if (cancelled) return;
         setData({ orderAnalytics });
+        // Optional authenticated telemetry RPC. The migration is intentionally not applied yet.
+        // Never report an absent service as zero events.
+        try {
+          const { data: report, error: shadowError } = await supabase.rpc("get_control_center_inventory_protection_shadow");
+          if (!cancelled) {
+            if (shadowError || !report || report.mode !== "SHADOW_ONLY") {
+              setShadowReport(null);
+              setShadowState("NOT_CONFIGURED");
+            } else {
+              setShadowReport(report);
+              setShadowState("AVAILABLE");
+            }
+          }
+        } catch {
+          if (!cancelled) { setShadowReport(null); setShadowState("NOT_CONFIGURED"); }
+        }
         setError("");
       } catch (loadError) {
         if (!cancelled) setError(loadError.message || String(loadError));
@@ -464,6 +483,26 @@ export default function AnalyticsManager() {
           </div>)}
         </div> : <p className="analytics-note">No matched NEW order decant demand in the current snapshot.</p>}
         {pendingUnmatched.length ? <p className="analytics-note">Attention: {pendingUnmatched.length} name(s) from NEW orders have no matching tracked inventory record. Check catalog mapping before enabling enforcement.</p> : null}
+      </article>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / EVENT MONITOR</span><h3>Shadow telemetry</h3></div><small>Read-only · event collection not activated by this PR</small></div>
+        {shadowState === "AVAILABLE" && shadowReport
+          ? <>
+            <div className="inventory-summary">
+              <div><span>CHECKS</span><strong>{number(shadowReport.counts?.total || 0)}</strong></div>
+              <div><span>ALLOWED</span><strong>{number(shadowReport.counts?.allow || 0)}</strong></div>
+              <div><span>WOULD BLOCK</span><strong>{number(shadowReport.counts?.would_block || 0)}</strong></div>
+              <div><span>UNKNOWN</span><strong>{number(shadowReport.counts?.unknown || 0)}</strong></div>
+            </div>
+            <p className="analytics-note">Server-recorded production decisions from the last 24 hours, where collection is enabled. These events do not block checkout. Zero events may mean collection has not been activated.</p>
+            <div className="inventory-list">
+              {(shadowReport.recent || []).slice(0, 12).map((event, index) => <div className="inventory-row" key={String(event.created_at) + "-" + index}>
+                <div><strong>{event.product_key}</strong><small>{event.source} · {event.reason} · {event.created_at ? new Date(event.created_at).toLocaleString("sr-ME") : "—"}</small></div>
+                <em>{event.decision}</em>
+              </div>)}
+            </div>
+          </>
+          : <p className="analytics-note">NOT CONFIGURED — server-side event ingestion and telemetry migration are not yet active. No live customer-cart checks are being recorded. This is not a zero-event result.</p>}
       </article>
       <div className="sales-grid inventory-grid">
         <article className="analytics-panel sales-wide inventory-panel">
