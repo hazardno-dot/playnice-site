@@ -37,3 +37,18 @@ The standalone read-only `lib/inventory-protection-shadow.mjs` evaluator produce
 - Full SQL definition of `create_or_get_checkout_order`, order status transition RPCs and gift calculation; all must be reviewed before modifying transactional behavior.
 - Review the existing CC dashboard hierarchy and authenticated API pattern before adding monitoring.
 - Review Preview deployment and automated contracts before merge. **Do not merge or deploy automatically.**
+
+## Live read-only database audit (2026-11-09)
+Queries were SELECT-only; no Production rows or schema were changed.
+- `fragrance_inventory_events` currently has 139 events across 115 distinct product names: BASELINE_SET 117 (115 product names), MANUAL_OUT 14, OPENING 4, RESTOCK 4.
+- Live `get_control_center_inventory_stock` treats BASELINE_SET rows as `baseline_verified=true` **and** `estimated=true` / `historical_baseline=true`. This confirms original bottle size, NOT current physically measured available stock. Such rows are **ineligible for automatic blocking**.
+- At the time of the snapshot, production order statuses were 45 DELIVERED, 3 RETURNED, 2 CANCELLED, 1 DUPLICATE; no NEW order appeared in that snapshot. These counts can change.
+- No dedicated stock reservation table was discovered among public checkout/inventory tables.
+- `inventory_protection_shadow_events_v1.sql` is a prepared migration only; it has NOT been applied. The event collection/CC dashboard are NOT live.
+
+## Shadow telemetry activation prerequisites
+- Review and apply the isolated migration only after security review and schema validation in Preview/staging.
+- Provide a trusted, server-only event writer (service-role key must never reach browser), durable rate limits and input validation; no raw client assertions.
+- Validate normalized product identity against canonical catalog and real inventory; classify all uncertain baselines and source errors as UNKNOWN.
+- Add a read-only admin-only dashboard for real server-recorded events, distinguish 0 events from unavailable telemetry, and avoid claims of live coverage before ingestion is active.
+- Configure privacy-safe retention/purge and alert thresholds before enabling instrumentation.
