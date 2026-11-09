@@ -59,3 +59,9 @@ Queries were SELECT-only; no Production rows or schema were changed.
 - The matching `/api/inventory-shadow` ingestion endpoint is **not implemented yet**. Do not enable that flag until the endpoint, validation, rate limits, product mapping and deployed migration are tested. This is a dormant hook, NOT real-time monitoring.
 - Discovery bundles and checkout have not been instrumented. Their special cases require separate validated mapping before ingestion.
 - Diagnostic transport is best-effort only, never awaited by cart mutation. No customer checkout logic, stock mutation or blocking code was changed.
+
+## Preview-only diagnostic receiver checkpoint
+- `playnice-site/api/inventory-shadow.js` exists but returns 204 and does nothing unless **both** `VERCEL_ENV=preview` and server flag `INVENTORY_SHADOW_RECEIVER_ENABLED=true`. The browser hook independently requires `REACT_APP_INVENTORY_SHADOW_ENABLED=true`. Do not set either flag on Production.
+- Even with both flags enabled in Preview, the receiver only validates a small anonymous payload and returns `UNKNOWN / AUTHORITATIVE_STOCK_NOT_CONFIGURED`; it **does not persist, authenticate stock or evaluate inventory**. No customer identity or physical quantity is exposed.
+- The observer now sums supported decant sizes already in the same cart plus the intended addition. Non-decant products and ambiguous cart state are skipped; Discovery Set, hero full bottles and checkout require separate mapping.
+- This is **diagnostic transport preparation, not live Shadow Mode monitoring**. Before real event ingestion: implement trustworthy server-side catalog/stock reads, snapshot consistency, rate limiting, forged-traffic handling, retention, and audited writes to the isolated telemetry table.
