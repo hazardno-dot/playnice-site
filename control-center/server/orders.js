@@ -262,6 +262,21 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
     }
   }
 
+  // Read-only audit of accepted NEW order demand. This is NOT an actual reservation:
+  // it cannot protect against concurrent checkout and must never drive public blocking.
+  // Ignore preview and PNTEST orders to avoid contaminating production availability.
+  const newDemand = new Map();
+  for (const order of Array.isArray(orders) ? orders : []) {
+    if (order?.status !== "NEW" || order?.environment === "preview" ||
+        order?.origin === "regression_test" || String(order?.order_id || "").startsWith("PNTEST")) continue;
+    for (const entry of inventorySaleItems(order?.source_payload?.items)) {
+      const key = String(entry.product_name || "").trim().toLowerCase();
+      const ml = Number(entry.ml);
+      if (!key || !Number.isFinite(ml) || ml <= 0) continue;
+      newDemand.set(key, (newDemand.get(key) || 0) + ml);
+    }
+  }
+
   const rows = [...tracked.values()].map((row) => {
     const consumed = row.historical_baseline
       ? Number(historical.get(row.product_name.toLowerCase())?.ml || 0)
@@ -272,6 +287,9 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
       resale_in_ml: resale.get(row.product_name.toLowerCase())?.ml || 0,
       resale_out_ml: resale.get(row.product_name.toLowerCase())?.ml || 0,
       consumed_since_tracking_ml: consumed,
+      // Audit estimate only. Not subtracted from the operational remaining_ml.
+      pending_new_ml: Math.round(((newDemand.get(row.product_name.toLowerCase()) || 0) + Number.EPSILON) * 100) / 100,
+      hypothetical_after_new_ml: Math.round((remaining - (newDemand.get(row.product_name.toLowerCase()) || 0) + Number.EPSILON) * 100) / 100,
       remaining_ml: remaining,
       stock_status: remaining < 0 && row.estimated ? "REVIEW" : remaining <= 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK"
     };
@@ -285,6 +303,10 @@ function buildInventoryAnalytics(orders, stockRows, commerce) {
     low_count: rows.filter((row) => row.stock_status === "LOW").length,
     depleted_count: rows.filter((row) => row.stock_status === "DEPLETED").length,
     remaining_total_ml: Math.round((rows.reduce((sum, row) => sum + Math.max(0, row.remaining_ml), 0) + Number.EPSILON) * 100) / 100,
+    pending_new_total_ml: Math.round(([...newDemand.values()].reduce((sum, ml) => sum + ml, 0) + Number.EPSILON) * 100) / 100,
+    pending_new_unmatched: [...newDemand.entries()]
+      .filter(([key]) => !tracked.has(key))
+      .map(([product_name, ml]) => ({ product_name, ml: Math.round(ml * 100) / 100 })),
     rows
   };
 }

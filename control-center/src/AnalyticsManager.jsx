@@ -29,6 +29,9 @@ export default function AnalyticsManager() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [data, setData] = useState({ orderAnalytics: {} });
+  const [shadowReport, setShadowReport] = useState(null);
+  const [shadowState, setShadowState] = useState("NOT_CONFIGURED");
+
   const [ga4, setGa4] = useState(() => {
     try { const value=JSON.parse(localStorage.getItem("playnice_cc_ga4_events_v1")||"null");return value?.version===1 ? value : null; }
     catch { return null; }
@@ -118,6 +121,22 @@ export default function AnalyticsManager() {
         const orderAnalytics = await loadOrderAnalytics();
         if (cancelled) return;
         setData({ orderAnalytics });
+        // Optional authenticated telemetry RPC. The migration is intentionally not applied yet.
+        // Never report an absent service as zero events.
+        try {
+          const { data: report, error: shadowError } = await supabase.rpc("get_control_center_inventory_protection_shadow");
+          if (!cancelled) {
+            if (shadowError || !report || report.mode !== "SHADOW_ONLY") {
+              setShadowReport(null);
+              setShadowState("NOT_CONFIGURED");
+            } else {
+              setShadowReport(report);
+              setShadowState("AVAILABLE");
+            }
+          }
+        } catch {
+          if (!cancelled) { setShadowReport(null); setShadowState("NOT_CONFIGURED"); }
+        }
         setError("");
       } catch (loadError) {
         if (!cancelled) setError(loadError.message || String(loadError));
@@ -154,6 +173,19 @@ export default function AnalyticsManager() {
     const resaleMl = resaleByName.get(String(product.name).toLowerCase()) || 0;
     return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, resale_in_ml: resaleMl, resale_out_ml: resaleMl, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
   });
+  // Audit-only readiness view. This is not live shadow telemetry or checkout enforcement.
+  // Baseline size verification does not prove current available-to-sell stock.
+  const protectionAudit = inventoryRows.reduce((acc, row) => {
+    if (row.provisional || row.estimated) acc.provisional += 1;
+    else if (!row.baseline_verified) acc.unverified += 1;
+    else if (!Number.isFinite(Number(row.remaining_ml)) || Number(row.remaining_ml) < 0) acc.inconsistent += 1;
+    else acc.reviewable += 1;
+    return acc;
+  }, { provisional: 0, unverified: 0, inconsistent: 0, reviewable: 0 });
+  const pendingAuditRows = inventoryRows
+    .filter((row) => Number(row.pending_new_ml || 0) > 0)
+    .sort((a, b) => Number(b.pending_new_ml || 0) - Number(a.pending_new_ml || 0));
+  const pendingUnmatched = inventory.pending_new_unmatched || [];
   const visibleInventoryRows = inventoryRows
     .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
     .sort((a, b) => {
@@ -419,6 +451,59 @@ export default function AnalyticsManager() {
           <small>Supabase canonical inventory ledger</small>
         </div>
       </div>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / AUDIT</span><h3>Protection readiness</h3></div><small>Audit only · no live blocking · no checkout changes</small></div>
+        <div className="inventory-summary">
+          <div><span>PROVISIONAL</span><strong>{number(protectionAudit.provisional)}</strong></div>
+          <div><span>UNVERIFIED</span><strong>{number(protectionAudit.unverified)}</strong></div>
+          <div><span>REVIEWABLE</span><strong>{number(protectionAudit.reviewable)}</strong></div>
+          <div><span>INCONSISTENT</span><strong>{number(protectionAudit.inconsistent)}</strong></div>
+        </div>
+        <p className="analytics-note">No customer restrictions are active. Reviewable means the inventory entry has a verified original bottle capacity and a nonnegative calculated balance; it does NOT certify current sellable stock, reservation accuracy or product mapping. NEW orders are not reserved in this display. Shadow Mode event counts are not available yet, and no live add-to-cart events are being monitored.</p>
+        {protectionAudit.provisional || protectionAudit.unverified || protectionAudit.inconsistent
+          ? <p className="analytics-note">Next: reconcile physical balances and identifiers before enabling actual background checks or restrictions.</p>
+          : <p className="analytics-note">All visible rows passed these preliminary checks only. Transactional validation and checkout concurrency tests are still required.</p>}
+      </article>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head">
+          <div><span>INVENTORY PROTECTION / NEW ORDER DEMAND</span><h3>Pending stock audit</h3></div>
+          <small>Read-only snapshot · not a reservation system</small>
+        </div>
+        <div className="inventory-summary">
+          <div><span>NEW ORDER DEMAND</span><strong>{number(inventory.pending_new_total_ml || 0, 1)} ml</strong></div>
+          <div><span>TRACKED FRAGRANCES</span><strong>{number(pendingAuditRows.length)}</strong></div>
+          <div><span>UNMATCHED NAMES</span><strong>{number(pendingUnmatched.length)}</strong></div>
+        </div>
+        <p className="analytics-note">Calculated from unfulfilled NEW order decants. Preview and PNTEST orders are excluded. This is not an atomic reservation, does not include future orders or unconfirmed gifts, and does not affect remaining inventory or public availability.</p>
+        {pendingAuditRows.length ? <div className="inventory-list">
+          {pendingAuditRows.slice(0, 12).map((row) => <div className="inventory-row" key={row.product_name}>
+            <div><strong>{row.product_name}</strong><small>Current calculated balance {number(row.remaining_ml, 1)} ml · NEW order demand {number(row.pending_new_ml, 1)} ml</small></div>
+            <div className="inventory-volume-cells"><span className="inventory-volume-remaining"><small>IF RESERVED</small><strong>{number(row.hypothetical_after_new_ml, 1)} ml</strong></span></div>
+            {Number(row.hypothetical_after_new_ml) < 0 ? <em>REVIEW DEMAND</em> : null}
+          </div>)}
+        </div> : <p className="analytics-note">No matched NEW order decant demand in the current snapshot.</p>}
+        {pendingUnmatched.length ? <p className="analytics-note">Attention: {pendingUnmatched.length} name(s) from NEW orders have no matching tracked inventory record. Check catalog mapping before enabling enforcement.</p> : null}
+      </article>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / EVENT MONITOR</span><h3>Shadow telemetry</h3></div><small>Read-only · event collection not activated by this PR</small></div>
+        {shadowState === "AVAILABLE" && shadowReport
+          ? <>
+            <div className="inventory-summary">
+              <div><span>CHECKS</span><strong>{number(shadowReport.counts?.total || 0)}</strong></div>
+              <div><span>ALLOWED</span><strong>{number(shadowReport.counts?.allow || 0)}</strong></div>
+              <div><span>WOULD BLOCK</span><strong>{number(shadowReport.counts?.would_block || 0)}</strong></div>
+              <div><span>UNKNOWN</span><strong>{number(shadowReport.counts?.unknown || 0)}</strong></div>
+            </div>
+            <p className="analytics-note">Server-recorded production decisions from the last 24 hours, where collection is enabled. These events do not block checkout. Zero events may mean collection has not been activated.</p>
+            <div className="inventory-list">
+              {(shadowReport.recent || []).slice(0, 12).map((event, index) => <div className="inventory-row" key={String(event.created_at) + "-" + index}>
+                <div><strong>{event.product_key}</strong><small>{event.source} · {event.reason} · {event.created_at ? new Date(event.created_at).toLocaleString("sr-ME") : "—"}</small></div>
+                <em>{event.decision}</em>
+              </div>)}
+            </div>
+          </>
+          : <p className="analytics-note">NOT CONFIGURED — server-side event ingestion and telemetry migration are not yet active. No live customer-cart checks are being recorded. This is not a zero-event result.</p>}
+      </article>
       <div className="sales-grid inventory-grid">
         <article className="analytics-panel sales-wide inventory-panel">
           <div className="analytics-panel-head">

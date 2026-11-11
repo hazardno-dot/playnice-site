@@ -1,0 +1,15 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const api = fs.readFileSync("control-center/server/orders.js", "utf8");
+const ui = fs.readFileSync("control-center/src/AnalyticsManager.jsx", "utf8");
+assert.match(api, /order\?\.status !== "NEW"/);
+assert.match(api, /order\?\.environment === "preview"/);
+assert.match(api, /startsWith\("PNTEST"\)/);
+assert.match(api, /pending_new_ml:/);
+assert.match(api, /hypothetical_after_new_ml:/);
+assert.match(api, /pending_new_unmatched:/);
+assert.match(ui, /Pending stock audit/);
+assert.match(ui, /not a reservation system/);
+assert.match(ui, /Preview and PNTEST orders are excluded/);
+assert.match(ui, /No customer restrictions are active/);
+console.log("PASS inventory protection read-only audit source contract");
