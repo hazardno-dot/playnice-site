@@ -4,6 +4,7 @@ import { GA4_EVENTS, parseGa4EventCsv } from "./ga4CsvImport.mjs";
 import { parseGa4ItemsCsv } from "./ga4ItemsCsvImport.mjs";
 import { deriveProductInsights } from "./productInsights.mjs";
 import { runInventoryPreviewLab } from "../lib/inventory-preview-lab.mjs";
+import { runInventorySafetyLab } from "../lib/inventory-preview-safety-lab.mjs";
 
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -33,6 +34,7 @@ export default function AnalyticsManager() {
   const [shadowReport, setShadowReport] = useState(null);
   const [shadowState, setShadowState] = useState("NOT_CONFIGURED");
   const [syntheticLabReport, setSyntheticLabReport] = useState(null);
+  const [safetyLabReport, setSafetyLabReport] = useState(null);
 
   const [ga4, setGa4] = useState(() => {
     try { const value=JSON.parse(localStorage.getItem("playnice_cc_ga4_events_v1")||"null");return value?.version===1 ? value : null; }
@@ -516,9 +518,14 @@ export default function AnalyticsManager() {
           It never calls checkout, Inventory APIs or Supabase. It does not test simultaneous
           PostgreSQL transactions and cannot establish Production stock safety.
         </p>
-        <button type="button" onClick={() => setSyntheticLabReport(runInventoryPreviewLab())}>
-          Run 8 synthetic scenarios
-        </button>
+        <div className="inventory-lab-actions">
+          <button type="button" className="inventory-lab-run" onClick={() => setSyntheticLabReport(runInventoryPreviewLab())}>
+            Run 8 synthetic scenarios
+          </button>
+          <button type="button" className="inventory-lab-run" onClick={() => setSafetyLabReport(runInventorySafetyLab())}>
+            Run 8 safety scenarios
+          </button>
+        </div>
         {syntheticLabReport ? <>
           <div className="inventory-summary">
             <div><span>PASSED</span><strong>{number(syntheticLabReport.passed)} / {number(syntheticLabReport.total)}</strong></div>
@@ -532,6 +539,19 @@ export default function AnalyticsManager() {
             </div>)}
           </div>
         </> : <p className="analytics-note">Not run in this browser session.</p>}
+        {safetyLabReport ? <div className="inventory-lab-safety-results">
+          <div className="inventory-summary">
+            <div><span>SAFETY PASSED</span><strong>{number(safetyLabReport.passed)} / {number(safetyLabReport.total)}</strong></div>
+            <div><span>DATABASE WRITES</span><strong>0</strong></div>
+            <div><span>REAL NETWORK / DATABASE</span><strong>NOT TESTED</strong></div>
+          </div>
+          <div className="inventory-list" aria-live="polite">
+            {safetyLabReport.scenarios.map((scenario) => <div className="inventory-row" key={scenario.id}>
+              <div><strong>{scenario.label}</strong><small>{scenario.detail}</small></div>
+              <em>{scenario.passed ? "PASS" : "FAIL"}</em>
+            </div>)}
+          </div>
+        </div> : <p className="analytics-note">Safety scenarios not run in this browser session.</p>}
       </article>
       <div className="sales-grid inventory-grid">
         <article className="analytics-panel sales-wide inventory-panel">
