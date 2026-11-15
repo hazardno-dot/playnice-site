@@ -36,6 +36,7 @@ export default function AnalyticsManager() {
   const [shadowState, setShadowState] = useState("NOT_CONFIGURED");
   const [syntheticLabReport, setSyntheticLabReport] = useState(null);
   const [safetyLabReport, setSafetyLabReport] = useState(null);
+  const [previewReview, setPreviewReview] = useState(null);
 
   const [ga4, setGa4] = useState(() => {
     try { const value=JSON.parse(localStorage.getItem("playnice_cc_ga4_events_v1")||"null");return value?.version===1 ? value : null; }
@@ -464,6 +465,79 @@ export default function AnalyticsManager() {
           <small>Supabase canonical inventory ledger</small>
         </div>
       </div>
+      <div className="sales-grid inventory-grid">
+        <article className="analytics-panel sales-wide inventory-panel">
+          <div className="analytics-panel-head">
+            <div><span>INVENTORY</span><h3>Inventory watch</h3></div>
+            <small>Full catalog · measured + provisional stock · low alert ≤20 ml</small>
+          </div>
+
+          <div className="inventory-summary">
+            <div><span>MEASURED</span><strong>{number(inventory.tracked_count)}</strong></div><div><span>ESTIMATED</span><strong>{number(inventoryRows.filter((row) => row.estimated).length)}</strong></div>
+            <div><span>LOW STOCK</span><strong>{number(inventoryRows.filter((row) => row.stock_status === "LOW").length)}</strong></div>
+            <div><span>DEPLETED</span><strong>{number(inventoryRows.filter((row) => ["DEPLETED", "REVIEW"].includes(row.stock_status)).length)}</strong></div>
+            <div><span>REMAINING</span><strong>{number(inventoryRows.reduce((sum, row) => sum + Math.max(0, Number(row.remaining_ml || 0)), 0), 1)} ml</strong></div>
+          </div>
+
+          <p className="analytics-note">Provisional rows assume an original 100 ml bottle and deduct recorded historical shipments. They are estimates, not confirmed physical stock. A negative figure means the assumed bottle size is insufficient.</p>
+          <div className="inventory-filter-toolbar">
+            <label><span>SEARCH INVENTORY · {inventoryRows.length} FRAGRANCES</span><input type="search" value={inventorySearch} onChange={(event)=>setInventorySearch(event.target.value)} placeholder="Find a fragrance…" /></label>
+            <div className="inventory-sort-controls" role="group" aria-label="Sort inventory">
+              <button type="button" aria-pressed={inventorySort === "name"} onClick={() => toggleInventorySort("name")}>Fragrance {inventorySort === "name" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
+              <button type="button" aria-pressed={inventorySort === "remaining"} onClick={() => toggleInventorySort("remaining")}>Remaining ml {inventorySort === "remaining" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
+            </div>
+          </div>
+          <div className="inventory-list">
+            {visibleInventoryRows.length ? visibleInventoryRows.map((row) => <button type="button" className={"inventory-row inventory-select-row stock-" + String(row.stock_status || "ok").toLowerCase() + (inventoryProduct === row.product_name ? " is-selected" : "")} key={row.product_name} onClick={() => {setInventoryProduct(row.product_name);setInventoryNotice("");}} aria-pressed={inventoryProduct === row.product_name} title="Select fragrance for stock management">
+              <div>
+                <strong>{row.product_name}</strong>
+                <small>{row.baseline_verified ? "Original size verified · " + number(row.opening_balance_ml, 1) + " ml" : row.estimated ? "PROVISIONAL · " + number(row.opening_balance_ml, 1) + " ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
+              </div>
+              <div className="inventory-volume-cells">
+                <span><small>TOTAL</small><strong>{number(Number(row.opening_balance_ml || 0) + Number(row.restock_ml || 0) + Number(row.resale_in_ml || 0), 1)} ml</strong></span>
+                <span><small>OUT</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0) + Number(row.resale_out_ml || 0), 1)} ml</strong></span>
+                <span className="inventory-volume-remaining"><small>REMAINING</small><strong>{number(row.remaining_ml, 1)} ml</strong></span>
+              </div>
+              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
+            </button>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
+          </div>
+        </article>
+
+        <article className="analytics-panel inventory-entry-panel">
+          <div className="analytics-panel-head">
+            <div><span>STOCK LEDGER</span><h3>{inventoryMode === "out" ? "Remove stock" : inventoryIsTracked ? "Add bottle" : "Verify physical stock"}</h3></div>
+            <small>{inventoryMode === "out" ? "Non-order use" : inventoryIsTracked ? "New bottle" : "Current physical balance"}</small>
+          </div>
+          <div className="inventory-form">
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}><button type="button" aria-pressed={inventoryMode==="in"} onClick={() => setInventoryMode("in")}>+ New bottle</button><button type="button" aria-pressed={inventoryMode==="out"} onClick={() => setInventoryMode("out")}>− Manual removal</button><button type="button" aria-pressed={inventoryMode==="baseline"} onClick={() => {setInventoryMode("baseline");setInventoryMl(String(selectedInventoryRow?.opening_balance_ml || 100));}}>Verify original size</button></div>
+            <label>
+              <span>FRAGRANCE</span>
+              <input list="inventory-products" value={inventoryProduct} onChange={(event) => setInventoryProduct(event.target.value)} placeholder="Search fragrance…" />
+              <datalist id="inventory-products">
+                {[...products].sort((a,b) => String(a.name).localeCompare(String(b.name))).map((product) => <option value={product.name} key={product.slug} />)}
+              </datalist>
+            </label>
+            {inventoryMode !== "out" ? <label><span>{inventoryMode === "baseline" ? "ORIGINAL BOTTLE SIZE" : "BOTTLE SIZE PRESET"}</span><select value="" onChange={(event) => setInventoryMl(event.target.value)}><option value="">Choose size…</option>{[30,50,60,80,90,100,120,150,180,200].map((ml) => <option key={ml} value={ml}>{ml} ml</option>)}</select></label> : null}
+            <label>
+              <span>{inventoryMode === "baseline" ? "ORIGINAL CAPACITY · ML" : inventoryMode === "out" ? "REMOVE ML" : inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
+              <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryMode === "out" ? "e.g. 10" : inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
+            </label>
+            {inventoryMode === "out" ? <label><span>REASON</span><select value={inventoryReason} onChange={(event)=>setInventoryReason(event.target.value)}><option value="PRIVATE_GIFT">Private gift</option><option value="TESTING">Testing / sample</option><option value="DECANT_LOSS">Decant loss</option><option value="OTHER">Other</option></select></label> : null}
+            <label>
+              <span>NOTE · OPTIONAL</span>
+              <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
+            </label>
+            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !inventoryIsTracked) || (inventoryMode === "baseline" && !baselineEditable)}>
+              {inventoryBusy ? "Saving…" : inventoryMode === "baseline" ? "Save original size" : inventoryMode === "out" ? "− Record removal" : "+ Add bottle"}
+            </button>
+            <p>Verify original size replaces only the estimated starting bottle capacity (100 ml); previous orders, gifts, and bottle additions stay unchanged. This does not assert a current physical measurement. New bottles add to the historical estimate without resetting past orders. You may also enter a custom ml amount. Manual removal is available after a measured opening is recorded.</p>
+            {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
+          </div>
+        </article>
+      </div>
+      <details className="inventory-protection-diagnostics">
+        <summary>Inventory Protection diagnostics <span>Audit · Verification review · Pending orders · Shadow telemetry · Synthetic tests</span></summary>
+        <div className="inventory-protection-diagnostics-body">
       <article className="analytics-panel" style={{marginBottom:20}}>
         <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / AUDIT</span><h3>Protection readiness</h3></div><small>Audit only · no live blocking · no checkout changes</small></div>
         <div className="inventory-summary">
@@ -489,12 +563,20 @@ export default function AnalyticsManager() {
         </div>
         <p className="analytics-note">The recorded Remaining balance is preserved. BASELINE_SET verifies the original bottle capacity, not a separate current balance approval. This preview shows review eligibility only; it never marks stock verified or enables customer restrictions.</p>
         <div className="inventory-verification-selected">
-          <strong>{selectedInventoryRow ? selectedInventoryRow.product_name : "Choose a fragrance from Inventory watch"}</strong>
+          <strong>{selectedInventoryRow ? selectedInventoryRow.product_name : "Izaberi parfem u Inventory Watch listi"}</strong>
           {selectedInventoryRow ? <>
             <span>Recorded Remaining: <strong>{number(selectedInventoryRow.remaining_ml,1)} ml</strong></span>
             <span>Review status: <strong>{selectedVerification.eligible ? "READY FOR ADMIN REVIEW" : "NEEDS REVIEW"}</strong></span>
-            {!selectedVerification.eligible ? <small>Reason: {selectedVerification.reason}</small> : <small>The future admin confirmation must bind this exact balance and invalidate on any stock or order change.</small>}
-          </> : <small>Select a row below; no quantities need to be re-entered.</small>}
+            {!selectedVerification.eligible ? <small>Reason: {selectedVerification.reason}</small> : <small>Pregled je vezan za konkretan obračun. Ovo nije trajna potvrda raspoloživosti.</small>}
+            {selectedVerification.eligible ? <button type="button" className="inventory-lab-run" onClick={() => setPreviewReview({
+              product: selectedInventoryRow.product_name,
+              snapshot: selectedVerification.snapshot
+            })}>Review current balance (Preview only)</button> : null}
+            {previewReview?.product === selectedInventoryRow.product_name ?
+              <small aria-live="polite">{selectedVerification.eligible && previewReview.snapshot === selectedVerification.snapshot ?
+                "Reviewed in this browser session only. Not persisted; does not enable inventory restrictions." :
+                "Review expired: inventory calculation changed or became ineligible."}</small> : null}
+          </> : <small>Izbor će prikazati postojeći Remaining. Nema ponovnog unosa mililitara.</small>}
         </div>
       </article>
       <article className="analytics-panel" style={{marginBottom:20}}>
@@ -582,76 +664,8 @@ export default function AnalyticsManager() {
           </div>
         </div> : <p className="analytics-note">Safety scenarios not run in this browser session.</p>}
       </article>
-      <div className="sales-grid inventory-grid">
-        <article className="analytics-panel sales-wide inventory-panel">
-          <div className="analytics-panel-head">
-            <div><span>INVENTORY</span><h3>Inventory watch</h3></div>
-            <small>Full catalog · measured + provisional stock · low alert ≤20 ml</small>
-          </div>
-
-          <div className="inventory-summary">
-            <div><span>MEASURED</span><strong>{number(inventory.tracked_count)}</strong></div><div><span>ESTIMATED</span><strong>{number(inventoryRows.filter((row) => row.estimated).length)}</strong></div>
-            <div><span>LOW STOCK</span><strong>{number(inventoryRows.filter((row) => row.stock_status === "LOW").length)}</strong></div>
-            <div><span>DEPLETED</span><strong>{number(inventoryRows.filter((row) => ["DEPLETED", "REVIEW"].includes(row.stock_status)).length)}</strong></div>
-            <div><span>REMAINING</span><strong>{number(inventoryRows.reduce((sum, row) => sum + Math.max(0, Number(row.remaining_ml || 0)), 0), 1)} ml</strong></div>
-          </div>
-
-          <p className="analytics-note">Provisional rows assume an original 100 ml bottle and deduct recorded historical shipments. They are estimates, not confirmed physical stock. A negative figure means the assumed bottle size is insufficient.</p>
-          <div className="inventory-filter-toolbar">
-            <label><span>SEARCH INVENTORY · {inventoryRows.length} FRAGRANCES</span><input type="search" value={inventorySearch} onChange={(event)=>setInventorySearch(event.target.value)} placeholder="Find a fragrance…" /></label>
-            <div className="inventory-sort-controls" role="group" aria-label="Sort inventory">
-              <button type="button" aria-pressed={inventorySort === "name"} onClick={() => toggleInventorySort("name")}>Fragrance {inventorySort === "name" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
-              <button type="button" aria-pressed={inventorySort === "remaining"} onClick={() => toggleInventorySort("remaining")}>Remaining ml {inventorySort === "remaining" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
-            </div>
-          </div>
-          <div className="inventory-list">
-            {visibleInventoryRows.length ? visibleInventoryRows.map((row) => <button type="button" className={"inventory-row inventory-select-row stock-" + String(row.stock_status || "ok").toLowerCase() + (inventoryProduct === row.product_name ? " is-selected" : "")} key={row.product_name} onClick={() => {setInventoryProduct(row.product_name);setInventoryNotice("");}} aria-pressed={inventoryProduct === row.product_name} title="Select fragrance for stock management">
-              <div>
-                <strong>{row.product_name}</strong>
-                <small>{row.baseline_verified ? "Original size verified · " + number(row.opening_balance_ml, 1) + " ml" : row.estimated ? "PROVISIONAL · " + number(row.opening_balance_ml, 1) + " ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
-              </div>
-              <div className="inventory-volume-cells">
-                <span><small>TOTAL</small><strong>{number(Number(row.opening_balance_ml || 0) + Number(row.restock_ml || 0) + Number(row.resale_in_ml || 0), 1)} ml</strong></span>
-                <span><small>OUT</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0) + Number(row.resale_out_ml || 0), 1)} ml</strong></span>
-                <span className="inventory-volume-remaining"><small>REMAINING</small><strong>{number(row.remaining_ml, 1)} ml</strong></span>
-              </div>
-              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
-            </button>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
-          </div>
-        </article>
-
-        <article className="analytics-panel inventory-entry-panel">
-          <div className="analytics-panel-head">
-            <div><span>STOCK LEDGER</span><h3>{inventoryMode === "out" ? "Remove stock" : inventoryIsTracked ? "Add bottle" : "Verify physical stock"}</h3></div>
-            <small>{inventoryMode === "out" ? "Non-order use" : inventoryIsTracked ? "New bottle" : "Current physical balance"}</small>
-          </div>
-          <div className="inventory-form">
-            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}><button type="button" aria-pressed={inventoryMode==="in"} onClick={() => setInventoryMode("in")}>+ New bottle</button><button type="button" aria-pressed={inventoryMode==="out"} onClick={() => setInventoryMode("out")}>− Manual removal</button><button type="button" aria-pressed={inventoryMode==="baseline"} onClick={() => {setInventoryMode("baseline");setInventoryMl(String(selectedInventoryRow?.opening_balance_ml || 100));}}>Verify original size</button></div>
-            <label>
-              <span>FRAGRANCE</span>
-              <input list="inventory-products" value={inventoryProduct} onChange={(event) => setInventoryProduct(event.target.value)} placeholder="Search fragrance…" />
-              <datalist id="inventory-products">
-                {[...products].sort((a,b) => String(a.name).localeCompare(String(b.name))).map((product) => <option value={product.name} key={product.slug} />)}
-              </datalist>
-            </label>
-            {inventoryMode !== "out" ? <label><span>{inventoryMode === "baseline" ? "ORIGINAL BOTTLE SIZE" : "BOTTLE SIZE PRESET"}</span><select value="" onChange={(event) => setInventoryMl(event.target.value)}><option value="">Choose size…</option>{[30,50,60,80,90,100,120,150,180,200].map((ml) => <option key={ml} value={ml}>{ml} ml</option>)}</select></label> : null}
-            <label>
-              <span>{inventoryMode === "baseline" ? "ORIGINAL CAPACITY · ML" : inventoryMode === "out" ? "REMOVE ML" : inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
-              <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryMode === "out" ? "e.g. 10" : inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
-            </label>
-            {inventoryMode === "out" ? <label><span>REASON</span><select value={inventoryReason} onChange={(event)=>setInventoryReason(event.target.value)}><option value="PRIVATE_GIFT">Private gift</option><option value="TESTING">Testing / sample</option><option value="DECANT_LOSS">Decant loss</option><option value="OTHER">Other</option></select></label> : null}
-            <label>
-              <span>NOTE · OPTIONAL</span>
-              <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
-            </label>
-            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0) || (inventoryMode === "out" && !inventoryIsTracked) || (inventoryMode === "baseline" && !baselineEditable)}>
-              {inventoryBusy ? "Saving…" : inventoryMode === "baseline" ? "Save original size" : inventoryMode === "out" ? "− Record removal" : "+ Add bottle"}
-            </button>
-            <p>Verify original size replaces only the estimated starting bottle capacity (100 ml); previous orders, gifts, and bottle additions stay unchanged. This does not assert a current physical measurement. New bottles add to the historical estimate without resetting past orders. You may also enter a custom ml amount. Manual removal is available after a measured opening is recorded.</p>
-            {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
-          </div>
-        </article>
-      </div>
+        </div>
+      </details>
     </section>
     </>}
   </section>, slot);
