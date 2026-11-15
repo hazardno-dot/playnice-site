@@ -1,0 +1,22 @@
+import assert from "node:assert/strict";
+import { buildInventoryEventRevision, isInventoryReviewCurrent } from "../lib/inventory-verification-revision.mjs";
+const inventory=[{id:"opening-1",productKey:"naxos"},{id:"restock-1",productKey:"naxos"}];
+const orders=[{id:"new-1",productKey:"naxos"}];
+const make=(inv=inventory,ord=orders,complete=true)=>buildInventoryEventRevision({productKey:"naxos",inventoryEvents:inv,orderEvents:ord,evidenceComplete:complete});
+const before=make();
+assert.equal(before.status,"COMPLETE");
+assert.equal(make(undefined,undefined,false).status,"INCOMPLETE");
+assert.equal(make([...inventory,{id:"manual-out-1",productKey:"naxos"}]).revision!==before.revision,true);
+assert.equal(make(inventory,[...orders,{id:"packed-1",productKey:"naxos"}]).revision!==before.revision,true);
+assert.equal(make(inventory,[...orders,{id:"cancelled-1",productKey:"naxos"}]).revision!==before.revision,true);
+// Even if a stock-in and a stock-out net to ZERO, any event invalidates review.
+const offset=make([...inventory,{id:"restock-2",productKey:"naxos"},{id:"out-2",productKey:"naxos"}]);
+assert.notEqual(offset.revision,before.revision);
+assert.equal(make([...inventory,...inventory]).status,"INCOMPLETE");
+assert.equal(make([{id:"bad space",productKey:"naxos"}]).status,"INCOMPLETE");
+assert.equal(make([ ...inventory ].reverse(),[...orders]).revision,before.revision);
+assert.equal(isInventoryReviewCurrent({reviewedSnapshot:"100",currentSnapshot:"100",reviewedRevision:before,currentRevision:before}),true);
+assert.equal(isInventoryReviewCurrent({reviewedSnapshot:"100",currentSnapshot:"100",reviewedRevision:before,currentRevision:offset}),false);
+assert.equal(isInventoryReviewCurrent({reviewedSnapshot:"100",currentSnapshot:"100",reviewedRevision:before,currentRevision:make(undefined,undefined,false)}),false);
+assert.equal(isInventoryReviewCurrent({reviewedSnapshot:"100",currentSnapshot:"95",reviewedRevision:before,currentRevision:before}),false);
+console.log("PASS immutable event revision invalidates reviews despite unchanged Remaining");
