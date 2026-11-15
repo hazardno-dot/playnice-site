@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { GA4_EVENTS, parseGa4EventCsv } from "./ga4CsvImport.mjs";
 import { parseGa4ItemsCsv } from "./ga4ItemsCsvImport.mjs";
 import { deriveProductInsights } from "./productInsights.mjs";
+import { runInventoryPreviewLab } from "../lib/inventory-preview-lab.mjs";
 
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -31,6 +32,7 @@ export default function AnalyticsManager() {
   const [data, setData] = useState({ orderAnalytics: {} });
   const [shadowReport, setShadowReport] = useState(null);
   const [shadowState, setShadowState] = useState("NOT_CONFIGURED");
+  const [syntheticLabReport, setSyntheticLabReport] = useState(null);
 
   const [ga4, setGa4] = useState(() => {
     try { const value=JSON.parse(localStorage.getItem("playnice_cc_ga4_events_v1")||"null");return value?.version===1 ? value : null; }
@@ -503,6 +505,33 @@ export default function AnalyticsManager() {
             </div>
           </>
           : <p className="analytics-note">NOT CONFIGURED — server-side event ingestion and telemetry migration are not yet active. No live customer-cart checks are being recorded. This is not a zero-event result.</p>}
+      </article>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head">
+          <div><span>INVENTORY PROTECTION / SYNTHETIC TEST LAB</span><h3>Reservation test scenarios</h3></div>
+          <small>Browser-only simulation · no Supabase writes</small>
+        </div>
+        <p className="analytics-note">
+          This lab runs deterministic scenarios using invented fragrance balances and orders.
+          It never calls checkout, Inventory APIs or Supabase. It does not test simultaneous
+          PostgreSQL transactions and cannot establish Production stock safety.
+        </p>
+        <button type="button" onClick={() => setSyntheticLabReport(runInventoryPreviewLab())}>
+          Run 8 synthetic scenarios
+        </button>
+        {syntheticLabReport ? <>
+          <div className="inventory-summary">
+            <div><span>PASSED</span><strong>{number(syntheticLabReport.passed)} / {number(syntheticLabReport.total)}</strong></div>
+            <div><span>DATABASE WRITES</span><strong>0</strong></div>
+            <div><span>REAL DB CONCURRENCY</span><strong>NOT TESTED</strong></div>
+          </div>
+          <div className="inventory-list" aria-live="polite">
+            {syntheticLabReport.scenarios.map((scenario) => <div className="inventory-row" key={scenario.id}>
+              <div><strong>{scenario.label}</strong><small>{scenario.detail}</small></div>
+              <em>{scenario.passed ? "PASS" : "FAIL"}</em>
+            </div>)}
+          </div>
+        </> : <p className="analytics-note">Not run in this browser session.</p>}
       </article>
       <div className="sales-grid inventory-grid">
         <article className="analytics-panel sales-wide inventory-panel">
