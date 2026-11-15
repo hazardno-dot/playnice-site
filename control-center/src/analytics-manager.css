@@ -326,3 +326,33 @@
   .inventory-protection-diagnostics>summary span{text-align:left;flex-basis:100%}
   .inventory-protection-diagnostics-body{padding:0 8px 10px}
 }
+
+
+/* Keep search/sort visible; only the 115-row fragrance catalog scrolls. */
+.inventory-panel .inventory-catalog-scroll{
+  max-height:clamp(320px,55vh,620px);
+  min-height:180px;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(120,207,154,.65) rgba(25,49,36,.35);
+  padding-right:9px;
+  border-top:1px solid rgba(110,192,145,.09);
+}
+.inventory-panel .inventory-catalog-scroll::-webkit-scrollbar{width:9px}
+.inventory-panel .inventory-catalog-scroll::-webkit-scrollbar-track{
+  background:rgba(25,49,36,.35);
+  border-radius:10px;
+}
+.inventory-panel .inventory-catalog-scroll::-webkit-scrollbar-thumb{
+  background:rgba(120,207,154,.55);
+  border-radius:10px;
+}
+.inventory-panel .inventory-catalog-scroll:focus-visible{
+  outline:2px solid #a4efc0;
+  outline-offset:2px;
+}
+.inventory-protection-diagnostics{margin-top:0;margin-bottom:18px}
+@media(max-width:700px){
+  .inventory-panel .inventory-catalog-scroll{max-height:52vh;min-height:240px}
+}
