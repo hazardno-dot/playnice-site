@@ -98,10 +98,10 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-7.jpg",
     "desktopImage": "/hero/slide-7.jpg",
     "mobileImage": "/hero/mobile/slide-7-mobile.jpg",
-    "alt": "Optional: special action, drop ili limited stock",
+    "alt": "Optional: special action, drop or limited stock",
     "actionPrimary": "product",
-    "actionProductSlug": "armaf-club-de-nuit-intense-overdose",
-    "preferredSize": "10ml"
+    "actionProductSlug": "thomas-kosmala-no-10-desir-du-coeur",
+    "preferredSize": "5ml"
   },
   {
     "id": 8,

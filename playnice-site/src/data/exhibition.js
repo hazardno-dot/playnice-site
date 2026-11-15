@@ -1,5 +1,32 @@
 export const exhibitionItems = [
   {
+    "id": "hero-7-optional-special-action-drop-ili-limited-stock-20261115165957",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "Optional: special action, drop ili limited stock",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-7-optional-special-action-drop-ili-limited-stock-20261115165957-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-7-optional-special-action-drop-ili-limited-stock-20261115165957.jpg",
+        "format": "wide",
+        "alt": "Optional: special action, drop ili limited stock"
+      }
+    ]
+  },
+
+  {
     "id": "hero-9-armani-i-will-some-say-maybe-20261115",
     "year": 2026,
     "period": "sep-dec-2026",
