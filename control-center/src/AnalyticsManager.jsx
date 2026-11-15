@@ -37,6 +37,7 @@ export default function AnalyticsManager() {
   const [syntheticLabReport, setSyntheticLabReport] = useState(null);
   const [safetyLabReport, setSafetyLabReport] = useState(null);
   const [previewReview, setPreviewReview] = useState(null);
+  const [previewReviewBusy, setPreviewReviewBusy] = useState(false);
 
   const [ga4, setGa4] = useState(() => {
     try { const value=JSON.parse(localStorage.getItem("playnice_cc_ga4_events_v1")||"null");return value?.version===1 ? value : null; }
@@ -219,6 +220,40 @@ export default function AnalyticsManager() {
     return acc;
   }, { reviewable: 0, needsReview: 0 });
 
+
+  const checkServerVerificationPreflight = async () => {
+    const selected = selectedInventoryRow;
+    const expected = inventoryVerificationSnapshot(selected);
+    if (!selected || !expected.eligible) return;
+    setPreviewReviewBusy(true);
+    setPreviewReview({ product: selected.product_name, state: "CHECKING" });
+    try {
+      const { data: auth, error: authError } = await supabase.auth.getSession();
+      if (authError || !auth?.session?.access_token) throw new Error("Admin login required");
+      const response = await fetch(
+        "/api/orders?view=inventory_verification_preflight&product_name=" +
+          encodeURIComponent(selected.product_name),
+        { headers: { Authorization: "Bearer " + auth.session.access_token } }
+      );
+      if (!response.ok) throw new Error("Server preflight unavailable");
+      const data = await response.json();
+      const matched = data?.eligible_for_review === true &&
+        data?.status === "REVIEWABLE_PARTIAL" &&
+        data?.can_persist_verification === false &&
+        data?.can_enforce_stock === false &&
+        data?.snapshot === expected.snapshot &&
+        data?.remaining_ml === expected.remainingMl;
+      setPreviewReview({
+        product: selected.product_name,
+        snapshot: expected.snapshot,
+        state: matched ? "MATCHED_PARTIAL" : "MISMATCH"
+      });
+    } catch {
+      setPreviewReview({ product: selected.product_name, state: "UNAVAILABLE" });
+    } finally {
+      setPreviewReviewBusy(false);
+    }
+  };
 
   const addInventoryStock = async () => {
     const quantity = Number(inventoryMl);
@@ -498,14 +533,17 @@ export default function AnalyticsManager() {
             <span>Recorded Remaining: <strong>{number(selectedInventoryRow.remaining_ml,1)} ml</strong></span>
             <span>Review status: <strong>{selectedVerification.eligible ? "READY FOR ADMIN REVIEW" : "NEEDS REVIEW"}</strong></span>
             {!selectedVerification.eligible ? <small>Reason: {selectedVerification.reason}</small> : <small>Pregled je vezan za prikazani obračun. Istorija događaja još nije povezana, pa ovo nije trajna potvrda raspoloživosti.</small>}
-            {selectedVerification.eligible ? <button type="button" className="inventory-lab-run" onClick={() => setPreviewReview({
-              product: selectedInventoryRow.product_name,
-              snapshot: selectedVerification.snapshot
-            })}>Review current balance (Preview only)</button> : null}
+            {selectedVerification.eligible ? <button type="button" className="inventory-lab-run" disabled={previewReviewBusy} onClick={checkServerVerificationPreflight}>
+              {previewReviewBusy ? "Checking server…" : "Check Remaining on server (Preview)"}
+            </button> : null}
             {previewReview?.product === selectedInventoryRow.product_name ?
-              <small aria-live="polite">{selectedVerification.eligible && previewReview.snapshot === selectedVerification.snapshot ?
-                "Preview review only: balance unchanged. Event-history revisions are not connected yet; NOT VERIFIED or persisted." :
-                "Review expired: inventory calculation changed or became ineligible."}</small> : null}
+              <small aria-live="polite">{previewReview.state === "CHECKING" ? "Checking authenticated server calculation…" :
+                previewReview.state === "UNAVAILABLE" ? "Server unavailable. No verification was granted." :
+                previewReview.state === "MISMATCH" ? "Server balance differs or data is incomplete. Review not granted." :
+                previewReview.state === "MATCHED_PARTIAL" && selectedVerification.eligible &&
+                  previewReview.snapshot === selectedVerification.snapshot ?
+                  "Server and screen Remaining match. PARTIAL REVIEW ONLY — event history is not complete; NOT VERIFIED or persisted." :
+                  "Review expired: inventory calculation changed or became ineligible."}</small> : null}
           </> : <small>Izbor će prikazati postojeći Remaining. Nema ponovnog unosa mililitara.</small>}
         </div>
       </article>
