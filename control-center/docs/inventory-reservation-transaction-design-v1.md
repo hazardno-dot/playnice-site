@@ -53,3 +53,22 @@
 8. PNTEST/Preview: entirely separate ledger and sequence. Never touch Production reservations.
 
 Do not interpret pure simulator tests as proof of serializable behavior in the real database.
+
+## Isolated PostgreSQL test harness — added to PR #536
+Files:
+- `control-center/tests/fixtures/inventory-reservation-lab.sql`: synthetic tables and two *lab-only* stored functions in schema `inventory_protection_lab`, with ordered row locking, unique fingerprint, atomic reserve, PACK and CANCEL.
+- `control-center/tests/fixtures/inventory-reservation-lab-scenarios.sql`: functional assertions for idempotency, mixed baskets, transitions, unverified inventory and rollback-only test transactions.
+- `control-center/tests/inventory-reservation-postgres-lab-contract.mjs`: source-contract guard to prevent direct access to production tables or broad public grants.
+
+**These SQL files are not migrations and have not been executed.** They must only be installed in a **separate disposable Supabase development branch or isolated local PostgreSQL database**, never on the production project. Development branches may incur costs and must receive approval through the Supabase tooling.
+
+### Actual two-session concurrency acceptance (not yet run)
+Run the following using two separate test connections against the isolated lab **after installing fixture**:
+1. Reset synthetic `naxos-test` to 8000 centi-ml with 0 reserved and remove all lab orders/lines.
+2. Session A: `BEGIN; SELECT inventory_protection_lab.reserve('PNTEST-A','fpa','[{"product_key":"naxos-test","centi_ml":6000}]');` then hold transaction open.
+3. Session B simultaneously: `BEGIN; SELECT inventory_protection_lab.reserve('PNTEST-B','fpb','[{"product_key":"naxos-test","centi_ml":6000}]');` should wait for A's row lock and never acknowledge reservation before A commits.
+4. Commit A. B must fail `INSUFFICIENT_AVAILABLE` and roll back; verify one order and 6000 reserved. Re-run with A rollback: B may succeed.
+5. Repeat with two-product baskets in opposite item orders to confirm canonical lock ordering prevents a deadlock. Run true parallel requests with independent connections, not sequential simulated calls.
+6. Confirm old production code paths have not been changed; the lab tables have no relation to real `checkout_orders` or inventory.
+
+The lab deliberately uses synthetic `naxos-test` and `ginger-test` keys. Do not seed it with the Production inventory counts. Real production implementation needs separately reviewed auth/RLS, gift/sample/legacy handling, queue/retry semantics, recovery alerts and explicit inventory verification.
