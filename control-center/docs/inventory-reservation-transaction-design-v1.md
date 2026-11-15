@@ -79,3 +79,9 @@ The lab deliberately uses synthetic `naxos-test` and `ginger-test` keys. Do not 
 - This uses **no database connections, writes, real carts or orders**. Results appear only in the current browser session; production stock cannot be affected. The 8 scenarios include competing demand, full capacity, aggregate ml, mixed cart atomicity, fingerprint replay, PACKED/cancellation, NEW cancellation, and unknown/Preview isolation.
 - These tests validate the **pure specification model**, not real PostgreSQL locking, ACID atomicity, or independent concurrent connections. Full acceptance remains blocked until isolated database tests can be conducted without touching Production.
 - Do not turn on live enforcement based on passing 8/8 tests.
+
+## Preview synthetic safety expansion — 2026-11-15
+- `control-center/lib/inventory-preview-safety-lab.mjs` adds eight synthetic fault scenarios: missing stock, unverified zero, verified zero, stale snapshot, unmapped product, over-reservation, simulated source outage/exception, and PACKED-to-NEW reconciliation.
+- `Intelligence → Inventory` now has separate styled buttons for the original eight reservation scenarios and eight safety scenarios. All 16 execute locally in the browser with zero database writes.
+- The simulated source outage and exception are **pure-function fault injections**, not real network tests. Neither this Preview lab nor the simulator can prove PostgreSQL atomic concurrency or the behavior of real Production services.
+- Failures in the future inventory service must never be interpreted as a verified zero, and must not result in false stock-out messaging. Checkout order acknowledgment must remain authoritative.
