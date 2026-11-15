@@ -10,6 +10,7 @@ export class ReservationSpecification {
   constructor(initialStock = {}) {
     this.stock = new Map();
     this.orders = new Map();
+    this.byFingerprint = new Map();
     for (const [key, ml] of Object.entries(initialStock)) {
       if (!key || !validMl(ml)) throw new Error("INVALID_OPENING_STOCK");
       this.stock.set(key, { physicalMl: ml, reservedMl: 0, verified: true });
@@ -23,10 +24,11 @@ export class ReservationSpecification {
       typeof fingerprint !== "string" || !fingerprint ||
       !Array.isArray(items) || items.length === 0) return { ok:false, reason:"INVALID_INPUT" };
 
-    // Transactional replay of an existing order must not reserve a second time.
-    const existing = this.orders.get(orderId);
-    if (existing) return existing.fingerprint === fingerprint
-      ? { ok:true, duplicate:true } : { ok:false, reason:"IDEMPOTENCY_CONFLICT" };
+    // Fingerprint is the idempotency key, independent of a fresh caller-supplied
+    // orderId. A replay can never create a second reservation.
+    const existingOrderId = this.byFingerprint.get(fingerprint);
+    if (existingOrderId) return { ok:true, duplicate:true, orderId:existingOrderId };
+    if (this.orders.has(orderId)) return { ok:false, reason:"IDEMPOTENCY_CONFLICT" };
 
     const requests = new Map();
     for (const item of items) {
@@ -54,7 +56,8 @@ export class ReservationSpecification {
       state.reservedMl = round(state.reservedMl + requested);
     }
     this.orders.set(orderId, { fingerprint, state:"RESERVED", items:requests });
-    return { ok:true, duplicate:false };
+    this.byFingerprint.set(fingerprint, orderId);
+    return { ok:true, duplicate:false, orderId };
   }
 
   packOrder(orderId) {
