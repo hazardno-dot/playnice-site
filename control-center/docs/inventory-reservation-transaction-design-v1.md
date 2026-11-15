@@ -93,3 +93,10 @@ The lab deliberately uses synthetic `naxos-test` and `ginger-test` keys. Do not 
 - `control-center/supabase/inventory_verification_v1.sql` is a **draft only**, not applied. It has admin-only read access and no write RPC by design. No verification records exist until a subsequent reviewed migration and explicit admin action.
 - Before implementing persisted verification, the snapshot must include a server-derived, monotonically increasing ledger/order revision (not just the calculated values), with server-side compare-and-set under relevant inventory locks. Equal net balances after two offsetting events must not silently preserve a stale verification. Include all manual adjustments, gifts, status rollbacks and pending orders. Confirm canonical product slug mapping.
 - A verification is never itself an enforceable reservation. Existing Remaining is not to be reduced twice for PACKED/DELIVERED; NEW reservations are a separate concern.
+
+## Inventory-first CC layout and preview review (2026-11-15)
+- Inventory Watch and stock entry are now first on the Inventory page. Previous Audit/Verification/Pending/Shadow/Synthetic panels are inside a collapsed `Inventory Protection diagnostics` section.
+- The Existing Remaining verification card now displays selected fragrance details as separate rows with readable spacing.
+- An eligible row has a **Preview-only** `Review current balance` action. It stores the reviewed calculation fingerprint only in React memory for the current browser session, displays explicitly `Not persisted`, and changes to `Review expired` when the displayed calculation no longer matches.
+- The Preview-only action does **not** call any API, create a database verification record, grant stock eligibility or authorize checkout enforcement. It is a user-flow prototype, not durable verification.
+- Future persisted verification requires an admin-only transactional write RPC, server-side recomputed ledger **revision** and immediate invalidation on orders, manual outs, gifts and restocks; this remains unimplemented, and no SQL migration was applied.
