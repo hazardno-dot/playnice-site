@@ -1,5 +1,6 @@
 // Production redeploy trigger: env refresh.
 import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
+import { inventoryVerificationSnapshot } from "../lib/inventory-verification-v1.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -811,6 +812,31 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === "GET") {
+      if (String(req.query?.view || "").trim().toLowerCase() === "inventory_verification_preflight") {
+        // Read-only, authenticated admin snapshot, computed from the same source
+        // as Inventory Watch. It is not a durable revision or verified stock.
+        const productName = cleanText(req.query?.product_name, 180);
+        if (!productName || productName.length < 2) return json(res, 400, { error: "Valid fragrance name required." });
+        const analytics = await readOrderAnalytics(auth.token);
+        const matches = (analytics?.inventory?.rows || [])
+          .filter((row) => String(row.product_name || "").trim().toLowerCase() === productName.toLowerCase());
+        if (matches.length !== 1) return json(res, 200, {
+          ok: true, product_name: productName, status: "UNKNOWN_MAPPING",
+          eligible_for_review: false, can_persist_verification: false, can_enforce_stock: false
+        });
+        const checked = inventoryVerificationSnapshot(matches[0]);
+        return json(res, 200, {
+          ok: true, product_name: matches[0].product_name,
+          status: checked.eligible ? "REVIEWABLE_PARTIAL" : "NEEDS_REVIEW",
+          reason: checked.reason,
+          eligible_for_review: checked.eligible,
+          remaining_ml: checked.eligible ? checked.remainingMl : null,
+          snapshot: checked.eligible ? checked.snapshot : null,
+          event_history_complete: false,
+          can_persist_verification: false,
+          can_enforce_stock: false
+        });
+      }
       if (String(req.query?.view || "").trim().toLowerCase() === "analytics") {
         return json(res, 200, {
           ok: true,
