@@ -497,14 +497,14 @@ export default function AnalyticsManager() {
           {selectedInventoryRow ? <>
             <span>Recorded Remaining: <strong>{number(selectedInventoryRow.remaining_ml,1)} ml</strong></span>
             <span>Review status: <strong>{selectedVerification.eligible ? "READY FOR ADMIN REVIEW" : "NEEDS REVIEW"}</strong></span>
-            {!selectedVerification.eligible ? <small>Reason: {selectedVerification.reason}</small> : <small>Pregled je vezan za konkretan obračun. Ovo nije trajna potvrda raspoloživosti.</small>}
+            {!selectedVerification.eligible ? <small>Reason: {selectedVerification.reason}</small> : <small>Pregled je vezan za prikazani obračun. Istorija događaja još nije povezana, pa ovo nije trajna potvrda raspoloživosti.</small>}
             {selectedVerification.eligible ? <button type="button" className="inventory-lab-run" onClick={() => setPreviewReview({
               product: selectedInventoryRow.product_name,
               snapshot: selectedVerification.snapshot
             })}>Review current balance (Preview only)</button> : null}
             {previewReview?.product === selectedInventoryRow.product_name ?
               <small aria-live="polite">{selectedVerification.eligible && previewReview.snapshot === selectedVerification.snapshot ?
-                "Reviewed in this browser session only. Not persisted; does not enable inventory restrictions." :
+                "Preview review only: balance unchanged. Event-history revisions are not connected yet; NOT VERIFIED or persisted." :
                 "Review expired: inventory calculation changed or became ineligible."}</small> : null}
           </> : <small>Izbor će prikazati postojeći Remaining. Nema ponovnog unosa mililitara.</small>}
         </div>
