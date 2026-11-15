@@ -34,7 +34,7 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-9.jpg",
     "desktopImage": "/hero/slide-9.jpg",
     "mobileImage": "/hero/mobile/slide-9-mobile.jpg",
-    "alt": "PlayNice limited stock fragrance campaign hero banner",
+    "alt": "Armani I Will Eau de Parfum – zavodljiva večernja kampanja",
     "actionPrimary": "product",
     "actionProductSlug": "armani-i-will",
     "preferredSize": "5ml"
