@@ -3244,6 +3244,32 @@ export const products = [
       heart: ["clary-sage","geranium","patchouli"],
       base: ["tobacco","amber","cedarwood"]
     }
+  },
+  {
+    id: 116,
+    addedAt: "2026-11-15T16:45:07.559Z",
+    slug: "thomas-kosmala-no-10-desir-du-coeur",
+    name: "Thomas Kosmala No. 10 Désir du Coeur Eau de Parfum",
+    modalName: "Thomas Kosmala No. 10 Désir du Coeur EDP",
+    shortName: "No. 10 Désir du Coeur",
+    category: "Niche",
+    image: "/products/thomas-kosmala-no-10-desir-du-coeur.png",
+    sizes: {"2ml":6.5,"5ml":15,"10ml":27},
+    badge: "SIGNATURE",
+    rating: 8.8,
+    ratingLabel: "PlayNice Selection",
+    season: "all",
+    moods: ["date","rich","signature"],
+    recommendations: ["thomas-kosmala-no-4-apres-lamour","swiss-arabian-musk-01","mancera-cosmic-pepper"],
+    inspiredBy: {
+      name: "Original Thomas Kosmala creation",
+      short: "Original amber-musk creation"
+    },
+    noteMap: {
+      top: ["lemon-zest"],
+      heart: ["aromatic-notes","spices"],
+      base: ["musk","amber"]
+    }
   }
 
 ];

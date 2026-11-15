@@ -157,6 +157,10 @@ export default [
   },
   {
     "sr": "Kada želite da parfem obavi sav posao umesto vas. Novi The One ima više samopouzdanja od svog prethodnika, ali citrusi, aromatična žalfija i topli duvan ipak nisu zamena za dobar razgovor. Ako vam se neko dopadne za susednim stolom, priđite. Nemojte čekati da amber započne razgovor.",
-    "en": "When you expect your fragrance to do all the work. The new The One has more confidence than its predecessor, but bright citrus, aromatic sage and warm tobacco are no substitute for a good conversation. If someone catches your eye at the next table, introduce yourself. Don't wait for amber to make the first move."}
+    "en": "When you expect your fragrance to do all the work. The new The One has more confidence than its predecessor, but bright citrus, aromatic sage and warm tobacco are no substitute for a good conversation. If someone catches your eye at the next table, introduce yourself. Don't wait for amber to make the first move."},
+  {
+    "sr": "Kada planirate da prođete neprimećeno. Désir du Coeur ima čudnu naviku da ostaje u vazduhu i kada vi odete. Ako večeras želite da izbegnete pitanja gde ste bili i s kim, možda nije najbolji izbor. A ako ste rešili da napravite prvi korak, ne računajte da će mošus sam tražiti nečiji broj telefona.",
+    "en": "When you're planning to go unnoticed. Désir du Coeur has a curious habit of lingering long after you've left. If you'd rather avoid questions about where you've been and who you were with, perhaps choose something quieter. And if you're planning to make the first move, don't expect the musk to ask for someone's number."
+  }
 
 ];

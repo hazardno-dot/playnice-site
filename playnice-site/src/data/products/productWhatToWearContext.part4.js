@@ -158,6 +158,10 @@ const entries = [
   {
     "sr": "Tamna košulja, dobro skrojene pantalone, kožne cipele i sat bez previše dokazivanja. Ili obična bela košulja sa zavrnutim rukavima. The One najbolje funkcioniše kada izgledate kao da niste proveli dva sata pred ogledalom, čak i ako jeste.",
     "en": "A dark shirt, tailored trousers, leather shoes and an understated watch. Or a simple white shirt with rolled-up sleeves. The One works best when you look like you haven't spent two hours in front of the mirror, even if you have."
+  },
+  {
+    "sr": "Crna košulja, kvalitetne farmerke ili lepo skrojene pantalone. Za posebnu priliku, sako preko jednostavne majice. Nije važna cena garderobe, već kako je nosite. Désir du Coeur ionako najbolje funkcioniše kada se ne trudite previše da ostavite utisak.",
+    "en": "A black shirt, good jeans or tailored trousers. For a special occasion, a blazer over a simple T-shirt. It's not about how much your clothes cost, but how you wear them. Désir du Coeur works best when you aren't trying too hard to impress."
   }
 
 ];
