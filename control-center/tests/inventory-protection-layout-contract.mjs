@@ -14,7 +14,7 @@ assert.match(css, /\.inventory-panel \.inventory-catalog-scroll:focus-visible/);
 assert.match(ui, /<summary>Inventory Protection diagnostics/);
 assert.match(ui, /setPreviewReview\(/);
 assert.match(ui, /previewReview\.snapshot === selectedVerification\.snapshot/);
-assert.match(ui, /Preview review only: balance unchanged\. Event-history revisions are not connected yet/);
+assert.match(ui, /Server and screen Remaining match\. PARTIAL REVIEW ONLY/);
 assert.match(ui, /Review expired: inventory calculation changed/);
 assert.match(ui, /Izaberi parfem u Inventory Watch listi/);
 assert.match(css, /\.inventory-protection-diagnostics>summary:focus-visible/);
