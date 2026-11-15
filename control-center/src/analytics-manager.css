@@ -266,3 +266,63 @@
   .inventory-lab-actions{flex-direction:column}
   .inventory-intelligence .inventory-lab-run{width:100%}
 }
+
+
+/* Inventory Watch stays primary; detailed protection work is opt-in. */
+.inventory-protection-diagnostics{
+  margin-top:22px;
+  border:1px solid rgba(110,192,145,.26);
+  border-radius:14px;
+  background:rgba(10,25,18,.34);
+}
+.inventory-protection-diagnostics>summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px 24px;
+  padding:18px 20px;
+  color:#e5f3e9;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  list-style:none;
+}
+.inventory-protection-diagnostics>summary::-webkit-details-marker{display:none}
+.inventory-protection-diagnostics>summary::before{
+  content:"▸";
+  margin-right:6px;
+  color:#95d7aa;
+}
+.inventory-protection-diagnostics[open]>summary::before{content:"▾"}
+.inventory-protection-diagnostics>summary span{
+  flex:1 1 380px;
+  color:#9bb9a7;
+  font-size:12px;
+  font-weight:400;
+  text-align:right;
+}
+.inventory-protection-diagnostics>summary:focus-visible{
+  outline:2px solid #b4f9d0;
+  outline-offset:3px;
+}
+.inventory-protection-diagnostics-body{padding:0 14px 16px}
+.inventory-verification-selected{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+  margin:16px 0 0;
+  border-top:1px solid rgba(110,192,145,.15);
+  padding:14px 12px 4px;
+  color:#dcefe2;
+  font-size:13px;
+}
+.inventory-verification-selected>strong{font-size:15px}
+.inventory-verification-selected>span{display:block}
+.inventory-verification-selected>small{display:block;color:#a4c0ac;line-height:1.5}
+.inventory-verification-selected .inventory-lab-run{margin-top:8px}
+@media(max-width:700px){
+  .inventory-protection-diagnostics>summary span{text-align:left;flex-basis:100%}
+  .inventory-protection-diagnostics-body{padding:0 8px 10px}
+}
