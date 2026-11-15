@@ -5,6 +5,7 @@ import { parseGa4ItemsCsv } from "./ga4ItemsCsvImport.mjs";
 import { deriveProductInsights } from "./productInsights.mjs";
 import { runInventoryPreviewLab } from "../lib/inventory-preview-lab.mjs";
 import { runInventorySafetyLab } from "../lib/inventory-preview-safety-lab.mjs";
+import { inventoryVerificationSnapshot } from "../lib/inventory-verification-v1.mjs";
 
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -209,6 +210,14 @@ export default function AnalyticsManager() {
   const selectedInventoryRow = inventoryRows.find((row) => String(row.product_name || "").toLowerCase() === String(inventoryProduct || "").toLowerCase());
   const inventoryIsTracked = Boolean(selectedInventoryRow && !selectedInventoryRow.provisional);
   const baselineEditable = Boolean(selectedInventoryRow && (selectedInventoryRow.estimated || selectedInventoryRow.provisional || selectedInventoryRow.baseline_verified));
+  const selectedVerification = inventoryVerificationSnapshot(selectedInventoryRow);
+  const inventoryVerificationReadiness = inventoryRows.reduce((acc, row) => {
+    const result = inventoryVerificationSnapshot(row);
+    if (result.eligible) acc.reviewable += 1;
+    else acc.needsReview += 1;
+    return acc;
+  }, { reviewable: 0, needsReview: 0 });
+
 
   const addInventoryStock = async () => {
     const quantity = Number(inventoryMl);
@@ -467,6 +476,26 @@ export default function AnalyticsManager() {
         {protectionAudit.provisional || protectionAudit.unverified || protectionAudit.inconsistent
           ? <p className="analytics-note">Next: reconcile physical balances and identifiers before enabling actual background checks or restrictions.</p>
           : <p className="analytics-note">All visible rows passed these preliminary checks only. Transactional validation and checkout concurrency tests are still required.</p>}
+      </article>
+      <article className="analytics-panel inventory-verification-review" style={{marginBottom:20}}>
+        <div className="analytics-panel-head">
+          <div><span>INVENTORY PROTECTION / VERIFICATION REVIEW</span><h3>Existing Remaining balance</h3></div>
+          <small>Preview audit · no verification writes</small>
+        </div>
+        <div className="inventory-summary">
+          <div><span>READY FOR REVIEW</span><strong>{number(inventoryVerificationReadiness.reviewable)}</strong></div>
+          <div><span>NEEDS REVIEW</span><strong>{number(inventoryVerificationReadiness.needsReview)}</strong></div>
+          <div><span>PERSISTED VERIFICATIONS</span><strong>NOT ACTIVE</strong></div>
+        </div>
+        <p className="analytics-note">The recorded Remaining balance is preserved. BASELINE_SET verifies the original bottle capacity, not a separate current balance approval. This preview shows review eligibility only; it never marks stock verified or enables customer restrictions.</p>
+        <div className="inventory-verification-selected">
+          <strong>{selectedInventoryRow ? selectedInventoryRow.product_name : "Choose a fragrance from Inventory watch"}</strong>
+          {selectedInventoryRow ? <>
+            <span>Recorded Remaining: <strong>{number(selectedInventoryRow.remaining_ml,1)} ml</strong></span>
+            <span>Review status: <strong>{selectedVerification.eligible ? "READY FOR ADMIN REVIEW" : "NEEDS REVIEW"}</strong></span>
+            {!selectedVerification.eligible ? <small>Reason: {selectedVerification.reason}</small> : <small>The future admin confirmation must bind this exact balance and invalidate on any stock or order change.</small>}
+          </> : <small>Select a row below; no quantities need to be re-entered.</small>}
+        </div>
       </article>
       <article className="analytics-panel" style={{marginBottom:20}}>
         <div className="analytics-panel-head">
