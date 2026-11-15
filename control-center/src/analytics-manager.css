@@ -228,3 +228,41 @@
 @media(max-width:900px){
   .inventory-grid>.inventory-entry-panel{position:static;max-height:none;overflow:visible}
 }
+
+
+/* Inventory Protection synthetic lab controls — match the Control Center palette. */
+.inventory-lab-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin:14px 0 18px;
+}
+.inventory-intelligence .inventory-lab-run{
+  appearance:none;
+  border:1px solid rgba(110,192,145,.52);
+  border-radius:9px;
+  background:linear-gradient(135deg,rgba(44,112,73,.42),rgba(23,65,46,.7));
+  color:#e0f5e8;
+  padding:11px 17px;
+  font:inherit;
+  font-size:13px;
+  font-weight:600;
+  line-height:1.3;
+  cursor:pointer;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.inventory-intelligence .inventory-lab-run:hover{
+  background:rgba(70,149,96,.38);
+  border-color:#93d7ae;
+  transform:translateY(-1px);
+}
+.inventory-intelligence .inventory-lab-run:focus-visible{
+  outline:2px solid #b4f9d0;
+  outline-offset:3px;
+}
+.inventory-lab-safety-results{margin-top:16px}
+@media(max-width:700px){
+  .inventory-lab-actions{flex-direction:column}
+  .inventory-intelligence .inventory-lab-run{width:100%}
+}
