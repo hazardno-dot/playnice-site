@@ -85,3 +85,11 @@ The lab deliberately uses synthetic `naxos-test` and `ginger-test` keys. Do not 
 - `Intelligence → Inventory` now has separate styled buttons for the original eight reservation scenarios and eight safety scenarios. All 16 execute locally in the browser with zero database writes.
 - The simulated source outage and exception are **pure-function fault injections**, not real network tests. Neither this Preview lab nor the simulator can prove PostgreSQL atomic concurrency or the behavior of real Production services.
 - Failures in the future inventory service must never be interpreted as a verified zero, and must not result in false stock-out messaging. Checkout order acknowledgment must remain authoritative.
+
+## Inventory Verification review without re-entering ml (2026-11-15)
+- User confirmed the displayed Inventory Watch Total / Out / Remaining have been reconciled to physical bottles. Do not reset or manually re-enter all 115 product balances.
+- `control-center/lib/inventory-verification-v1.mjs` inspects current Remaining calculation and returns eligibility for review; `Inventory → Existing Remaining balance` provides a read-only selection view using the inventory row already present.
+- The status `READY FOR ADMIN REVIEW` means preliminary arithmetic/identity requirements pass, NOT that a persistent verified flag exists. `BASELINE_SET` (original bottle capacity) remains distinct from a verified current sellable balance.
+- `control-center/supabase/inventory_verification_v1.sql` is a **draft only**, not applied. It has admin-only read access and no write RPC by design. No verification records exist until a subsequent reviewed migration and explicit admin action.
+- Before implementing persisted verification, the snapshot must include a server-derived, monotonically increasing ledger/order revision (not just the calculated values), with server-side compare-and-set under relevant inventory locks. Equal net balances after two offsetting events must not silently preserve a stale verification. Include all manual adjustments, gifts, status rollbacks and pending orders. Confirm canonical product slug mapping.
+- A verification is never itself an enforceable reservation. Existing Remaining is not to be reduced twice for PACKED/DELIVERED; NEW reservations are a separate concern.
