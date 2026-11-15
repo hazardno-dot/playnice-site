@@ -72,3 +72,10 @@ Run the following using two separate test connections against the isolated lab *
 6. Confirm old production code paths have not been changed; the lab tables have no relation to real `checkout_orders` or inventory.
 
 The lab deliberately uses synthetic `naxos-test` and `ginger-test` keys. Do not seed it with the Production inventory counts. Real production implementation needs separately reviewed auth/RLS, gift/sample/legacy handling, queue/retry semantics, recovery alerts and explicit inventory verification.
+
+## No-cost Vercel Preview test mode (2026-11-15)
+- User chose to **decline paid Supabase branching**. No development branch was created.
+- `control-center/lib/inventory-preview-lab.mjs` executes eight deterministic, synthetic, browser-memory-only scenarios; `control-center/src/AnalyticsManager.jsx` exposes an on-demand test button under Inventory.
+- This uses **no database connections, writes, real carts or orders**. Results appear only in the current browser session; production stock cannot be affected. The 8 scenarios include competing demand, full capacity, aggregate ml, mixed cart atomicity, fingerprint replay, PACKED/cancellation, NEW cancellation, and unknown/Preview isolation.
+- These tests validate the **pure specification model**, not real PostgreSQL locking, ACID atomicity, or independent concurrent connections. Full acceptance remains blocked until isolated database tests can be conducted without touching Production.
+- Do not turn on live enforcement based on passing 8/8 tests.
