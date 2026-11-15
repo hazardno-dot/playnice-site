@@ -1,5 +1,32 @@
 export const exhibitionItems = [
   {
+    "id": "hero-9-armani-i-will-some-say-maybe-20261115",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "Armani I Will — Some Say Maybe. Some Say I Will.",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-9-armani-i-will-some-say-maybe-20261115-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-9-armani-i-will-some-say-maybe-20261115.jpg",
+        "format": "wide",
+        "alt": "Armani I Will — Some Say Maybe. Some Say I Will."
+      }
+    ]
+  },
+
+  {
     "id": "hero-5-jo-ih-niste-probali-playnice-izbor-parfema",
     "year": 2026,
     "period": "sep-dec-2026",

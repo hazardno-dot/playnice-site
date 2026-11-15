@@ -194,6 +194,10 @@ function periodFor(date = new Date()) {
   return { year, period: `sep-dec-${year}` };
 }
 
+function exhibitionArchiveStamp(date = new Date()) {
+  return date.toISOString().replace(/[-:TZ.]/g, "").slice(0, 14);
+}
+
 function extensionFor(source) {
   const clean = String(source || "").split("?")[0];
   const match = clean.match(/\.([a-z0-9]+)$/i);
@@ -204,7 +208,7 @@ function buildReplacementExhibitionEntry(heroKey, baseline, canonicalAsset) {
   const { year, period } = periodFor();
   const title = String(baseline.alt || heroKey).trim();
   const campaignSlug = safeId(title).slice(0, 52) || safeId(heroKey) || `slot-${baseline.id}`;
-  const entryId = `hero-${baseline.id}-${campaignSlug}`;
+  const entryId = `hero-${baseline.id}-${campaignSlug}-${exhibitionArchiveStamp()}`;
   const source = canonicalAsset === "mobile"
     ? (baseline.mobileImage || baseline.image || "")
     : (baseline.desktopImage || baseline.image || "");

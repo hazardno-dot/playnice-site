@@ -23,6 +23,7 @@ for (const token of [
   "commitBatchToBranch",
   "applyEntries",
   "Apply Hero replacement + Exhibition archive",
+  "exhibitionArchiveStamp",
   "apply_commit_sha",
   "expected_commit_count: hasMediaStage ? 2 : 1",
 ]) {
