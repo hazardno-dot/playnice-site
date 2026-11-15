@@ -480,5 +480,10 @@ export const productWearContext = {
 
   "Dolce & Gabbana The One for Men Eau de Parfum (2025)": {
     "sr": "Dejt, večera, posao i elegantne večernje prilike.",
-    "en": "Dates, dinner, work and elegant evening occasions."}
+    "en": "Dates, dinner, work and elegant evening occasions."},
+
+  "Thomas Kosmala No. 10 Désir du Coeur Eau de Parfum": {
+    "sr": "Dejt, veče, hladniji dani i posebni susreti.",
+    "en": "Dates, evenings, cooler days and special encounters."
+  }
 };

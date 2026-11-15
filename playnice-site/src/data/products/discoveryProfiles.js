@@ -3477,7 +3477,38 @@ export const discoveryProfiles = {
     "aromaticity": 8.2,
     "cleanliness": 6.2,
     "versatility": 8.5,
-    "gourmandness": 1.8}
+    "gourmandness": 1.8},
+
+  "thomas-kosmala-no-10-desir-du-coeur": {
+    "date": 9.5,
+    "casual": 7.5,
+    "citrus": 4.8,
+    "office": 5.2,
+    "unisex": 9.5,
+    "warmth": 8.8,
+    "aquatic": 0,
+    "dryness": 5.6,
+    "evening": 9.3,
+    "powdery": 6.8,
+    "airiness": 4.8,
+    "darkness": 5.6,
+    "elegance": 8.5,
+    "feminine": 5.5,
+    "florality": 1.5,
+    "freshness": 4.4,
+    "longevity": 9.1,
+    "masculine": 6,
+    "spiciness": 6.7,
+    "sweetness": 6.8,
+    "woodiness": 4.2,
+    "creaminess": 5.4,
+    "fruitiness": 0.7,
+    "projection": 8.8,
+    "aromaticity": 6,
+    "cleanliness": 5.2,
+    "versatility": 7.7,
+    "gourmandness": 1.5
+  }
 };
 
 export default discoveryProfiles;

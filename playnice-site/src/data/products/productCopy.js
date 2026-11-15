@@ -3696,6 +3696,55 @@ export const productCopy = {
     "whyChoose": {
       "en": "For lovers of bright citrus, aromatic sage and a warm tobacco-amber drydown.",
       "sr": "Za ljubitelje citrusne svežine, aromatične žalfije i toplog duvansko-ambarnog završetka."}
+  },
+
+  "Thomas Kosmala No. 10 Désir du Coeur Eau de Parfum": {
+    "miniTag": {
+      "en": "🧡 Amber / Musk",
+      "sr": "🧡 Ambarni / Mošusni"
+    },
+    "card": {
+      "en": "Lemon zest, aromatic spices and warm skin musk.",
+      "sr": "Limunova korica, začini i topao mošus na koži."
+    },
+    "modal": {
+      "en": "Bright lemon zest opens before aromatic spices give way to musk and amber. A warm, sensual trail that develops its own character on every skin.",
+      "sr": "Limunova korica otvara miris, zatim aromatični začini prelaze u mošus i amber. Topao, senzualan trag koji na svakoj koži dobija svoj karakter."
+    },
+    "scentType": {
+      "en": "Amber musky",
+      "sr": "Ambarno-mošušni"
+    },
+    "dominantNotes": {
+      "sr": [
+        "limunova korica",
+        "aromatični začini",
+        "mošus",
+        "amber"
+      ],
+      "en": [
+        "lemon zest",
+        "aromatic spices",
+        "musk",
+        "amber"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Mošusni",
+        "Ambarni",
+        "Začinski"
+      ],
+      "en": [
+        "Musky",
+        "Ambery",
+        "Spicy"
+      ]
+    },
+    "whyChoose": {
+      "en": "For those drawn to bold musk, warm amber and a scent that feels personal on skin.",
+      "sr": "Za one koji vole izražajan mošus, topao amber i miris koji postaje ličniji na koži."
+    }
   }
 };
 
