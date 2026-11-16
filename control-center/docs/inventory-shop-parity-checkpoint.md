@@ -59,3 +59,28 @@ No actual 115-row cross-system numerical parity report has been produced yet:
 do not mark any new product as verified or add it to the Preview allowlist.
 A successful source-schema/count audit does not establish per-product Remaining parity.
 The account's existing operational Remaining values remain untouched.
+
+## 2026-11-17 — Numeric ledger parity stage and legacy bundle correction
+
+Live read-only SQL independently reconstructed opening/baseline, restock,
+manual-out and tracking start against the exact existing
+get_control_center_inventory_stock selection logic:
+**115 of 115 products matched, 0 ledger-field differences.**
+This is inventory-ledger-only parity, NOT a full Remaining parity pass.
+
+The completed-order audit found one historical DELIVERED item with product
+name containing four fragrances, size_label "5ml × 4", and null size_ml.
+The previously staged Shop source adapter rejected it as INVALID_SALE_ITEM,
+causing snapshot-wide fail-open. The inactive adapter now accepts this
+specific recognized multi-name bundle label and delegates expansion to
+the existing shared inventorySaleItems parser (four x 5 ml).
+The Shop and Control Center copies remain byte-identical; a contract test
+covers the historical shape. No production order was edited.
+
+Additional audit observations:
+- Three DELIVERED order items have size_ml >= 50 (full bottles).
+- The one structured bundleItems production row is in RETURNED status,
+  not DELIVERED; this should not be reclassified as delivered consumption.
+- Full Remaining parity is still unverified, particularly historical
+  commerce canonical-name aliases and order-stage semantics.
+- Do not enable V2 nor approve any product names from this partial check.
