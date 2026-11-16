@@ -73,7 +73,8 @@ begin
   end if;
 
   return jsonb_build_object(
-    'complete',true,'events',v_events,'orders',v_orders,'items',v_items
+    'complete',true,'snapshot_at',statement_timestamp(),
+    'events',v_events,'orders',v_orders,'items',v_items
   );
 end;
 $function$;
