@@ -20,6 +20,12 @@ assert.equal(stock.rows[0].manual_out_ml,5);
 const commerce=commerceFromDeliveredHistory(orders,items);
 assert.equal(commerce.complete,true);
 assert.equal(commerce.commerce.top_products[0].total_ml_out,22);
+assert.equal(commerce.commerce.full_bottles.length,0,
+  "two 10 ml decants must not count as a full bottle");
+const bulk=commerceFromDeliveredHistory(orders,[{...items[0],quantity:10}]);
+assert.equal(bulk.commerce.full_bottles.length,0,
+  "ten 10 ml decants must not be misclassified as a 100 ml bottle");
+
 const result=remainingFromSupabaseSources({events,orders,items,complete:true});
 assert.equal(result.complete,true);
 assert.equal(result.rows[0].remaining_ml,123);
