@@ -20015,3 +20015,15 @@ body.overlay-lock .header-system {
   font-size: 12px;
   line-height: 1.5;
 }
+
+/* Only the + control extinguishes; minus, Remove and checkout stay active. */
+.qty-control button:disabled,
+.qty-control button:disabled:hover {
+  background: #353638;
+  color: #919397;
+  box-shadow: none;
+  filter: grayscale(1);
+  opacity: 0.64;
+  transform: none;
+  cursor: not-allowed;
+}

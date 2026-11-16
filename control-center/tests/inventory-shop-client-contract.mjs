@@ -87,3 +87,12 @@ assert.match(current,/CLICK_PAUSE_MS=480/);
 assert.match(app,/isStockDecisionPending\(product\)/);
 assert.match(app,/noteInventoryCartClick\(product\)/);
 assert.match(app,/isAtStockLimit\(product,size\)/);
+
+const desktopStyle=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopProductPage.css","utf8");
+const quickStyle=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopQuickView.css","utf8");
+const mobileStyle=fs.readFileSync("playnice-site/src/mobile-v2/product-page/MobileProductPage.css","utf8");
+assert.match(desktopStyle,/\.desktop-product-page__add:disabled/);
+assert.match(quickStyle,/\.desktop-quick-view__add:disabled/);
+assert.match(mobileStyle,/\.mobile-product-page__add:disabled/);
+assert.match(style,/\.qty-control button:disabled/);
+assert.match(desktopStyle,/box-shadow: none/);
