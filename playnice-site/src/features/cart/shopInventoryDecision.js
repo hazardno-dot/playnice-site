@@ -2,7 +2,11 @@
 // All failures or missing checks fail open. No checkout or inventory writes.
 const responses=new Map();
 const waiting=new Set();
-const FRESH_MS=12000;
+const FRESH_MS=15000;
+// A confirmed limit stays active through background refreshes, rather than
+// disappearing with an individual request cache entry.
+const blockedByProduct=new Map();
+const BLOCK_MS=60000;
 const makeKey=(product,cart,size)=>{
   const next=requestedCartTotalMl(cart,product?.id,size);
   return next===null || !product?.name?null:{
@@ -27,7 +31,11 @@ export function requestedCartTotalMl(cart,productId,extraSize){
 export function isStockDecisionBlocked(product,cart,size){
   const key=makeKey(product,cart,size)?.key;
   const row=key&&responses.get(key);
-  return Boolean(row && row.decision==="LIMIT_REACHED" && row.expires>Date.now());
+  const now=Date.now();
+  const request=makeKey(product,cart,size);
+  const block=request&&blockedByProduct.get(String(product.id));
+  if(block && block.expires>now && request.requestedTotalMl>=block.atMl) return true;
+  return Boolean(row && row.decision==="LIMIT_REACHED" && row.expires>now);
 }
 export async function warmStockDecision(product,cart,size){
   try{
@@ -51,8 +59,25 @@ export async function warmStockDecision(product,cart,size){
       const data=response.ok?await response.json():null;
       const decision=data?.decision==="LIMIT_REACHED"?"LIMIT_REACHED":
         data?.decision==="ALLOW"?"ALLOW":"UNKNOWN";
-      responses.set(request.key,{decision,expires:Date.now()+(decision==="UNKNOWN"?2000:FRESH_MS)});
+      const now=Date.now();
+      const pid=String(product.id);
+      if(decision==="LIMIT_REACHED"){
+        const prior=blockedByProduct.get(pid);
+        blockedByProduct.set(pid,{
+          atMl:Math.min(prior?.expires>now?prior.atMl:Infinity,request.requestedTotalMl),
+          expires:now+BLOCK_MS
+        });
+      }else if(decision==="UNKNOWN" ||
+          (decision==="ALLOW" && request.requestedTotalMl>=
+            (blockedByProduct.get(pid)?.atMl??Infinity))){
+        blockedByProduct.delete(pid);
+      }
+      responses.set(request.key,{decision,expires:now+(decision==="UNKNOWN"?2000:FRESH_MS)});
       window.dispatchEvent(new Event("playnice:stock-decision-updated"));
     }finally{clearTimeout(timer);waiting.delete(request.key);}
-  }catch{/* Fail open; no alert, cart mutation, or checkout dependency. */}
+  }catch{
+    // Fail open on outages: don't retain a prior stop signal without a working
+    // decision service. Never affect the checkout itself.
+    if(product?.id!=null) blockedByProduct.delete(String(product.id));
+  }
 }

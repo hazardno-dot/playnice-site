@@ -2776,6 +2776,25 @@ const goToHomeSection = (selector, block = "start") => {
   }, [cart,selectedProduct]);
 
   useEffect(() => {
+    const refresh=()=>{
+      for(const item of cart){
+        const product=products.find(p=>p.id===item.id);
+        if(product) void warmStockDecision(product,cart,item.size);
+      }
+      if(selectedProduct){
+        for(const size of Object.keys(selectedProduct.sizes||{}))
+          void warmStockDecision(selectedProduct,cart,size);
+      }
+    };
+    const interval=window.setInterval(refresh,8000);
+    window.addEventListener("focus",refresh);
+    return ()=>{
+      window.clearInterval(interval);
+      window.removeEventListener("focus",refresh);
+    };
+  },[cart,selectedProduct]);
+
+  useEffect(() => {
     window.dispatchEvent(new Event("playnice:cart-quantity-updated"));
   }, [cart]);
 
@@ -5079,11 +5098,6 @@ const openFromProductCard = () => {
           )}
         </span>
 
-        {!canAddDecant(productForCart, size) && (
-          <small className="inventory-limit-message" role="status">
-            {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
-          </small>
-        )}
         <span
           className={`size-chip-flash ${isJustAdded ? "show" : ""}`}
           aria-hidden="true"
@@ -5094,6 +5108,14 @@ const openFromProductCard = () => {
     );
   })}
 </div>
+{Object.entries(product.sizes).some(([size]) => {
+  const selection=getProductPurchaseSelection(product,size);
+  return !canAddDecant(selection.productForCart,size);
+}) && (
+  <p className="inventory-limit-message inventory-limit-message--pdp" role="status">
+    {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+  </p>
+)}
 </article>
   );
 };
@@ -8832,12 +8854,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       +
                     </button>
                   </div>
-                  {!canAddDecant(products.find((candidate) => candidate.id === item.id), item.size) && (
-                    <small className="inventory-limit-message" role="status">
-                      {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
-                    </small>
-                  )}
-
                   <button
                     className="remove-link"
                     type="button"
@@ -8846,6 +8862,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     {tr.remove}
                   </button>
                 </div>
+                {!canAddDecant(products.find((candidate) => candidate.id === item.id), item.size) && (
+                  <p className="inventory-limit-message inventory-limit-message--cart" role="status">
+                    {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+                  </p>
+                )}
               </div>
             );
           })}

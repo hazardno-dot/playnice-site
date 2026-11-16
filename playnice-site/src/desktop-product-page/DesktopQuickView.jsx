@@ -92,7 +92,11 @@ export default function DesktopQuickView() {
   useEffect(() => {
     const refresh = () => refreshCartAvailability((previous) => previous + 1);
     window.addEventListener("playnice:cart-quantity-updated", refresh);
-    return () => window.removeEventListener("playnice:cart-quantity-updated", refresh);
+    window.addEventListener("playnice:stock-decision-updated", refresh);
+    return () => {
+      window.removeEventListener("playnice:cart-quantity-updated", refresh);
+      window.removeEventListener("playnice:stock-decision-updated", refresh);
+    };
   }, []);
 
   useEffect(() => {
@@ -201,6 +205,12 @@ export default function DesktopQuickView() {
     () => (product ? productCopy[product.name] || {} : {}),
     [product]
   );
+  // Hooks must run before the conditional "no product" return.
+  useEffect(() => {
+    if(!product) return;
+    const active=selectedSize || Object.keys(product.sizes||{})[0] || "";
+    if(active) void getProductActions()?.warmInventoryDecision?.(product,active);
+  },[product,selectedSize]);
 
   const {
     displayName: productTitle,
@@ -233,10 +243,6 @@ export default function DesktopQuickView() {
     getProductActions()?.selectSize?.(product, size);
     void getProductActions()?.warmInventoryDecision?.(product,size);
   };
-
-  useEffect(() => {
-    if(product && activeSize) void getProductActions()?.warmInventoryDecision?.(product,activeSize);
-  },[product,activeSize]);
 
   const limitReached = getProductActions()?.canAddToCart?.(product, activeSize) === false;
 

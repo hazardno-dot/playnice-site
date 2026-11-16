@@ -53,3 +53,15 @@ for(const source of [app,quickUi,mobileUi]){
   assert.match(source,/inventory-limit-message/);
 }
 assert.match(style,/\.inventory-limit-message/);
+
+const qView=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopQuickView.jsx","utf8");
+const qReturn=qView.indexOf("if (!product) return null;");
+const qWarm=qView.indexOf("if(!product) return;");
+assert.ok(qWarm>0 && qWarm<qReturn,"Quick View hooks must precede conditional return");
+assert.match(qView,/playnice:stock-decision-updated/);
+assert.match(src,/blockedByProduct=new Map\(\)/);
+assert.match(src,/blockedByProduct\.set\(pid/);
+assert.match(src,/blockedByProduct\.delete\(pid\)/);
+assert.match(app,/setInterval\(refresh,8000\)/);
+assert.match(app,/inventory-limit-message--cart/);
+assert.match(app,/inventory-limit-message--pdp/);
