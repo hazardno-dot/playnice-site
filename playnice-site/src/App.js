@@ -5108,14 +5108,6 @@ const openFromProductCard = () => {
     );
   })}
 </div>
-{Object.entries(product.sizes).some(([size]) => {
-  const selection=getProductPurchaseSelection(product,size);
-  return !canAddDecant(selection.productForCart,size);
-}) && (
-  <p className="inventory-limit-message inventory-limit-message--pdp" role="status">
-    {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
-  </p>
-)}
 </article>
   );
 };

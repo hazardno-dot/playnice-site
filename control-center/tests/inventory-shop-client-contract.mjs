@@ -64,7 +64,8 @@ assert.match(src,/blockedByProduct\.set\(pid/);
 assert.match(src,/blockedByProduct\.delete\(pid\)/);
 assert.match(app,/setInterval\(refresh,8000\)/);
 assert.match(app,/inventory-limit-message--cart/);
-assert.match(app,/inventory-limit-message--pdp/);
+assert.doesNotMatch(app,/inventory-limit-message--pdp/,"Product cards must not display a stock alert that changes card height");
+assert.match(app,/inventory-limit-message--cart/);
 
 const desktopPage=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopProductPage.jsx","utf8");
 const desktopBridge=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopProductPageBridge.jsx","utf8");
@@ -72,3 +73,7 @@ assert.match(desktopPage,/disabled=\{capReached\}/);
 assert.match(desktopPage,/inventory-limit-message--pdp/);
 assert.match(desktopBridge,/canAddToCart=\{\(item,size\)/);
 assert.match(desktopBridge,/playnice:stock-decision-updated/);
+
+// The stock warning is intentionally absent from catalog cards to preserve
+// uniform card height. PDP, cart, and Quick View retain their notice.
+assert.doesNotMatch(app,/Object\.entries\(product\.sizes\)\.some\(\(\[size\]\) => \{/);
