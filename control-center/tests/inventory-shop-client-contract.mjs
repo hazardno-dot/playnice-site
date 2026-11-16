@@ -19,6 +19,30 @@ assert.match(app,/warmInventoryDecision:/);
 assert.match(app,/isStockDecisionBlocked/);
 const api=fs.readFileSync("playnice-site/api/inventory-check.js","utf8");
 assert.match(api,/decision:"UNKNOWN"/);
+// Same-origin credentials are mandatory on Vercel SSO-protected Preview
+// domains. A protected endpoint otherwise redirects to login and silently
+// produces UNKNOWN. Simulate the real async response without Supabase writes.
+assert.match(src,/credentials:"same-origin"/);
+const sent=[];
+ctx.window={
+  location:{hostname:"playnice-site-preview.vercel.app"},
+  dispatchEvent:()=>{}
+};
+ctx.Event=class Event{constructor(type){this.type=type;}};
+ctx.fetch=async(url,options)=>{
+  sent.push({url,options});
+  return {ok:true,json:async()=>({decision:"LIMIT_REACHED"})};
+};
+const tenDecants=[{id:114,size:"10ml",quantity:10}];
+assert.equal(ctx.isBlocked(product,tenDecants,"10ml"),false);
+await ctx.warm(product,tenDecants,"10ml");
+assert.equal(ctx.isBlocked(product,tenDecants,"10ml"),true,"next 10 ml must lock");
+assert.equal(sent.length,1);
+assert.equal(sent[0].url,"/api/inventory-check");
+assert.equal(sent[0].options.credentials,"same-origin");
+assert.equal(JSON.parse(sent[0].options.body).requestedTotalMl,110);
+assert.equal(ctx.isBlocked(product,[{id:114,size:"10ml",quantity:9}],"10ml"),false);
+
 console.log("PASS preview-only async decision client: mixed decants, unknown/open, private server call");
 
 const quickUi=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopQuickView.jsx","utf8");

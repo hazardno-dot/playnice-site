@@ -20,7 +20,7 @@ module.exports=async function handler(req,res){
      !Number.isFinite(total) || total<=0 || total>5000)
     return res.status(200).json(UNKNOWN);
   const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),850);
+  const timer=setTimeout(()=>controller.abort(),2500);
   try{
     const headers={
       apikey:SECRET,

@@ -39,14 +39,14 @@ export async function warmStockDecision(product,cart,size){
     if(cached && cached.expires>Date.now())return;
     waiting.add(request.key);
     const ctl=new AbortController();
-    const timer=setTimeout(()=>ctl.abort(),1100);
+    const timer=setTimeout(()=>ctl.abort(),3500);
     try{
       const response=await fetch("/api/inventory-check",{
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
           productName:request.productName,requestedTotalMl:request.requestedTotalMl
         }),
-        credentials:"omit",cache:"no-store",signal:ctl.signal
+        credentials:"same-origin",cache:"no-store",signal:ctl.signal
       });
       const data=response.ok?await response.json():null;
       const decision=data?.decision==="LIMIT_REACHED"?"LIMIT_REACHED":
