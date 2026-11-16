@@ -2756,8 +2756,10 @@ const goToHomeSection = (selector, block = "start") => {
   const isAtStockLimit = (product,size) =>
     assessCartQuantityCap(cart,product?.id,size,previewCapForProduct(product)).blocked ||
     isStockDecisionBlocked(product,cart,size);
+  // Temporary anti-double-click pause stays in the add/update handlers.
+  // Only a confirmed stock cap may disable or visually dim the UI control.
   const canAddDecant = (product,size) =>
-    !isAtStockLimit(product,size) && !isStockDecisionPending(product);
+    !isAtStockLimit(product,size);
 
   const [, setInventoryCheckRevision] = useState(0);
   useEffect(() => {

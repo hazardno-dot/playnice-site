@@ -87,6 +87,13 @@ assert.match(current,/CLICK_PAUSE_MS=480/);
 assert.match(app,/isStockDecisionPending\(product\)/);
 assert.match(app,/noteInventoryCartClick\(product\)/);
 assert.match(app,/isAtStockLimit\(product,size\)/);
+const availabilityBody=app.match(/const canAddDecant = \(product,size\) =>([\s\S]*?);/);
+assert.ok(availabilityBody,"cart button availability expression exists");
+assert.match(availabilityBody[1],/isAtStockLimit/);
+assert.doesNotMatch(availabilityBody[1],/isStockDecisionPending/,"a 480ms click pause must never dim the button");
+assert.match(app,/if\(isStockDecisionPending\(product\)\)return false/,"rapid-click protection remains in add handler");
+assert.match(app,/if \(increasing && target && isStockDecisionPending\(targetProduct\)\)return/,"cart quantity rapid-click protection remains");
+
 
 const desktopStyle=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopProductPage.css","utf8");
 const quickStyle=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopQuickView.css","utf8");
