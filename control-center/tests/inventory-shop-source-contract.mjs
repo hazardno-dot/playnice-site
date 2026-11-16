@@ -37,6 +37,19 @@ const missingGift=commerceFromDeliveredHistory([...orders,
  {id:"o3",environment:"production",status:"DELIVERED",
  source_payload:{freeGift:perfume+" - 5 ml"}}],items);
 assert.equal(missingGift.complete,false);
+// Real production shape: some delivered orders contain both giftSamples and
+// legacy freeGift; delivered historical commerce must not count the same 2 ml twice.
+const dualGift=commerceFromDeliveredHistory([{...orders[0],source_payload:{
+  ...orders[0].source_payload,giftSamples:[{name:perfume,sizeMl:2}]
+}}],items);
+assert.equal(dualGift.complete,true);
+assert.equal(dualGift.commerce.top_products[0].gift_ml,2);
+// A non-fragrance stationery gift must not be interpreted as stock consumption.
+const stationery=commerceFromDeliveredHistory([{...orders[0],source_payload:{
+  ...orders[0].source_payload,freeGift:"olovka",giftSamples:[]
+}}],items);
+assert.equal(stationery.complete,true);
+assert.equal(stationery.commerce.top_products[0].gift_ml,0);
 const missingBundle=commerceFromDeliveredHistory(orders,
  [{...items[0],size_label:"unknown",size_ml:0}]);
 assert.equal(missingBundle.complete,false);
