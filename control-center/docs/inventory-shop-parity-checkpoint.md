@@ -35,3 +35,27 @@ unknown status history, ambiguous aliases and missing gifts. Do not wire it into
 a parity audit confirms the server's `Remaining` equals the CC display for every product.
 The existing live Shop RPC still serves conservative decisions. No new Production write,
 schema deployment or checkout change is authorized by this adapter.
+
+## 2026-11-17 — Direct read-only Supabase inventory audit
+
+Queried live production metadata via read-only SELECT, with no writes or RPC installation:
+- 115 distinct inventory names, 139 inventory events.
+- Events: 117 BASELINE_SET, 14 MANUAL_OUT, 4 OPENING, 4 RESTOCK;
+  no unexpected event types and no positive MANUAL_OUT quantities.
+- 54 production orders, 45 DELIVERED, 119 order_items in production,
+  47 orders in consumption-relevant status set.
+- 18 DELIVERED orders with structured giftSamples; 41 DELIVERED orders
+  with a nonempty freeGift; 18 have both formats.
+- 40 delivered freeGift texts use the legacy dash + 2 ml pattern.
+  The remaining freeGift text is only "olovka" (stationery, no fragrance ml).
+- 1 order_item has structured bundleItems.
+- get_shop_inventory_source_v1 does NOT exist in the database.
+- Current production order count is below CC's 250-row order limit;
+  this is only today's observation, not future completeness proof.
+
+The adapter contract now explicitly tests the dual-format 2 ml gift (never
+double count) and stationery-only gift (zero perfume depletion).
+No actual 115-row cross-system numerical parity report has been produced yet:
+do not mark any new product as verified or add it to the Preview allowlist.
+A successful source-schema/count audit does not establish per-product Remaining parity.
+The account's existing operational Remaining values remain untouched.
