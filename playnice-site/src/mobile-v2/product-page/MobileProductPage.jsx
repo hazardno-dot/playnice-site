@@ -544,6 +544,11 @@ export default function MobileProductPage({
               {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
             </button>
           </div>
+          {activeSize && !canAddToCart(product, activeSize) && (
+            <p className="inventory-limit-message" role="status">
+              {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+            </p>
+          )}
         </div>
       </section>
 

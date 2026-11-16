@@ -5079,6 +5079,11 @@ const openFromProductCard = () => {
           )}
         </span>
 
+        {!canAddDecant(productForCart, size) && (
+          <small className="inventory-limit-message" role="status">
+            {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+          </small>
+        )}
         <span
           className={`size-chip-flash ${isJustAdded ? "show" : ""}`}
           aria-hidden="true"
@@ -8819,12 +8824,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       disabled={!canAddDecant(
                         products.find((candidate) => candidate.id === item.id), item.size
                       )}
-                      title={lang === "sr" ? "Dodaj još jedan dekant" : "Add one more decant"}
+                      title={!canAddDecant(products.find((candidate) => candidate.id === item.id), item.size)
+                        ? (lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem." : "Maximum quantity reached for this fragrance.")
+                        : (lang === "sr" ? "Dodaj još jedan dekant" : "Add one more decant")}
                       aria-label={lang === "sr" ? "Povećaj količinu" : "Increase quantity"}
                     >
                       +
                     </button>
                   </div>
+                  {!canAddDecant(products.find((candidate) => candidate.id === item.id), item.size) && (
+                    <small className="inventory-limit-message" role="status">
+                      {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+                    </small>
+                  )}
 
                   <button
                     className="remove-link"

@@ -463,6 +463,10 @@ export default function DesktopQuickView() {
                 : "ADD TO CART"}
           </button>
 
+          {limitReached && <p className="inventory-limit-message" role="status">
+            {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+          </p>}
+
           <button
             type="button"
             className="desktop-quick-view__full-link"

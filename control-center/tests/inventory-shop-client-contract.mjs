@@ -20,3 +20,12 @@ assert.match(app,/isStockDecisionBlocked/);
 const api=fs.readFileSync("playnice-site/api/inventory-check.js","utf8");
 assert.match(api,/decision:"UNKNOWN"/);
 console.log("PASS preview-only async decision client: mixed decants, unknown/open, private server call");
+
+const quickUi=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopQuickView.jsx","utf8");
+const mobileUi=fs.readFileSync("playnice-site/src/mobile-v2/product-page/MobileProductPage.jsx","utf8");
+const style=fs.readFileSync("playnice-site/src/App.css","utf8");
+for(const source of [app,quickUi,mobileUi]){
+  assert.match(source,/Dostignuta je maksimalna količina za ovaj parfem\. Možete nastaviti kupovinu sa već dodatom količinom\./);
+  assert.match(source,/inventory-limit-message/);
+}
+assert.match(style,/\.inventory-limit-message/);
