@@ -30,7 +30,7 @@ const broken=await decisionFromShopRemaining({
 });
 assert.equal(broken.decision,"UNKNOWN");
 const perfume="Xerjoff Naxos Eau de Parfum";
-const source={complete:true,events:[{
+const source={complete:true,snapshot_at:new Date().toISOString(),events:[{
   id:"1",product_name:perfume,event_type:"BASELINE_SET",
   quantity_ml:100,created_at:"2026-01-01T00:00:00Z"
 }],orders:[],items:[]};
