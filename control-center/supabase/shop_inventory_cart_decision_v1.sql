@@ -1,88 +1,77 @@
--- PlayNice public-shop inventory decision -- DRAFT, NOT APPLIED.
--- This is a read-only, fail-open, service-role-only RPC for Shop's SERVER.
--- It returns only ALLOW, LIMIT_REACHED or UNKNOWN. No balances or customer
--- information are exposed. Never grant EXECUTE to anon/authenticated.
---
--- Scope: baseline inventories with directly recorded delivered decant items.
--- Non-direct bundles or ambiguous gift/catalog mappings require follow-up;
--- undercounting consumption means we fail to restrict, never falsely claim no stock.
--- Transactional reservation is deliberately out of scope; checkout unchanged.
+-- Shop read-only inventory gate, revision 1 (conservative).
+-- Applies only to unambiguous inventory rows without historical order consumption.
+-- If any order mentions a product, or a stock event is ambiguous: UNKNOWN.
+-- No data writes. Checkout does NOT call this function.
 create or replace function public.get_shop_inventory_cart_decision(
   p_product_name text, p_requested_total_ml numeric
 ) returns jsonb
-language plpgsql security definer set search_path = ''
+language plpgsql
+security definer
+set search_path=''
 as $function$
 declare
   v_name text := trim(coalesce(p_product_name,''));
-  v_baseline numeric;
+  v_initial numeric;
   v_restock numeric;
-  v_manual_out numeric;
-  v_consumed numeric;
+  v_out numeric;
   v_remaining numeric;
-  v_base_count integer;
+  v_init_count integer;
 begin
-  if auth.role() <> 'service_role' then
+  if auth.role() is distinct from 'service_role' then
     raise exception 'SERVICE_ROLE_REQUIRED' using errcode='42501';
   end if;
-  if v_name='' or length(v_name)>180 or
+
+  if length(v_name)<3 or length(v_name)>180 or
      p_requested_total_ml is null or
-     p_requested_total_ml<=0 or p_requested_total_ml>5000 then
+     p_requested_total_ml<=0 or p_requested_total_ml>5000 or
+     round(p_requested_total_ml,2)<>p_requested_total_ml then
     return jsonb_build_object('decision','UNKNOWN');
   end if;
 
-  -- No baseline or ambiguous mapping => unknown, not out of stock.
-  select count(*)::int into v_base_count
-  from public.fragrance_inventory_events e
-  where lower(trim(e.product_name))=lower(v_name)
-    and e.event_type in ('BASELINE_SET','OPENING');
-  if v_base_count<>1 then
-    return jsonb_build_object('decision','UNKNOWN');
-  end if;
-
-  select coalesce(sum(e.quantity_ml) filter (where event_type in ('BASELINE_SET','OPENING')),0),
-         coalesce(sum(e.quantity_ml) filter (where event_type='RESTOCK'),0),
-         coalesce(sum(e.quantity_ml) filter (where event_type='MANUAL_OUT'),0)
-  into v_baseline,v_restock,v_manual_out
+  select
+    count(*) filter (where e.event_type in ('BASELINE_SET','OPENING')),
+    max(e.quantity_ml) filter (where e.event_type in ('BASELINE_SET','OPENING')),
+    coalesce(sum(e.quantity_ml) filter (where e.event_type='RESTOCK'),0),
+    coalesce(sum(e.quantity_ml) filter (where e.event_type='MANUAL_OUT'),0)
+  into v_init_count,v_initial,v_restock,v_out
   from public.fragrance_inventory_events e
   where lower(trim(e.product_name))=lower(v_name);
 
-  -- Old imported order data, bundles, gifts and aliases are not guaranteed
-  -- complete here: any ambiguous direct order entry forces UNKNOWN rather
-  -- than an arbitrary stock denial.
-  if exists (
-    select 1 from public.order_items i
-    join public.checkout_orders o on o.id=i.order_record_id
-    where o.environment='production' and o.status='DELIVERED'
-      and lower(trim(i.product_name))=lower(v_name)
-      and (
-        i.size_ml is null or i.size_ml<=0 or i.quantity is null or i.quantity<=0
-        or (jsonb_typeof(i.source_data->'bundleItems')='array'
-            and jsonb_array_length(i.source_data->'bundleItems')>0)
-      )
-  ) then return jsonb_build_object('decision','UNKNOWN'); end if;
-
-  select coalesce(sum(i.size_ml*i.quantity),0)
-    into v_consumed
-  from public.order_items i
-  join public.checkout_orders o on o.id=i.order_record_id
-  where o.environment='production' and o.status='DELIVERED'
-    and lower(trim(i.product_name))=lower(v_name)
-    and i.size_ml>0 and i.size_ml<50;
-
-  v_remaining := round(v_baseline+v_restock-v_manual_out-v_consumed,2);
-
-  -- Negative, implausible or unreconciled balances are not trusted limits.
-  if v_remaining < 0 or v_remaining > 5000 then
+  if v_init_count <> 1 or v_initial is null or v_initial <= 0 or
+     v_initial>5000 or v_restock<0 or v_out<0 then
     return jsonb_build_object('decision','UNKNOWN');
   end if;
 
-  if round(p_requested_total_ml,2) > v_remaining then
-    return jsonb_build_object('decision','LIMIT_REACHED');
+  -- Reject all unrecognized ledger event categories to avoid estimating.
+  if exists (
+    select 1 from public.fragrance_inventory_events e
+    where lower(trim(e.product_name))=lower(v_name)
+      and e.event_type not in ('BASELINE_SET','OPENING','RESTOCK','MANUAL_OUT')
+  ) then return jsonb_build_object('decision','UNKNOWN'); end if;
+
+  -- The Control Center consumption calculation includes gifts, bundles and
+  -- historical aliases. This initial gate MUST NOT assume direct order lines
+  -- are exhaustive. Any historical mention => UNKNOWN and permit checkout.
+  if exists (
+    select 1 from public.order_items i
+    where lower(trim(i.product_name))=lower(v_name)
+  ) or exists (
+    select 1 from public.checkout_orders o
+    where o.environment='production' and
+          strpos(lower(o.source_payload::text),lower(v_name))>0
+  ) then return jsonb_build_object('decision','UNKNOWN'); end if;
+
+  v_remaining := round(v_initial+v_restock-v_out,2);
+  if v_remaining<0 or v_remaining>5000 then
+    return jsonb_build_object('decision','UNKNOWN');
   end if;
-  return jsonb_build_object('decision','ALLOW');
+  return jsonb_build_object(
+    'decision',
+    case when p_requested_total_ml>v_remaining
+      then 'LIMIT_REACHED' else 'ALLOW' end
+  );
 end;
 $function$;
-
 revoke all on function public.get_shop_inventory_cart_decision(text,numeric)
   from public,anon,authenticated;
 grant execute on function public.get_shop_inventory_cart_decision(text,numeric)
