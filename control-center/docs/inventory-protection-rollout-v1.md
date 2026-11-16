@@ -91,3 +91,8 @@ Queries were SELECT-only; no Production rows or schema were changed.
 - Current status changes may reset `packed_at`. Thus `packed_at` alone **cannot establish historical packing**. An authoritative historical transition record or durable flag is required before applying the model to real orders.
 - Unknown prior packing history is UNKNOWN rather than an assumed reservation or released stock. Special gift, mixed discovery bundles, manual order changes, direct returns and legacy orders require full contract mapping.
 - Real atomic reservations still require a new reviewed transaction design. The model does **not** prevent overselling today.
+
+## Admin-only pending-order attention view (2026-11-16)
+- The existing read-only Pending stock audit now labels possible shortfalls when accepted NEW order demand exceeds recorded Remaining, and low buffers when the hypothetical remainder is 0–20 ml. Figures are estimates requiring manual review, NOT stock-out claims.
+- Admin-only counts and a collapsed diagnostics summary show attention without requiring scrolling through every row. Unknown/missing/provisional data cannot be labelled out of stock. Unmatched names remain a separate mapping warning.
+- `reviewNewOrderDemand` is a pure fail-open classifier. No inventory API or stock writer is called, checkout and cart are unchanged, and no customer sees internal ml values. Tests require `allowCheckout=true` for every condition.

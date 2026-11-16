@@ -12,6 +12,9 @@ assert.match(ui, /className="inventory-list inventory-catalog-scroll" role="regi
 assert.match(css, /\.inventory-panel \.inventory-catalog-scroll\s*\{[^}]*overflow-y:auto/);
 assert.match(css, /\.inventory-panel \.inventory-catalog-scroll:focus-visible/);
 assert.match(ui, /<summary>Inventory Protection diagnostics/);
+assert.match(ui, /summarizeNewOrderAdvisories\(pendingAuditRows\)/);
+assert.match(ui, /MOGUĆI MANJAK · PROVERI/);
+assert.match(ui, /Inform the administrator, never block an order/);
 assert.match(ui, /setPreviewReview\(/);
 assert.match(ui, /previewReview\.snapshot === selectedVerification\.snapshot/);
 assert.match(ui, /Server and screen Remaining match\. PARTIAL REVIEW ONLY/);

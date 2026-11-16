@@ -356,3 +356,6 @@
 @media(max-width:700px){
   .inventory-panel .inventory-catalog-scroll{max-height:52vh;min-height:240px}
 }
+
+/* Administrative-only stock advisory; never a customer-facing stock-out. */
+.inventory-admin-advisory{font-size:10px!important;letter-spacing:.04em;white-space:normal!important;border-color:rgba(222,180,98,.45)!important;color:#e3be7f!important}

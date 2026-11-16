@@ -6,6 +6,7 @@ import { deriveProductInsights } from "./productInsights.mjs";
 import { runInventoryPreviewLab } from "../lib/inventory-preview-lab.mjs";
 import { runInventorySafetyLab } from "../lib/inventory-preview-safety-lab.mjs";
 import { inventoryVerificationSnapshot } from "../lib/inventory-verification-v1.mjs";
+import { reviewNewOrderDemand, summarizeNewOrderAdvisories } from "../lib/inventory-advisory-review.mjs";
 
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -193,6 +194,7 @@ export default function AnalyticsManager() {
     .filter((row) => Number(row.pending_new_ml || 0) > 0)
     .sort((a, b) => Number(b.pending_new_ml || 0) - Number(a.pending_new_ml || 0));
   const pendingUnmatched = inventory.pending_new_unmatched || [];
+  const pendingAdvisories = summarizeNewOrderAdvisories(pendingAuditRows);
   const visibleInventoryRows = inventoryRows
     .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
     .sort((a, b) => {
@@ -501,7 +503,13 @@ export default function AnalyticsManager() {
         </div>
       </div>
       <details className="inventory-protection-diagnostics">
-        <summary>Inventory Protection diagnostics <span>Audit · Verification review · Pending orders · Shadow telemetry · Synthetic tests</span></summary>
+        <summary>Inventory Protection diagnostics <span>{pendingAdvisories.possibleShortfalls > 0
+          ? `Mogući manjak: ${pendingAdvisories.possibleShortfalls} · Administratorska provera`
+          : pendingAdvisories.lowBuffers > 0
+            ? `Nizak procenjeni ostatak: ${pendingAdvisories.lowBuffers} · Bez blokiranja porudžbina`
+            : pendingUnmatched.length > 0
+              ? `Nepovezani nazivi: ${pendingUnmatched.length} · Proveriti mapiranje`
+              : "Audit · Verification review · Pending orders · Shadow telemetry · Synthetic tests"}</span></summary>
         <div className="inventory-protection-diagnostics-body">
       <article className="analytics-panel" style={{marginBottom:20}}>
         <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / AUDIT</span><h3>Protection readiness</h3></div><small>Audit only · no live blocking · no checkout changes</small></div>
@@ -556,16 +564,21 @@ export default function AnalyticsManager() {
           <div><span>NEW ORDER DEMAND</span><strong>{number(inventory.pending_new_total_ml || 0, 1)} ml</strong></div>
           <div><span>TRACKED FRAGRANCES</span><strong>{number(pendingAuditRows.length)}</strong></div>
           <div><span>UNMATCHED NAMES</span><strong>{number(pendingUnmatched.length)}</strong></div>
+          <div><span>POSSIBLE SHORTFALLS · ADMIN ONLY</span><strong>{number(pendingAdvisories.possibleShortfalls)}</strong></div>
+          <div><span>LOW BUFFER · ADMIN ONLY</span><strong>{number(pendingAdvisories.lowBuffers)}</strong></div>
         </div>
-        <p className="analytics-note">Calculated from unfulfilled NEW order decants. Preview and PNTEST orders are excluded. This is not an atomic reservation, does not include future orders or unconfirmed gifts, and does not affect remaining inventory or public availability.</p>
+        <p className="analytics-note">Advisory estimate from accepted NEW order decants only (no Preview/PNTEST). A possible shortfall means NEW demand exceeds recorded Remaining; low buffer means 0–20 ml after demand. Figures may be estimated or stale, do not account for all gifts/returns and are NOT stock reservations. Inform the administrator, never block an order.</p>
         {pendingAuditRows.length ? <div className="inventory-list">
           {pendingAuditRows.slice(0, 12).map((row) => <div className="inventory-row" key={row.product_name}>
             <div><strong>{row.product_name}</strong><small>Current calculated balance {number(row.remaining_ml, 1)} ml · NEW order demand {number(row.pending_new_ml, 1)} ml</small></div>
             <div className="inventory-volume-cells"><span className="inventory-volume-remaining"><small>IF RESERVED</small><strong>{number(row.hypothetical_after_new_ml, 1)} ml</strong></span></div>
-            {Number(row.hypothetical_after_new_ml) < 0 ? <em>REVIEW DEMAND</em> : null}
+            {reviewNewOrderDemand(row).level === "POSSIBLE_SHORTFALL" ?
+              <em className="inventory-admin-advisory">MOGUĆI MANJAK · PROVERI</em> :
+              reviewNewOrderDemand(row).level === "LOW_BUFFER" ?
+              <em className="inventory-admin-advisory">NIZAK OSTATAK · PROVERI</em> : null}
           </div>)}
         </div> : <p className="analytics-note">No matched NEW order decant demand in the current snapshot.</p>}
-        {pendingUnmatched.length ? <p className="analytics-note">Attention: {pendingUnmatched.length} name(s) from NEW orders have no matching tracked inventory record. Check catalog mapping before enabling enforcement.</p> : null}
+        {pendingUnmatched.length ? <p className="analytics-note">Attention: {pendingUnmatched.length} name(s) from NEW orders have no matching tracked inventory record. Proveri mapiranje pre zaključivanja o raspoloživosti. Kupovina se ne blokira.</p> : null}
       </article>
       <article className="analytics-panel" style={{marginBottom:20}}>
         <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / EVENT MONITOR</span><h3>Shadow telemetry</h3></div><small>Read-only · event collection not activated by this PR</small></div>
