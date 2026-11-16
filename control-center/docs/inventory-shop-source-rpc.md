@@ -30,3 +30,23 @@ only the server with the private secret may call it.
 - enable only matching products; unknowns always fail-open;
 - preserve old conservative RPC as fallback until that audit passes.
 No checkout changes.
+
+## 2026-11-16: inactive Shop backend bridge
+
+The Shop server has a private read-only path to Supabase RPC
+`get_shop_inventory_source_v1` and uses exact byte-for-byte copies of the
+CC `inventory-accounting.mjs`, `inventory-shop-source.mjs`, and
+`inventory-remaining-bridge.mjs`. Contract tests fail if copies diverge.
+This is necessary because the two Vercel projects have separate project roots.
+
+**No new stock gating is active:** `SHOP_INVENTORY_SOURCE_V2_ENABLED` is
+unset/false, and `SHOP_INVENTORY_PARITY_APPROVED_NAMES` defaults empty.
+The existing conservative Shop RPC remains in use on Preview. Even if
+V2 is deliberately enabled, only semicolon-separated exact product names
+in the approved list can return a blocking decision; any other request
+returns UNKNOWN (allow shopping).
+
+The proposed source RPC is still a draft, NOT installed. Next steps: review
+and explicitly approve SQL installation, run read-only exact CC parity
+audit across all 115 products including bundles/gifts/aliases, then
+activate Preview for approved products. Checkout untouched.

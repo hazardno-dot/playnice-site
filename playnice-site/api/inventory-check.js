@@ -27,6 +27,22 @@ module.exports=async function handler(req,res){
       "Content-Type":"application/json"
     };
     if(!/^sb_secret_/i.test(SECRET)) headers.Authorization="Bearer "+SECRET;
+    // Stage 2 remains OFF until exact CC parity has been checked for each
+    // fragrance and approved names are explicitly set in Preview settings.
+    // Fail open for unapproved products. The old conservative RPC stays
+    // active unless the stage-2 flag is deliberately enabled.
+    if(process.env.SHOP_INVENTORY_SOURCE_V2_ENABLED==="true"){
+      const approved=String(process.env.SHOP_INVENTORY_PARITY_APPROVED_NAMES||"")
+        .split(";").map(s=>s.trim().toLowerCase()).filter(Boolean);
+      if(!approved.includes(name.toLowerCase()))
+        return res.status(200).json(UNKNOWN);
+      const {decisionFromShopRemaining}=await import("../server/inventory-shop-remaining.mjs");
+      const result=await decisionFromShopRemaining({
+        supabaseUrl:SUPABASE_URL,secret:SECRET,productName:name,
+        requestedTotalMl:total,signal:controller.signal
+      });
+      return res.status(200).json(result);
+    }
     const response=await fetch(
       SUPABASE_URL+"/rest/v1/rpc/get_shop_inventory_cart_decision",
       {method:"POST",headers,body:JSON.stringify({
