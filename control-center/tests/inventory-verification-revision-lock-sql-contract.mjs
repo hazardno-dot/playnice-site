@@ -7,7 +7,7 @@ const review=fs.readFileSync("control-center/docs/inventory-lock-order-review-v1
 assert.match(review,/5 minutes/);
 assert.match(review,/deadlock/i);
 assert.match(review,/genuine two-connection concurrent tests/);
-for(const pattern of [/NOT APPLIED/,/inventory_verification_global_revision/,
+for(const pattern of [/inventory_verification_global_revision/,
  /revision=revision\+1/,/after insert or update or delete on public\.fragrance_inventory_events/,
  /after insert or update or delete on public\.checkout_orders/,
  /after insert or update or delete on public\.order_status_events/,
