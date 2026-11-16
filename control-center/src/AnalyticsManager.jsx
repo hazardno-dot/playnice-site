@@ -567,7 +567,7 @@ export default function AnalyticsManager() {
           <div><span>POSSIBLE SHORTFALLS · ADMIN ONLY</span><strong>{number(pendingAdvisories.possibleShortfalls)}</strong></div>
           <div><span>LOW BUFFER · ADMIN ONLY</span><strong>{number(pendingAdvisories.lowBuffers)}</strong></div>
         </div>
-        <p className="analytics-note">Advisory estimate from accepted NEW order decants only (no Preview/PNTEST). A possible shortfall means NEW demand exceeds recorded Remaining; low buffer means 0–20 ml after demand. Figures may be estimated or stale, do not account for all gifts/returns and are NOT stock reservations. Inform the administrator, never block an order.</p>
+        <p className="analytics-note">Advisory estimate from accepted NEW order decants only. Preview and PNTEST orders are excluded. A possible shortfall means NEW demand exceeds recorded Remaining; low buffer means 0–20 ml after demand. Figures may be estimated or stale, do not account for all gifts/returns and are NOT stock reservations. Inform the administrator, never block an order.</p>
         {pendingAuditRows.length ? <div className="inventory-list">
           {pendingAuditRows.slice(0, 12).map((row) => <div className="inventory-row" key={row.product_name}>
             <div><strong>{row.product_name}</strong><small>Current calculated balance {number(row.remaining_ml, 1)} ml · NEW order demand {number(row.pending_new_ml, 1)} ml</small></div>
