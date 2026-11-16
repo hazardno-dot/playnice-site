@@ -2752,6 +2752,13 @@ const goToHomeSection = (selector, block = "start") => {
     setAddedFeedback(text);
   };
 
+  const canAddDecant = (product, size) =>
+    !assessCartQuantityCap(cart, product?.id, size, previewCapForProduct(product)).blocked;
+
+  useEffect(() => {
+    window.dispatchEvent(new Event("playnice:cart-quantity-updated"));
+  }, [cart]);
+
   const addToCart = (
   product,
   size,
@@ -2766,7 +2773,7 @@ const goToHomeSection = (selector, block = "start") => {
     showFeedback(lang === "sr"
       ? "Dostignuta je maksimalna količina za ovaj parfem."
       : "Maximum quantity reached for this fragrance.");
-    return;
+    return false;
   }
 
   const key = `${product.id}-${size}-${customLabel || ""}`;
@@ -2943,6 +2950,7 @@ const goToHomeSection = (selector, block = "start") => {
   if (showToast && !showMiniPreview) {
     showFeedback(`${product.name} ${tr.addedToCart}`);
   }
+  return true;
 };
 
 /* =========================================
@@ -3060,17 +3068,19 @@ useEffect(() => {
       toggleWishlist(productId);
     },
 
+    canAddToCart: (product, size) => !product || !size || canAddDecant(product, size),
+
     addToCart: (
       product,
       size,
       analyticsContext = null
     ) => {
-      if (!product || !size) return;
+      if (!product || !size) return false;
 
       const productForCart =
         getDirectPurchaseProduct(product, size);
 
-      addToCart(
+      return addToCart(
         productForCart,
         size,
         null,
@@ -4990,17 +5000,17 @@ const openFromProductCard = () => {
         className={`size-chip ${isRecommendedSize ? "is-recommended" : ""} ${
           discount ? "has-discount" : ""
         }`}
+        disabled={!canAddDecant(productForCart, size)}
+        title={!canAddDecant(productForCart, size) ? (lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem." : "Maximum quantity reached for this fragrance.") : undefined}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
           e.currentTarget.blur();
 
-          addToCart(productForCart, size, null, null, {
+          if (addToCart(productForCart, size, null, null, {
             showToast: false,
             showMiniPreview: true,
-          });
-
-          triggerInlineAddedFeedback(product.id, size);
+          })) triggerInlineAddedFeedback(product.id, size);
         }}
       >
         <span className="size-chip-main-wrap">
@@ -5453,6 +5463,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               setSelectedSize(size);
               setHasUserPickedSize(true);
             }}
+            canAddToCart={canAddDecant}
             onAddToCart={(product, size) => {
               const { productForCart } =
                 getProductPurchaseSelection(
@@ -5460,7 +5471,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   size
                 );
 
-              addToCart(productForCart, size, null, null, {
+              return addToCart(productForCart, size, null, null, {
                 showToast: false,
                 showMiniPreview: true
               });
@@ -5472,10 +5483,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   size
                 );
 
-              addToCart(productForCart, size, null, null, {
+              const added = addToCart(productForCart, size, null, null, {
                 showToast: false,
                 showMiniPreview: false
               });
+              if (!added) return;
               setMiniCartPreview(null);
               openCheckout();
             }}

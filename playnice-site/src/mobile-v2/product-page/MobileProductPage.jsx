@@ -118,6 +118,7 @@ export default function MobileProductPage({
   onSelectSize,
   onAddToCart,
   onBuyNow,
+  canAddToCart = () => true,
   isWishlisted = false,
   onToggleWishlist,
   onOpenProduct,
@@ -231,9 +232,9 @@ export default function MobileProductPage({
   const isJustAdded = addedCartKey === activeCartKey;
 
   const handleAddToCartClick = () => {
-    if (!activeSize) return;
+    if (!activeSize || !canAddToCart(product, activeSize)) return;
 
-    onAddToCart?.(product, activeSize);
+    if (onAddToCart?.(product, activeSize) === false) return;
     setAddedCartKey(activeCartKey);
 
     if (addedCartTimeoutRef.current) {
@@ -521,7 +522,7 @@ export default function MobileProductPage({
             <button
               type="button"
               className={`mobile-product-page__add ${isJustAdded ? "is-added" : ""}`}
-              disabled={!activeSize}
+              disabled={!activeSize || !canAddToCart(product, activeSize)}
               onClick={handleAddToCartClick}
               aria-live="polite"
             >
@@ -537,7 +538,7 @@ export default function MobileProductPage({
             <button
               type="button"
               className="mobile-product-page__buy-now"
-              disabled={!activeSize}
+              disabled={!activeSize || !canAddToCart(product, activeSize)}
               onClick={() => onBuyNow?.(product, activeSize)}
             >
               {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}

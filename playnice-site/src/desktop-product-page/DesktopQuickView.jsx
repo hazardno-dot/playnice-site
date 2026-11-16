@@ -87,6 +87,13 @@ export default function DesktopQuickView() {
   const [analyticsListContext, setAnalyticsListContext] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [, refreshCartAvailability] = useState(0);
+
+  useEffect(() => {
+    const refresh = () => refreshCartAvailability((previous) => previous + 1);
+    window.addEventListener("playnice:cart-quantity-updated", refresh);
+    return () => window.removeEventListener("playnice:cart-quantity-updated", refresh);
+  }, []);
 
   useEffect(() => {
     const openQuickView = (event) => {
@@ -226,8 +233,11 @@ export default function DesktopQuickView() {
     getProductActions()?.selectSize?.(product, size);
   };
 
+  const limitReached = getProductActions()?.canAddToCart?.(product, activeSize) === false;
+
   const addToCart = () => {
-    getProductActions()?.addToCart?.(
+    if (getProductActions()?.canAddToCart?.(product, activeSize) === false) return;
+    const added = getProductActions()?.addToCart?.(
       product,
       activeSize,
       {
@@ -245,6 +255,7 @@ export default function DesktopQuickView() {
         openedAt: Date.now(),
       }
     );
+    if (added === false) return;
     setIsAdded(true);
     window.setTimeout(() => setIsAdded(false), 1200);
   };
@@ -435,6 +446,8 @@ export default function DesktopQuickView() {
             type="button"
             className={`desktop-quick-view__add ${isAdded ? "is-added" : ""}`}
             onClick={addToCart}
+            disabled={limitReached}
+            title={limitReached ? (lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem." : "Maximum quantity reached for this fragrance.") : undefined}
           >
             {isAdded
               ? lang === "sr"
