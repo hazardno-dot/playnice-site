@@ -40,7 +40,8 @@ const mobile=fs.readFileSync("playnice-site/src/mobile-v2/product-page/MobilePro
 assert.match(quick,/disabled=\{limitReached\}/);
 assert.match(quick,/playnice:cart-quantity-updated/);
 assert.match(mobile,/disabled=\{!activeSize \|\| !canAddToCart\(product, activeSize\)\}/);
-assert.match(app,/if \(assessCartQuantityCap\(prev, product\.id, size, addLimit\)\.blocked\) return prev/);
+assert.match(app,/assessCartQuantityCap\(prev, product\.id, size, addLimit\)\.blocked/);
+assert.match(app,/isStockDecisionBlocked\(product,prev,size\)/);
 assert.match(app,/if \(increasing && target/);
 assert.match(app,/return updateCartItemQuantity\(prev, key, delta\)/);
 console.log("PASS Preview-only cart cap: ten clicks allowed, 11th stopped, mixed sizes, fail-open, unaffected checkout");
