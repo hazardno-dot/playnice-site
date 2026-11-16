@@ -25,6 +25,7 @@ import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
 import { getJournalArticleSlug } from "./lib/journalSlug";
 import { registerProductActions } from "./lib/productActionsGateway";
 import { observeInventoryCartIntent } from "./features/cart/inventoryShadowObserver";
+import { assessCartQuantityCap, previewCapForProduct } from "./features/cart/cartQuantityCap";
 import {
   SITE_BASE_URL,
   getProductSlug,
@@ -2760,6 +2761,14 @@ const goToHomeSection = (selector, block = "start") => {
 ) => {
   const { showToast = true, showMiniPreview = true } = options;
 
+  const addLimit = previewCapForProduct(product);
+  if (assessCartQuantityCap(cart, product.id, size, addLimit).blocked) {
+    showFeedback(lang === "sr"
+      ? "Dostignuta je maksimalna količina za ovaj parfem."
+      : "Maximum quantity reached for this fragrance.");
+    return;
+  }
+
   const key = `${product.id}-${size}-${customLabel || ""}`;
   const price = customPrice ?? product.sizes[size];
   const label = customLabel || size;
@@ -2851,6 +2860,8 @@ const goToHomeSection = (selector, block = "start") => {
   });
 
   setCart((prev) => {
+    // Functional guard also protects against fast repeated taps before render.
+    if (assessCartQuantityCap(prev, product.id, size, addLimit).blocked) return prev;
     const existing = prev.find((item) => item.key === key);
 
     if (existing) {
@@ -3112,6 +3123,12 @@ const addHeroBottleToCart = () => {
 };
 
   const updateQuantity = (key, delta) => {
+    const increasing = Number(delta) > 0;
+    const target = increasing ? cart.find((candidate) => candidate.key === key) : null;
+    const targetProduct = target && products.find((candidate) => candidate.id === target.id);
+    const targetLimit = targetProduct ? previewCapForProduct(targetProduct) : null;
+    if (increasing && target &&
+        assessCartQuantityCap(cart, target.id, target.size, targetLimit, Number(delta)).blocked) return;
     if (Number(delta) > 0) {
       const item = cart.find((candidate) => candidate.key === key);
       const product = item && products.find((candidate) => candidate.id === item.id);
@@ -3139,13 +3156,13 @@ const addHeroBottleToCart = () => {
       }
     }
 
-    setCart((prev) =>
-      updateCartItemQuantity(
-        prev,
-        key,
-        delta
-      )
-    );
+    setCart((prev) => {
+      if (increasing) {
+        const current = prev.find((candidate) => candidate.key === key);
+        if (current && assessCartQuantityCap(prev, current.id, current.size, targetLimit, Number(delta)).blocked) return prev;
+      }
+      return updateCartItemQuantity(prev, key, delta);
+    });
   };
 
   const removeFromCart = (key) => {
@@ -8762,6 +8779,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.key, 1)}
+                      disabled={assessCartQuantityCap(
+                        cart, item.id, item.size,
+                        previewCapForProduct(products.find((candidate) => candidate.id === item.id))
+                      ).blocked}
+                      title={lang === "sr" ? "Dodaj još jedan dekant" : "Add one more decant"}
+                      aria-label={lang === "sr" ? "Povećaj količinu" : "Increase quantity"}
                     >
                       +
                     </button>

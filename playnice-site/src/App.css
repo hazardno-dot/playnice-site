@@ -19970,3 +19970,6 @@ body.overlay-lock .header-system {
       minmax(205px, 1.1fr);
   }
 }
+
+/* Optional cart-only cap: the minus button and checkout stay unaffected. */
+.qty-control button:disabled{opacity:.3;cursor:not-allowed;filter:grayscale(1)}
