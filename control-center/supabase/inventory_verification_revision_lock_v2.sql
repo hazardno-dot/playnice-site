@@ -1,4 +1,22 @@
--- PlayNice inventory verification revision-lock protocol — DESIGN / NOT APPLIED.
+-- SUPERSEDED DESIGN: DO NOT APPLY THIS FILE.
+-- This revision-lock draft is RETIRED after inspecting the live checkout RPC
+-- and triggers. It is retained only as historical review material.
+--
+-- CRITICAL DEADLOCK RISK:
+--   Checkout: locks fingerprint, then inserts checkout_orders, then trigger
+--   tries to lock the shared global revision row.
+--   Admin verification (as originally proposed): locks global revision row,
+--   then reads/locks orders or stock rows.
+--   These inverse lock orders can create a deadlock. The draft also
+--   conservatively invalidates on preview or unrelated order changes.
+--
+-- No deployment, ALTER/TRIGGER execution, or database modification authorized.
+-- Replace with a reviewed protocol where every writer obtains locks in the
+-- same order, preferably a pre-allocated per-product lock set sorted by key.
+-- A future design must also address the existing checkout fingerprint lock,
+-- lifecycle/status update locks, manual adjustments and legacy coverage.
+--
+-- Original v2 proposal below; kept for historical review only.
 -- NEVER execute on Production without migration review + load tests.
 -- This is a low-level global invalidation primitive, NOT a complete Verified flow.
 -- No stock, checkout, orders or balances are changed by this SQL draft.
