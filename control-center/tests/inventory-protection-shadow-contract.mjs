@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { calculateRequestedMl, evaluateInventoryShadow } from "../lib/inventory-protection-shadow.mjs";
+import { calculateRequestedMl, evaluateInventoryShadow, interpretInventoryAdvisory } from "../lib/inventory-protection-shadow.mjs";
 
 const stock = { productKey: "naxos", physicalMl: 80, currentBalanceVerified: true, snapshotConsistent: true, mappingVerified: true, estimated: false };
 const item = (sizeMl, quantity, productKey = "naxos") => ({ productKey, sizeMl, quantity });
@@ -28,4 +28,15 @@ assert.equal(check([item(20, 0)]).decision, "UNKNOWN");
 assert.equal(check([item(20, 1.5)]).decision, "UNKNOWN");
 assert.equal(check([item("bad", 1)]).decision, "UNKNOWN");
 assert.equal(check([item(20, 1)], { stock: { ...stock, productKey: "other" } }).decision, "UNKNOWN");
+
+for (const decision of ["ALLOW", "WOULD_BLOCK", "UNKNOWN", null]) {
+  const advice = interpretInventoryAdvisory(decision ? { decision } : null);
+  assert.equal(advice.allowCart, true);
+  assert.equal(advice.allowCheckout, true);
+  assert.equal(advice.enforcementEnabled, false);
+  assert.equal(advice.customerMessage, null);
+  assert.equal(advice.action, decision === "WOULD_BLOCK" ? "INTERNAL_REVIEW" : "NONE");
+}
+assert.equal(interpretInventoryAdvisory({decision:"WOULD_BLOCK",availableMl:0}).allowCheckout,true);
+
 console.log("PASS inventory protection shadow decision contract");

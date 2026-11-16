@@ -62,3 +62,22 @@ export function evaluateInventoryShadow({ productKey, items, stock, reservedMl }
     availableMl
   };
 }
+
+/**
+ * Advisory-only policy. No inventory diagnostic is authorized to block,
+ * mutate or reject cart/checkout operations. In particular, WOULD_BLOCK is
+ * diagnostic terminology inherited from Shadow Mode, NOT an enforcement action.
+ * No stock quantities are included in customer-facing notices.
+ */
+export function interpretInventoryAdvisory(result) {
+  const decision = result?.decision;
+  return {
+    allowCart: true,
+    allowCheckout: true,
+    enforcementEnabled: false,
+    action: decision === PROTECTION_DECISIONS.WOULD_BLOCK
+      ? "INTERNAL_REVIEW"
+      : "NONE",
+    customerMessage: null
+  };
+}

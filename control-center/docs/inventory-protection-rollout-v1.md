@@ -1,5 +1,17 @@
 # PlayNice Inventory Protection — audit and staged rollout v1
 
+## Active business decision — advisory-only / fail-open (2026-11-16)
+
+**This section supersedes earlier enforcement/rollout requirements below.** PlayNice prioritizes completing an order over rejecting it on inventory evidence. The inventory subsystem is strictly an **optional advisory** and shall not block, delay, mutate, or reject add-to-cart, cart updates, or checkout, even when the observer reports `WOULD_BLOCK`, data is stale, missing, or the service fails. Those diagnostics may prompt INTERNAL admin review; public messaging must not expose ml balances, nor falsely claim out-of-stock. The approved old hard-limit message must **not** be displayed as a blocking error under the new policy. If fulfillment exceeds real stock, contact the customer after order acceptance.
+
+- Existing checkout remains unchanged and independently handles its own validation, persistence, communication and retries. The inventory add-on does not promise 100% platform availability or repair unrelated checkout errors.
+- `interpretInventoryAdvisory` is a pure, tested policy contract: `allowCart=true`, `allowCheckout=true`, `enforcementEnabled=false` for ALLOW, WOULD_BLOCK, UNKNOWN and errors/missing diagnostics.
+- No database triggers, reservations, transaction locks, durable verification writes, or new checkout dependencies are approved for deployment. Retired SQL proposals remain nondeployable historical material.
+- The client observer is opt-in, catches synchronous/async failures, does not await requests and never uses stock responses to decide purchases. It remains off by default.
+- Before any merge: inspect all import/call sites, run the complete Control Center contracts and Shop build in Preview, then test cart/checkout normally with and without any inventory observer flags. Do NOT send real Production test orders. No merge without explicit approval.
+- Scope future work to **admin warnings for potential stock shortfalls** and possibly post-order reconciliation, not rejection or automated reservation.
+
+
 Status: **AUDIT / PREPARATION ONLY**. No customer blocking, reservations, database migration or live telemetry enabled by this change. Do not enable enforcement from a UI toggle before all gates pass.
 
 ## Approved customer-facing text (Serbian ekavian, Latin script)
