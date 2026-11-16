@@ -50,6 +50,20 @@ const stationery=commerceFromDeliveredHistory([{...orders[0],source_payload:{
 }}],items);
 assert.equal(stationery.complete,true);
 assert.equal(stationery.commerce.top_products[0].gift_ml,0);
+const historicalBundle=commerceFromDeliveredHistory([{
+  ...orders[0],source_payload:{items:[{
+    name:"Arabiyat P. Marwa / Al Haramain Signature Blue / Rayhaan Aquatica / Afnan 9AM",
+    size:"5ml × 4",quantity:1
+  }]}
+}], [{
+  order_record_id:"o1",
+  product_name:"Arabiyat P. Marwa / Al Haramain Signature Blue / Rayhaan Aquatica / Afnan 9AM",
+  size_label:"5ml × 4",size_ml:null,quantity:1,source_data:{}
+}]);
+assert.equal(historicalBundle.complete,true,
+  "a 5ml × 4 legacy bundle without size_ml must not invalidate entire snapshot");
+assert.equal(historicalBundle.commerce.top_products.length,4);
+assert.equal(historicalBundle.commerce.top_products.reduce((sum,x)=>sum+x.sold_ml,0),20);
 const missingBundle=commerceFromDeliveredHistory(orders,
  [{...items[0],size_label:"unknown",size_ml:0}]);
 assert.equal(missingBundle.complete,false);
