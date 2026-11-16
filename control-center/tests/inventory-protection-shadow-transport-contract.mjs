@@ -9,7 +9,8 @@ assert.match(browser, /enabled\s*=\s*process\.env\.REACT_APP_INVENTORY_SHADOW_EN
 assert.match(browser, /calculateShadowCartDemand/);
 assert.match(browser, /for \(const item of Array\.isArray\(cart\)/);
 assert.match(browser, /\.catch\(\(\)\s*=>\s*\{\}\)/);
-assert.match(browser, /EVERYTHING including payload generation is inside the exception boundary/);\nassert.match(browser, /catch \{/);
+assert.match(browser, /EVERYTHING including payload generation is inside the exception boundary/);
+assert.match(browser, /catch \{/);
 assert.match(app, /source: "ADD_TO_CART",[\s\S]*?cart,[\s\S]*?extraCount: 1/);
 assert.match(app, /source: "CART_QUANTITY",[\s\S]*?cart, extraCount: Number\(delta\)/);
 assert.match(endpoint, /INVENTORY_SHADOW_RECEIVER_ENABLED/);
