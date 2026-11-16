@@ -1,0 +1,16 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const api=fs.readFileSync("playnice-site/api/inventory-check.js","utf8");
+const sql=fs.readFileSync("control-center/supabase/shop_inventory_cart_decision_v1.sql","utf8");
+assert.match(api,/SHOP_INVENTORY_CHECK_ENABLED/);
+assert.match(api,/VERCEL_ENV==="preview"/);
+assert.match(api,/SHOP_INVENTORY_READ_SECRET/);
+assert.match(api,/get_shop_inventory_cart_decision/);
+assert.match(api,/decision:"UNKNOWN"/);
+assert.match(api,/Cache-Control","private, no-store/);
+assert.doesNotMatch(api,/remaining_ml|opening_balance_ml/);
+assert.match(sql,/SERVICE_ROLE_REQUIRED/);
+assert.match(sql,/revoke all on function public\.get_shop_inventory_cart_decision/);
+assert.match(sql,/grant execute on function public\.get_shop_inventory_cart_decision\(text,numeric\)\s+to service_role/);
+assert.doesNotMatch(sql,/\b(insert into|update public\.|delete from public\.)/i);
+console.log("PASS Shop inventory bridge draft: preview only, no stock disclosure, fail-open");
