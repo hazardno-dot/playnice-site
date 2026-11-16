@@ -71,7 +71,12 @@ export function commerceFromDeliveredHistory(orders,items){
   for(const i of items){
     if(!delivered.has(i?.order_record_id))continue;
     const quantity=num(i.quantity);
-    const sizeMl=num(i.size_ml);
+    const bundleLabel=String(i.size_label||"").match(/^\s*([0-9]+(?:\.[0-9]+)?)\s*ml\s*[×xX]\s*([0-9]+)\s*$/i);
+    const isNameBundle=String(i.product_name||"").includes(" / ");
+    // Historical multi-name bundles can store "5ml × 4" without size_ml.
+    // The CC sale-item parser handles them by expanding each component.
+    const sizeMl=positive(i.size_ml)?num(i.size_ml):
+      (bundleLabel&&isNameBundle?num(bundleLabel[1]):NaN);
     if(!positive(quantity)||!positive(sizeMl)||!i.product_name){issues.push("INVALID_SALE_ITEM");continue;}
     const item={name:i.product_name,size:i.size_label,sizeMl,quantity,
       bundleItems:Array.isArray(i.source_data?.bundleItems)?i.source_data.bundleItems:[]};
