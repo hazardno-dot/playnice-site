@@ -60,13 +60,13 @@ export function commerceFromDeliveredHistory(orders,items){
   const delivered=new Map(orders.filter(o=>o?.environment==="production"&&o.status==="DELIVERED")
     .map(o=>[o.id,o]));
   const counts=new Map(),full=new Map();
-  const add=(name,ml,kind)=>{
+  const add=(name,ml,kind,fullBottle=false)=>{
     const n=canonicalProductName(name), k=lower(n),value=num(ml);
     if(!k||!positive(value)){issues.push("INVALID_CONSUMPTION_ITEM");return;}
     let row=counts.get(k);if(!row){row={product_name:n,total_ml_out:0,sold_ml:0,gift_ml:0};counts.set(k,row);}
     row.total_ml_out+=value;
     if(kind==="gift")row.gift_ml+=value;else row.sold_ml+=value;
-    if(kind==="sale"&&value>=50)full.set(k,(full.get(k)||0)+value);
+    if(kind==="sale"&&fullBottle)full.set(k,(full.get(k)||0)+value);
   };
   for(const i of items){
     if(!delivered.has(i?.order_record_id))continue;
@@ -77,9 +77,9 @@ export function commerceFromDeliveredHistory(orders,items){
       bundleItems:Array.isArray(i.source_data?.bundleItems)?i.source_data.bundleItems:[]};
     const sales=inventorySaleItems([item]);
     if(sales.length){
-      for(const sale of sales)add(sale.product_name,sale.ml,"sale");
+      for(const sale of sales)add(sale.product_name,sale.ml,"sale",false);
     }else if(sizeMl>=50 && !item.bundleItems.length){
-      add(item.name,sizeMl*quantity,"sale");
+      add(item.name,sizeMl*quantity,"sale",true);
     }else{
       issues.push("UNRECOGNIZED_BUNDLE_OR_DECANT");
     }
