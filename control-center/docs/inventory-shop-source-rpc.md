@@ -50,3 +50,13 @@ The proposed source RPC is still a draft, NOT installed. Next steps: review
 and explicitly approve SQL installation, run read-only exact CC parity
 audit across all 115 products including bundles/gifts/aliases, then
 activate Preview for approved products. Checkout untouched.
+
+## 2026-11-17: source freshness guard (still inactive)
+
+The uninstalled SQL draft includes `snapshot_at` from the database statement timestamp.
+The private Shop server rejects absent/invalid, older-than-30-second, or more-than-5-second-future timestamps as `UNKNOWN`. This is a freshness safeguard, **not** proof of accurate stock balances or per-product CC parity.
+
+The source RPC has not been installed, the V2 feature switch has not been enabled,
+and no products have been added to the parity approval allowlist in this change.
+The 115-product exact Remaining audit and independently verified physical stock
+criteria remain mandatory before widening Preview blocking. No checkout changes.
