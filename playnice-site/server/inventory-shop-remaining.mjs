@@ -19,6 +19,11 @@ export async function decisionFromShopRemaining({
     if(!response?.ok)return UNKNOWN;
     const source=await response.json();
     if(!source||source.complete!==true)return UNKNOWN;
+    // A complete source is not necessarily fresh. Reject missing, invalid,
+    // future-dated or stale snapshots instead of assuming freshness.
+    const snapshotAt=typeof source.snapshot_at==="string"?Date.parse(source.snapshot_at):NaN;
+    const ageMs=Date.now()-snapshotAt;
+    if(!Number.isFinite(snapshotAt)||ageMs < -5000||ageMs > 30000)return UNKNOWN;
     const result=remainingFromSupabaseSources(source);
     if(!result.complete)return UNKNOWN;
     const decision=shopDecisionFromRemaining(
