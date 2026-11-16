@@ -1,6 +1,5 @@
-// Client-only, non-blocking Shadow Mode transport.
-// Dormant until explicitly enabled in a reviewed Preview build.
-// Never uses customer identity or raw cart contents.
+// PlayNice stock advisory — optional and strictly fail-open.
+// This observer is not an order validator and must never gate commerce.
 const enabled = process.env.REACT_APP_INVENTORY_SHADOW_ENABLED === "true";
 const EVENT_URL = "/api/inventory-shadow";
 const exactSize = (value) => {
@@ -8,8 +7,7 @@ const exactSize = (value) => {
   return match ? Number(match[1]) : NaN;
 };
 
-// Count all supported sizes for one fragrance, not only the button just clicked.
-// Return null for ambiguous/malformed cart state rather than claiming availability.
+// Read-only calculation. Unknown/malformed amounts produce no observation.
 export function calculateShadowCartDemand(cart, productId, extraSize, extraCount = 1) {
   const size = exactSize(extraSize);
   if (!Number.isFinite(size) || size <= 0 || size >= 50 ||
@@ -26,22 +24,29 @@ export function calculateShadowCartDemand(cart, productId, extraSize, extraCount
   return Number.isFinite(total) && total <= 5000 ? Math.round(total * 100) / 100 : null;
 }
 
-export function observeInventoryCartIntent({ source, product, size, cart, extraCount = 1 }) {
-  if (!enabled || typeof window === "undefined") return;
-  const key = String(product?.slug || "").trim();
-  const demandMl = calculateShadowCartDemand(cart, product?.id, size, extraCount);
-  if (!key || demandMl === null || !["ADD_TO_CART","CART_QUANTITY"].includes(source)) return;
-
-  const payload = JSON.stringify({ source, productKey: key, demandMl });
-  // No await: a slow or failed telemetry request must never affect commerce.
+export function observeInventoryCartIntent(intent) {
+  // EVERYTHING including payload generation is inside the exception boundary.
+  // A malformed cart, unavailable browser API, or telemetry error must never
+  // interrupt the calling add-to-cart/quantity handler.
   try {
+    if (!enabled || typeof window === "undefined") return;
+    const { source, product, size, cart, extraCount = 1 } = intent || {};
+    const key = String(product?.slug || "").trim();
+    const demandMl = calculateShadowCartDemand(cart, product?.id, size, extraCount);
+    if (!key || demandMl === null || !["ADD_TO_CART","CART_QUANTITY"].includes(source)) return;
+    const payload = JSON.stringify({ source, productKey: key, demandMl });
+    // Never await or inspect a response as a commerce decision.
+    if (typeof fetch !== "function") return;
     void fetch(EVENT_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: payload,
       keepalive: true,
       credentials: "omit",
-      signal: typeof AbortSignal?.timeout === "function" ? AbortSignal.timeout(1200) : undefined
+      signal: typeof AbortSignal !== "undefined" &&
+        typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(1200) : undefined
     }).catch(() => {});
-  } catch { /* Observability must never affect commerce. */ }
+  } catch {
+    // Deliberately silent: telemetry has no authority over the basket.
+  }
 }
