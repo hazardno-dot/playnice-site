@@ -12,7 +12,7 @@ assert.equal(ctx.calc([{id:114,size:"broken",quantity:1}],114,"10ml"),null);
 assert.equal(ctx.isBlocked(product,[], "10ml"),false);
 await ctx.warm(product,[],"10ml");
 assert.equal(ctx.isBlocked(product,[],"10ml"),false);
-assert.match(src,/Cache-Control|Fail open/);
+assert.match(src,/fail open|fail-open/i);
 assert.doesNotMatch(src,/SUPABASE_SECRET|SERVICE_ROLE|remaining_ml/);
 const app=fs.readFileSync("playnice-site/src/App.js","utf8");
 assert.match(app,/warmInventoryDecision:/);
