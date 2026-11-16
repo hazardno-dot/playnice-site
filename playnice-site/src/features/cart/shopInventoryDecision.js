@@ -46,7 +46,7 @@ export async function warmStockDecision(product,cart,size){
         body:JSON.stringify({
           productName:request.productName,requestedTotalMl:request.requestedTotalMl
         }),
-        credentials:"omit",signal:ctl.signal
+        credentials:"omit",cache:"no-store",signal:ctl.signal
       });
       const data=response.ok?await response.json():null;
       const decision=data?.decision==="LIMIT_REACHED"?"LIMIT_REACHED":
