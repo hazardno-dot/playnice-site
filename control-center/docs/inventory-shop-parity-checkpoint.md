@@ -22,3 +22,16 @@ Before expanding Shop coverage, a server-side, read-only ingestion must generate
 8. For any mismatch, timeout, missing data, or partial snapshot, fail open, preserve normal cart and checkout.
 
 The new pure `inventory-shop-parity.mjs` gate is a *contract*, not connected to the active shop RPC. No schema migrations or Vercel variable changes in this step. When connected, expose only `ALLOW` / `LIMIT_REACHED` / `UNKNOWN` from the server, never Remaining.
+
+## 2026-11-16 — Single Remaining decision contract
+The checkout remains independent and functional when inventory is unavailable.
+An exact pure adapter now consumes the existing `buildInventoryAnalytics(...).rows` values
+and produces only `ALLOW`, `LIMIT_REACHED`, or `UNKNOWN`. It does NOT recompute stock,
+does not send ml quantities to the browser, and does not call the DB by itself.
+
+Next, a service-role-only **server-side source** must assemble those exact rows from complete
+Supabase inputs. It must reject partial order pagination (current CC RPC caps at 250 orders),
+unknown status history, ambiguous aliases and missing gifts. Do not wire it into Shop until
+a parity audit confirms the server's `Remaining` equals the CC display for every product.
+The existing live Shop RPC still serves conservative decisions. No new Production write,
+schema deployment or checkout change is authorized by this adapter.
