@@ -41,5 +41,9 @@ assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:100}))
 assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:110})).decision,"LIMIT_REACHED");
 assert.equal((await decisionFromShopRemaining({...fields,productName:"Unknown",requestedTotalMl:110})).decision,"UNKNOWN");
 const responseSource=fs.readFileSync("playnice-site/server/inventory-shop-remaining.mjs","utf8");
-assert.doesNotMatch(responseSource,/return\s+source|return\s+result\.rows/);
+// Check executable return statements, not explanatory comments such as
+// "Never return source rows to browser".
+assert.doesNotMatch(responseSource,/^\\s*return\\s+(?:source|result\\.rows)\\s*;/m);
+assert.match(responseSource,/return \\["ALLOW","LIMIT_REACHED"\\]\\.includes\\(decision\\.decision\\)/);
+
 console.log("PASS preview-only Shop backend: byte-identical CC calculation, service-role-only source, fail-open");
