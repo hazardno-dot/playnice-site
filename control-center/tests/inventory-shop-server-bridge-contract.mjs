@@ -40,6 +40,16 @@ const fields={supabaseUrl:"https://example.invalid",secret:"test-secret",
 assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:100})).decision,"ALLOW");
 assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:110})).decision,"LIMIT_REACHED");
 assert.equal((await decisionFromShopRemaining({...fields,productName:"Unknown",requestedTotalMl:110})).decision,"UNKNOWN");
+for(const snapshot_at of [undefined,"not-a-date",
+  new Date(Date.now()-60000).toISOString(),
+  new Date(Date.now()+60000).toISOString()]){
+  const staleSource={...source,snapshot_at};
+  const response=await decisionFromShopRemaining({
+    ...fields,requestedTotalMl:110,
+    fetchImpl:async()=>({ok:true,json:async()=>staleSource})
+  });
+  assert.equal(response.decision,"UNKNOWN","invalid/stale/future snapshot must fail open");
+}
 const responseSource=fs.readFileSync("playnice-site/server/inventory-shop-remaining.mjs","utf8");
 // Inspect actual return lines; comments are not executable return statements.
 const returnLines=responseSource.split("\n").map(line=>line.trim()).filter(line=>line.startsWith("return "));
