@@ -9,7 +9,7 @@ assert.equal(check(row,{...row,remaining_ml:-1}).reason,"INVALID_BALANCE");
 assert.equal(check(row,{...row,remaining_ml:NaN}).reason,"INVALID_BALANCE");
 assert.equal(check(row,{...row,product_name:"Different"}).reason,"PRODUCT_MAPPING_MISMATCH");
 assert.equal(check(row,{...row},{snapshotAgeMs:30001}).reason,"STALE_SNAPSHOT");
-assert.equal(check(row,{...row},{snapshotAgeMs:undefined}).decision,"MATCH"); // default still present
+assert.equal(check(row,{...row},{snapshotAgeMs:undefined}).reason,"STALE_SNAPSHOT");
 assert.equal(compareInventoryBalance(row,row,{sourceComplete:true,snapshotAgeMs:200}).reason,"NOT_RECOMPUTED");
 assert.equal(check(row,{...row},{unmatchedGifts:true}).reason,"UNRESOLVED_CONSUMPTION");
 assert.equal(check(row,{...row},{unmatchedItems:true}).reason,"UNRESOLVED_CONSUMPTION");
