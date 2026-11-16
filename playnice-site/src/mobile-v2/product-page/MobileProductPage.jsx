@@ -119,6 +119,7 @@ export default function MobileProductPage({
   onAddToCart,
   onBuyNow,
   canAddToCart = () => true,
+  isAtStockLimit = () => false,
   isWishlisted = false,
   onToggleWishlist,
   onOpenProduct,
@@ -544,7 +545,7 @@ export default function MobileProductPage({
               {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
             </button>
           </div>
-          {activeSize && !canAddToCart(product, activeSize) && (
+          {activeSize && isAtStockLimit(product, activeSize) && (
             <p className="inventory-limit-message" role="status">
               {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
             </p>

@@ -245,6 +245,7 @@ export default function DesktopQuickView() {
   };
 
   const limitReached = getProductActions()?.canAddToCart?.(product, activeSize) === false;
+  const stockLimitReached = getProductActions()?.isAtStockLimit?.(product,activeSize) === true;
 
   const addToCart = () => {
     if (getProductActions()?.canAddToCart?.(product, activeSize) === false) return;
@@ -469,7 +470,7 @@ export default function DesktopQuickView() {
                 : "ADD TO CART"}
           </button>
 
-          {limitReached && <p className="inventory-limit-message" role="status">
+          {stockLimitReached && <p className="inventory-limit-message" role="status">
             {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
           </p>}
 

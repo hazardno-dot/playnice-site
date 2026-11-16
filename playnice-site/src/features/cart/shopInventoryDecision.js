@@ -6,7 +6,19 @@ const FRESH_MS=15000;
 // A confirmed limit stays active through background refreshes, rather than
 // disappearing with an individual request cache entry.
 const blockedByProduct=new Map();
-const BLOCK_MS=60000;
+const BLOCK_MS=20000;
+const clickPauseByProduct=new Map();
+const CLICK_PAUSE_MS=480;
+let lastSuccessfulCheck=0;
+let networkOutageUntil=0;
+const emitDecision=()=>{try{window.dispatchEvent(new Event("playnice:stock-decision-updated"));}catch{}};
+const clearProduct=(id)=>{
+  const key=String(id);
+  blockedByProduct.delete(key);
+  clickPauseByProduct.delete(key);
+  for(const k of responses.keys())if(k.startsWith(key+":"))responses.delete(k);
+};
+
 const makeKey=(product,cart,size)=>{
   const next=requestedCartTotalMl(cart,product?.id,size);
   return next===null || !product?.name?null:{
@@ -28,11 +40,24 @@ export function requestedCartTotalMl(cart,productId,extraSize){
   }
   return units>0 && units<=500000 && Number.isSafeInteger(units)?units/100:null;
 }
+export function isStockDecisionPending(product){
+  if(!product?.id || Date.now()<networkOutageUntil || Date.now()-lastSuccessfulCheck>30000)return false;
+  return (clickPauseByProduct.get(String(product.id))||0)>Date.now();
+}
+export function noteInventoryCartClick(product){
+  if(!product?.id || Date.now()<networkOutageUntil || Date.now()-lastSuccessfulCheck>30000)return;
+  const id=String(product.id);
+  clickPauseByProduct.set(id,Date.now()+CLICK_PAUSE_MS);
+  setTimeout(()=>{if((clickPauseByProduct.get(id)||0)<=Date.now()){
+    clickPauseByProduct.delete(id);emitDecision();
+  }},CLICK_PAUSE_MS+15);
+}
 export function isStockDecisionBlocked(product,cart,size){
-  const key=makeKey(product,cart,size)?.key;
+  const request=makeKey(product,cart,size);
+  const key=request?.key;
   const row=key&&responses.get(key);
   const now=Date.now();
-  const request=makeKey(product,cart,size);
+  if(now<networkOutageUntil || now-lastSuccessfulCheck>30000)return false;
   const block=request&&blockedByProduct.get(String(product.id));
   if(block && block.expires>now && request.requestedTotalMl>=block.atMl) return true;
   return Boolean(row && row.decision==="LIMIT_REACHED" && row.expires>now);
@@ -42,7 +67,7 @@ export async function warmStockDecision(product,cart,size){
     // Preview only until service role RPC and security review are approved.
     if(typeof window==="undefined" || !window.location.hostname.endsWith(".vercel.app"))return;
     const request=makeKey(product,cart,size);
-    if(!request || waiting.has(request.key))return;
+    if(!request || waiting.has(request.key) || Date.now()<networkOutageUntil)return;
     const cached=responses.get(request.key);
     if(cached && cached.expires>Date.now())return;
     waiting.add(request.key);
@@ -56,11 +81,18 @@ export async function warmStockDecision(product,cart,size){
         }),
         credentials:"same-origin",cache:"no-store",signal:ctl.signal
       });
-      const data=response.ok?await response.json():null;
+      if(!response.ok)throw new Error("INVENTORY_SERVICE_UNAVAILABLE");
+      const data=await response.json();
       const decision=data?.decision==="LIMIT_REACHED"?"LIMIT_REACHED":
         data?.decision==="ALLOW"?"ALLOW":"UNKNOWN";
       const now=Date.now();
       const pid=String(product.id);
+      if(decision==="UNKNOWN"){
+        clearProduct(pid);
+        emitDecision();
+        return;
+      }
+      lastSuccessfulCheck=now;
       if(decision==="LIMIT_REACHED"){
         const prior=blockedByProduct.get(pid);
         blockedByProduct.set(pid,{
@@ -72,12 +104,16 @@ export async function warmStockDecision(product,cart,size){
             (blockedByProduct.get(pid)?.atMl??Infinity))){
         blockedByProduct.delete(pid);
       }
-      responses.set(request.key,{decision,expires:now+(decision==="UNKNOWN"?2000:FRESH_MS)});
-      window.dispatchEvent(new Event("playnice:stock-decision-updated"));
+      responses.set(request.key,{decision,expires:now+FRESH_MS});
+      emitDecision();
     }finally{clearTimeout(timer);waiting.delete(request.key);}
   }catch{
-    // Fail open on outages: don't retain a prior stop signal without a working
-    // decision service. Never affect the checkout itself.
-    if(product?.id!=null) blockedByProduct.delete(String(product.id));
+    // Global fail-open circuit: no old denial survives a network outage.
+    networkOutageUntil=Date.now()+30000;
+    lastSuccessfulCheck=0;
+    blockedByProduct.clear();
+    responses.clear();
+    clickPauseByProduct.clear();
+    emitDecision();
   }
 }

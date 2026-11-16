@@ -26,7 +26,7 @@ import { getJournalArticleSlug } from "./lib/journalSlug";
 import { registerProductActions } from "./lib/productActionsGateway";
 import { observeInventoryCartIntent } from "./features/cart/inventoryShadowObserver";
 import { assessCartQuantityCap, previewCapForProduct } from "./features/cart/cartQuantityCap";
-import { isStockDecisionBlocked, warmStockDecision } from "./features/cart/shopInventoryDecision";
+import { isStockDecisionBlocked, isStockDecisionPending, noteInventoryCartClick, warmStockDecision } from "./features/cart/shopInventoryDecision";
 import {
   SITE_BASE_URL,
   getProductSlug,
@@ -2753,9 +2753,11 @@ const goToHomeSection = (selector, block = "start") => {
     setAddedFeedback(text);
   };
 
-  const canAddDecant = (product, size) =>
-    !assessCartQuantityCap(cart, product?.id, size, previewCapForProduct(product)).blocked &&
-    !isStockDecisionBlocked(product,cart,size);
+  const isAtStockLimit = (product,size) =>
+    assessCartQuantityCap(cart,product?.id,size,previewCapForProduct(product)).blocked ||
+    isStockDecisionBlocked(product,cart,size);
+  const canAddDecant = (product,size) =>
+    !isAtStockLimit(product,size) && !isStockDecisionPending(product);
 
   const [, setInventoryCheckRevision] = useState(0);
   useEffect(() => {
@@ -2808,6 +2810,7 @@ const goToHomeSection = (selector, block = "start") => {
   const { showToast = true, showMiniPreview = true } = options;
 
   const addLimit = previewCapForProduct(product);
+  if(isStockDecisionPending(product))return false;
   if (assessCartQuantityCap(cart, product.id, size, addLimit).blocked ||
       isStockDecisionBlocked(product,cart,size)) {
     showFeedback(lang === "sr"
@@ -2991,6 +2994,7 @@ const goToHomeSection = (selector, block = "start") => {
   if (showToast && !showMiniPreview) {
     showFeedback(`${product.name} ${tr.addedToCart}`);
   }
+  noteInventoryCartClick(product);
   return true;
 };
 
@@ -3110,6 +3114,7 @@ useEffect(() => {
     },
 
     canAddToCart: (product, size) => !product || !size || canAddDecant(product, size),
+    isAtStockLimit: (product,size)=>isAtStockLimit(product,size),
     warmInventoryDecision: (product, size) => warmStockDecision(product,cart,size),
 
     addToCart: (
@@ -3179,6 +3184,7 @@ const addHeroBottleToCart = () => {
     const target = increasing ? cart.find((candidate) => candidate.key === key) : null;
     const targetProduct = target && products.find((candidate) => candidate.id === target.id);
     const targetLimit = targetProduct ? previewCapForProduct(targetProduct) : null;
+    if (increasing && target && isStockDecisionPending(targetProduct))return;
     if (increasing && target &&
         (assessCartQuantityCap(cart, target.id, target.size, targetLimit, Number(delta)).blocked ||
         (Number(delta)===1 && isStockDecisionBlocked(targetProduct,cart,target.size)))) return;
@@ -3216,7 +3222,8 @@ const addHeroBottleToCart = () => {
           (Number(delta)===1 && isStockDecisionBlocked(targetProduct,prev,current.size)))) return prev;
       }
       return updateCartItemQuantity(prev, key, delta);
-    });
+    })
+    if(increasing && targetProduct)noteInventoryCartClick(targetProduct);;
   };
 
   const removeFromCart = (key) => {
@@ -5508,6 +5515,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               setHasUserPickedSize(true);
             }}
             canAddToCart={canAddDecant}
+            isAtStockLimit={isAtStockLimit}
             onAddToCart={(product, size) => {
               const { productForCart } =
                 getProductPurchaseSelection(
@@ -8854,7 +8862,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     {tr.remove}
                   </button>
                 </div>
-                {!canAddDecant(products.find((candidate) => candidate.id === item.id), item.size) && (
+                {isAtStockLimit(products.find((candidate) => candidate.id === item.id), item.size) && (
                   <p className="inventory-limit-message inventory-limit-message--cart" role="status">
                     {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
                   </p>

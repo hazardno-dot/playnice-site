@@ -77,3 +77,13 @@ assert.match(desktopBridge,/playnice:stock-decision-updated/);
 // The stock warning is intentionally absent from catalog cards to preserve
 // uniform card height. PDP, cart, and Quick View retain their notice.
 assert.doesNotMatch(app,/Object\.entries\(product\.sizes\)\.some\(\(\[size\]\) => \{/);
+
+const current=fs.readFileSync("playnice-site/src/features/cart/shopInventoryDecision.js","utf8");
+assert.match(current,/networkOutageUntil=Date\.now\(\)\+30000/);
+assert.match(current,/blockedByProduct\.clear\(\)/);
+assert.match(current,/responses\.clear\(\)/);
+assert.match(current,/noteInventoryCartClick/);
+assert.match(current,/CLICK_PAUSE_MS=480/);
+assert.match(app,/isStockDecisionPending\(product\)/);
+assert.match(app,/noteInventoryCartClick\(product\)/);
+assert.match(app,/isAtStockLimit\(product,size\)/);

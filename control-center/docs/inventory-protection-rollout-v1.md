@@ -108,3 +108,9 @@ Queries were SELECT-only; no Production rows or schema were changed.
 - Shop client caches responses briefly, warms on cart changes, mobile PDP selection and Quick View selections, and re-renders buttons on decision events. No checkout API modification. Current synthetic `?inventoryCapDemo=1` remains separate.
 - Before enabling, compare SQL direct-order consumption with authoritative CC analytics and resolve legacy gifts, bundled order types, aliases, pending NEW demand, and potential stale baselines. The draft excludes complex sales and may UNDER-estimate consumption; a mistaken mapping must never trigger false blocking. Real stock correctness and concurrent users remain unverified.
 - No Production schema migration or Vercel secret/env updates performed. Approval required before installing RPC or enabling Preview environment variables.
+
+## Fail-open reliability pass — 2026-11-16
+- A failed HTTP/timeout/invalid JSON read opens the stock-check circuit for 30 seconds; all cached denials and short click pauses are cleared, allowing cart updates immediately. UNKNOWN is per-product fail-open and removes cached denials for that product.
+- Confirmed denials only apply with a recent successful server check; expired results cannot indefinitely disable buttons.
+- A 480 ms per-product rapid-click pause is applied only after a recent successful check. It never blocks checkout and expires automatically. The cap message appears only for a confirmed limit, never for the pause.
+- Actual installed RPC has conservative coverage: live read-only audit of 115 fragrance stock rows found 31 eligible under base mapping, 80 with order history, and 6 with starting-data issues (categories overlap). Unknown stock means unrestricted cart, not zero stock. Do not promote coverage without parity against Control Center gift/bundle/order consumption.

@@ -350,6 +350,7 @@ export default function DesktopProductPageBridge() {
         onSelectSize={handleSelectSize}
         onAddToCart={handleAddToCart}
         canAddToCart={(item,size)=>getProductActions()?.canAddToCart?.(item,size)!==false}
+        isAtStockLimit={(item,size)=>getProductActions()?.isAtStockLimit?.(item,size)===true}
         onBuyNow={handleBuyNow}
         isWishlisted={isWishlisted}
         onToggleWishlist={handleToggleWishlist}

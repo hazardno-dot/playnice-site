@@ -135,6 +135,7 @@ export default function DesktopProductPage({
   onAddToCart,
   onBuyNow,
   canAddToCart = () => true,
+  isAtStockLimit = () => false,
   isWishlisted = false,
   onToggleWishlist,
   onOpenProduct,
@@ -476,7 +477,7 @@ export default function DesktopProductPage({
                 </button>
               ) : null}
             </div>
-            {capReached && (
+            {isAtStockLimit(product,activeSize) && (
               <p className="inventory-limit-message inventory-limit-message--pdp" role="status">
                 {lang === "sr"
                   ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom."
