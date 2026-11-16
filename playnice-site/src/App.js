@@ -26,6 +26,7 @@ import { getJournalArticleSlug } from "./lib/journalSlug";
 import { registerProductActions } from "./lib/productActionsGateway";
 import { observeInventoryCartIntent } from "./features/cart/inventoryShadowObserver";
 import { assessCartQuantityCap, previewCapForProduct } from "./features/cart/cartQuantityCap";
+import { isStockDecisionBlocked, warmStockDecision } from "./features/cart/shopInventoryDecision";
 import {
   SITE_BASE_URL,
   getProductSlug,
@@ -2753,7 +2754,26 @@ const goToHomeSection = (selector, block = "start") => {
   };
 
   const canAddDecant = (product, size) =>
-    !assessCartQuantityCap(cart, product?.id, size, previewCapForProduct(product)).blocked;
+    !assessCartQuantityCap(cart, product?.id, size, previewCapForProduct(product)).blocked &&
+    !isStockDecisionBlocked(product,cart,size);
+
+  const [, setInventoryCheckRevision] = useState(0);
+  useEffect(() => {
+    const handler=()=>setInventoryCheckRevision((n)=>n+1);
+    window.addEventListener("playnice:stock-decision-updated",handler);
+    return ()=>window.removeEventListener("playnice:stock-decision-updated",handler);
+  }, []);
+
+  useEffect(() => {
+    for(const item of cart){
+      const product=products.find((p)=>p.id===item.id);
+      if(product) void warmStockDecision(product,cart,item.size);
+    }
+    if(selectedProduct){
+      for(const size of Object.keys(selectedProduct.sizes||{}))
+        void warmStockDecision(selectedProduct,cart,size);
+    }
+  }, [cart,selectedProduct]);
 
   useEffect(() => {
     window.dispatchEvent(new Event("playnice:cart-quantity-updated"));
@@ -2769,7 +2789,8 @@ const goToHomeSection = (selector, block = "start") => {
   const { showToast = true, showMiniPreview = true } = options;
 
   const addLimit = previewCapForProduct(product);
-  if (assessCartQuantityCap(cart, product.id, size, addLimit).blocked) {
+  if (assessCartQuantityCap(cart, product.id, size, addLimit).blocked ||
+      isStockDecisionBlocked(product,cart,size)) {
     showFeedback(lang === "sr"
       ? "Dostignuta je maksimalna količina za ovaj parfem."
       : "Maximum quantity reached for this fragrance.");
@@ -2868,7 +2889,8 @@ const goToHomeSection = (selector, block = "start") => {
 
   setCart((prev) => {
     // Functional guard also protects against fast repeated taps before render.
-    if (assessCartQuantityCap(prev, product.id, size, addLimit).blocked) return prev;
+    if (assessCartQuantityCap(prev, product.id, size, addLimit).blocked ||
+        isStockDecisionBlocked(product,prev,size)) return prev;
     const existing = prev.find((item) => item.key === key);
 
     if (existing) {
@@ -3069,6 +3091,7 @@ useEffect(() => {
     },
 
     canAddToCart: (product, size) => !product || !size || canAddDecant(product, size),
+    warmInventoryDecision: (product, size) => warmStockDecision(product,cart,size),
 
     addToCart: (
       product,
@@ -3138,7 +3161,8 @@ const addHeroBottleToCart = () => {
     const targetProduct = target && products.find((candidate) => candidate.id === target.id);
     const targetLimit = targetProduct ? previewCapForProduct(targetProduct) : null;
     if (increasing && target &&
-        assessCartQuantityCap(cart, target.id, target.size, targetLimit, Number(delta)).blocked) return;
+        (assessCartQuantityCap(cart, target.id, target.size, targetLimit, Number(delta)).blocked ||
+        (Number(delta)===1 && isStockDecisionBlocked(targetProduct,cart,target.size)))) return;
     if (Number(delta) > 0) {
       const item = cart.find((candidate) => candidate.key === key);
       const product = item && products.find((candidate) => candidate.id === item.id);
@@ -3169,7 +3193,8 @@ const addHeroBottleToCart = () => {
     setCart((prev) => {
       if (increasing) {
         const current = prev.find((candidate) => candidate.key === key);
-        if (current && assessCartQuantityCap(prev, current.id, current.size, targetLimit, Number(delta)).blocked) return prev;
+        if (current && (assessCartQuantityCap(prev, current.id, current.size, targetLimit, Number(delta)).blocked ||
+          (Number(delta)===1 && isStockDecisionBlocked(targetProduct,prev,current.size)))) return prev;
       }
       return updateCartItemQuantity(prev, key, delta);
     });
@@ -8791,10 +8816,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.key, 1)}
-                      disabled={assessCartQuantityCap(
-                        cart, item.id, item.size,
-                        previewCapForProduct(products.find((candidate) => candidate.id === item.id))
-                      ).blocked}
+                      disabled={!canAddDecant(
+                        products.find((candidate) => candidate.id === item.id), item.size
+                      )}
                       title={lang === "sr" ? "Dodaj još jedan dekant" : "Add one more decant"}
                       aria-label={lang === "sr" ? "Povećaj količinu" : "Increase quantity"}
                     >

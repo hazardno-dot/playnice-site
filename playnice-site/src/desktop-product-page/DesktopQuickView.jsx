@@ -231,7 +231,12 @@ export default function DesktopQuickView() {
   const selectSize = (size) => {
     setSelectedSize(size);
     getProductActions()?.selectSize?.(product, size);
+    void getProductActions()?.warmInventoryDecision?.(product,size);
   };
+
+  useEffect(() => {
+    if(product && activeSize) void getProductActions()?.warmInventoryDecision?.(product,activeSize);
+  },[product,activeSize]);
 
   const limitReached = getProductActions()?.canAddToCart?.(product, activeSize) === false;
 
