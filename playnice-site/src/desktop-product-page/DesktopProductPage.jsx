@@ -134,6 +134,7 @@ export default function DesktopProductPage({
   onSelectSize,
   onAddToCart,
   onBuyNow,
+  canAddToCart = () => true,
   isWishlisted = false,
   onToggleWishlist,
   onOpenProduct,
@@ -236,11 +237,11 @@ export default function DesktopProductPage({
   const sizeHelper = getSizeHelper(activeSize, lang);
   const activeCartKey = `${product.id}-${activeSize}`;
   const isJustAdded = addedCartKey === activeCartKey;
+  const capReached = !canAddToCart(product,activeSize);
 
   const handleAddToCartClick = () => {
-    if (!activeSize) return;
-
-    onAddToCart?.(activeSize);
+    if (!activeSize || capReached) return;
+    if (onAddToCart?.(activeSize) === false) return;
     setAddedCartKey(activeCartKey);
 
     if (addedCartTimeoutRef.current) {
@@ -458,6 +459,7 @@ export default function DesktopProductPage({
                 type="button"
                 className={`desktop-product-page__add ${isJustAdded ? "is-added" : ""}`}
                 onClick={handleAddToCartClick}
+                disabled={capReached}
                 aria-live="polite"
               >
                 {isJustAdded
@@ -469,11 +471,18 @@ export default function DesktopProductPage({
                   : "ADD TO CART"}
               </button>
               {onBuyNow ? (
-                <button type="button" className="desktop-product-page__buy" onClick={() => onBuyNow(activeSize)}>
+                <button type="button" className="desktop-product-page__buy" disabled={capReached} onClick={() => onBuyNow(activeSize)}>
                   {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
                 </button>
               ) : null}
             </div>
+            {capReached && (
+              <p className="inventory-limit-message inventory-limit-message--pdp" role="status">
+                {lang === "sr"
+                  ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom."
+                  : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+              </p>
+            )}
 
             <div className="desktop-product-page__trust">
               <span>{lang === "sr" ? "Originalni parfem · pažljivo pretočen" : "Original fragrance · carefully decanted"}</span>

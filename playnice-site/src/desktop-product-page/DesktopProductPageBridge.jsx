@@ -74,6 +74,17 @@ export default function DesktopProductPageBridge() {
   const [lang, setLang] = useState(() => getDesktopLanguage());
   const [selectedSize, setSelectedSize] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [, updateCartAvailability] = useState(0);
+
+  useEffect(() => {
+    const refresh=()=>updateCartAvailability(n=>n+1);
+    window.addEventListener("playnice:cart-quantity-updated",refresh);
+    window.addEventListener("playnice:stock-decision-updated",refresh);
+    return ()=>{
+      window.removeEventListener("playnice:cart-quantity-updated",refresh);
+      window.removeEventListener("playnice:stock-decision-updated",refresh);
+    };
+  },[]);
   const [portalTarget, setPortalTarget] = useState(null);
   const [isDesktop, setIsDesktop] = useState(() =>
     window.matchMedia("(min-width: 769px)").matches
@@ -262,11 +273,12 @@ export default function DesktopProductPageBridge() {
 
     const actions = getProductActions();
     actions?.selectSize?.(selectedProduct, size);
+    void actions?.warmInventoryDecision?.(selectedProduct,size);
   };
 
   const handleAddToCart = (size) => {
     const actions = getProductActions();
-    actions?.addToCart?.(selectedProduct, size);
+    return actions?.addToCart?.(selectedProduct, size);
   };
 
   const handleBuyNow = (size) => {
@@ -337,6 +349,7 @@ export default function DesktopProductPageBridge() {
         selectedSize={selectedSize}
         onSelectSize={handleSelectSize}
         onAddToCart={handleAddToCart}
+        canAddToCart={(item,size)=>getProductActions()?.canAddToCart?.(item,size)!==false}
         onBuyNow={handleBuyNow}
         isWishlisted={isWishlisted}
         onToggleWishlist={handleToggleWishlist}

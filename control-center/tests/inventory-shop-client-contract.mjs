@@ -65,3 +65,10 @@ assert.match(src,/blockedByProduct\.delete\(pid\)/);
 assert.match(app,/setInterval\(refresh,8000\)/);
 assert.match(app,/inventory-limit-message--cart/);
 assert.match(app,/inventory-limit-message--pdp/);
+
+const desktopPage=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopProductPage.jsx","utf8");
+const desktopBridge=fs.readFileSync("playnice-site/src/desktop-product-page/DesktopProductPageBridge.jsx","utf8");
+assert.match(desktopPage,/disabled=\{capReached\}/);
+assert.match(desktopPage,/inventory-limit-message--pdp/);
+assert.match(desktopBridge,/canAddToCart=\{\(item,size\)/);
+assert.match(desktopBridge,/playnice:stock-decision-updated/);
