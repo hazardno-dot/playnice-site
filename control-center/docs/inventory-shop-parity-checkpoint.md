@@ -84,3 +84,33 @@ Additional audit observations:
 - Full Remaining parity is still unverified, particularly historical
   commerce canonical-name aliases and order-stage semantics.
 - Do not enable V2 nor approve any product names from this partial check.
+
+## 2026-11-17 — Historical consumption cross-check
+
+Read-only production data examined: 139 inventory ledger events, 54 production
+orders, 119 order items, 115 distinct inventory fragrances. The installed
+get_control_center_order_analytics SQL's top_products and full_bottles
+projections were compared against the staged Shop historical commerce adapter
+on the same production snapshot, without executing any write or installing
+get_shop_inventory_source_v1.
+
+- 64 historical commerce product names compared.
+- 3 full-bottle product lines included in the comparison.
+- The inactive adapter recognized the current delivered sales and gift formats;
+  zero invalid delivered items in this audit.
+- The sole difference was 5 ml attributed to historical bundle name
+  "Al Haramain Signature Blue" instead of the tracked
+  "Haramain Signature Blue Eau de Parfum".
+- Added this missing alias to both byte-identical CC/Shop accounting copies,
+  and added a focused legacy-bundle contract assertion.
+- Prior independent ledger field parity: 115/115 with 0 differences.
+- After mapping the single 5 ml discrepancy to the canonical inventory
+  fragrance, the historical consumption comparison has no remaining
+  known per-product numerical variance; CI and deployed runtime must still
+  confirm the updated commit before treating the parity gate as complete.
+
+This is a calculation parity result, not a physical count or concurrency-safe
+inventory reservation guarantee. All 115 baselines remain classified as
+historical/estimated in the current CC model, even though merchant confirms
+the displayed Remaining values. No Preview allowlist was populated and
+V2 was not activated. Do not merge until checks and further Preview QA pass.
