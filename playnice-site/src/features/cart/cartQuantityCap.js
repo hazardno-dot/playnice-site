@@ -6,13 +6,61 @@ const sizeMl = (size) => {
   return match ? Number(match[1]) : null;
 };
 
+const purchasePolicies=new Map();
+const pendingPolicies=new Set();
+const ATTEMPT_TTL_MS=15000;
+const policyEnabledHost=()=>{
+  try{return typeof window!=="undefined"&&window.location.hostname.endsWith(".vercel.app");}
+  catch{return false;}
+};
+const notifyPolicyChange=()=>{
+  try{window.dispatchEvent(new Event("playnice:stock-decision-updated"));}catch{}
+};
+// Fetch only a single fragrance's cap; the Shop never receives the admin override map.
+// No enforcement happens unless the Preview server returns a validated policy.
+export async function warmPurchaseCapPolicy(product) {
+  const name=String(product?.name||"").trim();
+  if(!policyEnabledHost()||!name||name.length>180)return;
+  const key=name.toLowerCase(),now=Date.now(),cached=purchasePolicies.get(key);
+  if(pendingPolicies.has(key)||cached?.expires>now)return;
+  pendingPolicies.add(key);
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),3500);
+  try{
+    const response=await fetch("/api/purchase-policy",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({productName:name}),credentials:"same-origin",
+      cache:"no-store",signal:controller.signal
+    });
+    const data=response.ok?await response.json():null;
+    const cap=Number(data?.maximumMl);
+    const approved=data?.status==="READY"&&typeof data.maximumMl==="number"&&
+      Number.isFinite(cap)&&cap>=2&&cap<=200&&
+      Math.abs(cap*100-Math.round(cap*100))<1e-6;
+    purchasePolicies.set(key,{cap:approved?cap:null,expires:Date.now()+ATTEMPT_TTL_MS});
+    notifyPolicyChange();
+  }catch{
+    // Policy service unavailable: do not invent a customer restriction.
+    purchasePolicies.set(key,{cap:null,expires:Date.now()+ATTEMPT_TTL_MS});
+    notifyPolicyChange();
+  }finally{clearTimeout(timer);pendingPolicies.delete(key);}
+}
+const previewPolicyCap=(product)=>{
+  if(!policyEnabledHost())return null;
+  const key=String(product?.name||"").trim().toLowerCase();
+  const entry=purchasePolicies.get(key);
+  return entry?.expires>Date.now()?entry.cap:null;
+};
+
 export function previewCapForProduct(product) {
   try {
-    if (typeof window === "undefined" ||
-        !window.location.hostname.endsWith(".vercel.app") ||
-        new URLSearchParams(window.location.search).get("inventoryCapDemo") !== "1" ||
-        String(product?.slug || "").toLowerCase() !== "xerjoff-naxos") return null;
-    return 100; // SYNTHETIC PREVIEW FIXTURE; NOT a live PlayNice stock value.
+    if(!policyEnabledHost())return null;
+    const configuredCap=previewPolicyCap(product);
+    const demo=new URLSearchParams(window.location.search).get("inventoryCapDemo")==="1" &&
+      String(product?.slug||"").toLowerCase()==="xerjoff-naxos" ? 100 : null;
+    // A real policy never becomes less restrictive because of the synthetic demo.
+    return configuredCap!==null && demo!==null?Math.min(configuredCap,demo):
+      configuredCap??demo;
   } catch { return null; }
 }
 
