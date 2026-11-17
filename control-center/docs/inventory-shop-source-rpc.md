@@ -60,3 +60,18 @@ The source RPC has not been installed, the V2 feature switch has not been enable
 and no products have been added to the parity approval allowlist in this change.
 The 115-product exact Remaining audit and independently verified physical stock
 criteria remain mandatory before widening Preview blocking. No checkout changes.
+
+## 2026-11-17: separate Preview verification gate (inactive)
+
+Numerical parity does not independently certify physical Remaining. The private
+V2 decision now also requires explicit, per-product operational verification:
+`SHOP_INVENTORY_VERIFIED_REMAINING_NAMES` is a semicolon-separated Preview-only
+allowlist, separate from `SHOP_INVENTORY_PARITY_APPROVED_NAMES`.
+Both lists must contain the exact requested product name, and V2 must be
+enabled, before the server permits a blocking decision.
+Empty/unset verification list always returns `UNKNOWN` (fail-open).
+The pure Remaining decision requires `verifiedRemaining: true`; the public
+request cannot provide this field, which is set solely in the private API.
+No variable was set during this change. Do not interpret the merchant's
+historical baseline acknowledgment as automatic approval to enable V2.
+Existing conservative Shop RPC continues unaffected when V2 is disabled.
