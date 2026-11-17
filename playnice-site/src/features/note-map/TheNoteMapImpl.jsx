@@ -122,6 +122,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/green-tea.webp",
     fallback: "•",
   },
+  "myrrh": {
+    sr: "Smirna",
+    en: "Myrrh",
+    image: "/note-map/myrrh.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
