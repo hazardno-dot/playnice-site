@@ -3745,6 +3745,55 @@ export const productCopy = {
       "en": "For those drawn to bold musk, warm amber and a scent that feels personal on skin.",
       "sr": "Za one koji vole izražajan mošus, topao amber i miris koji postaje ličniji na koži."
     }
+  },
+
+  "Armaf Club de Nuit Elite Eau de Parfum": {
+    "miniTag": {
+      "en": "Green freshness with character",
+      "sr": "Zelena svežina sa karakterom"
+    },
+    "card": {
+      "en": "Green tea and bergamot, vibrant pepper and a refined woody base.",
+      "sr": "Zeleni čaj i bergamot, začinski biber i elegantna drvenasta baza."
+    },
+    "modal": {
+      "en": "Green tea, bergamot and apple meet a lively duo of peppers. Rose and blackcurrant add depth before vetiver, cedar and soft musk deliver an elegant finish.",
+      "sr": "Svežina zelenog čaja, bergamota i jabuke dobija živost od dve vrste bibera. Ruža i crna ribizla vode do suvog vetivera, kedra i mekog mošusa."
+    },
+    "scentType": {
+      "en": "Citrus-aromatic, green, woody",
+      "sr": "Citrusno-aromatični, zeleni, drvenasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Zeleni čaj",
+        "Bergamot",
+        "Sečuanski biber",
+        "Vetiver"
+      ],
+      "en": [
+        "Green Tea",
+        "Bergamot",
+        "Sichuan Pepper",
+        "Vetiver"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Zelen i svež",
+        "Začinski elegantan",
+        "Drvenast"
+      ],
+      "en": [
+        "Green and fresh",
+        "Spicy elegance",
+        "Woody"
+      ]
+    },
+    "whyChoose": {
+      "en": "For those who love clean freshness but want more character than a typical citrus scent.",
+      "sr": "Za one koji vole čistu svežinu, ali žele više karaktera od običnog citrusnog parfema."
+    }
   }
 };
 

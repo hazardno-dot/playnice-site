@@ -3270,6 +3270,32 @@ export const products = [
       heart: ["aromatic-notes","spices"],
       base: ["musk","amber"]
     }
+  },
+  {
+    id: 117,
+    addedAt: "2026-11-17T19:49:01.118Z",
+    slug: "armaf-club-de-nuit-elite",
+    name: "Armaf Club de Nuit Elite Eau de Parfum",
+    modalName: "Armaf Club de Nuit Elite EDP",
+    shortName: "CDN Elite",
+    category: "Arabian",
+    image: "/products/armaf-club-de-nuit-elite.png",
+    sizes: {"5ml":6,"10ml":11,"20ml":20},
+    badge: "FRESH DROP",
+    rating: 8.2,
+    ratingLabel: "PlayNice Pick",
+    season: "all",
+    moods: ["clean","casual","signature"],
+    recommendations: ["armaf-club-de-nuit-sillage","arabiyat-prestige-marwa","bois-imperial-essential-parfums"],
+    inspiredBy: {
+      name: "Original Armaf creation",
+      short: "Citrus Aromatic DNA"
+    },
+    noteMap: {
+      top: ["green-tea","bergamot","apple","sichuan-pepper","pink-pepper"],
+      heart: ["may-rose","black-currant","aromatic-notes","geranium"],
+      base: ["vetiver","musk","cedarwood","cashmeran","amber"]
+    }
   }
 
 ];

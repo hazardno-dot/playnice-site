@@ -485,5 +485,10 @@ export const productWearContext = {
   "Thomas Kosmala No. 10 Désir du Coeur Eau de Parfum": {
     "sr": "Dejt, veče, hladniji dani i posebni susreti.",
     "en": "Dates, evenings, cooler days and special encounters."
+  },
+
+  "Armaf Club de Nuit Elite Eau de Parfum": {
+    "sr": "Posao, gradski dani, prolećne šetnje i letnje večeri.",
+    "en": "Office days, city afternoons, spring walks and summer evenings."
   }
 };
