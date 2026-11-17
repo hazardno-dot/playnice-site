@@ -63,6 +63,10 @@ const historicalBundle=commerceFromDeliveredHistory([{
 assert.equal(historicalBundle.complete,true,
   "a 5ml × 4 legacy bundle without size_ml must not invalidate entire snapshot");
 assert.equal(historicalBundle.commerce.top_products.length,4);
+assert.equal(historicalBundle.commerce.top_products.find(x=>x.product_name==="Haramain Signature Blue Eau de Parfum")?.sold_ml,5,
+  "historical Al Haramain Signature Blue must resolve to the tracked CC inventory name");
+assert.ok(!historicalBundle.commerce.top_products.some(x=>x.product_name==="Al Haramain Signature Blue"),
+  "old bundle alias must not create a phantom inventory product");
 assert.equal(historicalBundle.commerce.top_products.reduce((sum,x)=>sum+x.sold_ml,0),20);
 const missingBundle=commerceFromDeliveredHistory(orders,
  [{...items[0],size_label:"unknown",size_ml:0}]);
