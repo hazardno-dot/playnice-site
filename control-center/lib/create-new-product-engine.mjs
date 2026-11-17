@@ -49,7 +49,11 @@ async function github(path, options = {}) {
     },
   });
   const data = response.status === 204 ? null : await response.json();
-  if (!response.ok) throw new Error(data?.message || `GitHub request failed (${response.status})`);
+  if (!response.ok) {
+    const error = new Error(data?.message || `GitHub request failed (${response.status})`);
+    error.status = response.status;
+    throw error;
+  }
   return data;
 }
 
@@ -297,11 +301,55 @@ async function buildDataTreeEntries(product) {
   return { files, treeEntries };
 }
 
+async function resolveMediaSourceRef(product) {
+  const stageBranch = product.mediaStage.branch;
+  try {
+    await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/${encodeURIComponent(stageBranch)}`);
+    return stageBranch;
+  } catch (error) {
+    // Only a deleted staging branch can use the merged-media fallback.
+    if (error.status !== 404) throw error;
+  }
+
+  const expectedPrefix = `cc-product-media-stage-${product.slug}-`;
+  if (!stageBranch.startsWith(expectedPrefix) || !/^\d{12}$/.test(stageBranch.slice(expectedPrefix.length))) {
+    throw new Error("Product media staging branch is missing or invalid. Re-stage media before applying.");
+  }
+
+  // The staging PR must be merged into main. Do not accept arbitrary files already on main.
+  const prs = await github(
+    `/repos/${OWNER}/${REPO_NAME}/pulls?state=closed&head=${encodeURIComponent(`${OWNER}:${stageBranch}`)}&per_page=100`
+  );
+  const merged = prs.find((pr) =>
+    pr.head?.ref === stageBranch && pr.merged_at && pr.base?.ref === "main" && pr.merge_commit_sha
+  );
+  if (!merged) throw new Error("Product media staging branch was deleted without a verified merge into main.");
+
+  const expected = expectedMediaPaths(product.slug);
+  const changed = await github(`/repos/${OWNER}/${REPO_NAME}/pulls/${merged.number}/files?per_page=100`);
+  if (!expected.every((path) => changed.some((file) => file.filename === path && file.status !== "removed"))) {
+    throw new Error("Merged Product media PR does not contain both required media files.");
+  }
+
+  // Both blobs must still match the verified merge commit, preventing silent media substitution.
+  for (const path of expected) {
+    const atMerge = await github(
+      `/repos/${OWNER}/${REPO_NAME}/contents/${path}?ref=${encodeURIComponent(merged.merge_commit_sha)}`
+    );
+    const onMain = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${path}?ref=main`);
+    if (!atMerge?.sha || atMerge.sha !== onMain?.sha) {
+      throw new Error(`Merged Product media changed on main: ${path}. Review media before applying.`);
+    }
+  }
+  return "main";
+}
+
 async function buildMediaTreeEntries(product) {
   const files = expectedMediaPaths(product.slug);
+  const sourceRef = await resolveMediaSourceRef(product);
   const treeEntries = [];
   for (const filePath of files) {
-    const source = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=${encodeURIComponent(product.mediaStage.branch)}`);
+    const source = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=${encodeURIComponent(sourceRef)}`);
     if (!source?.sha) throw new Error(`Staged Product media is missing: ${filePath}`);
     treeEntries.push({ path: filePath, mode: "100644", type: "blob", sha: source.sha });
   }
@@ -326,6 +374,7 @@ export const __test = {
   appendSeparator,
   stableJson,
   compactConcentrationName,
+  resolveMediaSourceRef,
 };
 
 export default async function handler(req, res) {
