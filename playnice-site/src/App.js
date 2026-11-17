@@ -3121,7 +3121,10 @@ useEffect(() => {
 
     canAddToCart: (product, size) => !product || !size || canAddDecant(product, size),
     isAtStockLimit: (product,size)=>isAtStockLimit(product,size),
-    warmInventoryDecision: (product, size) => warmStockDecision(product,cart,size),
+    warmInventoryDecision: (product, size) => {
+      void warmPurchaseCapPolicy(product);
+      return warmStockDecision(product,cart,size);
+    },
 
     addToCart: (
       product,
