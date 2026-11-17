@@ -95,6 +95,52 @@ export default function AnalyticsManager() {
   const [inventoryReason, setInventoryReason] = useState("PRIVATE_GIFT");
   const [inventoryBusy, setInventoryBusy] = useState(false);
   const [inventoryNotice, setInventoryNotice] = useState("");
+  const [purchaseCaps, setPurchaseCaps] = useState(null);
+  const [purchaseCapsStatus, setPurchaseCapsStatus] = useState("NOT_CONFIGURED");
+  const [purchaseCapDraft, setPurchaseCapDraft] = useState("30");
+  const [purchaseCapSaving, setPurchaseCapSaving] = useState(false);
+  const [purchaseCapNotice, setPurchaseCapNotice] = useState("");
+  const purchaseCapPreview = typeof window !== "undefined" &&
+    window.location.hostname.endsWith(".vercel.app");
+  useEffect(() => {
+    if (!slot || module !== "Inventory") return;
+    let cancelled=false;
+    supabase.rpc("get_control_center_purchase_caps_v1").then(({data,error})=>{
+      if(cancelled)return;
+      if(error || !data || !data.overrides){
+        setPurchaseCaps(null);setPurchaseCapsStatus("NOT_CONFIGURED");
+      }else{
+        setPurchaseCaps(data);setPurchaseCapsStatus("READY");
+      }
+    }).catch(()=>{if(!cancelled)setPurchaseCapsStatus("NOT_CONFIGURED");});
+    return ()=>{cancelled=true;};
+  },[slot,module]);
+  useEffect(()=>{
+    const overrides=purchaseCaps?.overrides||{};
+    const match=Object.entries(overrides).find(([name])=>
+      name.trim().toLowerCase()===String(inventoryProduct||"").trim().toLowerCase());
+    setPurchaseCapDraft(String(match?match[1]:30));
+    setPurchaseCapNotice("");
+  },[inventoryProduct,purchaseCaps]);
+  const savePurchaseCap = async (reset=false) => {
+    if(!purchaseCapPreview || purchaseCapsStatus!=="READY" || !inventoryProduct)return;
+    const ml=reset?30:Number(purchaseCapDraft);
+    if(!Number.isFinite(ml)||ml<2||ml>200||
+        Math.abs(ml*100-Math.round(ml*100))>1e-6){
+      setPurchaseCapNotice("Choose a limit between 2 and 200 ml.");
+      return;
+    }
+    setPurchaseCapSaving(true);setPurchaseCapNotice("");
+    try{
+      const {data,error}=await supabase.rpc("set_control_center_purchase_cap_v1",{
+        p_product_name:inventoryProduct,p_limit_ml:ml
+      });
+      if(error||!data?.overrides)throw new Error(error?.message||"Could not save purchase limit.");
+      setPurchaseCaps(data);
+      setPurchaseCapNotice(reset||ml===30?"Default 30 ml restored.":"Purchase limit saved.");
+    }catch(e){setPurchaseCapNotice(e.message||"Could not save purchase limit.");}
+    finally{setPurchaseCapSaving(false);}
+  };
 
   useEffect(() => {
     const mainStage = document.querySelector(".main-stage");
@@ -707,6 +753,29 @@ export default function AnalyticsManager() {
           </div>
         </article>
 
+        <article className="analytics-panel inventory-entry-panel">
+          <div className="analytics-panel-head"><div><span>SHOP POLICY · PER ORDER</span><h3>Fragrance purchase limit</h3></div>
+            <small>Default 30 ml per fragrance · 2–200 ml overrides</small></div>
+          <p className="analytics-note">The combined ml of every size of one fragrance in a single order counts towards its cap. This is independent of the Remaining stock check and is not a limit per customer.</p>
+          <div className="inventory-form">
+            <label><span>SELECTED FRAGRANCE</span><strong>{inventoryProduct||"Choose a fragrance in Inventory Watch"}</strong></label>
+            <label><span>MAXIMUM ML PER ORDER</span>
+              <input type="number" min="2" max="200" step="0.01" value={purchaseCapDraft}
+                disabled={!purchaseCapPreview || purchaseCapsStatus!=="READY" || purchaseCapSaving || !inventoryProduct}
+                onChange={(event)=>setPurchaseCapDraft(event.target.value)}
+                aria-label="Maximum millilitres per fragrance per order"/>
+            </label>
+            <div className="inventory-filter-toolbar">
+              <button type="button" disabled={!purchaseCapPreview || purchaseCapsStatus!=="READY" || purchaseCapSaving || !inventoryProduct} onClick={()=>savePurchaseCap(false)}>Save limit</button>
+              <button type="button" disabled={!purchaseCapPreview || purchaseCapsStatus!=="READY" || purchaseCapSaving || !inventoryProduct} onClick={()=>savePurchaseCap(true)}>Reset to 30 ml</button>
+            </div>
+            <small role="status">{purchaseCapNotice||(
+              purchaseCapsStatus==="READY"
+                ? purchaseCapPreview?"Preview policy editor ready; no customer enforcement enabled.":"Editor is Preview-only."
+                :"Persistent policy storage not installed. Settings cannot be saved yet."
+            )}</small>
+          </div>
+        </article>
         <article className="analytics-panel inventory-entry-panel">
           <div className="analytics-panel-head">
             <div><span>STOCK LEDGER</span><h3>{inventoryMode === "out" ? "Remove stock" : inventoryIsTracked ? "Add bottle" : "Verify physical stock"}</h3></div>
