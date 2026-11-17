@@ -2787,9 +2787,13 @@ const goToHomeSection = (selector, block = "start") => {
     const refresh=()=>{
       for(const item of cart){
         const product=products.find(p=>p.id===item.id);
-        if(product) void warmStockDecision(product,cart,item.size);
+        if(product){
+          void warmPurchaseCapPolicy(product);
+          void warmStockDecision(product,cart,item.size);
+        }
       }
       if(selectedProduct){
+        void warmPurchaseCapPolicy(selectedProduct);
         for(const size of Object.keys(selectedProduct.sizes||{}))
           void warmStockDecision(selectedProduct,cart,size);
       }
