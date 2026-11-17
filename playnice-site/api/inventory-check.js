@@ -36,10 +36,16 @@ module.exports=async function handler(req,res){
         .split(";").map(s=>s.trim().toLowerCase()).filter(Boolean);
       if(!approved.includes(name.toLowerCase()))
         return res.status(200).json(UNKNOWN);
+      // Separate operational verification from numerical parity approval.
+      // Both must explicitly include the product before V2 can block.
+      const verified=String(process.env.SHOP_INVENTORY_VERIFIED_REMAINING_NAMES||"")
+        .split(";").map(s=>s.trim().toLowerCase()).filter(Boolean);
+      if(!verified.includes(name.toLowerCase()))
+        return res.status(200).json(UNKNOWN);
       const {decisionFromShopRemaining}=await import("../server/inventory-shop-remaining.mjs");
       const result=await decisionFromShopRemaining({
         supabaseUrl:SUPABASE_URL,secret:SECRET,productName:name,
-        requestedTotalMl:total,signal:controller.signal
+        requestedTotalMl:total,verifiedRemaining:true,signal:controller.signal
       });
       return res.status(200).json(result);
     }
