@@ -1,5 +1,6 @@
 -- DRAFT ONLY. Do not apply to Production until explicitly approved.
 -- Administrative purchase policy (per fragrance, per order), independent of inventory.
+begin;
 -- The default 30 ml applies when no override exists. This table stores overrides only.
 create table if not exists public.inventory_purchase_cap_overrides_v1 (
   product_name text primary key,
@@ -8,6 +9,9 @@ create table if not exists public.inventory_purchase_cap_overrides_v1 (
   updated_by uuid not null
 );
 alter table public.inventory_purchase_cap_overrides_v1 enable row level security;
+-- Schema enforcement: unique names independent of case and whitespace.
+create unique index if not exists inventory_purchase_cap_overrides_v1_name_ci
+  on public.inventory_purchase_cap_overrides_v1(lower(trim(product_name)));
 revoke all on public.inventory_purchase_cap_overrides_v1 from public, anon, authenticated;
 -- SECURITY DEFINER functions below are the only client-visible access path.
 
@@ -62,7 +66,7 @@ returns jsonb language plpgsql stable security definer set search_path=''
 as $function$
 declare v_overrides jsonb;
 begin
-  if auth.role() is distinct from 'service_role' then
+  if current_setting('request.jwt.claim.role', true) is distinct from 'service_role' then
     raise exception 'SERVICE_ROLE_REQUIRED' using errcode='42501';
   end if;
   select coalesce(jsonb_object_agg(product_name,limit_ml order by product_name),'{}'::jsonb)
@@ -77,3 +81,4 @@ revoke all on function public.get_shop_purchase_caps_v1() from public,anon,authe
 grant execute on function public.get_control_center_purchase_caps_v1() to authenticated;
 grant execute on function public.set_control_center_purchase_cap_v1(text,numeric) to authenticated;
 grant execute on function public.get_shop_purchase_caps_v1() to service_role;
+commit;
