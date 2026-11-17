@@ -66,7 +66,7 @@ returns jsonb language plpgsql stable security definer set search_path=''
 as $function$
 declare v_overrides jsonb;
 begin
-  if current_setting('request.jwt.claim.role', true) is distinct from 'service_role' then
+  if (current_setting('request.jwt.claims', true)::jsonb->>'role') is distinct from 'service_role' then
     raise exception 'SERVICE_ROLE_REQUIRED' using errcode='42501';
   end if;
   select coalesce(jsonb_object_agg(product_name,limit_ml order by product_name),'{}'::jsonb)
