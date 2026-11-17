@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
 const src=fs.readFileSync("playnice-site/src/features/cart/cartQuantityCap.js","utf8")
-  .replaceAll("export function ", "function ");
+  .replaceAll("export function ", "function ")
+  .replaceAll("export async function ", "async function ");
 const context={Number,String,Array,Math,window:undefined,URLSearchParams};
 vm.runInNewContext(src+"\nthis.assess=assessCartQuantityCap;this.preview=previewCapForProduct;",context);
 const assess=context.assess;
