@@ -3295,6 +3295,32 @@ export const products = [
       heart: ["may-rose","black-currant","aromatic-notes","geranium"],
       base: ["vetiver","musk","cedarwood","cashmeran","amber"]
     }
+  },
+  {
+    id: 118,
+    addedAt: "2026-11-17T23:03:08.437Z",
+    slug: "rayhaan-vantage",
+    name: "Rayhaan Vantage Eau de Parfum",
+    modalName: "Rayhaan Vantage EDP",
+    shortName: "Vantage",
+    category: "Arabian",
+    image: "/products/rayhaan-vantage.png",
+    sizes: {"5ml":5,"10ml":9,"20ml":17},
+    badge: "HIDDEN GEM",
+    rating: 8.2,
+    ratingLabel: "PlayNice Pick",
+    season: "winter",
+    moods: ["rich","date","signature"],
+    recommendations: ["lattafa-asad-elixir","bois-imperial-essential-parfums","chopard-oud-malaki"],
+    inspiredBy: {
+      name: "Amouage Decision",
+      short: "Decision DNA"
+    },
+    noteMap: {
+      top: ["cardamom","bergamot","pink-pepper"],
+      heart: ["olibanum","myrrh","juniper-berries"],
+      base: ["vanilla","cedarwood","patchouli"]
+    }
   }
 
 ];
