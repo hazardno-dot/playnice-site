@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
-import { warmPurchaseCapPolicy,previewCapForProduct,assessCartQuantityCap } from "../../playnice-site/src/features/cart/cartQuantityCap.js";
+import fs from "node:fs";
+// The Shop uses CRA/CommonJS package defaults; import this pure ESM source as data in Node contracts.
+const source=fs.readFileSync("playnice-site/src/features/cart/cartQuantityCap.js","utf8");
+const {warmPurchaseCapPolicy,previewCapForProduct,assessCartQuantityCap}=await import(
+  "data:text/javascript;base64,"+Buffer.from(source).toString("base64")
+);
 const oldWindow=global.window,oldFetch=global.fetch;
 const product={id:11,name:"Naxos",slug:"naxos"};
 try{
