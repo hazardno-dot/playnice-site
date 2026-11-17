@@ -312,7 +312,7 @@ async function resolveMediaSourceRef(product) {
   }
 
   const expectedPrefix = `cc-product-media-stage-${product.slug}-`;
-  if (!stageBranch.startsWith(expectedPrefix) || !/^\\d{12}$/.test(stageBranch.slice(expectedPrefix.length))) {
+  if (!stageBranch.startsWith(expectedPrefix) || !/^\d{12}$/.test(stageBranch.slice(expectedPrefix.length))) {
     throw new Error("Product media staging branch is missing or invalid. Re-stage media before applying.");
   }
 
