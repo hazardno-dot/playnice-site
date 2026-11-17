@@ -5,7 +5,9 @@ const source=fs.readFileSync("playnice-site/src/features/cart/cartQuantityCap.js
 const {warmPurchaseCapPolicy,previewCapForProduct,assessCartQuantityCap}=await import(
   "data:text/javascript;base64,"+Buffer.from(source).toString("base64")
 );
-const oldWindow=global.window,oldFetch=global.fetch;
+const oldWindow=global.window,oldFetch=global.fetch,oldNow=Date.now;
+let fakeNow=oldNow();
+Date.now=()=>fakeNow;
 const product={id:11,name:"Naxos",slug:"naxos"};
 try{
   global.window={location:{hostname:"playnice-preview.vercel.app",search:""},
@@ -18,6 +20,21 @@ try{
     previewCapForProduct(product)).blocked,false);
   assert.equal(assessCartQuantityCap([{id:11,size:"10ml",quantity:2}],11,"5ml",
     previewCapForProduct(product)).blocked,true);
+  // Regression: the accepted 20 ml limit must not evaporate after 15 seconds.
+  fakeNow+=16000;
+  assert.equal(previewCapForProduct(product),20,
+    "confirmed cap must remain enforced after its refresh TTL");
+  assert.equal(assessCartQuantityCap([{id:11,size:"10ml",quantity:2}],11,"10ml",
+    previewCapForProduct(product)).blocked,true);
+  global.fetch=async()=>{throw new Error("temporary network outage");};
+  await warmPurchaseCapPolicy(product);
+  assert.equal(previewCapForProduct(product),20,
+    "temporary policy-service failure must not release a confirmed cart cap");
+  fakeNow+=16000;
+  global.fetch=async()=>({ok:true,json:async()=>({status:"READY",maximumMl:30})});
+  await warmPurchaseCapPolicy(product);
+  assert.equal(previewCapForProduct(product),30,
+    "server-side policy changes must replace previously confirmed caps on refresh");
   const other={id:12,name:"Other fragrance",slug:"other"};
   global.fetch=async()=>({ok:true,json:async()=>({status:"READY",maximumMl:30})});
   await warmPurchaseCapPolicy(other);
@@ -30,5 +47,6 @@ try{
 }finally{
   if(oldWindow===undefined)delete global.window;else global.window=oldWindow;
   global.fetch=oldFetch;
+  Date.now=oldNow;
 }
 console.log("PASS Preview cart purchase cap: configured override, mixed ml, Production untouched");
