@@ -25,7 +25,7 @@ import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
 import { getJournalArticleSlug } from "./lib/journalSlug";
 import { registerProductActions } from "./lib/productActionsGateway";
 import { observeInventoryCartIntent } from "./features/cart/inventoryShadowObserver";
-import { assessCartQuantityCap, previewCapForProduct } from "./features/cart/cartQuantityCap";
+import { assessCartQuantityCap, previewCapForProduct, warmPurchaseCapPolicy } from "./features/cart/cartQuantityCap";
 import { isStockDecisionBlocked, isStockDecisionPending, noteInventoryCartClick, warmStockDecision } from "./features/cart/shopInventoryDecision";
 import {
   SITE_BASE_URL,
@@ -2771,9 +2771,13 @@ const goToHomeSection = (selector, block = "start") => {
   useEffect(() => {
     for(const item of cart){
       const product=products.find((p)=>p.id===item.id);
-      if(product) void warmStockDecision(product,cart,item.size);
+      if(product) {
+        void warmStockDecision(product,cart,item.size);
+        void warmPurchaseCapPolicy(product);
+      }
     }
     if(selectedProduct){
+      void warmPurchaseCapPolicy(selectedProduct);
       for(const size of Object.keys(selectedProduct.sizes||{}))
         void warmStockDecision(selectedProduct,cart,size);
     }
