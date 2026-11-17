@@ -374,6 +374,7 @@ export const __test = {
   appendSeparator,
   stableJson,
   compactConcentrationName,
+  resolveMediaSourceRef,
 };
 
 export default async function handler(req, res) {
