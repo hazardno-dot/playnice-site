@@ -164,6 +164,10 @@ export default [
   },
   {
     "sr": "Ne želiš komplimente brzinom od 1.000 km/h? Preskoči ga. U suprotnom, 20 sprejeva i uživaj u letu.",
-    "en": "Don't want compliments at 1,000 km/h? Skip it. Otherwise, 20 sprays and enjoy the flight."}
+    "en": "Don't want compliments at 1,000 km/h? Skip it. Otherwise, 20 sprays and enjoy the flight."},
+  {
+    "sr": "Kad ideš na razgovor za posao u malu kancelariju sa osam sprejeva. Traže kandidata, ne upravnika katedrale.",
+    "en": "When showing up to a job interview in a tiny office wearing eight sprays. They're hiring an employee, not a cathedral director."
+  }
 
 ];

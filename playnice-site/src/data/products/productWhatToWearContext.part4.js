@@ -166,6 +166,10 @@ const entries = [
   {
     "sr": "Bela lanena košulja, bež pantalone i čiste patike. Za veče, svetlosivi sako i jednostavan sat.",
     "en": "A white linen shirt, beige trousers and clean sneakers. Add a light grey blazer and a simple watch for the evening."
+  },
+  {
+    "sr": "Tamnosiva rolka, vuneni kaput i kožne čizme. Za veče, crna košulja i sako.",
+    "en": "A charcoal turtleneck, wool coat and leather boots. For evening, a black shirt and tailored blazer."
   }
 
 ];

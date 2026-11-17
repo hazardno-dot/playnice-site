@@ -490,5 +490,10 @@ export const productWearContext = {
   "Armaf Club de Nuit Elite Eau de Parfum": {
     "sr": "Posao, gradski dani, prolećne šetnje i letnje večeri.",
     "en": "Office days, city afternoons, spring walks and summer evenings."
+  },
+
+  "Rayhaan Vantage Eau de Parfum": {
+    "sr": "Hladne večeri, elegantne večere i posebni susreti.",
+    "en": "Cold evenings, elegant dinners and memorable encounters."
   }
 };

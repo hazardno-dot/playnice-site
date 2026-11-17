@@ -3793,6 +3793,55 @@ export const productCopy = {
       "en": "For those who love clean freshness but want more character than a typical citrus scent.",
       "sr": "Za one koji vole čistu svežinu, ali žele više karaktera od običnog citrusnog parfema."
     }
+  },
+
+  "Rayhaan Vantage Eau de Parfum": {
+    "miniTag": {
+      "en": "🕯️ Resinous / Spicy",
+      "sr": "🕯️ Smolast / Začinski"
+    },
+    "card": {
+      "en": "Cardamom and frankincense over rich resins and spiced woods.",
+      "sr": "Kardamom i tamjan u smolastom, začinskom drvenom tragu."
+    },
+    "modal": {
+      "en": "Bergamot, cardamom and pink pepper open with a spark. Frankincense, myrrh and juniper bring resinous depth, settling into vanilla, cedar and patchouli.",
+      "sr": "Bergamot, kardamom i ružičasti biber otvaraju miris pun kontrasta. Tamjan, smirna i kleka donose dubinu, dok vanila, kedar i pačuli smiruju završnicu."
+    },
+    "scentType": {
+      "en": "Spicy resinous, woody",
+      "sr": "Začinsko-smolast, drvenast"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Kardamom",
+        "Tamjan",
+        "Smirna",
+        "Kedar"
+      ],
+      "en": [
+        "Cardamom",
+        "Frankincense",
+        "Myrrh",
+        "Cedarwood"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Smolast",
+        "Začinski",
+        "Drvenast"
+      ],
+      "en": [
+        "Resinous",
+        "Spicy",
+        "Woody"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of incense, warm spice and confident woody depth without excessive sweetness.",
+      "sr": "Za ljubitelje tamjana, toplih začina i ozbiljnog drvenog karaktera bez previše slatkoće."
+    }
   }
 };
 

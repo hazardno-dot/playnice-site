@@ -3539,6 +3539,37 @@ export const discoveryProfiles = {
     "cleanliness": 8.7,
     "versatility": 9,
     "gourmandness": 0
+  },
+
+  "rayhaan-vantage": {
+    "date": 8.2,
+    "casual": 5.8,
+    "citrus": 4.5,
+    "office": 5.8,
+    "unisex": 7.5,
+    "warmth": 7.5,
+    "aquatic": 0,
+    "dryness": 7.8,
+    "evening": 9,
+    "powdery": 1.8,
+    "airiness": 4.1,
+    "darkness": 6.5,
+    "elegance": 8.5,
+    "feminine": 4,
+    "florality": 0.5,
+    "freshness": 5.2,
+    "longevity": 8.5,
+    "masculine": 7.8,
+    "spiciness": 8.5,
+    "sweetness": 3.2,
+    "woodiness": 8.2,
+    "creaminess": 2.8,
+    "fruitiness": 0.5,
+    "projection": 8,
+    "aromaticity": 7.4,
+    "cleanliness": 4.8,
+    "versatility": 6.5,
+    "gourmandness": 1.2
   }
 };
 
