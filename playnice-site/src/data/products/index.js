@@ -3288,9 +3288,8 @@ export const products = [
     moods: ["clean","casual","signature"],
     recommendations: ["armaf-club-de-nuit-sillage","arabiyat-prestige-marwa","bois-imperial-essential-parfums"],
     inspiredBy: {
-      name: "Original Armaf creation",
-      short: "Citrus Aromatic DNA"
-    },
+      name: "Creed Wild Vetiver",
+      short: "Wild Vetiver DNA"},
     noteMap: {
       top: ["green-tea","bergamot","apple","sichuan-pepper","pink-pepper"],
       heart: ["may-rose","black-currant","aromatic-notes","geranium"],
