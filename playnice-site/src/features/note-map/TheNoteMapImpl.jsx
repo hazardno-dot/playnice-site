@@ -116,6 +116,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/tarocco-orange.webp",
     fallback: "•",
   },
+  "green-tea": {
+    sr: "Zeleni čaj",
+    en: "Green Tea",
+    image: "/note-map/green-tea.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
