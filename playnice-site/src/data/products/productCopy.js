@@ -3749,9 +3749,8 @@ export const productCopy = {
 
   "Armaf Club de Nuit Elite Eau de Parfum": {
     "miniTag": {
-      "en": "Green freshness with character",
-      "sr": "Zelena svežina sa karakterom"
-    },
+      "en": "🍵 Green / Spicy",
+      "sr": "🍵 Zeleni / Začinski"},
     "card": {
       "en": "Green tea and bergamot, vibrant pepper and a refined woody base.",
       "sr": "Zeleni čaj i bergamot, začinski biber i elegantna drvenasta baza."
