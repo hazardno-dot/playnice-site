@@ -8,7 +8,7 @@ const sizeMl = (size) => {
 
 const purchasePolicies=new Map();
 const pendingPolicies=new Set();
-const ATTEMPT_TTL_MS=15000;
+const REFRESH_MS=15000; // Retry cadence only, never the lifetime of an accepted purchase cap.
 const policyEnabledHost=()=>{
   try{return typeof window!=="undefined"&&window.location.hostname.endsWith(".vercel.app");}
   catch{return false;}
@@ -22,7 +22,7 @@ export async function warmPurchaseCapPolicy(product) {
   const name=String(product?.name||"").trim();
   if(!policyEnabledHost()||!name||name.length>180)return;
   const key=name.toLowerCase(),now=Date.now(),cached=purchasePolicies.get(key);
-  if(pendingPolicies.has(key)||cached?.expires>now)return;
+  if(pendingPolicies.has(key)||cached?.refreshAfter>now)return;
   pendingPolicies.add(key);
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),3500);
@@ -37,11 +37,11 @@ export async function warmPurchaseCapPolicy(product) {
     const approved=data?.status==="READY"&&typeof data.maximumMl==="number"&&
       Number.isFinite(cap)&&cap>=2&&cap<=200&&
       Math.abs(cap*100-Math.round(cap*100))<1e-6;
-    purchasePolicies.set(key,{cap:approved?cap:null,expires:Date.now()+ATTEMPT_TTL_MS});
+    purchasePolicies.set(key,{cap:approved?cap:(cached?.cap??null),refreshAfter:Date.now()+REFRESH_MS});
     notifyPolicyChange();
   }catch{
     // Policy service unavailable: do not invent a customer restriction.
-    purchasePolicies.set(key,{cap:null,expires:Date.now()+ATTEMPT_TTL_MS});
+    purchasePolicies.set(key,{cap:cached?.cap??null,refreshAfter:Date.now()+REFRESH_MS});
     notifyPolicyChange();
   }finally{clearTimeout(timer);pendingPolicies.delete(key);}
 }
@@ -49,7 +49,9 @@ const previewPolicyCap=(product)=>{
   if(!policyEnabledHost())return null;
   const key=String(product?.name||"").trim().toLowerCase();
   const entry=purchasePolicies.get(key);
-  return entry?.expires>Date.now()?entry.cap:null;
+  // A confirmed administrative purchase cap must not silently expire mid-cart.
+  // refreshAfter only controls when the server may be queried again.
+  return entry?.cap??null;
 };
 
 export function previewCapForProduct(product) {
