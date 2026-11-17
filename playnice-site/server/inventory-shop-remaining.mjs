@@ -5,7 +5,7 @@ import { shopDecisionFromRemaining } from "./inventory-remaining-bridge.mjs";
 const UNKNOWN={decision:"UNKNOWN"};
 const normalize=s=>String(s||"").trim().toLowerCase();
 export async function decisionFromShopRemaining({
-  supabaseUrl,secret,productName,requestedTotalMl,fetchImpl=fetch,signal
+  supabaseUrl,secret,productName,requestedTotalMl,verifiedRemaining=false,fetchImpl=fetch,signal
 }={}){
   try{
     if(!secret||!supabaseUrl||!productName||!Number.isFinite(requestedTotalMl))
@@ -28,7 +28,7 @@ export async function decisionFromShopRemaining({
     if(!result.complete)return UNKNOWN;
     const decision=shopDecisionFromRemaining(
       result.rows,productName,requestedTotalMl,{
-        complete:true,fresh:true,
+        complete:true,fresh:true,verifiedRemaining:verifiedRemaining===true,
         // No customer-reported stock values accepted.
         hasUnmatchedOrders:false,ambiguousMappings:false
       }
