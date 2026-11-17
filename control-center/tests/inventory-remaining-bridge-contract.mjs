@@ -7,7 +7,9 @@ const source=[{product_name:name,stock_in_ml:100,opening_balance_ml:100,
   restock_ml:0,manual_out_ml:0,historical_baseline:true,estimated:true}];
 const realShape=buildInventoryAnalytics([],source,{top_products:[],full_bottles:[]});
 const rows=realShape.rows;
-const opts={complete:true,fresh:true};
+const opts={complete:true,fresh:true,verifiedRemaining:true};
+assert.equal(shopDecisionFromRemaining(realShape.rows,name,110,{complete:true,fresh:true}).decision,"UNKNOWN",
+  "parity without independent Remaining verification must fail open");
 const decision=(r,n,qty,o=opts)=>shopDecisionFromRemaining(r,n,qty,o).decision;
 assert.equal(decision(rows,name,100),"ALLOW");
 assert.equal(decision(rows,name,110),"LIMIT_REACHED");
@@ -24,6 +26,7 @@ assert.equal(decision([...rows,rows[0]],name,110),"UNKNOWN");
 assert.equal(decision([{...rows[0],remaining_ml:null}],name,110),"UNKNOWN");
 assert.equal(decision([{...rows[0],remaining_ml:0,stock_status:"DEPLETED"}],name,10),"LIMIT_REACHED");
 assert.equal(decision([{...rows[0],remaining_ml:0,balance_unverified:true}],name,10),"UNKNOWN");
+assert.equal(decision(rows,name,110,{...opts,verifiedRemaining:false}),"UNKNOWN");
 const two=buildInventoryAnalytics([],source,{top_products:[{product_name:name,total_ml_out:22,sold_ml:20,gift_ml:2}],full_bottles:[]});
 assert.equal(decision(two.rows,name,78),"ALLOW");
 assert.equal(decision(two.rows,name,80),"LIMIT_REACHED");
