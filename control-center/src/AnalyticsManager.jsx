@@ -181,6 +181,17 @@ export default function AnalyticsManager() {
     const resaleMl = resaleByName.get(String(product.name).toLowerCase()) || 0;
     return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, resale_in_ml: resaleMl, resale_out_ml: resaleMl, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
   });
+  const stockAlerts = inventoryRows
+    .filter((row) => Number.isFinite(Number(row.remaining_ml)) &&
+      Number(row.remaining_ml) >= 0 && Number(row.remaining_ml) <= 20)
+    .map((row) => ({
+      name: row.product_name,
+      remaining: Number(row.remaining_ml),
+      severity: Number(row.remaining_ml) <= 10 ? "CRITICAL" : "LOW"
+    }))
+    .sort((a,b) => a.remaining-b.remaining || a.name.localeCompare(b.name));
+  const criticalAlerts = stockAlerts.filter((row) => row.severity === "CRITICAL");
+  const lowAlerts = stockAlerts.filter((row) => row.severity === "LOW");
   // Audit-only readiness view. This is not live shadow telemetry or checkout enforcement.
   // Baseline size verification does not prove current available-to-sell stock.
   const protectionAudit = inventoryRows.reduce((acc, row) => {
@@ -651,16 +662,27 @@ export default function AnalyticsManager() {
         <article className="analytics-panel sales-wide inventory-panel">
           <div className="analytics-panel-head">
             <div><span>INVENTORY</span><h3>Inventory watch</h3></div>
-            <small>Full catalog · measured + provisional stock · low alert ≤20 ml</small>
+            <small>Full catalog · low ≤20 ml · critical ≤10 ml</small>
           </div>
 
           <div className="inventory-summary">
             <div><span>MEASURED</span><strong>{number(inventory.tracked_count)}</strong></div><div><span>ESTIMATED</span><strong>{number(inventoryRows.filter((row) => row.estimated).length)}</strong></div>
-            <div><span>LOW STOCK</span><strong>{number(inventoryRows.filter((row) => row.stock_status === "LOW").length)}</strong></div>
+            <div><span>LOW STOCK</span><strong>{number(lowAlerts.length)}</strong></div><div><span>CRITICAL</span><strong>{number(criticalAlerts.length)}</strong></div>
             <div><span>DEPLETED</span><strong>{number(inventoryRows.filter((row) => ["DEPLETED", "REVIEW"].includes(row.stock_status)).length)}</strong></div>
             <div><span>REMAINING</span><strong>{number(inventoryRows.reduce((sum, row) => sum + Math.max(0, Number(row.remaining_ml || 0)), 0), 1)} ml</strong></div>
           </div>
 
+          {stockAlerts.length ? <div className="inventory-stock-alerts" role="status" aria-label="Fragrance replenishment alerts">
+            <strong>REPLENISHMENT WATCH · {stockAlerts.length} fragrances</strong>
+            <p className="analytics-note">{criticalAlerts.length} critical (≤10 ml) · {lowAlerts.length} low (10–20 ml). Alerts are derived from Control Center Remaining and clear automatically after replenishment.</p>
+            <div className="inventory-filter-toolbar">
+              {stockAlerts.map((alert) => <button type="button" key={alert.name}
+                onClick={() => {setInventorySearch(alert.name);setInventoryProduct(alert.name);}}
+                aria-label={alert.severity+" stock: "+alert.name+" "+alert.remaining+" millilitres"}>
+                {alert.severity==="CRITICAL"?"● CRITICAL":"▲ LOW"} · {alert.name} · {number(alert.remaining,1)} ml
+              </button>)}
+            </div>
+          </div> : null}
           <p className="analytics-note">Provisional rows assume an original 100 ml bottle and deduct recorded historical shipments. They are estimates, not confirmed physical stock. A negative figure means the assumed bottle size is insufficient.</p>
           <div className="inventory-filter-toolbar">
             <label><span>SEARCH INVENTORY · {inventoryRows.length} FRAGRANCES</span><input type="search" value={inventorySearch} onChange={(event)=>setInventorySearch(event.target.value)} placeholder="Find a fragrance…" /></label>
@@ -680,7 +702,7 @@ export default function AnalyticsManager() {
                 <span><small>OUT</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0) + Number(row.resale_out_ml || 0), 1)} ml</strong></span>
                 <span className="inventory-volume-remaining"><small>REMAINING</small><strong>{number(row.remaining_ml, 1)} ml</strong></span>
               </div>
-              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
+              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? (Number(row.remaining_ml) <= 10 ? "CRITICAL · ≤10 ml" : "LOW · ≤20 ml") : row.stock_status === "DEPLETED" ? "CRITICAL · 0 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
             </button>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
           </div>
         </article>
