@@ -9,6 +9,7 @@ for(const file of ["inventory-accounting.mjs","inventory-shop-source.mjs","inven
 const api=fs.readFileSync("playnice-site/api/inventory-check.js","utf8");
 assert.match(api,/SHOP_INVENTORY_SOURCE_V2_ENABLED==="true"/);
 assert.match(api,/SHOP_INVENTORY_PARITY_APPROVED_NAMES/);
+assert.match(api,/SHOP_INVENTORY_VERIFIED_REMAINING_NAMES/);
 assert.match(api,/SHOP_INVENTORY_CHECK_ENABLED/);
 assert.match(api,/VERCEL_ENV==="preview"/);
 assert.match(api,/get_shop_inventory_cart_decision/,"working legacy fallback retained");
@@ -37,8 +38,10 @@ const source={complete:true,snapshot_at:new Date().toISOString(),events:[{
 const fetchImpl=async()=>({ok:true,json:async()=>source});
 const fields={supabaseUrl:"https://example.invalid",secret:"test-secret",
   productName:perfume,fetchImpl};
-assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:100})).decision,"ALLOW");
-assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:110})).decision,"LIMIT_REACHED");
+assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:110})).decision,"UNKNOWN",
+  "unverified Remaining cannot block, even with a complete and fresh snapshot");
+assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:100,verifiedRemaining:true})).decision,"ALLOW");
+assert.equal((await decisionFromShopRemaining({...fields,requestedTotalMl:110,verifiedRemaining:true})).decision,"LIMIT_REACHED");
 assert.equal((await decisionFromShopRemaining({...fields,productName:"Unknown",requestedTotalMl:110})).decision,"UNKNOWN");
 for(const snapshot_at of [undefined,"not-a-date",
   new Date(Date.now()-60000).toISOString(),
