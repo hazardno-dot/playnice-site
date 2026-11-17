@@ -25,7 +25,8 @@ export function shopDecisionFromRemaining(rows, productName, requestedTotalMl, o
   const row=matches[0];
   const remaining=cents(row.remaining_ml);
   if(remaining===null || row?.stock_status==="REVIEW" || row?.invalid ||
-     row?.mapping_ambiguous || row?.balance_unverified)
+     row?.mapping_ambiguous || row?.balance_unverified ||
+     options.verifiedRemaining !== true)
     return unknown;
   return {decision:requested>remaining?"LIMIT_REACHED":"ALLOW"};
 }
