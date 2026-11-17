@@ -162,6 +162,10 @@ const entries = [
   {
     "sr": "Crna košulja, kvalitetne farmerke ili lepo skrojene pantalone. Za posebnu priliku, sako preko jednostavne majice. Nije važna cena garderobe, već kako je nosite. Désir du Coeur ionako najbolje funkcioniše kada se ne trudite previše da ostavite utisak.",
     "en": "A black shirt, good jeans or tailored trousers. For a special occasion, a blazer over a simple T-shirt. It's not about how much your clothes cost, but how you wear them. Désir du Coeur works best when you aren't trying too hard to impress."
+  },
+  {
+    "sr": "Bela lanena košulja, bež pantalone i čiste patike. Za veče, svetlosivi sako i jednostavan sat.",
+    "en": "A white linen shirt, beige trousers and clean sneakers. Add a light grey blazer and a simple watch for the evening."
   }
 
 ];

@@ -3508,6 +3508,37 @@ export const discoveryProfiles = {
     "cleanliness": 5.2,
     "versatility": 7.7,
     "gourmandness": 1.5
+  },
+
+  "armaf-club-de-nuit-elite": {
+    "date": 6.8,
+    "casual": 9.1,
+    "citrus": 7.8,
+    "office": 9.2,
+    "unisex": 8.5,
+    "warmth": 3.4,
+    "aquatic": 0.5,
+    "dryness": 6.4,
+    "evening": 6.7,
+    "powdery": 2.1,
+    "airiness": 7.8,
+    "darkness": 1.8,
+    "elegance": 8.2,
+    "feminine": 4.2,
+    "florality": 3.7,
+    "freshness": 8.8,
+    "longevity": 7.5,
+    "masculine": 7.2,
+    "spiciness": 6.5,
+    "sweetness": 2.8,
+    "woodiness": 6.8,
+    "creaminess": 1.5,
+    "fruitiness": 4.2,
+    "projection": 7.2,
+    "aromaticity": 8.8,
+    "cleanliness": 8.7,
+    "versatility": 9,
+    "gourmandness": 0
   }
 };
 

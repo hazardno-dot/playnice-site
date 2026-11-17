@@ -161,6 +161,10 @@ export default [
   {
     "sr": "Kada planirate da prođete neprimećeno. Désir du Coeur ima čudnu naviku da ostaje u vazduhu i kada vi odete. Ako večeras želite da izbegnete pitanja gde ste bili i s kim, možda nije najbolji izbor. A ako ste rešili da napravite prvi korak, ne računajte da će mošus sam tražiti nečiji broj telefona.",
     "en": "When you're planning to go unnoticed. Désir du Coeur has a curious habit of lingering long after you've left. If you'd rather avoid questions about where you've been and who you were with, perhaps choose something quieter. And if you're planning to make the first move, don't expect the musk to ask for someone's number."
+  },
+  {
+    "sr": "Kada planiraš da glumiš misterioznog negativca u zadimljenom baru. Ovo miriše na čoveka koji je već izašao na svež vazduh.",
+    "en": "When auditioning as the mysterious villain in a smoky bar. This smells like the man who already stepped outside for fresh air."
   }
 
 ];
