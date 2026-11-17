@@ -1,4 +1,5 @@
 const PRODUCT_ALIASES = new Map([
+  ["al haramain signature blue", "Haramain Signature Blue Eau de Parfum"],
   ["thomas kosmala no. 4 après l'amour edp", "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum"],
   ["thomas kosmala no. 4 après l'amour eau de parfum", "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum"],
   ["thomas kosmala no. 7 le sel de la terre", "Thomas Kosmala No. 7 Le Sel de la Terre Eau de Parfum"],
