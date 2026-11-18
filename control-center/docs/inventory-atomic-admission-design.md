@@ -119,3 +119,56 @@ The separate `checkout_inventory_reservations_v1_DRAFT.sql` now
 grants only SELECT (not direct INSERT/UPDATE) to service_role in the draft.
 Real mutations must be mediated by a reviewed, locked RPC. Neither SQL
 file was installed as permanent schema.
+
+## 2026-11-18 — PostgreSQL fixture actually executed (rollback-only)
+
+`control-center/supabase/checkout_atomic_admission_fixture_ROLLBACK.sql`
+was executed in one PostgreSQL session inside an explicit transaction, using
+temporary tables and a temporary-schema function. The test exited without
+errors after asserting:
+- 40 ml synthetic stock admits 30 ml under one fingerprint;
+- a *different* fingerprint requesting another 30 ml is rejected;
+- identical fingerprint retry returns DUPLICATE without double reservation;
+- 31 ml is rejected by the configured 30 ml per-order cap;
+- a deliberately injected failure after synthetic order INSERT rolls back the
+  order together with the attempted reservation;
+- a final conservation assertion sees exactly one 30 ml reservation.
+
+The script ends with `ROLLBACK`. A separate read-only post-check confirmed
+there is no persistent `public.fixture_inventory_stock`,
+`public.fixture_checkout_orders`, `public.fixture_stock_reservations`,
+`public.try_admit_inventory_fixture`, or active
+`public.checkout_inventory_reservations_v1` table. No actual PlayNice orders
+or inventory events were inserted or updated. CI #1160 passed on the fixture
+contract, and both Preview deployments succeeded on SHA
+`aef9728fa3ec1afec30f94cc59a419e304762479`.
+
+**Scope limitation:** these SQL assertions run in a single session. They
+validate real PostgreSQL syntax, transaction-savepoint rollback and sequential
+admission decisions. They do **not** demonstrate two simultaneously active
+sessions contending on the same advisory lock. The current Supabase project
+has no development branch; creating one may incur additional compute charges
+and requires explicit user approval. Do not install the draft reservation
+table or replace the existing production checkout RPC on this evidence alone.
+
+## Next real concurrency acceptance script (development database only)
+
+With TWO independent DB connections to an isolated development PostgreSQL
+database, seed one synthetic 40 ml fragrance, then:
+1. Connection A: BEGIN; acquire the shared sorted product advisory lock;
+   read 40 ml; insert the synthetic 30 ml order and reservation; hold
+   the transaction open before COMMIT.
+2. Connection B: concurrently BEGIN; request the same product using a
+   different 64-character fingerprint; demonstrate actual lock waiting
+   on A using `pg_stat_activity` / `pg_locks` while A is open.
+3. COMMIT A. B must resume, see 10 ml and refuse its 30 ml request
+   without allocating an order number or reservation. Assert one admission
+   and exactly 30 ml committed across both sessions.
+4. Repeat with same fingerprint across both sessions; only one order and
+   one reservation may exist. Repeat with A ROLLBACK before B resumes;
+   B must then be able to accept 30 ml. Include reverse-order multi-product
+   requests to prove no deadlock.
+5. Verify lifecycle and exact-once accounting separately before deploying
+   any real order-store integration.
+
+Never use public Production order or inventory tables for this fixture.
