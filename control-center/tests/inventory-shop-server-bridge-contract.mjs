@@ -107,6 +107,21 @@ const afterDeliveredFetch=async()=>({ok:true,json:async()=>afterDelivered});
 assert.equal((await decisionFromShopRemaining({...fields,productName:perfume,
   requestedTotalMl:47,verifiedRemaining:true,fetchImpl:afterDeliveredFetch})).decision,
   "LIMIT_REACHED","transition to DELIVERED must not double-debit shipment");
+// Runtime source verification must fail open even if a malformed payload
+// incorrectly claims complete=true.
+const malformedSnapshots=[
+  {...stockCases,items:[{order_record_id:"ghost",product_name:perfume}]},
+  {...stockCases,orders:[{...stockCases.orders[0],environment:"preview"}]},
+  {...stockCases,orders:[stockCases.orders[0],stockCases.orders[0]]},
+  {...stockCases,events:null}
+];
+for(const bad of malformedSnapshots){
+  const answer=await decisionFromShopRemaining({...fields,
+    productName:perfume,requestedTotalMl:47,verifiedRemaining:true,
+    fetchImpl:async()=>({ok:true,json:async()=>({...bad,snapshot_at:new Date().toISOString()})})
+  });
+  assert.equal(answer.decision,"UNKNOWN","invalid private source must never block");
+}
 const responseSource=fs.readFileSync("playnice-site/server/inventory-shop-remaining.mjs","utf8");
 // Inspect actual return lines; comments are not executable return statements.
 const returnLines=responseSource.split("\n").map(line=>line.trim()).filter(line=>line.startsWith("return "));
