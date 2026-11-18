@@ -113,6 +113,7 @@ BEGIN
     PERFORM pg_temp.try_admit_inventory_fixture(v_d,'naxos fixture',5,30,true);
     RAISE EXCEPTION 'Expected injected failure did not happen';
   EXCEPTION WHEN raise_exception THEN
+    IF SQLERRM <> 'INTENTIONAL_ROLLBACK_TEST' THEN RAISE; END IF;
     IF EXISTS(SELECT 1 FROM pg_temp.fixture_checkout_orders WHERE fingerprint=v_d)
        OR EXISTS(SELECT 1 FROM pg_temp.fixture_stock_reservations WHERE fingerprint=v_d) THEN
       RAISE EXCEPTION 'Failed order or reservation persisted';
