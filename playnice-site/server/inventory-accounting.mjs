@@ -109,6 +109,9 @@ export function buildInventoryAnalytics(orders, stockRows, commerce) {
   ]));
 
   const historical = new Map();
+  // Active, non-delivered orders have already committed stock but are absent
+  // from the CC delivered-only historical commerce RPC.
+  const historicalTransit = new Map();
   const resale = new Map();
   for (const item of commerce.full_bottles || []) {
     const product_name = canonicalProductName(item.product_name);
@@ -133,6 +136,10 @@ export function buildInventoryAnalytics(orders, stockRows, commerce) {
       const row = tracked.get(key);
       if (!row || (!row.estimated && new Date(consumedAt) < new Date(row.tracking_started_at))) continue;
       row.consumed_since_tracking_ml += Number(entry.ml || 0);
+      if (row.historical_baseline &&
+          ["PACKED","SHIPPED","OUT_FOR_DELIVERY"].includes(order.status)) {
+        historicalTransit.set(key,(historicalTransit.get(key)||0)+Number(entry.ml||0));
+      }
     }
   }
 
@@ -153,7 +160,8 @@ export function buildInventoryAnalytics(orders, stockRows, commerce) {
 
   const rows = [...tracked.values()].map((row) => {
     const consumed = row.historical_baseline
-      ? Number(historical.get(row.product_name.toLowerCase())?.ml || 0)
+      ? Number(historical.get(row.product_name.toLowerCase())?.ml || 0) +
+        Number(historicalTransit.get(row.product_name.toLowerCase()) || 0)
       : Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
     const remaining = Math.round((row.stock_in_ml - consumed - row.manual_out_ml + Number.EPSILON) * 100) / 100;
     return {
