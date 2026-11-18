@@ -46,14 +46,14 @@ END $fn$;
 DO $verify$
 DECLARE v text;
 BEGIN
-  v:=pg_temp.pn_atomic_try_admit('buyer_a',30);
+  v:=pg_temp.pn_atomic_try_admit('buyera',30);
   IF v<>'ACCEPTED' THEN RAISE EXCEPTION 'first buyer: %',v; END IF;
-  v:=pg_temp.pn_atomic_try_admit('buyer_b',30);
+  v:=pg_temp.pn_atomic_try_admit('buyerb',30);
   IF v<>'STOCK_LIMIT_REACHED' THEN RAISE EXCEPTION 'second buyer: %',v; END IF;
-  v:=pg_temp.pn_atomic_try_admit('buyer_a',30);
+  v:=pg_temp.pn_atomic_try_admit('buyera',30);
   IF v<>'DUPLICATE' THEN RAISE EXCEPTION 'idempotent retry: %',v; END IF;
   BEGIN
-    v:=pg_temp.pn_atomic_try_admit('buyer_fail',10,true);
+    v:=pg_temp.pn_atomic_try_admit('buyerfail',10,true);
     RAISE EXCEPTION 'fault injection should have raised, returned %',v;
   EXCEPTION WHEN raise_exception THEN
     -- PostgreSQL rolls back all writes in this subtransaction.
