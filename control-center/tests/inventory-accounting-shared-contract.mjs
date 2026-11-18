@@ -43,4 +43,26 @@ const fresh={...stock[0],historical_baseline:false,estimated:false};
 const freshResult=buildInventoryAnalytics(orders,[fresh],commerce);
 assert.equal(freshResult.rows[0].remaining_ml,78);
 assert.equal(freshResult.rows[0].consumed_since_tracking_ml,22);
+// SHIPPED stock has physically left the shop. Delivered-only commerce must
+// not leave it available until courier settlement (DELIVERED).
+const shippedOrder={
+  order_id:"PN-SHIPPED",environment:"production",status:"SHIPPED",
+  packed_at:"2026-11-18T12:00:00Z",
+  source_payload:{items:[{name:product,size:"20ml",quantity:1}],
+    giftSamples:[{name:product,size:"2ml",sizeMl:2}],
+    freeGift:product+" - 2ml + olovka"}
+};
+const shipped=buildInventoryAnalytics([...orders,shippedOrder],stock,commerce);
+assert.equal(shipped.rows[0].remaining_ml,56,"shipped 20 ml plus 2 ml gift must reduce historic Remaining once");
+assert.equal(shipped.rows[0].consumed_since_tracking_ml,44);
+const deliveredAgain=buildInventoryAnalytics([...orders,
+  {...shippedOrder,status:"DELIVERED"}],stock,{
+    full_bottles:[],top_products:[{product_name:product,
+      total_ml_out:44,sold_ml:40,gift_ml:4}]
+  });
+assert.equal(deliveredAgain.rows[0].remaining_ml,56,
+  "transition from SHIPPED to DELIVERED must not deduct the same parcel twice");
+const withReturned=buildInventoryAnalytics([...orders,
+  {...shippedOrder,status:"RETURNED"}],stock,commerce);
+assert.equal(withReturned.rows[0].remaining_ml,78,"returned shipment no longer reserved by SHIPPED state");
 console.log("PASS exact shared Control Center inventory accounting: orders, gifts, NEW demand");
