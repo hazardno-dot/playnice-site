@@ -32,7 +32,10 @@ where disposition<>'RELEASED';
 
 alter table public.checkout_inventory_reservations_v1 enable row level security;
 revoke all on public.checkout_inventory_reservations_v1 from public,anon,authenticated;
-grant select,insert,update on public.checkout_inventory_reservations_v1 to service_role;
+-- No direct service_role INSERT/UPDATE: every reservation write must go
+-- through the authorized, transaction-scoped admission/lifecycle functions.
+-- Service role may read for private diagnostics only.
+grant select on public.checkout_inventory_reservations_v1 to service_role;
 
 -- No SECURITY DEFINER mutation function is installed by this draft.
 -- The eventual create-or-get RPC must:
