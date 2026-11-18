@@ -27,7 +27,7 @@ const fetchImpl=async(url)=>{served.push(url);
   return {ok:true,json:async()=>source()};
  throw Error("Unexpected URL");
 };
-assert.equal((await checkPreviewCheckout(payload([row("10ml",3)]),{env,fetchImpl})).decision,"LIMIT_REACHED",
+assert.equal((await checkPreviewCheckout(payload([row("10ml",3)]),{env,fetchImpl})).decision,"STOCK_LIMIT_REACHED",
   "28ml Remaining is stricter than 30ml purchase cap");
 assert.equal((await checkPreviewCheckout(payload([row("10ml",2),row("5ml",1)]),{env,fetchImpl})).decision,"ALLOW");
 assert.equal((await checkPreviewCheckout(payload([row("10ml",3),row("2ml",1)]),{env,fetchImpl})).decision,"PURCHASE_CAP_REACHED");
