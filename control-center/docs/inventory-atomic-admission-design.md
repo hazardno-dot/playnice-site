@@ -172,3 +172,35 @@ database, seed one synthetic 40 ml fragrance, then:
    any real order-store integration.
 
 Never use public Production order or inventory tables for this fixture.
+
+## Two-session concurrency harness prepared (NOT yet executed)
+
+For a **local, isolated PostgreSQL** instance, create a separate database
+`playnice_atomic_test`; never reuse the PlayNice Supabase project or import
+real customer data. Install PostgreSQL client `psql` and use:
+
+```bash
+export PLAYNICE_ATOMIC_TEST_DSN='postgresql://local_test_user:password@localhost:5432/playnice_atomic_test'
+export PLAYNICE_ATOMIC_TEST_ACK=ISOLATED_LOCAL_DATABASE
+python3 control-center/tests/checkout-atomic-concurrency-DEV-ONLY.py
+```
+
+The Python runner explicitly refuses non-local database hosts or names other
+than `playnice_atomic_test`. It installs
+`control-center/supabase/checkout_atomic_concurrency_DEV_ONLY.sql`, containing
+only `pn_inventory_concurrency_fixture` synthetic objects, then starts
+two independently connected `psql` clients. The first holds a PostgreSQL
+transaction advisory lock while sleeping; the second must be observed waiting
+with `pg_stat_activity.wait_event='advisory'`. After the first commits,
+the second must see only 10 ml remaining and reject its separate 30 ml order.
+It also tests fingerprint retry, a 30 ml purchase cap and rollback after a
+simulated reservation insert failure, then drops the fixture schema in
+`finally`.
+
+**Safety gate:** GitHub contract checks only prove that the scripts and guards
+are present. Until that command actually succeeds on an isolated PostgreSQL
+database with two distinct live connections, concurrency remains UNVERIFIED.
+The harness is intentionally separate from `/api/checkout`, does not install
+permanent PlayNice schema or invoke the Production checkout RPC. The local
+test proves the *fixture* lock protocol, not full merchant checkout
+integration; an end-to-end isolated test remains necessary.
