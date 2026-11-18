@@ -19,6 +19,20 @@ export async function decisionFromShopRemaining({
     if(!response?.ok)return UNKNOWN;
     const source=await response.json();
     if(!source||source.complete!==true)return UNKNOWN;
+    // Independent completeness/shape defense beyond the service-role SQL.
+    // Never enforce a stock cap on malformed, mixed-environment or
+    // unjoinable order snapshots.
+    if(!Array.isArray(source.events)||!Array.isArray(source.orders)||
+       !Array.isArray(source.items)||source.events.length>2000||
+       source.orders.length>250||source.items.length>5000)return UNKNOWN;
+    const ids=new Set();
+    for(const order of source.orders){
+      if(!order?.id || order.environment!=="production" ||
+         ids.has(String(order.id)))return UNKNOWN;
+      ids.add(String(order.id));
+    }
+    if(source.items.some(item=>!item?.order_record_id||
+       !ids.has(String(item.order_record_id))))return UNKNOWN;
     // A complete source is not necessarily fresh. Reject missing, invalid,
     // future-dated or stale snapshots instead of assuming freshness.
     const snapshotAt=typeof source.snapshot_at==="string"?Date.parse(source.snapshot_at):NaN;
