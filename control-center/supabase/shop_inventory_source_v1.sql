@@ -1,7 +1,8 @@
--- DRAFT ONLY. DO NOT APPLY until reviewed and approved.
+-- REVIEWED READ-ONLY SOURCE. Install separately; never expose to browser.
 -- Supabase source feed for Shop's server-side replica of the existing CC
 -- buildInventoryAnalytics calculation. Does not calculate or expose stock
 -- publicly; does not mutate orders/inventory or checkout.
+begin;
 create or replace function public.get_shop_inventory_source_v1()
 returns jsonb
 language plpgsql
@@ -17,7 +18,7 @@ declare
   v_orders jsonb;
   v_items jsonb;
 begin
-  if auth.role() is distinct from 'service_role' then
+  if (current_setting('request.jwt.claims', true)::jsonb->>'role') is distinct from 'service_role' then
     raise exception 'SERVICE_ROLE_REQUIRED' using errcode='42501';
   end if;
 
@@ -29,7 +30,7 @@ begin
       on o.id=i.order_record_id where o.environment='production';
 
   -- Never supply a partial order snapshot that could falsely lock buyers.
-  if v_events_count>2000 or v_orders_count>1000 or v_items_count>5000
+  if v_events_count>2000 or v_orders_count>250 or v_items_count>5000
     then return jsonb_build_object('complete',false,'reason','SOURCE_TOO_LARGE');
   end if;
 
@@ -82,3 +83,4 @@ revoke all on function public.get_shop_inventory_source_v1()
   from public,anon,authenticated;
 grant execute on function public.get_shop_inventory_source_v1()
   to service_role;
+commit;
