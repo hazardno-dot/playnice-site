@@ -11,7 +11,7 @@ const clone=state=>({
 });
 let state={remaining:new Map([[fragrance.toLowerCase(),40]]),
  orders:new Map(),reservations:new Map()};
-let queue=Promise.resolve(), sequence=0;
+let queue=Promise.resolve(), sequence=0, failReservationWrite=false, inventoryUnknown=false;
 const traces=[];
 const store={async transaction(fn){
   let release;
@@ -32,7 +32,7 @@ const store={async transaction(fn){
       traces.push("lock:"+names.join(","));
     },
     async getPolicyCap(){return {status:"READY",maximumMl:30}},
-    async getRemaining(name){return {status:"VERIFIED",remainingMl:candidate.remaining.get(name)}},
+    async getRemaining(name){return inventoryUnknown ? {status:"UNKNOWN"} : {status:"VERIFIED",remainingMl:candidate.remaining.get(name)}},
     async insertCheckoutOrder({fingerprint,environment}){
       const order={id:"PNTEST-"+(++sequence)};
       candidate.orders.set(environment+":"+fingerprint,order);
@@ -47,6 +47,7 @@ const store={async transaction(fn){
       }
       candidate.reservations.set(id,ml);
       traces.push("reserve");
+      if(failReservationWrite)throw new Error("Simulated transactional reservation INSERT failure");
     }
   };
   try{
@@ -77,7 +78,26 @@ assert.equal((await admitAtomicCheckout({store,payload:{items:[item(4)]},
   environment:"preview",fingerprint:fp("c")})).decision,"PURCHASE_CAP_REACHED");
 assert.equal((await admitAtomicCheckout({store,payload:{items:[{name:fragrance,size:"oops",quantity:1}]},
   environment:"preview",fingerprint:fp("d")})).decision,"INVALID_ORDER");
+// The order INSERT may succeed before reservation INSERT fails. The adapter
+// must abort the transaction, so neither the order nor its footprint survives.
+failReservationWrite=true;
+const beforeOrders=state.orders.size,beforeReservations=state.reservations.size;
+const beforeRemaining=state.remaining.get(fragrance.toLowerCase());
+const failure=await admitAtomicCheckout({store,payload:{items:[item(1)]},
+  environment:"preview",fingerprint:fp("e")});
+assert.equal(failure.decision,"UNAVAILABLE");
+assert.equal(state.orders.size,beforeOrders,"failed reservation must roll back order INSERT");
+assert.equal(state.reservations.size,beforeReservations,"failed reservation leaves no ghost hold");
+assert.equal(state.remaining.get(fragrance.toLowerCase()),beforeRemaining);
+failReservationWrite=false;
+// Fail-open UNKNOWN is allowed only for stock, not for policy cap.
+inventoryUnknown=true;
+const failOpen=await admitAtomicCheckout({store,payload:{items:[item(1)]},
+  environment:"preview",fingerprint:fp("f")});
+assert.equal(failOpen.decision,"ACCEPTED");
+assert.equal(state.reservations.size,beforeReservations+1);
+inventoryUnknown=false;
 const checkout=fs.readFileSync("playnice-site/api/checkout.js","utf8");
 assert.doesNotMatch(checkout,/inventory-atomic-admission-contract/,
  "Simulation must remain outside live checkout until SQL integration is reviewed");
-console.log("PASS isolated transaction simulation: simultaneous distinct orders 40ml, exactly 1x30ml admitted; duplicate retry; cap; invalid demand");
+console.log("PASS isolated transaction simulation: two buyers, duplicate retry, cap, invalid demand, atomic rollback, inventory UNKNOWN fail-open");
