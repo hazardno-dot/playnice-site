@@ -3484,6 +3484,14 @@ const handlePlaceOrder = async () => {
       body: JSON.stringify(payload)
     });
 
+    if (response.status === 409) {
+      alert(
+        lang === "sr"
+          ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom."
+          : "The maximum quantity for this fragrance has been reached. You can continue shopping with the quantity already in your cart."
+      );
+      return;
+    }
     if (!response.ok) {
       throw new Error("Checkout request failed");
     }
