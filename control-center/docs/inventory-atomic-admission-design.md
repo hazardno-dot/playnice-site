@@ -46,6 +46,30 @@ A replacement, service-role-authorized **checkout admission RPC** must:
    revision, direct SQL) that bypasses reservation locks invalidates the
    concurrency guarantee. Rollout requires migrating/auditing these writers.
 
+## Conservation invariant (no double debits or double credits)
+The existing historical accounting already treats DELIVERED and active SHIPPED
+parcels as stock consumed. An order reservation must only be counted toward
+Remaining while its demand is **not yet** included in those ledgers, otherwise
+one order removes stock twice. Similarly, changing a RETURNED reservation
+to RELEASED and also inserting a positive RESTOCK event for the same physical
+returned millilitres would credit inventory twice. Choose and prove exactly
+one accounting mechanism per lifecycle stage, using immutable movement IDs
+and a reconciliation invariant for every order/product pair.
+
+Historical order records without new reservations must continue to be counted
+through the legacy delivered and in-transit paths, while newly admitted orders
+must have a single authoritative movement source. Preview and Production order
+namespaces must not consume each other's inventory.
+
+## Proof-level distinctions
+- A deterministic in-memory transaction adapter verifies control flow but is
+  **not** a PostgreSQL concurrency proof.
+- A pair of read-only PostgreSQL advisory-lock calls through a serializing
+  connector verifies lock syntax, **not** overlapping sessions or contention.
+- Real acceptance requires two concurrent DB sessions calling the actual
+  guarded admission procedure, observed serializability, rollback, lock
+  ordering, idempotency and preservation of production order IDs.
+
 ## Isolation and deployment gates
 - Preview first; preview PNTEST must not consume Production stock or order
   sequence. Real Production reservations must never be created by Preview QA.
