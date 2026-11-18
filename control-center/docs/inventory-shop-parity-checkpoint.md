@@ -137,3 +137,46 @@ returned to a public endpoint.
 No stock blocking is activated for Naxos, Dolce & Gabbana, or the remaining
 catalog. Runtime Preview testing still required. Production Shop/checkout
 and existing inventory rows were not changed.
+
+## 2026-11-18 — Full live 115-fragrance parity audit (47 delivered / 1 shipped)
+
+Read-only snapshots and the installed CC SQL function bodies were used to
+independently compare the live Shop source adapter's inputs with the existing
+Control Center calculations, without altering Production inventory/orders.
+
+- Service-only source: `complete=true`, **141 inventory events**, **54 Production
+  orders**, **119 items**, **115 distinct inventory names**.
+- Installed CC ledger logic: **115/115 exact matches** in baseline/opening,
+  restock, manual-out, and stock-in, including repeat BASELINE_SET histories.
+- Installed CC delivered-commerce SQL: **65/65 product names** and three
+  full-bottle totals match the staged Shop adapter, including legacy multi-name
+  bundles, canonical aliases and gifts. **Zero ml differences** for the
+  current CC definition of Remaining across all 115 rows.
+- Two unmatched historical commerce names are legacy gifts only:
+  `El Dorado French Avenue` and
+  `Maison Alhambra Jean Lowe Immortel Eau De Parfum`. Neither is a
+  currently tracked inventory name; do not guess a catalog mapping.
+- All 115 CC stock rows are marked estimated/historical-baseline. Numerical
+  parity is **not** a physical stock verification.
+
+**Important semantic issue detected:** one Production order is now SHIPPED,
+but the installed CC historical commerce RPC counts only DELIVERED. Its
+source_payload records Rayhaan Nocturno Elixir 20 ml plus a structured
+2 ml Lattafa Qaed Al Fursan Untamed gift; the legacy freeGift is an
+alternative representation of the same gift. These two tracked fragrances
+were therefore overstated by 20 ml and 2 ml respectively while the parcel
+was SHIPPED, despite 115/115 mathematical parity with the current CC view.
+
+Staged correction in the shared byte-identical CC/Shop inventory accounting:
+for historical-baseline rows, add active PACKED / SHIPPED /
+OUT_FOR_DELIVERY items and gifts to the delivered-only historical totals,
+without double-counting those shipments once they become DELIVERED.
+Exclude NEW (advisory only), RETURNED and CANCELLED. Tests explicitly
+assert shipped item+gift debit and exactly-once DELIVERED transition.
+GitHub Control Center Regression #1140 passed on this fix.
+
+**Do not expand the V2 verification allowlist to 115 automatically.** The
+installed SQL source requires further Preview QA of the revised CC display,
+physical/operational verification policy, and checkout concurrency before
+catalog-wide enforcement. The existing Preview V2 pilot remains scoped to
+Naxos and Dolce & Gabbana; production Shop is unchanged.
