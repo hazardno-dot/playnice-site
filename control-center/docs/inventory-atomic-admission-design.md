@@ -91,3 +91,31 @@ Pure validation: `playnice-site/server/inventory-checkout-guard.mjs`
 Pure lifecycle contract: `playnice-site/server/checkout-reservation-lifecycle.mjs`
 These modules are **not connected** to `/api/checkout`; they are not an
 atomic reservation or a live enforcement mechanism.
+
+## 2026-11-18 — First isolated, real PostgreSQL admission proof
+
+A temporary SQL harness at
+`control-center/supabase/checkout_atomic_temp_proof_ROLLBACK.sql`
+was executed against the Supabase PostgreSQL engine and returned
+`PASS, remaining_test_ml=10.00, test_orders=1, test_reservations=1`.
+It used only `pg_temp` tables/functions, exclusively synthetic Naxos
+stock and synthetic fingerprints, and ended with `ROLLBACK`.
+No PlayNice customer data, production inventory/order rows, sequences, or
+permanent schema objects were mutated.
+
+The procedure verified in one PostgreSQL session:
+- 40 ml test stock, first 30 ml acceptance, second different 30 ml rejection;
+- fingerprint retry returned DUPLICATE with no extra reservation;
+- deliberate reservation failure caused subtransaction rollback of
+  attempted stock and order writes.
+
+**Not yet verified:** concurrent, overlapping PostgreSQL sessions;
+integrated admission in `create_or_get_checkout_order`; canonical aliases,
+gift/bundle accounting and lifecycle transitions; production ready toggles.
+An earlier pair of read-only advisory-lock calls did not prove session
+overlap due connector scheduling.
+
+The separate `checkout_inventory_reservations_v1_DRAFT.sql` now
+grants only SELECT (not direct INSERT/UPDATE) to service_role in the draft.
+Real mutations must be mediated by a reviewed, locked RPC. Neither SQL
+file was installed as permanent schema.
