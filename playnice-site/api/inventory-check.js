@@ -31,7 +31,10 @@ module.exports=async function handler(req,res){
     // fragrance and approved names are explicitly set in Preview settings.
     // Fail open for unapproved products. The old conservative RPC stays
     // active unless the stage-2 flag is deliberately enabled.
-    if(process.env.SHOP_INVENTORY_SOURCE_V2_ENABLED==="true"){
+    // Defense in depth: the first V2 pilot can never run on Production
+    // or a different Preview branch, even if a Vercel variable is mis-scoped.
+    if(process.env.SHOP_INVENTORY_SOURCE_V2_ENABLED==="true" &&
+       process.env.VERCEL_GIT_COMMIT_REF==="feature/inventory-protection-audit-shadow-v1"){
       const approved=String(process.env.SHOP_INVENTORY_PARITY_APPROVED_NAMES||"")
         .split(";").map(s=>s.trim().toLowerCase()).filter(Boolean);
       if(!approved.includes(name.toLowerCase()))
