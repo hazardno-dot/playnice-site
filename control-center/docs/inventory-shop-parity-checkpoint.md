@@ -114,3 +114,26 @@ inventory reservation guarantee. All 115 baselines remain classified as
 historical/estimated in the current CC model, even though merchant confirms
 the displayed Remaining values. No Preview allowlist was populated and
 V2 was not activated. Do not merge until checks and further Preview QA pass.
+
+## 2026-11-18 — Service-only read-only source installed, enforcement remains OFF
+
+Applied the `shop_inventory_source_v1_readonly_service_role` Supabase migration.
+It contains no inventory/order DML, creates only the source RPC, and has a
+transactional CREATE/REVOKE/GRANT. The RPC is executable by `service_role`,
+not `anon` or `authenticated`. Its completeness cap is 250 production orders,
+matching the current CC history window; above that it returns incomplete
+rather than guessing Remaining.
+
+A read-only transaction using a service-role JWT claim confirmed a successful
+fresh source snapshot: `complete=true`, 141 inventory events,
+54 production orders and 119 order items on 2026-11-18. Source data stayed
+inside the private database verification; no raw balances or customer data were
+returned to a public endpoint.
+
+**This verifies the source feed, not full Shop enforcement.** The
+`SHOP_INVENTORY_SOURCE_V2_ENABLED` source switch and per-fragrance
+`SHOP_INVENTORY_PARITY_APPROVED_NAMES` +
+`SHOP_INVENTORY_VERIFIED_REMAINING_NAMES` gates remain unset/unapproved.
+No stock blocking is activated for Naxos, Dolce & Gabbana, or the remaining
+catalog. Runtime Preview testing still required. Production Shop/checkout
+and existing inventory rows were not changed.
