@@ -30,6 +30,19 @@ const result=remainingFromSupabaseSources({events,orders,items,complete:true});
 assert.equal(result.complete,true);
 assert.equal(result.rows[0].remaining_ml,123);
 assert.equal(result.rows[0].pending_new_ml,5);
+const shippedOrders=[...orders,{
+ id:"o-shipped",environment:"production",status:"SHIPPED",
+ packed_at:"2026-11-18T12:00:00Z",
+ source_payload:{items:[{name:perfume,size:"20ml",quantity:1}],
+   giftSamples:[{name:perfume,size:"2ml",sizeMl:2}],
+   freeGift:perfume+" - 2ml + olovka"}
+}];
+const shippedRemaining=remainingFromSupabaseSources({
+ events,orders:shippedOrders,items,complete:true
+});
+assert.equal(shippedRemaining.complete,true);
+assert.equal(shippedRemaining.rows[0].remaining_ml,101,
+  "full source must subtract 22 ml from a non-delivered SHIPPED parcel");
 assert.equal(remainingFromSupabaseSources({events,orders,items,complete:false}).complete,false);
 assert.equal(remainingFromSupabaseSources({events:[{...events[0],event_type:"UNKNOWN"}],
  orders,items,complete:true}).complete,false);
