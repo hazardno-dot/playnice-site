@@ -180,3 +180,35 @@ installed SQL source requires further Preview QA of the revised CC display,
 physical/operational verification policy, and checkout concurrency before
 catalog-wide enforcement. The existing Preview V2 pilot remains scoped to
 Naxos and Dolce & Gabbana; production Shop is unchanged.
+
+## 2026-11-18 — Final safety gate: checkout is not yet transactionally enforced
+
+The public Shop cart/Quick View/PDP has working Preview-only purchase policy
+and inventory caps; real server decisions passed 16 of 16 boundary checks
+on eight audited fragrances. The inventory frontend intentionally fails open
+when the read-only source is UNKNOWN/unavailable, and purchase policy caching
+must not expire a previously confirmed cap during a cart session.
+
+**Critical unclosed Production gate:** `playnice-site/api/checkout.js`
+still delegates order creation to the preexisting
+`checkout-order-store` Supabase Edge Function and does not enforce
+purchase caps or stock limits as part of an atomic order admission.
+The client can be bypassed with a crafted checkout request, and two
+concurrent requests may independently see the same Remaining.
+
+A pure, read-only `playnice-site/server/inventory-checkout-guard.mjs`
+plus tests has been staged to define **future** server-side semantics:
+- aggregate one fragrance's ml across all decant sizes and bundles;
+- refuse malformed demand; apply server-sourced per-fragrance overrides;
+- use only private server-sourced ALLOW/LIMIT_REACHED/UNKNOWN decisions;
+- inventory UNKNOWN remains fail-open, while an independently valid
+  per-order cap continues to apply;
+- do not expose absolute stock to customers.
+
+This helper is **not wired into checkout**. It is not an atomic reservation
+and does not protect the existing Production order-store flow.
+Before merge or Production enforcement, inspect the checkout-order-store
+Edge Function and design a transactional reservation/admission mechanism
+with lock, idempotency, rollback on failure, and correct release on
+cancelled/returned orders. Confirm preview PNTEST cleanup and avoid any
+test orders in Production.
