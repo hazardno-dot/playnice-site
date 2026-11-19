@@ -3842,6 +3842,55 @@ export const productCopy = {
       "en": "For lovers of incense, warm spice and confident woody depth without excessive sweetness.",
       "sr": "Za ljubitelje tamjana, toplih začina i ozbiljnog drvenog karaktera bez previše slatkoće."
     }
+  },
+
+  "Khadlaj Shiyaaka Sky Eau de Parfum": {
+    "miniTag": {
+      "en": "🌿 Green / Citrus",
+      "sr": "🌿 Zeleni / Citrusni"
+    },
+    "card": {
+      "en": "Bergamot, verbena and neroli over a clean, green musky base.",
+      "sr": "Bergamot, verbena i neroli u čistom, zelenom mošusnom tragu."
+    },
+    "modal": {
+      "en": "Bergamot and mandarin open brightly. Neroli, geranium and orange blossom bring a green floral lift, settling into clean musk, vetiver and sandalwood.",
+      "sr": "Bergamot i mandarina daju svež početak. Neroli, geranijum i cvet narandže donose zeleno-cvetnu lakoću, uz čist mošus, vetiver i sandalovinu."
+    },
+    "scentType": {
+      "en": "Citrus-aromatic, green, musky",
+      "sr": "Citrusno-aromatični, zeleni, mošusni"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Bergamot",
+        "Verbena",
+        "Neroli",
+        "Mošus"
+      ],
+      "en": [
+        "Bergamot",
+        "Verbena",
+        "Neroli",
+        "Musk"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Zelen i svež",
+        "Citrusno aromatičan",
+        "Čist mošus"
+      ],
+      "en": [
+        "Green and fresh",
+        "Citrus aromatic",
+        "Clean musk"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of quiet freshness: citrus, green florals and clean musk without weight.",
+      "sr": "Za one koji vole diskretnu eleganciju: citrusi, zelene note i čist mošus bez težine."
+    }
   }
 };
 

@@ -3321,6 +3321,32 @@ export const products = [
       heart: ["olibanum","myrrh","juniper-berries"],
       base: ["vanilla","cedarwood","patchouli"]
     }
+  },
+  {
+    id: 119,
+    addedAt: "2026-11-19T07:02:44.246Z",
+    slug: "khadlaj-shiyaaka-sky",
+    name: "Khadlaj Shiyaaka Sky Eau de Parfum",
+    modalName: "Khadlaj Shiyaaka Sky EDP",
+    shortName: "Shiyaaka Sky",
+    category: "Arabian",
+    image: "/products/khadlaj-shiyaaka-sky.png",
+    sizes: {"5ml":4,"10ml":7,"20ml":13},
+    badge: "FRESH DROP",
+    rating: 8.2,
+    ratingLabel: "PlayNice Pick",
+    season: "summer",
+    moods: ["clean","casual","summer"],
+    recommendations: ["arabiyat-prestige-marwa","acqua-di-parma-colonia-pura","calvin-klein-defy-edt"],
+    inspiredBy: {
+      name: "Guerlain Herbes Troublantes",
+      short: "Herbes Troublantes DNA"
+    },
+    noteMap: {
+      top: ["bergamot","mandarin","verbena"],
+      heart: ["neroli","geranium","orange-blossom","green-notes"],
+      base: ["ambroxan","vetiver","musk","sandalwood"]
+    }
   }
 
 ];

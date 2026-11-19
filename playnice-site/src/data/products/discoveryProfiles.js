@@ -3570,6 +3570,37 @@ export const discoveryProfiles = {
     "cleanliness": 4.8,
     "versatility": 6.5,
     "gourmandness": 1.2
+  },
+
+  "khadlaj-shiyaaka-sky": {
+    "date": 6.3,
+    "casual": 9.3,
+    "citrus": 8.3,
+    "office": 9.5,
+    "unisex": 9,
+    "warmth": 2.5,
+    "aquatic": 0.5,
+    "dryness": 4.5,
+    "evening": 4.2,
+    "powdery": 3.2,
+    "airiness": 9,
+    "darkness": 0.8,
+    "elegance": 8.5,
+    "feminine": 5,
+    "florality": 5.5,
+    "freshness": 9,
+    "longevity": 6,
+    "masculine": 6,
+    "spiciness": 1.8,
+    "sweetness": 2.5,
+    "woodiness": 4.8,
+    "creaminess": 2.8,
+    "fruitiness": 2.8,
+    "projection": 5,
+    "aromaticity": 8.5,
+    "cleanliness": 9.3,
+    "versatility": 9,
+    "gourmandness": 0.3
   }
 };
 

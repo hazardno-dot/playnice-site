@@ -168,6 +168,10 @@ export default [
   {
     "sr": "Kad ideš na razgovor za posao u malu kancelariju sa osam sprejeva. Traže kandidata, ne upravnika katedrale.",
     "en": "When showing up to a job interview in a tiny office wearing eight sprays. They're hiring an employee, not a cathedral director."
+  },
+  {
+    "sr": "Kad želiš da uđeš u prostoriju kao grmljavina. Sky je vedro nebo, ne vremenska nepogoda.",
+    "en": "When you want to enter a room like a thunderstorm. Sky is clear weather, not a natural disaster."
   }
 
 ];

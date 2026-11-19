@@ -495,5 +495,10 @@ export const productWearContext = {
   "Rayhaan Vantage Eau de Parfum": {
     "sr": "Hladne večeri, elegantne večere i posebni susreti.",
     "en": "Cold evenings, elegant dinners and memorable encounters."
+  },
+
+  "Khadlaj Shiyaaka Sky Eau de Parfum": {
+    "sr": "Posao, putovanja, topli dani i opušteni susreti.",
+    "en": "Office days, travel, warm weather and relaxed meetings."
   }
 };
