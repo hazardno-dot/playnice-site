@@ -170,6 +170,10 @@ const entries = [
   {
     "sr": "Tamnosiva rolka, vuneni kaput i kožne čizme. Za veče, crna košulja i sako.",
     "en": "A charcoal turtleneck, wool coat and leather boots. For evening, a black shirt and tailored blazer."
+  },
+  {
+    "sr": "Bela košulja od lana, svetle pantalone i mokasine. Bez suvišnih detalja.",
+    "en": "A white linen shirt, light trousers and loafers. Keep the details understated."
   }
 
 ];
