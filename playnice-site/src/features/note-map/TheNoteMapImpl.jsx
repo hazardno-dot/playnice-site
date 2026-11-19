@@ -128,6 +128,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/myrrh.webp",
     fallback: "•",
   },
+  "green-notes": {
+    sr: "Zelene note",
+    en: "Green Notes",
+    image: "/note-map/green-notes.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
