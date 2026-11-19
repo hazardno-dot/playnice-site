@@ -3347,6 +3347,32 @@ export const products = [
       heart: ["neroli","geranium","orange-blossom","green-notes"],
       base: ["ambroxan","vetiver","musk","sandalwood"]
     }
+  },
+  {
+    id: 120,
+    addedAt: "2026-11-19T07:20:47.993Z",
+    slug: "khadlaj-island-sun",
+    name: "Khadlaj Island Sun Extrait de Parfum",
+    modalName: "Khadlaj Island Sun Extrait",
+    shortName: "Island Sun",
+    category: "Arabian",
+    image: "/products/khadlaj-island-sun.png",
+    sizes: {"5ml":5,"10ml":9,"20ml":17},
+    badge: "SUMMER HIT",
+    rating: 8,
+    ratingLabel: "New Arrival",
+    season: "summer",
+    moods: ["summer","casual","signature"],
+    recommendations: ["rayhaan-pacific-aura","jean-paul-gaultier-le-beau-edt","khadlaj-island-dreams"],
+    inspiredBy: {
+      name: "Original Khadlaj creation",
+      short: "Tropical Fruity Woody DNA"
+    },
+    noteMap: {
+      top: ["mango","coconut","lime","lemon"],
+      heart: ["pink-pepper","jasmine","orange-blossom"],
+      base: ["musk","tonka-bean","woody-notes"]
+    }
   }
 
 ];

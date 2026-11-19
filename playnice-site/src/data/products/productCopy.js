@@ -3891,6 +3891,55 @@ export const productCopy = {
       "en": "For lovers of quiet freshness: citrus, green florals and clean musk without weight.",
       "sr": "Za one koji vole diskretnu eleganciju: citrusi, zelene note i čist mošus bez težine."
     }
+  },
+
+  "Khadlaj Island Sun Extrait de Parfum": {
+    "miniTag": {
+      "en": "🥭 Tropical / Creamy",
+      "sr": "🥭 Tropski / Kremast"
+    },
+    "card": {
+      "en": "Juicy mango and coconut meet lime, jasmine and warm woods.",
+      "sr": "Sočan mango i kokos uz limetu, jasmin i toplu drvenastu bazu."
+    },
+    "modal": {
+      "en": "Mango, coconut and bright citrus open with tropical energy. Pink pepper and white florals add sparkle before tonka, musk and woods settle into a warm finish.",
+      "sr": "Mango, kokos i svetli citrusi otvaraju tropsku priču. Ružičasti biber i belo cveće donose živost, dok tonka, mošus i drvo daju meku, toplu završnicu."
+    },
+    "scentType": {
+      "en": "Tropical fruity citrus woody",
+      "sr": "Tropski voćni, citrusni i drvenasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Mango",
+        "Kokos",
+        "Limeta",
+        "Tonka"
+      ],
+      "en": [
+        "Mango",
+        "Coconut",
+        "Lime",
+        "Tonka Bean"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Tropski",
+        "Sočan",
+        "Kremast"
+      ],
+      "en": [
+        "Tropical",
+        "Juicy",
+        "Creamy"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of juicy fruit, creamy coconut and bright summer freshness with a warm finish.",
+      "sr": "Za ljubitelje sočnog voća, kremastog kokosa i letnje svežine sa toplom završnicom."
+    }
   }
 };
 

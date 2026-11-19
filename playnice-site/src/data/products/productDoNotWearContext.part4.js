@@ -172,6 +172,10 @@ export default [
   {
     "sr": "Kad želiš da uđeš u prostoriju kao grmljavina. Sky je vedro nebo, ne vremenska nepogoda.",
     "en": "When you want to enter a room like a thunderstorm. Sky is clear weather, not a natural disaster."
+  },
+  {
+    "sr": "Na razgovor za posao gde ozbiljnost meriš brojem dugmadi na sakou.",
+    "en": "To a job interview where your suit is expected to do all the talking."
   }
 
 ];
