@@ -3601,6 +3601,37 @@ export const discoveryProfiles = {
     "cleanliness": 9.3,
     "versatility": 9,
     "gourmandness": 0.3
+  },
+
+  "khadlaj-island-sun": {
+    "date": 7,
+    "casual": 9.5,
+    "citrus": 8,
+    "office": 5.5,
+    "unisex": 9.2,
+    "warmth": 5.3,
+    "aquatic": 0.5,
+    "dryness": 1.5,
+    "evening": 6,
+    "powdery": 1.8,
+    "airiness": 6.7,
+    "darkness": 0.8,
+    "elegance": 7,
+    "feminine": 5,
+    "florality": 4.2,
+    "freshness": 8.2,
+    "longevity": 7.5,
+    "masculine": 5,
+    "spiciness": 2.7,
+    "sweetness": 7,
+    "woodiness": 4.5,
+    "creaminess": 8,
+    "fruitiness": 9.4,
+    "projection": 7,
+    "aromaticity": 2,
+    "cleanliness": 6.5,
+    "versatility": 7.5,
+    "gourmandness": 5.7
   }
 };
 

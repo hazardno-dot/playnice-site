@@ -500,5 +500,10 @@ export const productWearContext = {
   "Khadlaj Shiyaaka Sky Eau de Parfum": {
     "sr": "Posao, putovanja, topli dani i opušteni susreti.",
     "en": "Office days, travel, warm weather and relaxed meetings."
+  },
+
+  "Khadlaj Island Sun Extrait de Parfum": {
+    "sr": "Plaža, letnja šetnja, terasa i opušteno popodne.",
+    "en": "Beach days, summer walks, terraces and relaxed afternoons."
   }
 };
