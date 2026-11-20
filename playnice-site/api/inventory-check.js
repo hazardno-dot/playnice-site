@@ -1,9 +1,9 @@
 // Read-only Shop inventory decision bridge. Safe defaults: disabled & UNKNOWN.
 // No changes to order persistence, and NO raw balances returned to shoppers.
+const {isInventoryEnabled,namesFor}=require("../server/inventory-rollout-gate.cjs");
 const SUPABASE_URL=String(process.env.SUPABASE_URL||"https://fsujznyfdrstinqexxgs.supabase.co").trim();
 const SECRET=String(process.env.SHOP_INVENTORY_READ_SECRET||"").trim();
-const ENABLED=process.env.SHOP_INVENTORY_CHECK_ENABLED==="true" &&
-  process.env.VERCEL_ENV==="preview";
+const ENABLED=isInventoryEnabled(process.env);
 const UNKNOWN={decision:"UNKNOWN"};
 const getBody=(req)=>req.body && typeof req.body==="object" && !Array.isArray(req.body)?req.body:null;
 module.exports=async function handler(req,res){
@@ -33,15 +33,15 @@ module.exports=async function handler(req,res){
     // active unless the stage-2 flag is deliberately enabled.
     // Defense in depth: the first V2 pilot can never run on Production
     // or a different Preview branch, even if a Vercel variable is mis-scoped.
-    if(process.env.SHOP_INVENTORY_SOURCE_V2_ENABLED==="true" &&
-       process.env.VERCEL_GIT_COMMIT_REF==="feature/inventory-protection-audit-shadow-v1"){
-      const approved=String(process.env.SHOP_INVENTORY_PARITY_APPROVED_NAMES||"")
+    if(isInventoryEnabled(process.env)){
+      const {approved:approvedNames,verified:verifiedNames}=namesFor(process.env);
+      const approved=String(approvedNames||"")
         .split(";").map(s=>s.trim().toLowerCase()).filter(Boolean);
       if(!approved.includes(name.toLowerCase()))
         return res.status(200).json(UNKNOWN);
       // Separate operational verification from numerical parity approval.
       // Both must explicitly include the product before V2 can block.
-      const verified=String(process.env.SHOP_INVENTORY_VERIFIED_REMAINING_NAMES||"")
+      const verified=String(verifiedNames||"")
         .split(";").map(s=>s.trim().toLowerCase()).filter(Boolean);
       if(!verified.includes(name.toLowerCase()))
         return res.status(200).json(UNKNOWN);
