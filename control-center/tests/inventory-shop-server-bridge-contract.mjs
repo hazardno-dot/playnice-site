@@ -9,7 +9,7 @@ for(const file of ["inventory-accounting.mjs","inventory-shop-source.mjs","inven
 const api=fs.readFileSync("playnice-site/api/inventory-check.js","utf8");
 assert.match(api,/isInventoryEnabled\(process\.env\)/);
 assert.match(api,/namesFor\(process\.env\)/);
-assert.match(api,/SHOP_INVENTORY_VERIFIED_REMAINING_NAMES/);
+assert.match(fs.readFileSync("playnice-site/server/inventory-rollout-gate.cjs","utf8"),/SHOP_INVENTORY_VERIFIED_REMAINING_NAMES/);
 assert.match(fs.readFileSync("playnice-site/server/inventory-rollout-gate.cjs","utf8"),/SHOP_INVENTORY_CHECK_ENABLED/);
 assert.match(fs.readFileSync("playnice-site/server/inventory-rollout-gate.cjs","utf8"),/VERCEL_ENV==="preview"/);
 assert.match(api,/get_shop_inventory_cart_decision/,"working legacy fallback retained");
