@@ -7,11 +7,11 @@ for(const file of ["inventory-accounting.mjs","inventory-shop-source.mjs","inven
   assert.equal(shop,cc,"Shop/CC inventory code must be byte-identical: "+file);
 }
 const api=fs.readFileSync("playnice-site/api/inventory-check.js","utf8");
-assert.match(api,/SHOP_INVENTORY_SOURCE_V2_ENABLED==="true"/);
-assert.match(api,/SHOP_INVENTORY_PARITY_APPROVED_NAMES/);
+assert.match(api,/isInventoryEnabled\(process\.env\)/);
+assert.match(api,/namesFor\(process\.env\)/);
 assert.match(api,/SHOP_INVENTORY_VERIFIED_REMAINING_NAMES/);
-assert.match(api,/SHOP_INVENTORY_CHECK_ENABLED/);
-assert.match(api,/VERCEL_ENV==="preview"/);
+assert.match(fs.readFileSync("playnice-site/server/inventory-rollout-gate.cjs","utf8"),/SHOP_INVENTORY_CHECK_ENABLED/);
+assert.match(fs.readFileSync("playnice-site/server/inventory-rollout-gate.cjs","utf8"),/VERCEL_ENV==="preview"/);
 assert.match(api,/get_shop_inventory_cart_decision/,"working legacy fallback retained");
 const {decision}=await decisionFromShopRemaining({supabaseUrl:"https://example.invalid",secret:"",
   productName:"Xerjoff Naxos Eau de Parfum",requestedTotalMl:110});
