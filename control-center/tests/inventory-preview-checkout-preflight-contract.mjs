@@ -53,8 +53,8 @@ assert.equal((await checkPreviewCheckout(payload([row("10ml",4)]),{
 })).decision,"PURCHASE_CAP_REACHED","confirmed purchase cap remains active if stock unavailable");
 const checkout=fs.readFileSync("playnice-site/api/checkout.js","utf8");
 assert.match(checkout,/checkPreviewCheckout\(req\.body\)/);
-assert.match(checkout,/VERCEL_ENV === "preview"/);
-assert.match(checkout,/SHOP_PURCHASE_CAP_POLICY_PREVIEW_ENABLED === "true"/);
+assert.match(checkout,/isCheckoutPreflightEnabled\(process\.env\)/);
+assert.match(fs.readFileSync("playnice-site/server/inventory-rollout-gate.cjs","utf8"),/SHOP_INVENTORY_PRODUCTION_ROLLOUT_ENABLED/);
 assert.ok(checkout.indexOf('checkPreviewCheckout(req.body)')<checkout.indexOf('return legacyHandler(req, res)'),
  "Preflight must occur before any order is persisted");
 console.log("PASS Preview checkout: 28ml stock, 30ml cap, mixed sizes, invalid input, outage, no Production call");
