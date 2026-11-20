@@ -1,0 +1,116 @@
+# PlayNice Inventory Protection — audit and staged rollout v1
+
+## Active business decision — advisory-only / fail-open (2026-11-16)
+
+**This section supersedes earlier enforcement/rollout requirements below.** PlayNice prioritizes completing an order over rejecting it on inventory evidence. The inventory subsystem is strictly an **optional advisory** and shall not block, delay, mutate, or reject add-to-cart, cart updates, or checkout, even when the observer reports `WOULD_BLOCK`, data is stale, missing, or the service fails. Those diagnostics may prompt INTERNAL admin review; public messaging must not expose ml balances, nor falsely claim out-of-stock. The approved old hard-limit message must **not** be displayed as a blocking error under the new policy. If fulfillment exceeds real stock, contact the customer after order acceptance.
+
+- Existing checkout remains unchanged and independently handles its own validation, persistence, communication and retries. The inventory add-on does not promise 100% platform availability or repair unrelated checkout errors.
+- `interpretInventoryAdvisory` is a pure, tested policy contract: `allowCart=true`, `allowCheckout=true`, `enforcementEnabled=false` for ALLOW, WOULD_BLOCK, UNKNOWN and errors/missing diagnostics.
+- No database triggers, reservations, transaction locks, durable verification writes, or new checkout dependencies are approved for deployment. Retired SQL proposals remain nondeployable historical material.
+- The client observer is opt-in, catches synchronous/async failures, does not await requests and never uses stock responses to decide purchases. It remains off by default.
+- Before any merge: inspect all import/call sites, run the complete Control Center contracts and Shop build in Preview, then test cart/checkout normally with and without any inventory observer flags. Do NOT send real Production test orders. No merge without explicit approval.
+- Scope future work to **admin warnings for potential stock shortfalls** and possibly post-order reconciliation, not rejection or automated reservation.
+
+
+Status: **AUDIT / PREPARATION ONLY**. No customer blocking, reservations, database migration or live telemetry enabled by this change. Do not enable enforcement from a UI toggle before all gates pass.
+
+## Approved customer-facing text (Serbian ekavian, Latin script)
+- **Dostignuta je maksimalna količina za ovaj parfem.**
+- **Možete nastaviti kupovinu sa već dodatom količinom.**
+Never disclose physical milliliters, reservations or precise balance publicly. Do not falsely call this a per-customer limit.
+
+## Verified code-level findings (main baseline, 2026-11-09)
+- `control-center/server/orders.js`: `buildInventoryAnalytics` computes remaining stock from opening/restock, manual out and consumption **only for PACKED, SHIPPED, OUT_FOR_DELIVERY, DELIVERED, DELIVERY_FAILED**. NEW orders are not presently included as reservations.
+- `control-center/supabase/inventory_consumption_v1.sql`: `fragrance_inventory_events` stores OPENING and RESTOCK events; stock RPC is admin-only. Public stock endpoint is not present in this migration.
+- `control-center/server/orders.js`: canonicalization currently relies on product names and aliases; gift samples and bundles use special parsing.
+- `control-center/supabase/functions/checkout-order-store/index.ts`: successful checkout calls `create_or_get_checkout_order`; order creation must be the single future transaction boundary for stock reservations and deduplication.
+- `playnice-site/api/checkout.js`: on-site checkout uses Supabase-first persistence with timeouts/retries and email/Google Sheets handling. No stock-authoritative enforcement is visible in that wrapper.
+
+## Critical safeguards required before activation
+1. **Inventory audit:** inspect real records for every product. Establish stable product identifiers, confirmed measured baselines, consistent units and mapping, all restocks/outflows, stock status and exclusions (estimated, missing, mismatched, negative).
+2. **Reservations:** reserve only on successful order creation, never on add-to-cart. Include NEW and other unfulfilled accepted orders in availability; transition reservation to physical consumption exactly once at PACKED. Define precise behavior for cancellation, delivery failures, returns, manual orders, gifts, promotions and partial edits.
+3. **Concurrency:** inventory validation, reservation, idempotent checkout and order creation must be one atomic database transaction with appropriate row locking. Two simultaneous customers cannot both consume the same final milliliters.
+4. **Resilience:** distinguish UNKNOWN/ERROR from OUT_OF_STOCK. Never turn a network timeout, unverified baseline, missing mapping or stale cache into a public stock-out assertion. An unverified add-to-cart may continue, but checkout must not confirm an unvalidated order.
+5. **Privacy/security:** public APIs expose only allow/deny or neutral availability, never raw inventory balances, customer identity or admin RPCs. Rate-limit and log events without excessive personal data.
+6. **Observability:** authenticated Control Center dashboard for checks, would-block decisions, unknowns/errors, stock mismatch, checkout conflicts, and timings. Instrument actual server requests and customer interactions; do not imply that a synthetic calculation alone represents live telemetry.
+7. **Rollback:** separate flag for client-side restrictions; never silently bypass the server's stock consistency protections. Define a safe degraded checkout policy and escalation process.
+
+## Stages and gates
+- **1 Audit (current):** review source and real inventory data in read-only mode; document discrepancies and products ineligible for protection.
+- **2 Shadow:** integrate the read-only evaluator on backend with admin-only event storage, privacy-safe dashboard and monitoring. No customer restrictions. Verify comparisons against real orders, actual stock and manually checked outcomes. This module alone is not a deployed shadow service.
+- **3 Preview:** test 2/5/10/20 ml aggregation, repeated additions, bundles, stale cart, manual orders, gifts, refunds, duplicated submits, concurrent checkouts, network failure, unknown stock and deterministic rollback. Use PNTEST and ensure cleanup does not consume production order IDs or stock.
+- **4 Graduated enforcement:** enable only for verified products after successful reviewed tests; monitor live rejects and unexpected failures; no automatic rollout to unverified products.
+
+## Decision contract
+The standalone read-only `lib/inventory-protection-shadow.mjs` evaluator produces ALLOW / WOULD_BLOCK / UNKNOWN. UNKNOWN must never be interpreted as zero stock. It accepts normalized stable product keys, not raw UI product names; integration requires verified identifiers and a trusted reservation source. It has no side effects, persists no events, and is not an actual enforcement mechanism.
+
+## Manual checks required
+- Live Supabase data accuracy and schema/function currently deployed versus migration files.
+- Full SQL definition of `create_or_get_checkout_order`, order status transition RPCs and gift calculation; all must be reviewed before modifying transactional behavior.
+- Review the existing CC dashboard hierarchy and authenticated API pattern before adding monitoring.
+- Review Preview deployment and automated contracts before merge. **Do not merge or deploy automatically.**
+
+## Live read-only database audit (2026-11-09)
+Queries were SELECT-only; no Production rows or schema were changed.
+- `fragrance_inventory_events` currently has 139 events across 115 distinct product names: BASELINE_SET 117 (115 product names), MANUAL_OUT 14, OPENING 4, RESTOCK 4.
+- Live `get_control_center_inventory_stock` treats BASELINE_SET rows as `baseline_verified=true` **and** `estimated=true` / `historical_baseline=true`. This confirms original bottle size, NOT current physically measured available stock. Such rows are **ineligible for automatic blocking**.
+- At the time of the snapshot, production order statuses were 45 DELIVERED, 3 RETURNED, 2 CANCELLED, 1 DUPLICATE; no NEW order appeared in that snapshot. These counts can change.
+- No dedicated stock reservation table was discovered among public checkout/inventory tables.
+- `inventory_protection_shadow_events_v1.sql` is a prepared migration only; it has NOT been applied. The event collection/CC dashboard are NOT live.
+
+## Shadow telemetry activation prerequisites
+- Review and apply the isolated migration only after security review and schema validation in Preview/staging.
+- Provide a trusted, server-only event writer (service-role key must never reach browser), durable rate limits and input validation; no raw client assertions.
+- Validate normalized product identity against canonical catalog and real inventory; classify all uncertain baselines and source errors as UNKNOWN.
+- Add a read-only admin-only dashboard for real server-recorded events, distinguish 0 events from unavailable telemetry, and avoid claims of live coverage before ingestion is active.
+- Configure privacy-safe retention/purge and alert thresholds before enabling instrumentation.
+
+## Dormant integration checkpoint (PR #536)
+- Control Center shows optional authenticated telemetry results only when the RPC exists. Otherwise it explicitly reports NOT CONFIGURED (not zero checks).
+- `playnice-site/src/features/cart/inventoryShadowObserver.js` is wired to ordinary fragrance add-to-cart and cart quantity increases. It sends **no requests by default**; `REACT_APP_INVENTORY_SHADOW_ENABLED` must explicitly equal `true` at build time.
+- The matching `/api/inventory-shadow` ingestion endpoint is **not implemented yet**. Do not enable that flag until the endpoint, validation, rate limits, product mapping and deployed migration are tested. This is a dormant hook, NOT real-time monitoring.
+- Discovery bundles and checkout have not been instrumented. Their special cases require separate validated mapping before ingestion.
+- Diagnostic transport is best-effort only, never awaited by cart mutation. No customer checkout logic, stock mutation or blocking code was changed.
+
+## Preview-only diagnostic receiver checkpoint
+- `playnice-site/api/inventory-shadow.js` exists but returns 204 and does nothing unless **both** `VERCEL_ENV=preview` and server flag `INVENTORY_SHADOW_RECEIVER_ENABLED=true`. The browser hook independently requires `REACT_APP_INVENTORY_SHADOW_ENABLED=true`. Do not set either flag on Production.
+- Even with both flags enabled in Preview, the receiver only validates a small anonymous payload and returns `UNKNOWN / AUTHORITATIVE_STOCK_NOT_CONFIGURED`; it **does not persist, authenticate stock or evaluate inventory**. No customer identity or physical quantity is exposed.
+- The observer now sums supported decant sizes already in the same cart plus the intended addition. Non-decant products and ambiguous cart state are skipped; Discovery Set, hero full bottles and checkout require separate mapping.
+- This is **diagnostic transport preparation, not live Shadow Mode monitoring**. Before real event ingestion: implement trustworthy server-side catalog/stock reads, snapshot consistency, rate limiting, forged-traffic handling, retention, and audited writes to the isolated telemetry table.
+
+## Transaction audit and verified-balance safeguard (2026-11-09)
+- Live `create_or_get_checkout_order` uses advisory transaction lock scoped to **environment + checkout fingerprint**. It deduplicates identical submissions; it does NOT serialise purchases of the same fragrance by different customers and therefore does not prevent overselling. Do not assume duplicate protection is stock protection.
+- Atomic stock reservation will require a separate reviewed database transaction and per-product locking, plus strict idempotent behavior; do not change checkout order RPC as part of preliminary Shadow Mode.
+- Shadow decision model now requires `currentBalanceVerified=true`, `snapshotConsistent=true`, `mappingVerified=true` and `estimated=false`. A `baseline_verified` bottle-capacity flag alone explicitly cannot yield ALLOW/WOULD_BLOCK.
+- Added runtime tests verifying the Preview diagnostic endpoint returns 204 when disabled, UNKNOWN/202 when Preview-enabled, and refuses malformed payloads. No persistence is enabled.
+
+## Reservation lifecycle prototype checkpoint
+- Added `control-center/lib/inventory-reservation-lifecycle.mjs` as a **pure offline proposal**; no code path imports it into checkout, Control Center APIs, or Production.
+- NEW requires a verified `everPacked=false` history and counts as reserved. PACKED/SHIPPED/OUT_FOR_DELIVERY/DELIVERED/DELIVERY_FAILED/RETURNED remain consumed. CANCELLED before any packing releases reserved ml.
+- A `PACKED -> NEW` rollback, or cancellation after physical preparation, is flagged `RECONCILIATION_REQUIRED`; never silently re-credit ml.
+- Current status changes may reset `packed_at`. Thus `packed_at` alone **cannot establish historical packing**. An authoritative historical transition record or durable flag is required before applying the model to real orders.
+- Unknown prior packing history is UNKNOWN rather than an assumed reservation or released stock. Special gift, mixed discovery bundles, manual order changes, direct returns and legacy orders require full contract mapping.
+- Real atomic reservations still require a new reviewed transaction design. The model does **not** prevent overselling today.
+
+## Admin-only pending-order attention view (2026-11-16)
+- The existing read-only Pending stock audit now labels possible shortfalls when accepted NEW order demand exceeds recorded Remaining, and low buffers when the hypothetical remainder is 0–20 ml. Figures are estimates requiring manual review, NOT stock-out claims.
+- Admin-only counts and a collapsed diagnostics summary show attention without requiring scrolling through every row. Unknown/missing/provisional data cannot be labelled out of stock. Unmatched names remain a separate mapping warning.
+- `reviewNewOrderDemand` is a pure fail-open classifier. No inventory API or stock writer is called, checkout and cart are unchanged, and no customer sees internal ml values. Tests require `allowCheckout=true` for every condition.
+
+## Isolated Preview cart-button cap demo (2026-11-16)
+- A pure `assessCartQuantityCap` sums all decant sizes of **one product ID** in centi-ml and decides only whether an attempted +1 would exceed a known limit. It is used both in the cart + button and repeated product-page add-to-cart; a functional setCart guard closes rapid-click gaps. Minus/Remove/other fragrances/checkout stay untouched.
+- **NOT LIVE STOCK ENFORCEMENT:** current cart caps are only supplied by `previewCapForProduct` when a `*.vercel.app` Preview URL contains `?inventoryCapDemo=1`. The sole synthetic fixture is Xerjoff Naxos 100 ml. The amount is a demo value, not connected to Supabase and must not be described as verified stock. Production has no caps, and invalid/missing data fail open.
+- Before enabling live caps, design and review a public, rate-limited decision endpoint that does not expose raw inventory, uses authoritative server-side calculations and has safe expiry/invalidation. Do not connect privileged Control Center API to public browser, change checkout or publish raw balances.
+
+## Shop server decision bridge — Preview only, staged (2026-11-16)
+- Draft read-only `get_shop_inventory_cart_decision` RPC is NOT installed. It is callable only by `service_role`, never anon/authenticated. A public Shop serverless endpoint bridges to it with private `SHOP_INVENTORY_READ_SECRET`, and returns only ALLOW/LIMIT_REACHED/UNKNOWN. No stock quantities or customer records in responses.
+- `SHOP_INVENTORY_CHECK_ENABLED=true` and `VERCEL_ENV=preview` both required. Missing key or RPC returns UNKNOWN, and all buttons fail open. Shop Preview browser requests concrete next-cart candidate totals; the server returns only a decision.
+- Shop client caches responses briefly, warms on cart changes, mobile PDP selection and Quick View selections, and re-renders buttons on decision events. No checkout API modification. Current synthetic `?inventoryCapDemo=1` remains separate.
+- Before enabling, compare SQL direct-order consumption with authoritative CC analytics and resolve legacy gifts, bundled order types, aliases, pending NEW demand, and potential stale baselines. The draft excludes complex sales and may UNDER-estimate consumption; a mistaken mapping must never trigger false blocking. Real stock correctness and concurrent users remain unverified.
+- No Production schema migration or Vercel secret/env updates performed. Approval required before installing RPC or enabling Preview environment variables.
+
+## Fail-open reliability pass — 2026-11-16
+- A failed HTTP/timeout/invalid JSON read opens the stock-check circuit for 30 seconds; all cached denials and short click pauses are cleared, allowing cart updates immediately. UNKNOWN is per-product fail-open and removes cached denials for that product.
+- Confirmed denials only apply with a recent successful server check; expired results cannot indefinitely disable buttons.
+- A 480 ms per-product rapid-click pause is applied only after a recent successful check. It never blocks checkout and expires automatically. The cap message appears only for a confirmed limit, never for the pause.
+- Actual installed RPC has conservative coverage: live read-only audit of 115 fragrance stock rows found 31 eligible under base mapping, 80 with order history, and 6 with starting-data issues (categories overlap). Unknown stock means unrestricted cart, not zero stock. Do not promote coverage without parity against Control Center gift/bundle/order consumption.

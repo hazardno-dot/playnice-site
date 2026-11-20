@@ -1,0 +1,23 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+const sql=fs.readFileSync("control-center/supabase/checkout_atomic_concurrency_DEV_ONLY.sql","utf8");
+const py=fs.readFileSync("control-center/tests/checkout-atomic-concurrency-DEV-ONLY.py","utf8");
+assert.match(sql,/DEVELOPMENT \/ TEST DATABASE ONLY/);
+assert.match(sql,/CREATE SCHEMA IF NOT EXISTS pn_inventory_concurrency_fixture/);
+assert.match(sql,/pg_catalog\.pg_advisory_xact_lock/);
+assert.match(sql,/pn-dev-fixture:stock:/);
+assert.match(sql,/p_hold_seconds/);
+assert.match(sql,/SYNTHETIC_FAILURE/);
+assert.doesNotMatch(sql,/public\.(?:checkout_orders|order_items|fragrance_inventory_events)/i,
+  "Never reference PlayNice production application tables");
+assert.match(py,/parsed\.path != "\/playnice_atomic_test"/);
+assert.match(py,/PLAYNICE_ATOMIC_TEST_ACK/);
+assert.match(py,/wait_event_type='Lock' AND wait_event='advisory'/);
+assert.match(py,/conn_a = start/);
+assert.match(py,/conn_b = start/);
+assert.match(py,/DROP SCHEMA IF EXISTS pn_inventory_concurrency_fixture CASCADE/);
+assert.match(py,/finally:/);
+assert.doesNotMatch(py,/fsujznyfdrstinqexxgs|playniceshop\.me/);
+const api=fs.readFileSync("playnice-site/api/checkout.js","utf8");
+assert.doesNotMatch(api,/pn_inventory_concurrency_fixture/);
+console.log("PASS isolated DEV-ONLY two-session concurrency harness: local DSN gate, advisory wait proof, guaranteed cleanup");

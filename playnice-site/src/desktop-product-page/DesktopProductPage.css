@@ -831,3 +831,24 @@
 @media (max-width: 760px) {
   .desktop-product-page { display: none; }
 }
+
+/* Inventory cap: extinguish the gold CTA without changing its geometry. */
+.desktop-product-page__add:disabled,
+.desktop-product-page__buy:disabled {
+  background: #353638;
+  border-color: #55575a;
+  color: #9b9da0;
+  box-shadow: none;
+  text-shadow: none;
+  filter: grayscale(1);
+  opacity: 0.72;
+  cursor: not-allowed;
+  transform: none;
+}
+.desktop-product-page__add:disabled:hover,
+.desktop-product-page__buy:disabled:hover {
+  background: #353638;
+  box-shadow: none;
+  filter: grayscale(1);
+  transform: none;
+}

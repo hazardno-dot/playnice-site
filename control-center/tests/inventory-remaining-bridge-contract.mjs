@@ -1,0 +1,35 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import { shopDecisionFromRemaining } from "../lib/inventory-remaining-bridge.mjs";
+import { buildInventoryAnalytics } from "../lib/inventory-accounting.mjs";
+const name="Xerjoff Naxos Eau de Parfum";
+const source=[{product_name:name,stock_in_ml:100,opening_balance_ml:100,
+  restock_ml:0,manual_out_ml:0,historical_baseline:true,estimated:true}];
+const realShape=buildInventoryAnalytics([],source,{top_products:[],full_bottles:[]});
+const rows=realShape.rows;
+const opts={complete:true,fresh:true,verifiedRemaining:true};
+assert.equal(shopDecisionFromRemaining(realShape.rows,name,110,{complete:true,fresh:true}).decision,"UNKNOWN",
+  "parity without independent Remaining verification must fail open");
+const decision=(r,n,qty,o=opts)=>shopDecisionFromRemaining(r,n,qty,o).decision;
+assert.equal(decision(rows,name,100),"ALLOW");
+assert.equal(decision(rows,name,110),"LIMIT_REACHED");
+assert.equal(decision(rows,name,101),"LIMIT_REACHED");
+assert.equal(decision(rows,name,0),"UNKNOWN");
+assert.equal(decision(rows,name,NaN),"UNKNOWN");
+assert.equal(decision(rows,name,100.001),"UNKNOWN");
+assert.equal(decision(rows,"Unlisted",110),"UNKNOWN");
+assert.equal(decision(rows,name,110,{complete:false,fresh:true}),"UNKNOWN");
+assert.equal(decision(rows,name,110,{complete:true,fresh:false}),"UNKNOWN");
+assert.equal(decision(rows,name,110,{...opts,hasUnmatchedOrders:true}),"UNKNOWN");
+assert.equal(decision(rows,name,110,{...opts,ambiguousMappings:true}),"UNKNOWN");
+assert.equal(decision([...rows,rows[0]],name,110),"UNKNOWN");
+assert.equal(decision([{...rows[0],remaining_ml:null}],name,110),"UNKNOWN");
+assert.equal(decision([{...rows[0],remaining_ml:0,stock_status:"DEPLETED"}],name,10),"LIMIT_REACHED");
+assert.equal(decision([{...rows[0],remaining_ml:0,balance_unverified:true}],name,10),"UNKNOWN");
+assert.equal(decision(rows,name,110,{...opts,verifiedRemaining:false}),"UNKNOWN");
+const two=buildInventoryAnalytics([],source,{top_products:[{product_name:name,total_ml_out:22,sold_ml:20,gift_ml:2}],full_bottles:[]});
+assert.equal(decision(two.rows,name,78),"ALLOW");
+assert.equal(decision(two.rows,name,80),"LIMIT_REACHED");
+const api=fs.readFileSync("playnice-site/api/inventory-check.js","utf8");
+assert.doesNotMatch(api,/remaining_ml/,"Shop never returns raw Remaining");
+console.log("PASS direct CC Remaining decision contract: no second stock formula, fail-open UNKNOWN");

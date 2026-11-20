@@ -228,3 +228,134 @@
 @media(max-width:900px){
   .inventory-grid>.inventory-entry-panel{position:static;max-height:none;overflow:visible}
 }
+
+
+/* Inventory Protection synthetic lab controls — match the Control Center palette. */
+.inventory-lab-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin:14px 0 18px;
+}
+.inventory-intelligence .inventory-lab-run{
+  appearance:none;
+  border:1px solid rgba(110,192,145,.52);
+  border-radius:9px;
+  background:linear-gradient(135deg,rgba(44,112,73,.42),rgba(23,65,46,.7));
+  color:#e0f5e8;
+  padding:11px 17px;
+  font:inherit;
+  font-size:13px;
+  font-weight:600;
+  line-height:1.3;
+  cursor:pointer;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.inventory-intelligence .inventory-lab-run:hover{
+  background:rgba(70,149,96,.38);
+  border-color:#93d7ae;
+  transform:translateY(-1px);
+}
+.inventory-intelligence .inventory-lab-run:focus-visible{
+  outline:2px solid #b4f9d0;
+  outline-offset:3px;
+}
+.inventory-lab-safety-results{margin-top:16px}
+@media(max-width:700px){
+  .inventory-lab-actions{flex-direction:column}
+  .inventory-intelligence .inventory-lab-run{width:100%}
+}
+
+
+/* Inventory Watch stays primary; detailed protection work is opt-in. */
+.inventory-protection-diagnostics{
+  margin-top:22px;
+  border:1px solid rgba(110,192,145,.26);
+  border-radius:14px;
+  background:rgba(10,25,18,.34);
+}
+.inventory-protection-diagnostics>summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px 24px;
+  padding:18px 20px;
+  color:#e5f3e9;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  list-style:none;
+}
+.inventory-protection-diagnostics>summary::-webkit-details-marker{display:none}
+.inventory-protection-diagnostics>summary::before{
+  content:"▸";
+  margin-right:6px;
+  color:#95d7aa;
+}
+.inventory-protection-diagnostics[open]>summary::before{content:"▾"}
+.inventory-protection-diagnostics>summary span{
+  flex:1 1 380px;
+  color:#9bb9a7;
+  font-size:12px;
+  font-weight:400;
+  text-align:right;
+}
+.inventory-protection-diagnostics>summary:focus-visible{
+  outline:2px solid #b4f9d0;
+  outline-offset:3px;
+}
+.inventory-protection-diagnostics-body{padding:0 14px 16px}
+.inventory-verification-selected{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+  margin:16px 0 0;
+  border-top:1px solid rgba(110,192,145,.15);
+  padding:14px 12px 4px;
+  color:#dcefe2;
+  font-size:13px;
+}
+.inventory-verification-selected>strong{font-size:15px}
+.inventory-verification-selected>span{display:block}
+.inventory-verification-selected>small{display:block;color:#a4c0ac;line-height:1.5}
+.inventory-verification-selected .inventory-lab-run{margin-top:8px}
+@media(max-width:700px){
+  .inventory-protection-diagnostics>summary span{text-align:left;flex-basis:100%}
+  .inventory-protection-diagnostics-body{padding:0 8px 10px}
+}
+
+
+/* Keep search/sort visible; only the 115-row fragrance catalog scrolls. */
+.inventory-panel .inventory-catalog-scroll{
+  max-height:clamp(320px,55vh,620px);
+  min-height:180px;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(120,207,154,.65) rgba(25,49,36,.35);
+  padding-right:9px;
+  border-top:1px solid rgba(110,192,145,.09);
+}
+.inventory-panel .inventory-catalog-scroll::-webkit-scrollbar{width:9px}
+.inventory-panel .inventory-catalog-scroll::-webkit-scrollbar-track{
+  background:rgba(25,49,36,.35);
+  border-radius:10px;
+}
+.inventory-panel .inventory-catalog-scroll::-webkit-scrollbar-thumb{
+  background:rgba(120,207,154,.55);
+  border-radius:10px;
+}
+.inventory-panel .inventory-catalog-scroll:focus-visible{
+  outline:2px solid #a4efc0;
+  outline-offset:2px;
+}
+.inventory-protection-diagnostics{margin-top:0;margin-bottom:18px}
+@media(max-width:700px){
+  .inventory-panel .inventory-catalog-scroll{max-height:52vh;min-height:240px}
+}
+
+/* Administrative-only stock advisory; never a customer-facing stock-out. */
+.inventory-admin-advisory{font-size:10px!important;letter-spacing:.04em;white-space:normal!important;border-color:rgba(222,180,98,.45)!important;color:#e3be7f!important}

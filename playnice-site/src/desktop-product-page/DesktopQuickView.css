@@ -568,3 +568,17 @@
     transform: none;
   }
 }
+
+/* Off-state for stock-limited Quick View: no residual golden glow. */
+.desktop-quick-view__add:disabled,
+.desktop-quick-view__add:disabled:hover {
+  background: #353638;
+  color: #9b9da0;
+  border-color: #55575a;
+  box-shadow: none;
+  text-shadow: none;
+  filter: grayscale(1);
+  opacity: 0.72;
+  transform: none;
+  cursor: not-allowed;
+}
