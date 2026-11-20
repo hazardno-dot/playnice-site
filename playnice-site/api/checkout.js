@@ -357,14 +357,13 @@ global.fetch = async (...args) => {
 
 const legacyModule = require("../server/checkout-legacy");
 const legacyHandler = legacyModule.default || legacyModule;
+const {isCheckoutPreflightEnabled} = require("../server/inventory-rollout-gate.cjs");
 
 export default async function handler(req, res) {
   // Isolated server-side admission check on the audit Preview branch only.
   // No new order persistence or reservation side effects; Production unchanged.
   if (req.method === "POST" && isDomesticCheckout(req) &&
-      process.env.VERCEL_ENV === "preview" &&
-      process.env.VERCEL_GIT_COMMIT_REF === "feature/inventory-protection-audit-shadow-v1" &&
-      process.env.SHOP_PURCHASE_CAP_POLICY_PREVIEW_ENABLED === "true") {
+      isCheckoutPreflightEnabled(process.env)) {
     const {checkPreviewCheckout} = await import("../server/inventory-preview-checkout-preflight.mjs");
     const preflight = await checkPreviewCheckout(req.body);
     if (preflight.decision !== "ALLOW") {
