@@ -4,7 +4,7 @@ import fs from "node:fs";
 const require=createRequire(import.meta.url);
 const path=require.resolve("../../playnice-site/api/purchase-policy.js");
 const original={
-  env:process.env.VERCEL_ENV,enabled:process.env.SHOP_PURCHASE_CAP_POLICY_PREVIEW_ENABLED,
+  ref:process.env.VERCEL_GIT_COMMIT_REF,env:process.env.VERCEL_ENV,enabled:process.env.SHOP_PURCHASE_CAP_POLICY_PREVIEW_ENABLED,
   secret:process.env.SHOP_INVENTORY_READ_SECRET,fetch:global.fetch
 };
 function handlerFor(env,enabled,secret){
@@ -26,6 +26,7 @@ try {
   global.fetch=async()=>{calls++;throw Error("Production endpoint must not fetch");};
   assert.deepEqual((await run(off,{productName:"Naxos"})).payload,{status:"NOT_CONFIGURED"});
   assert.equal(calls,0);
+  process.env.VERCEL_GIT_COMMIT_REF="feature/inventory-protection-audit-shadow-v1";
   const live=handlerFor("preview","true","synthetic-test-secret");
   global.fetch=async()=>({ok:true,json:async()=>({default_limit_ml:30,overrides:{Naxos:20}})});
   const selected=await run(live,{productName:"Naxos"});
@@ -37,13 +38,14 @@ try {
   global.fetch=async()=>({ok:true,json:async()=>({default_limit_ml:30,overrides:{Naxos:-5}})});
   assert.deepEqual((await run(live,{productName:"Naxos"})).payload,{status:"NOT_CONFIGURED"});
   const api=fs.readFileSync("playnice-site/api/purchase-policy.js","utf8");
-  assert.match(api,/SHOP_PURCHASE_CAP_POLICY_PREVIEW_ENABLED/);
-  assert.match(api,/VERCEL_ENV==="preview"/);
+  assert.match(api,/isPolicyEnabled\(process\.env\)/);
+  assert.match(fs.readFileSync("playnice-site/server/inventory-rollout-gate.cjs","utf8"),/VERCEL_ENV==="preview"/);
   assert.doesNotMatch(api,/return res\.status\(200\)\.json\(policy\)/);
 } finally {
   for(const [key,value] of [["VERCEL_ENV",original.env],["SHOP_PURCHASE_CAP_POLICY_PREVIEW_ENABLED",original.enabled],["SHOP_INVENTORY_READ_SECRET",original.secret]]){
     if(value===undefined)delete process.env[key];else process.env[key]=value;
   }
+  if(original.ref===undefined)delete process.env.VERCEL_GIT_COMMIT_REF;else process.env.VERCEL_GIT_COMMIT_REF=original.ref;
   global.fetch=original.fetch;
   delete require.cache[path];
 }
