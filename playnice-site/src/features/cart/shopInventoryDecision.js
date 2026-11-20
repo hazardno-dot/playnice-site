@@ -64,8 +64,13 @@ export function isStockDecisionBlocked(product,cart,size){
 }
 export async function warmStockDecision(product,cart,size){
   try{
-    // Preview only until service role RPC and security review are approved.
-    if(typeof window==="undefined" || !window.location.hostname.endsWith(".vercel.app"))return;
+    // Production browser fetch needs a separate build-time switch.
+    if(typeof window==="undefined")return;
+    const host=window.location.hostname.toLowerCase();
+    const allowed=host.endsWith(".vercel.app") ||
+      (process.env.REACT_APP_SHOP_INVENTORY_PRODUCTION_UI_ENABLED==="true" &&
+       (host==="playniceshop.me"||host==="www.playniceshop.me"));
+    if(!allowed)return;
     const request=makeKey(product,cart,size);
     if(!request || waiting.has(request.key) || Date.now()<networkOutageUntil)return;
     const cached=responses.get(request.key);
