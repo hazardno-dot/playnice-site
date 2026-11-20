@@ -37,6 +37,27 @@ assert.equal((await checkPreviewCheckout(payload([row("10ml",3)]),{
  env:{...env,VERCEL_ENV:"production"},fetchImpl
 })).decision,"ALLOW");
 assert.equal(served.length,calls,"Production must not call preflight private endpoints");
+const productionEnabled={
+ ...env,VERCEL_ENV:"production",VERCEL_GIT_COMMIT_REF:"main",
+ SHOP_INVENTORY_PRODUCTION_ROLLOUT_ENABLED:"true",
+ SHOP_PURCHASE_CAP_POLICY_PRODUCTION_ENABLED:"true",
+ SHOP_INVENTORY_PRODUCTION_CHECK_ENABLED:"true",
+ SHOP_INVENTORY_PRODUCTION_PARITY_APPROVED_NAMES:perfume,
+ SHOP_INVENTORY_PRODUCTION_VERIFIED_REMAINING_NAMES:perfume
+};
+assert.equal((await checkPreviewCheckout(payload([row("10ml",3)]),{
+ env:productionEnabled,fetchImpl
+})).decision,"STOCK_LIMIT_REACHED","explicit Production opt-in activates trusted stock check");
+assert.equal((await checkPreviewCheckout(payload([row("10ml",3)]),{
+ env:{...productionEnabled,SHOP_INVENTORY_PRODUCTION_ROLLOUT_ENABLED:"false"},fetchImpl
+})).decision,"ALLOW","master flag must disable all Production blocking");
+assert.equal((await checkPreviewCheckout(payload([row("10ml",3)]),{
+ env:{...productionEnabled,SHOP_INVENTORY_PRODUCTION_VERIFIED_REMAINING_NAMES:""},fetchImpl
+})).decision,"ALLOW","no independently verified Production name, no stock blocking");
+assert.equal((await checkPreviewCheckout(payload([row("10ml",4)]),{
+ env:{...productionEnabled,SHOP_INVENTORY_PRODUCTION_CHECK_ENABLED:"false"},fetchImpl
+})).decision,"PURCHASE_CAP_REACHED","trusted purchase cap independent of stock rollout");
+
 assert.equal((await checkPreviewCheckout(payload([row("10ml",3)]),{
  env:{...env,VERCEL_GIT_COMMIT_REF:"main"},fetchImpl
 })).decision,"ALLOW");
