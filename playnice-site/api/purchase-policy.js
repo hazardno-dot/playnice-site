@@ -1,10 +1,10 @@
 // Preview-only read of administrator-managed per-fragrance purchase limits.
 // Exposes only the requested limit (never the complete policy or Supabase secret).
 // This endpoint DOES NOT enforce checkout and does not alter inventory.
+const {isPolicyEnabled}=require("../server/inventory-rollout-gate.cjs");
 const SUPABASE_URL=String(process.env.SUPABASE_URL||"https://fsujznyfdrstinqexxgs.supabase.co").trim();
 const SECRET=String(process.env.SHOP_INVENTORY_READ_SECRET||"").trim();
-const ENABLED=process.env.VERCEL_ENV==="preview" &&
-  process.env.SHOP_PURCHASE_CAP_POLICY_PREVIEW_ENABLED==="true";
+const ENABLED=isPolicyEnabled(process.env);
 const unavailable={status:"NOT_CONFIGURED"};
 module.exports=async function handler(req,res){
   res.setHeader("Cache-Control","private, no-store, max-age=0");
