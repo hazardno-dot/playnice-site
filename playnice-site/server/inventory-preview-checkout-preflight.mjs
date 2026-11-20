@@ -4,7 +4,7 @@
 import { collectOrderFragranceMl,assessCheckoutOrder } from "./inventory-checkout-guard.mjs";
 import { decisionFromShopRemaining } from "./inventory-shop-remaining.mjs";
 
-const branch="feature/inventory-protection-audit-shadow-v1";
+import rollout from "./inventory-rollout-gate.cjs";
 const fallback={decision:"ALLOW"};
 const headersFor=(secret)=>{
   const h={apikey:secret,"Content-Type":"application/json"};
@@ -12,9 +12,7 @@ const headersFor=(secret)=>{
   return h;
 };
 const setOf=(value)=>new Set(String(value||"").split(";").map(x=>x.trim().toLowerCase()).filter(Boolean));
-const serverAllowed=(env)=>env.VERCEL_ENV==="preview" &&
-  env.VERCEL_GIT_COMMIT_REF===branch &&
-  env.SHOP_PURCHASE_CAP_POLICY_PREVIEW_ENABLED==="true";
+const serverAllowed=(env)=>rollout.isCheckoutPreflightEnabled(env);
 const isValidMl=(n)=>typeof n==="number" && Number.isFinite(n) &&
   n>=2 && n<=200 && Math.abs(n*100-Math.round(n*100))<1e-6;
 
@@ -47,11 +45,11 @@ export async function checkPreviewCheckout(body,{env=process.env,fetchImpl=fetch
       }
     }
     // V2 stock restrictions apply to names individually approved AND verified.
-    const approved=setOf(env.SHOP_INVENTORY_PARITY_APPROVED_NAMES);
-    const verified=setOf(env.SHOP_INVENTORY_VERIFIED_REMAINING_NAMES);
+    const names=rollout.namesFor(env);
+    const approved=setOf(names.approved);
+    const verified=setOf(names.verified);
     const stock=new Map();
-    if(env.SHOP_INVENTORY_SOURCE_V2_ENABLED==="true"&&
-       env.SHOP_INVENTORY_CHECK_ENABLED==="true"){
+    if(rollout.isInventoryEnabled(env)){
       await Promise.all(parsed.totals.filter(x=>approved.has(x.productName)&&
         verified.has(x.productName)).map(async({productName,requestedMl})=>{
         const r=await decisionFromShopRemaining({
