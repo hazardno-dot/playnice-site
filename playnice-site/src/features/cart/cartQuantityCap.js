@@ -10,8 +10,13 @@ const purchasePolicies=new Map();
 const pendingPolicies=new Set();
 const REFRESH_MS=15000; // Retry cadence only, never the lifetime of an accepted purchase cap.
 const policyEnabledHost=()=>{
-  try{return typeof window!=="undefined"&&window.location.hostname.endsWith(".vercel.app");}
-  catch{return false;}
+  try{
+    if(typeof window==="undefined")return false;
+    const host=window.location.hostname.toLowerCase();
+    if(host.endsWith(".vercel.app"))return true;
+    return process.env.REACT_APP_SHOP_INVENTORY_PRODUCTION_UI_ENABLED==="true" &&
+      (host==="playniceshop.me"||host==="www.playniceshop.me");
+  }catch{return false;}
 };
 const notifyPolicyChange=()=>{
   try{window.dispatchEvent(new Event("playnice:stock-decision-updated"));}catch{}
