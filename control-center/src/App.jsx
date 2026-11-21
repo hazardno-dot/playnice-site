@@ -162,7 +162,7 @@ function ProductDetail({product,draft,onEdit}){
   </article>;
 }
 
-function Overview({audit,workflow,workflowLoading,workflowError,onNavigate}){
+function Overview({audit,workflow,workflowLoading,workflowError,stockWatch,onNavigate}){
   const workflowValue=(value)=>workflowLoading?"…":workflowError?"—":value;
   const layers=[["Copy",audit.layerCounts.Copy],["Wear",audit.layerCounts.Wear],["Do not wear",audit.layerCounts["Do not wear"]],["What to wear",audit.layerCounts["What to wear"]],["Discovery",audit.layerCounts.Discovery],["Note map",audit.layerCounts["Note map"]],["Recommendations",audit.layerCounts.Recommendations]];
   const totalDrafts=workflow.productDrafts+workflow.heroDrafts+workflow.journalDrafts+workflow.noteDrafts;
@@ -174,6 +174,28 @@ function Overview({audit,workflow,workflowLoading,workflowError,onNavigate}){
     <button type="button" className={`overview-card overview-card-link ${workflowError?"":totalDrafts?"warn":"good"}`} onClick={()=>onNavigate("Workflow")}><span>Active drafts</span><strong>{workflowValue(totalDrafts)}</strong><small>Products · Hero · Journal · Notes</small></button>
     <button type="button" className={`overview-card overview-card-link ${workflowError?"":workflow.approved?"warn":"good"}`} onClick={()=>onNavigate("Workflow")}><span>Approved</span><strong>{workflowValue(workflow.approved)}</strong><small>awaiting controlled next step</small></button>
   </div>
+  <section className={`overview-stock-watch ${stockWatch.status==="ready" ? stockWatch.critical ? "overview-stock-critical" : stockWatch.low ? "overview-stock-low" : "overview-stock-clear" : "overview-stock-unavailable"}`} aria-label="Inventory replenishment status">
+    <div className="overview-stock-watch-heading">
+      <div><span className="eyebrow">INVENTORY / REPLENISHMENT WATCH</span><h2>Stock alerts</h2></div>
+      <button type="button" className="overview-stock-link" onClick={()=>onNavigate("Inventory")}>Open Inventory Watch →</button>
+    </div>
+    {stockWatch.status==="ready" ? <>
+      <div className="overview-stock-watch-counts">
+        <div><span>LOW STOCK · ≤20 ml</span><strong>{stockWatch.low}</strong></div>
+        <div><span>CRITICAL · ≤10 ml</span><strong>{stockWatch.critical}</strong></div>
+        <div><span>DEPLETED · 0 ml</span><strong>{stockWatch.depleted}</strong></div>
+      </div>
+      {stockWatch.alerts.length ?
+        <div className="overview-stock-alert-list">
+          {stockWatch.alerts.slice(0,4).map((row)=><button type="button" key={row.name} onClick={()=>onNavigate("Inventory")}>
+            <span className={row.remaining<=10?"is-critical":"is-low"}>{row.remaining<=10?"CRITICAL":"LOW"}</span>
+            <strong>{row.name}</strong><small>{row.remaining.toLocaleString("en-IE",{maximumFractionDigits:1})} ml remaining</small>
+          </button>)}
+          {stockWatch.alerts.length>4?<small className="overview-stock-more">+{stockWatch.alerts.length-4} more in Inventory Watch</small>:null}
+        </div>
+        : <p className="overview-stock-note">All clear — no fragrance at or below 20 ml.</p>}
+    </> : <p className="overview-stock-note">{stockWatch.status==="loading"?"Checking current inventory…":"Inventory data unavailable — open Inventory Watch to retry."}</p>}
+  </section>
   <section className="workflow-overview-panel"><div className="audit-head"><div><span className="eyebrow">CONTROL CENTER WORKFLOW</span><h2>Managed content state</h2></div><div className="audit-status">{workflowLoading?"Syncing…":workflowError?"Workflow data unavailable":`${totalDrafts} active drafts · ${workflow.ready} ready · ${workflow.approved} approved`}</div></div><div className="workflow-module-grid">{[["Products",workflow.productDrafts],["Hero",workflow.heroDrafts],["Journal",workflow.journalDrafts],["Notes",workflow.noteDrafts]].map(([name,count])=><div className={count?"has-work":""} key={name}><span>{name}</span><strong>{workflowValue(count)}</strong><small>{workflowError?"unavailable":count?"workflow active":"clean"}</small></div>)}</div></section>
   <section className="audit-panel"><div className="audit-head"><div><span className="eyebrow">GLOBAL DATA AUDIT</span><h2>Catalog integrity</h2></div><div className="audit-status">{audit.complete}/{products.length} products fully complete</div></div><div className="audit-list">{layers.map(([l,c])=><div className={`audit-row ${c===products.length?"ok":"warn"}`} key={l}><strong>{l}</strong><span>{c}/{products.length} covered · {products.length-c} missing</span></div>)}</div></section></div>;
 }
@@ -205,11 +227,47 @@ export default function App(){
   const [workflowLoading,setWorkflowLoading]=useState(true);
   const [workflowError,setWorkflowError]=useState("");
   const [newProductOpen,setNewProductOpen]=useState(false);
+  const [stockWatch,setStockWatch]=useState({status:"loading",low:0,critical:0,depleted:0,alerts:[]});
   const audit=useMemo(()=>{const cs=products.map(getCoverage),layerCounts={};cs.forEach((c)=>c.checks.forEach(([l,ok])=>{layerCounts[l]=(layerCounts[l]||0)+(ok?1:0)}));return {complete:cs.filter((c)=>c.complete===c.total).length,layerCounts};},[]);
   const catalogProducts=useMemo(()=>{const draftOnly=Object.entries(drafts).filter(([slug])=>!products.some((p)=>p.slug===slug)).map(([slug,payload])=>draftProductFromPayload(slug,payload));return [...products,...draftOnly];},[drafts]);
   const filtered=useMemo(()=>{const q=query.trim().toLowerCase();return catalogProducts.filter((p)=>(!q||[p.name,p.shortName,p.slug,p.category,p.badge].filter(Boolean).some((v)=>String(v).toLowerCase().includes(q)))&&matchesCoverageFilter(p,coverageFilter));},[query,coverageFilter,catalogProducts]);
   const totalWorkflowDrafts=workflow.productDrafts+workflow.heroDrafts+workflow.journalDrafts+workflow.noteDrafts;
   const meta=MODULE_META[active]||MODULE_META.Overview;
+
+  useEffect(()=>{
+    if(active!=="Overview")return;
+    let cancelled=false;
+    const load=async()=>{
+      try{
+        const {data,error}=await supabase.auth.getSession();
+        if(error||!data?.session?.access_token)throw error||new Error("Admin session required");
+        const response=await fetch("/api/orders?view=analytics",{
+          headers:{Authorization:"Bearer "+data.session.access_token},cache:"no-store"
+        });
+        if(!response.ok)throw new Error("Inventory unavailable");
+        const payload=await response.json();
+        const rows=payload.analytics?.inventory?.rows;
+        if(!Array.isArray(rows))throw new Error("Inventory rows unavailable");
+        const alerts=rows.filter(row=>row?.product_name &&
+          Number.isFinite(Number(row.remaining_ml)) &&
+          Number(row.remaining_ml)>=0 && Number(row.remaining_ml)<=20)
+          .map(row=>({name:String(row.product_name),remaining:Number(row.remaining_ml)}))
+          .sort((a,b)=>a.remaining-b.remaining||a.name.localeCompare(b.name));
+        if(!cancelled)setStockWatch({
+          status:"ready",alerts,
+          low:alerts.filter(row=>row.remaining>10).length,
+          critical:alerts.filter(row=>row.remaining<=10).length,
+          depleted:alerts.filter(row=>row.remaining===0).length
+        });
+      }catch{
+        if(!cancelled)setStockWatch(current=>({...current,status:"unavailable"}));
+      }
+    };
+    void load();
+    const refresh=window.setInterval(load,60000);
+    window.addEventListener("focus",load);
+    return()=>{cancelled=true;window.clearInterval(refresh);window.removeEventListener("focus",load);};
+  },[active]);
 
   useEffect(()=>{
     let cancelled=false;
@@ -302,7 +360,7 @@ export default function App(){
 
   return <div className="app-shell"><div className="cc-navigation"><div className="cc-primary-row"><div className="brand-block"><div><strong>PlayNice</strong><span>Control Center</span></div></div><nav className="cc-primary-nav">{PRIMARY_NAV.map((group)=><button key={group.name} className={group.modules.includes(active)?"active":""} onClick={()=>{if(group.name==="Overview")setActive("Overview");else if(group.name==="Manage"&&!group.modules.includes(active))setActive("Products");else if(group.name==="Operations"&&!group.modules.includes(active))setActive("Orders");else if(group.name==="Social"&&!group.modules.includes(active))setActive("Social");else if(group.name==="Intelligence"&&!group.modules.includes(active))setActive("Commerce");else if(group.name==="Community"&&!group.modules.includes(active))setActive("Scent Requests");else if(group.name==="System"&&!group.modules.includes(active))setActive("Site Health");setEditing(false)}}>{group.name}</button>)}</nav><div className="cc-shell-status"><span className="status-dot"/><span>Shop read only</span></div></div><nav className="cc-secondary-nav">{NAV.flatMap((group)=>group.items).filter((item)=>{const current=PRIMARY_NAV.find((group)=>group.modules.includes(active));return current&&current.name!=="Overview"&&current.modules.includes(item.name)}).map((item)=><button key={item.name} title={item.name} data-hero-manager-nav={item.name==="Hero"?"true":undefined} data-exhibition-manager-nav={item.name==="Exhibition"?"true":undefined} data-social-manager-nav={item.name==="Social"?"true":undefined} data-social-inbox-manager-nav={item.name==="Inbox"?"true":undefined} data-scent-requests-manager-nav={item.name==="Scent Requests"?"true":undefined} data-journal-feedback-manager-nav={item.name==="Journal Feedback"?"true":undefined} className={active===item.name?"active":""} onMouseDown={()=>{if(item.name==="Hero"){setActive("Hero");setEditing(false)}}} onClick={()=>{setActive(item.name);setEditing(false)}}>{item.name}</button>)}</nav></div>
     <main className="main-stage"><header className="topbar"><div className="topbar-copy"><span className="eyebrow">{meta.eyebrow}</span><h1>{active}</h1><p>{meta.description}</p></div><div className="topbar-actions"><button type="button" className={`workflow-pill ${workflowError?"unavailable":totalWorkflowDrafts?"active":"clean"}`} onClick={()=>setActive("Workflow")} title={workflowError?"Workflow data unavailable":`Products ${workflow.productDrafts} · Hero ${workflow.heroDrafts} · Journal ${workflow.journalDrafts} · Notes ${workflow.noteDrafts}`}><span>WORKFLOW</span><strong>{workflowLoading?"…":workflowError?"—":totalWorkflowDrafts}</strong></button><div className="read-only-badge">NO PUBLISH</div></div></header><div id="controlled-apply-slot" className="controlled-apply-slot" data-visible={active==="Overview"||active==="Products"?"true":"false"}/>
-    {active==="Overview"?<Overview audit={audit} workflow={workflow} workflowLoading={workflowLoading} workflowError={workflowError} onNavigate={(module,filter)=>{setActive(module);setEditing(false);if(module==="Products"&&filter)setCoverageFilter(filter);}}/>:active==="Products"?<div className="products-layout"><section className="catalog-panel"><div className="catalog-head"><div><span className="eyebrow">CATALOG</span><h2>{products.length} fragrances</h2></div><div className="editor-actions"><button className="secondary-btn" onClick={()=>setNewProductOpen(true)}>+ New product</button><span className="catalog-count">{filtered.length}</span></div></div><div className="search-wrap"><input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search name, slug, category…"/></div><div className="filter-bar">{FILTERS.map(([v,l])=><button key={v} className={`filter-btn ${coverageFilter===v?"active":""}`} onClick={()=>setCoverageFilter(v)}>{l}</button>)}</div><ProductList items={filtered} selectedSlug={selected?.slug} onSelect={choose} drafts={drafts}/></section><section className="detail-panel">{editing?<DraftEditor key={selected.slug} product={selected} initial={drafts[selected.slug]||(selected.__new?makeBlankDraft():makeDraft(selected))} onCancel={()=>setEditing(false)} onSave={saveDraft}/>:<ProductDetail product={selected} draft={drafts[selected?.slug]} onEdit={()=>setEditing(true)}/>}</section></div>:<section className="placeholder-panel"><span className="eyebrow">MODULE ACTIVE</span><h2>{active}</h2><p>{meta.description}</p></section>}</main>
+    {active==="Overview"?<Overview audit={audit} workflow={workflow} workflowLoading={workflowLoading} workflowError={workflowError} stockWatch={stockWatch} onNavigate={(module,filter)=>{setActive(module);setEditing(false);if(module==="Products"&&filter)setCoverageFilter(filter);}}/>:active==="Products"?<div className="products-layout"><section className="catalog-panel"><div className="catalog-head"><div><span className="eyebrow">CATALOG</span><h2>{products.length} fragrances</h2></div><div className="editor-actions"><button className="secondary-btn" onClick={()=>setNewProductOpen(true)}>+ New product</button><span className="catalog-count">{filtered.length}</span></div></div><div className="search-wrap"><input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Search name, slug, category…"/></div><div className="filter-bar">{FILTERS.map(([v,l])=><button key={v} className={`filter-btn ${coverageFilter===v?"active":""}`} onClick={()=>setCoverageFilter(v)}>{l}</button>)}</div><ProductList items={filtered} selectedSlug={selected?.slug} onSelect={choose} drafts={drafts}/></section><section className="detail-panel">{editing?<DraftEditor key={selected.slug} product={selected} initial={drafts[selected.slug]||(selected.__new?makeBlankDraft():makeDraft(selected))} onCancel={()=>setEditing(false)} onSave={saveDraft}/>:<ProductDetail product={selected} draft={drafts[selected?.slug]} onEdit={()=>setEditing(true)}/>}</section></div>:<section className="placeholder-panel"><span className="eyebrow">MODULE ACTIVE</span><h2>{active}</h2><p>{meta.description}</p></section>}</main>
     <NewProductDialog open={newProductOpen} onClose={()=>setNewProductOpen(false)} onCreate={createNew} products={products} drafts={drafts}/>
   </div>;
 }
