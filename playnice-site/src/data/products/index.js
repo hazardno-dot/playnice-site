@@ -3373,6 +3373,32 @@ export const products = [
       heart: ["pink-pepper","jasmine","orange-blossom"],
       base: ["musk","tonka-bean","woody-notes"]
     }
+  },
+  {
+    id: 121,
+    addedAt: "2026-11-21T20:32:01.861Z",
+    slug: "goldfield-banks-ingenious-ginger",
+    name: "Goldfield & Banks Ingenious Ginger Eau de Parfum",
+    modalName: "Goldfield & Banks Ingenious Ginger EDP",
+    shortName: "Ingenious Ginger",
+    category: "Niche",
+    image: "/products/goldfield-banks-ingenious-ginger.png",
+    sizes: {"2ml":6.5,"5ml":15,"10ml":27},
+    badge: "TOP RATED",
+    rating: 8.8,
+    ratingLabel: "PlayNice Pick",
+    season: "all",
+    moods: ["clean","summer","signature"],
+    recommendations: ["french-avenue-ravine-ginger-edp","mawj-moscow-mule","essential-parfums-nice-bergamote"],
+    inspiredBy: {
+      name: "Original Goldfield & Banks creation",
+      short: "Australian Ginger Floral Amber DNA"
+    },
+    noteMap: {
+      top: ["ginger","mandarin","bergamot"],
+      heart: ["magnolia","neroli"],
+      base: ["amber","sandalwood","vanilla"]
+    }
   }
 
 ];

@@ -3632,6 +3632,37 @@ export const discoveryProfiles = {
     "cleanliness": 6.5,
     "versatility": 7.5,
     "gourmandness": 5.7
+  },
+
+  "goldfield-banks-ingenious-ginger": {
+    "date": 8,
+    "casual": 9.2,
+    "citrus": 8.5,
+    "office": 8.8,
+    "unisex": 9.5,
+    "warmth": 5.8,
+    "aquatic": 0,
+    "dryness": 3.2,
+    "evening": 7.2,
+    "powdery": 2,
+    "airiness": 7.8,
+    "darkness": 0.5,
+    "elegance": 9,
+    "feminine": 5.5,
+    "florality": 6.5,
+    "freshness": 8.8,
+    "longevity": 8,
+    "masculine": 5.5,
+    "spiciness": 6.8,
+    "sweetness": 4.8,
+    "woodiness": 5.2,
+    "creaminess": 4.5,
+    "fruitiness": 4.8,
+    "projection": 7.5,
+    "aromaticity": 5.5,
+    "cleanliness": 8.2,
+    "versatility": 9,
+    "gourmandness": 1.8
   }
 };
 

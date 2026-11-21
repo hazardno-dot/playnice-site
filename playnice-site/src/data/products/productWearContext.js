@@ -505,5 +505,10 @@ export const productWearContext = {
   "Khadlaj Island Sun Extrait de Parfum": {
     "sr": "Plaža, letnja šetnja, terasa i opušteno popodne.",
     "en": "Beach days, summer walks, terraces and relaxed afternoons."
+  },
+
+  "Goldfield & Banks Ingenious Ginger Eau de Parfum": {
+    "sr": "Sunčani dani, putovanja, ručkovi i opušteni susreti.",
+    "en": "Sunny days, travel, lunches and relaxed encounters."
   }
 };
