@@ -1,5 +1,32 @@
 export const exhibitionItems = [
   {
+    "id": "hero-6-my-geisha-unseen-miris-koji-se-ne-zaboravlja-sada-u--20261121234251",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "MY GEISHA UNSEEN — miris koji se ne zaboravlja. Sada u PlayNice dekantima.",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-6-my-geisha-unseen-miris-koji-se-ne-zaboravlja-sada-u--20261121234251-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-6-my-geisha-unseen-miris-koji-se-ne-zaboravlja-sada-u--20261121234251.jpg",
+        "format": "wide",
+        "alt": "MY GEISHA UNSEEN — miris koji se ne zaboravlja. Sada u PlayNice dekantima."
+      }
+    ]
+  },
+
+  {
     "id": "hero-7-optional-special-action-drop-ili-limited-stock-20261115165957",
     "year": 2026,
     "period": "sep-dec-2026",

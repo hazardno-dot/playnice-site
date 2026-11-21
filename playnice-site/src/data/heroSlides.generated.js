@@ -4,18 +4,13 @@
 
 export const BASE_HERO_SLIDES = [
   {
-    "id": 5,
+    "id": 6,
     "kind": "imageOnly",
-    "image": "/hero/slide-5.jpg",
-    "desktopImage": "/hero/slide-5.jpg",
-    "mobileImage": "/hero/mobile/slide-5-mobile.jpg",
-    "alt": "A NEW NAME IN MONTENEGRO.  BUJAIRAMI HAS ARRIVED.",
-    "actionPrimary": "collection",
-    "actionCollection": [
-      "bujairami-too-damn-good",
-      "bujairami-hectic"
-    ],
-    "collectionTitle": "Discover Bujairami. Discover something different."
+    "image": "/hero/slide-6.jpg",
+    "desktopImage": "/hero/slide-6.jpg",
+    "mobileImage": "/hero/mobile/slide-6-mobile.jpg",
+    "alt": "Velika imena. Male bočice.",
+    "actionPrimary": "shop"
   },
   {
     "id": 12,
@@ -38,17 +33,6 @@ export const BASE_HERO_SLIDES = [
     "actionPrimary": "product",
     "actionProductSlug": "armani-i-will",
     "preferredSize": "5ml"
-  },
-  {
-    "id": 6,
-    "kind": "imageOnly",
-    "image": "/hero/slide-6.jpg",
-    "desktopImage": "/hero/slide-6.jpg",
-    "mobileImage": "/hero/mobile/slide-6-mobile.jpg",
-    "alt": "MY GEISHA UNSEEN — miris koji se ne zaboravlja. Sada u PlayNice dekantima.",
-    "actionPrimary": "product",
-    "actionProductSlug": "my-geisha-unseen-extrait-de-parfum",
-    "preferredSize": "10ml"
   },
   {
     "id": 2,
@@ -80,6 +64,20 @@ export const BASE_HERO_SLIDES = [
     "alt": "PlayNice Premium Fragrance House – gentleman with fragrance",
     "actionPrimary": "manifesto",
     "manifestoType": "playnice-mission"
+  },
+  {
+    "id": 5,
+    "kind": "imageOnly",
+    "image": "/hero/slide-5.jpg",
+    "desktopImage": "/hero/slide-5.jpg",
+    "mobileImage": "/hero/mobile/slide-5-mobile.jpg",
+    "alt": "A NEW NAME IN MONTENEGRO.  BUJAIRAMI HAS ARRIVED.",
+    "actionPrimary": "collection",
+    "actionCollection": [
+      "bujairami-too-damn-good",
+      "bujairami-hectic"
+    ],
+    "collectionTitle": "Discover Bujairami. Discover something different."
   },
   {
     "id": 1,
