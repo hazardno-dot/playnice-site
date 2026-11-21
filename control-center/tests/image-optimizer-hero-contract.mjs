@@ -43,7 +43,7 @@ for (const token of [
 ]) if (!api.includes(token)) throw new Error(`Hero media API contract missing: ${token}`);
 
 console.log("PASS  Hero desktop auto-optimizes to canonical 1920x700 JPEG without auto-crop");
-if (/heroMobile:[\\s\\S]*?neverIncreaseBytes:\\s*true/.test(optimizer.split("socialFeed:")[0])) {
+if (/heroMobile:[\s\S]*?neverIncreaseBytes:\s*true/.test(optimizer.split("socialFeed:")[0])) {
   throw new Error("Hero mobile must not reduce the 150 KB budget to the source file size.");
 }
 console.log("PASS  Hero mobile preserves a valid 1200x900 JPEG under the fixed 150 KB budget");
