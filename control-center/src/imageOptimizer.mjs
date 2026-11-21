@@ -44,7 +44,6 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     ratioTolerance: 0.03,
     background: "#000000",
     maxBytes: 150_000,
-    neverIncreaseBytes: true,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62, 0.58, 0.54, 0.5, 0.46],
   }),
   socialFeed: Object.freeze({
@@ -362,6 +361,16 @@ export async function optimizeImage(file, preset) {
       const targetRatio = width / height;
       if (preset.fit === "strict" && Math.abs(originalRatio - targetRatio) > Number(preset.ratioTolerance || 0)) {
         throw new Error(`Image ratio ${originalRatio.toFixed(2)}:1 does not match required ${targetRatio.toFixed(2)}:1 (${width} × ${height}px). Use the correct composition; Hero images are never auto-cropped.`);
+      }
+
+      // A validated, correctly sized JPEG already within the byte budget must
+      // be staged unchanged. Canvas re-encoding can make detailed images larger.
+      if (preset.fit === "strict" && preset.outputType === "image/jpeg" &&
+          file.type.toLowerCase() === "image/jpeg" &&
+          originalWidth === width && originalHeight === height &&
+          file.size <= targetBytes) {
+        return { blob: file, width, height, quality: null, originalWidth, originalHeight,
+          originalBytes: file.size, targetBytes };
       }
 
       const { canvas, ctx } = prepareCanvas(width, height, preset);
