@@ -13,8 +13,8 @@ assert.match(app,/payload\.analytics\?\.inventory\?\.rows/);
 assert.match(app,/cache:"no-store"/);
 
 // Existing thresholds are authoritative; never mix them with 30ml purchase cap.
-assert.match(inventory,/Number\(row\.remaining_ml\)<=20/);
-assert.match(inventory,/Number\(row\.remaining_ml\) <= 10/);
+assert.match(inventory,/Number\(row\.remaining_ml\)\s*<=\s*20/);
+assert.match(inventory,/Number\(row\.remaining_ml\)\s*<=\s*10/);
 assert.match(app,/Number\(row\.remaining_ml\)<=20/);
 assert.match(app,/row\.remaining<=10/);
 assert.match(app,/row\.remaining===0/);
