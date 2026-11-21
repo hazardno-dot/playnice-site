@@ -18,6 +18,9 @@ for (const token of [
   'width: 1200',
   'height: 900',
   'Hero images are never auto-cropped.',
+  'file.size <= targetBytes',
+  'originalWidth === width && originalHeight === height',
+  'return { blob: file, width, height, quality: null',
 ]) if (!optimizer.includes(token)) throw new Error(`Hero optimizer contract missing: ${token}`);
 
 for (const token of [
@@ -40,6 +43,9 @@ for (const token of [
 ]) if (!api.includes(token)) throw new Error(`Hero media API contract missing: ${token}`);
 
 console.log("PASS  Hero desktop auto-optimizes to canonical 1920x700 JPEG without auto-crop");
-console.log("PASS  Hero mobile auto-optimizes to canonical 1200x900 JPEG without auto-crop");
+if (/heroMobile:[\s\S]*?neverIncreaseBytes:\s*true/.test(optimizer.split("socialFeed:")[0])) {
+  throw new Error("Hero mobile must not reduce the 150 KB budget to the source file size.");
+}
+console.log("PASS  Hero mobile preserves a valid 1200x900 JPEG under the fixed 150 KB budget");
 console.log("PASS  Hero media API independently enforces exact JPEG dimensions");
 console.log("Production untouched: yes (contract-only verification)");
