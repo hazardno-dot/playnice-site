@@ -3940,6 +3940,55 @@ export const productCopy = {
       "en": "For lovers of juicy fruit, creamy coconut and bright summer freshness with a warm finish.",
       "sr": "Za ljubitelje sočnog voća, kremastog kokosa i letnje svežine sa toplom završnicom."
     }
+  },
+
+  "Goldfield & Banks Ingenious Ginger Eau de Parfum": {
+    "miniTag": {
+      "en": "🫚 Ginger / Radiant",
+      "sr": "🫚 Đumbir / Sunčan"
+    },
+    "card": {
+      "en": "Sparkling ginger, mandarin and magnolia over warm amber.",
+      "sr": "Svetlucavi đumbir, mandarina i magnolija na toploj ambrastoj bazi."
+    },
+    "modal": {
+      "en": "Sparkling ginger and sunny citrus open with energy. Magnolia and neroli bring floral elegance, while amber, vanilla and sandalwood create a soft, warm finish.",
+      "sr": "Đumbir i citrusi daju živahan početak. Magnolija i neroli unose cvetnu eleganciju, dok amber, vanila i sandalovina ostavljaju toplu završnicu."
+    },
+    "scentType": {
+      "en": "Citrus floral amber",
+      "sr": "Citrusni, cvetni i ambrasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Đumbir",
+        "Mandarina",
+        "Magnolija",
+        "Sandalovina"
+      ],
+      "en": [
+        "Ginger",
+        "Mandarin",
+        "Magnolia",
+        "Sandalwood"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Sunčan",
+        "Svež",
+        "Elegantan"
+      ],
+      "en": [
+        "Radiant",
+        "Fresh",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For those who love sparkling ginger, bright citrus and warmth without heavy sweetness.",
+      "sr": "Za one koji vole živahan đumbir, blistave citruse i toplinu bez teške slatkoće."
+    }
   }
 };
 

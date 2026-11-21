@@ -178,6 +178,10 @@ const entries = [
   {
     "sr": "Lanena košulja, svetle pantalone, mokasine ili čiste bele patike.",
     "en": "Linen shirt, light trousers, loafers or crisp white sneakers."
+  },
+  {
+    "sr": "Bela lanena košulja, bež pantalone i mokasine. Za veče, svetli sako i čista bela majica.",
+    "en": "White linen shirt, beige trousers and loafers. For evening, a light blazer and crisp white T-shirt."
   }
 
 ];

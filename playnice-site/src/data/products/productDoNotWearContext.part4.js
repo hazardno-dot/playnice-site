@@ -176,6 +176,10 @@ export default [
   {
     "sr": "Na razgovor za posao gde ozbiljnost meriš brojem dugmadi na sakou.",
     "en": "To a job interview where your suit is expected to do all the talking."
+  },
+  {
+    "sr": "Kad te spuštaju u kavezu među ajkule kod Australije. Ako neka pregrize rešetke zbog tvog parfema, nemoj reći da te nismo upozorili.",
+    "en": "When cage diving with sharks off Australia. If one bites through the bars for your fragrance, don't say we didn't warn you."
   }
 
 ];
