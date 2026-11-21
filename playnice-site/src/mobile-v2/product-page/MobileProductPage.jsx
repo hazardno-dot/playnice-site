@@ -118,6 +118,8 @@ export default function MobileProductPage({
   onSelectSize,
   onAddToCart,
   onBuyNow,
+  canAddToCart = () => true,
+  isAtStockLimit = () => false,
   isWishlisted = false,
   onToggleWishlist,
   onOpenProduct,
@@ -231,9 +233,9 @@ export default function MobileProductPage({
   const isJustAdded = addedCartKey === activeCartKey;
 
   const handleAddToCartClick = () => {
-    if (!activeSize) return;
+    if (!activeSize || !canAddToCart(product, activeSize)) return;
 
-    onAddToCart?.(product, activeSize);
+    if (onAddToCart?.(product, activeSize) === false) return;
     setAddedCartKey(activeCartKey);
 
     if (addedCartTimeoutRef.current) {
@@ -521,7 +523,7 @@ export default function MobileProductPage({
             <button
               type="button"
               className={`mobile-product-page__add ${isJustAdded ? "is-added" : ""}`}
-              disabled={!activeSize}
+              disabled={!activeSize || !canAddToCart(product, activeSize)}
               onClick={handleAddToCartClick}
               aria-live="polite"
             >
@@ -537,12 +539,17 @@ export default function MobileProductPage({
             <button
               type="button"
               className="mobile-product-page__buy-now"
-              disabled={!activeSize}
+              disabled={!activeSize || !canAddToCart(product, activeSize)}
               onClick={() => onBuyNow?.(product, activeSize)}
             >
               {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
             </button>
           </div>
+          {activeSize && isAtStockLimit(product, activeSize) && (
+            <p className="inventory-limit-message" role="status">
+              {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+            </p>
+          )}
         </div>
       </section>
 

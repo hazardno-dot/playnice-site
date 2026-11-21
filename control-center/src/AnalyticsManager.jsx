@@ -3,6 +3,10 @@ import { createPortal } from "react-dom";
 import { GA4_EVENTS, parseGa4EventCsv } from "./ga4CsvImport.mjs";
 import { parseGa4ItemsCsv } from "./ga4ItemsCsvImport.mjs";
 import { deriveProductInsights } from "./productInsights.mjs";
+import { runInventoryPreviewLab } from "../lib/inventory-preview-lab.mjs";
+import { runInventorySafetyLab } from "../lib/inventory-preview-safety-lab.mjs";
+import { inventoryVerificationSnapshot } from "../lib/inventory-verification-v1.mjs";
+import { reviewNewOrderDemand, summarizeNewOrderAdvisories } from "../lib/inventory-advisory-review.mjs";
 
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -29,6 +33,13 @@ export default function AnalyticsManager() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [data, setData] = useState({ orderAnalytics: {} });
+  const [shadowReport, setShadowReport] = useState(null);
+  const [shadowState, setShadowState] = useState("NOT_CONFIGURED");
+  const [syntheticLabReport, setSyntheticLabReport] = useState(null);
+  const [safetyLabReport, setSafetyLabReport] = useState(null);
+  const [previewReview, setPreviewReview] = useState(null);
+  const [previewReviewBusy, setPreviewReviewBusy] = useState(false);
+
   const [ga4, setGa4] = useState(() => {
     try { const value=JSON.parse(localStorage.getItem("playnice_cc_ga4_events_v1")||"null");return value?.version===1 ? value : null; }
     catch { return null; }
@@ -84,6 +95,52 @@ export default function AnalyticsManager() {
   const [inventoryReason, setInventoryReason] = useState("PRIVATE_GIFT");
   const [inventoryBusy, setInventoryBusy] = useState(false);
   const [inventoryNotice, setInventoryNotice] = useState("");
+  const [purchaseCaps, setPurchaseCaps] = useState(null);
+  const [purchaseCapsStatus, setPurchaseCapsStatus] = useState("NOT_CONFIGURED");
+  const [purchaseCapDraft, setPurchaseCapDraft] = useState("30");
+  const [purchaseCapSaving, setPurchaseCapSaving] = useState(false);
+  const [purchaseCapNotice, setPurchaseCapNotice] = useState("");
+  const purchaseCapPreview = typeof window !== "undefined" &&
+    window.location.hostname.endsWith(".vercel.app");
+  useEffect(() => {
+    if (!slot || module !== "Inventory") return;
+    let cancelled=false;
+    supabase.rpc("get_control_center_purchase_caps_v1").then(({data,error})=>{
+      if(cancelled)return;
+      if(error || !data || !data.overrides){
+        setPurchaseCaps(null);setPurchaseCapsStatus("NOT_CONFIGURED");
+      }else{
+        setPurchaseCaps(data);setPurchaseCapsStatus("READY");
+      }
+    }).catch(()=>{if(!cancelled)setPurchaseCapsStatus("NOT_CONFIGURED");});
+    return ()=>{cancelled=true;};
+  },[slot,module]);
+  useEffect(()=>{
+    const overrides=purchaseCaps?.overrides||{};
+    const match=Object.entries(overrides).find(([name])=>
+      name.trim().toLowerCase()===String(inventoryProduct||"").trim().toLowerCase());
+    setPurchaseCapDraft(String(match?match[1]:30));
+    setPurchaseCapNotice("");
+  },[inventoryProduct,purchaseCaps]);
+  const savePurchaseCap = async (reset=false) => {
+    if(!purchaseCapPreview || purchaseCapsStatus!=="READY" || !inventoryProduct)return;
+    const ml=reset?30:Number(purchaseCapDraft);
+    if(!Number.isFinite(ml)||ml<2||ml>200||
+        Math.abs(ml*100-Math.round(ml*100))>1e-6){
+      setPurchaseCapNotice("Choose a limit between 2 and 200 ml.");
+      return;
+    }
+    setPurchaseCapSaving(true);setPurchaseCapNotice("");
+    try{
+      const {data,error}=await supabase.rpc("set_control_center_purchase_cap_v1",{
+        p_product_name:inventoryProduct,p_limit_ml:ml
+      });
+      if(error||!data?.overrides)throw new Error(error?.message||"Could not save purchase limit.");
+      setPurchaseCaps(data);
+      setPurchaseCapNotice(reset||ml===30?"Default 30 ml restored.":"Purchase limit saved.");
+    }catch(e){setPurchaseCapNotice(e.message||"Could not save purchase limit.");}
+    finally{setPurchaseCapSaving(false);}
+  };
 
   useEffect(() => {
     const mainStage = document.querySelector(".main-stage");
@@ -118,6 +175,22 @@ export default function AnalyticsManager() {
         const orderAnalytics = await loadOrderAnalytics();
         if (cancelled) return;
         setData({ orderAnalytics });
+        // Optional authenticated telemetry RPC. The migration is intentionally not applied yet.
+        // Never report an absent service as zero events.
+        try {
+          const { data: report, error: shadowError } = await supabase.rpc("get_control_center_inventory_protection_shadow");
+          if (!cancelled) {
+            if (shadowError || !report || report.mode !== "SHADOW_ONLY") {
+              setShadowReport(null);
+              setShadowState("NOT_CONFIGURED");
+            } else {
+              setShadowReport(report);
+              setShadowState("AVAILABLE");
+            }
+          }
+        } catch {
+          if (!cancelled) { setShadowReport(null); setShadowState("NOT_CONFIGURED"); }
+        }
         setError("");
       } catch (loadError) {
         if (!cancelled) setError(loadError.message || String(loadError));
@@ -154,6 +227,31 @@ export default function AnalyticsManager() {
     const resaleMl = resaleByName.get(String(product.name).toLowerCase()) || 0;
     return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, resale_in_ml: resaleMl, resale_out_ml: resaleMl, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
   });
+  const stockAlerts = inventoryRows
+    .filter((row) => Number.isFinite(Number(row.remaining_ml)) &&
+      Number(row.remaining_ml) >= 0 && Number(row.remaining_ml) <= 20)
+    .map((row) => ({
+      name: row.product_name,
+      remaining: Number(row.remaining_ml),
+      severity: Number(row.remaining_ml) <= 10 ? "CRITICAL" : "LOW"
+    }))
+    .sort((a,b) => a.remaining-b.remaining || a.name.localeCompare(b.name));
+  const criticalAlerts = stockAlerts.filter((row) => row.severity === "CRITICAL");
+  const lowAlerts = stockAlerts.filter((row) => row.severity === "LOW");
+  // Audit-only readiness view. This is not live shadow telemetry or checkout enforcement.
+  // Baseline size verification does not prove current available-to-sell stock.
+  const protectionAudit = inventoryRows.reduce((acc, row) => {
+    if (row.provisional || row.estimated) acc.provisional += 1;
+    else if (!row.baseline_verified) acc.unverified += 1;
+    else if (!Number.isFinite(Number(row.remaining_ml)) || Number(row.remaining_ml) < 0) acc.inconsistent += 1;
+    else acc.reviewable += 1;
+    return acc;
+  }, { provisional: 0, unverified: 0, inconsistent: 0, reviewable: 0 });
+  const pendingAuditRows = inventoryRows
+    .filter((row) => Number(row.pending_new_ml || 0) > 0)
+    .sort((a, b) => Number(b.pending_new_ml || 0) - Number(a.pending_new_ml || 0));
+  const pendingUnmatched = inventory.pending_new_unmatched || [];
+  const pendingAdvisories = summarizeNewOrderAdvisories(pendingAuditRows);
   const visibleInventoryRows = inventoryRows
     .filter((row) => String(row.product_name || "").toLocaleLowerCase().includes(inventorySearch.trim().toLocaleLowerCase()))
     .sort((a, b) => {
@@ -173,6 +271,48 @@ export default function AnalyticsManager() {
   const selectedInventoryRow = inventoryRows.find((row) => String(row.product_name || "").toLowerCase() === String(inventoryProduct || "").toLowerCase());
   const inventoryIsTracked = Boolean(selectedInventoryRow && !selectedInventoryRow.provisional);
   const baselineEditable = Boolean(selectedInventoryRow && (selectedInventoryRow.estimated || selectedInventoryRow.provisional || selectedInventoryRow.baseline_verified));
+  const selectedVerification = inventoryVerificationSnapshot(selectedInventoryRow);
+  const inventoryVerificationReadiness = inventoryRows.reduce((acc, row) => {
+    const result = inventoryVerificationSnapshot(row);
+    if (result.eligible) acc.reviewable += 1;
+    else acc.needsReview += 1;
+    return acc;
+  }, { reviewable: 0, needsReview: 0 });
+
+
+  const checkServerVerificationPreflight = async () => {
+    const selected = selectedInventoryRow;
+    const expected = inventoryVerificationSnapshot(selected);
+    if (!selected || !expected.eligible) return;
+    setPreviewReviewBusy(true);
+    setPreviewReview({ product: selected.product_name, state: "CHECKING" });
+    try {
+      const { data: auth, error: authError } = await supabase.auth.getSession();
+      if (authError || !auth?.session?.access_token) throw new Error("Admin login required");
+      const response = await fetch(
+        "/api/orders?view=inventory_verification_preflight&product_name=" +
+          encodeURIComponent(selected.product_name),
+        { headers: { Authorization: "Bearer " + auth.session.access_token } }
+      );
+      if (!response.ok) throw new Error("Server preflight unavailable");
+      const data = await response.json();
+      const matched = data?.eligible_for_review === true &&
+        data?.status === "REVIEWABLE_PARTIAL" &&
+        data?.can_persist_verification === false &&
+        data?.can_enforce_stock === false &&
+        data?.snapshot === expected.snapshot &&
+        data?.remaining_ml === expected.remainingMl;
+      setPreviewReview({
+        product: selected.product_name,
+        snapshot: expected.snapshot,
+        state: matched ? "MATCHED_PARTIAL" : "MISMATCH"
+      });
+    } catch {
+      setPreviewReview({ product: selected.product_name, state: "UNAVAILABLE" });
+    } finally {
+      setPreviewReviewBusy(false);
+    }
+  };
 
   const addInventoryStock = async () => {
     const quantity = Number(inventoryMl);
@@ -419,20 +559,176 @@ export default function AnalyticsManager() {
           <small>Supabase canonical inventory ledger</small>
         </div>
       </div>
+      <details className="inventory-protection-diagnostics">
+        <summary>Inventory Protection diagnostics <span>{pendingAdvisories.possibleShortfalls > 0
+          ? `Mogući manjak: ${pendingAdvisories.possibleShortfalls} · Administratorska provera`
+          : pendingAdvisories.lowBuffers > 0
+            ? `Nizak procenjeni ostatak: ${pendingAdvisories.lowBuffers} · Bez blokiranja porudžbina`
+            : pendingUnmatched.length > 0
+              ? `Nepovezani nazivi: ${pendingUnmatched.length} · Proveriti mapiranje`
+              : "Audit · Verification review · Pending orders · Shadow telemetry · Synthetic tests"}</span></summary>
+        <div className="inventory-protection-diagnostics-body">
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / AUDIT</span><h3>Protection readiness</h3></div><small>Audit only · no live blocking · no checkout changes</small></div>
+        <div className="inventory-summary">
+          <div><span>PROVISIONAL</span><strong>{number(protectionAudit.provisional)}</strong></div>
+          <div><span>UNVERIFIED</span><strong>{number(protectionAudit.unverified)}</strong></div>
+          <div><span>REVIEWABLE</span><strong>{number(protectionAudit.reviewable)}</strong></div>
+          <div><span>INCONSISTENT</span><strong>{number(protectionAudit.inconsistent)}</strong></div>
+        </div>
+        <p className="analytics-note">No customer restrictions are active. Reviewable means the inventory entry has a verified original bottle capacity and a nonnegative calculated balance; it does NOT certify current sellable stock, reservation accuracy or product mapping. NEW orders are not reserved in this display. Shadow Mode event counts are not available yet, and no live add-to-cart events are being monitored.</p>
+        {protectionAudit.provisional || protectionAudit.unverified || protectionAudit.inconsistent
+          ? <p className="analytics-note">Next: reconcile physical balances and identifiers before enabling actual background checks or restrictions.</p>
+          : <p className="analytics-note">All visible rows passed these preliminary checks only. Transactional validation and checkout concurrency tests are still required.</p>}
+      </article>
+      <article className="analytics-panel inventory-verification-review" style={{marginBottom:20}}>
+        <div className="analytics-panel-head">
+          <div><span>INVENTORY PROTECTION / VERIFICATION REVIEW</span><h3>Existing Remaining balance</h3></div>
+          <small>Preview audit · no verification writes</small>
+        </div>
+        <div className="inventory-summary">
+          <div><span>READY FOR REVIEW</span><strong>{number(inventoryVerificationReadiness.reviewable)}</strong></div>
+          <div><span>NEEDS REVIEW</span><strong>{number(inventoryVerificationReadiness.needsReview)}</strong></div>
+          <div><span>PERSISTED VERIFICATIONS</span><strong>NOT ACTIVE</strong></div>
+        </div>
+        <p className="analytics-note">The recorded Remaining balance is preserved. BASELINE_SET verifies the original bottle capacity, not a separate current balance approval. This preview shows review eligibility only; it never marks stock verified or enables customer restrictions.</p>
+        <div className="inventory-verification-selected">
+          <strong>{selectedInventoryRow ? selectedInventoryRow.product_name : "Izaberi parfem u Inventory Watch listi"}</strong>
+          {selectedInventoryRow ? <>
+            <span>Recorded Remaining: <strong>{number(selectedInventoryRow.remaining_ml,1)} ml</strong></span>
+            <span>Review status: <strong>{selectedVerification.eligible ? "READY FOR ADMIN REVIEW" : "NEEDS REVIEW"}</strong></span>
+            {!selectedVerification.eligible ? <small>Reason: {selectedVerification.reason}</small> : <small>Pregled je vezan za prikazani obračun. Istorija događaja još nije povezana, pa ovo nije trajna potvrda raspoloživosti.</small>}
+            {selectedVerification.eligible ? <button type="button" className="inventory-lab-run" disabled={previewReviewBusy} onClick={checkServerVerificationPreflight}>
+              {previewReviewBusy ? "Checking server…" : "Check Remaining on server (Preview)"}
+            </button> : null}
+            {previewReview?.product === selectedInventoryRow.product_name ?
+              <small aria-live="polite">{previewReview.state === "CHECKING" ? "Checking authenticated server calculation…" :
+                previewReview.state === "UNAVAILABLE" ? "Server unavailable. No verification was granted." :
+                previewReview.state === "MISMATCH" ? "Server balance differs or data is incomplete. Review not granted." :
+                previewReview.state === "MATCHED_PARTIAL" && selectedVerification.eligible &&
+                  previewReview.snapshot === selectedVerification.snapshot ?
+                  "Server and screen Remaining match. PARTIAL REVIEW ONLY — event history is not complete; NOT VERIFIED or persisted." :
+                  "Review expired: inventory calculation changed or became ineligible."}</small> : null}
+          </> : <small>Izbor će prikazati postojeći Remaining. Nema ponovnog unosa mililitara.</small>}
+        </div>
+      </article>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head">
+          <div><span>INVENTORY PROTECTION / NEW ORDER DEMAND</span><h3>Pending stock audit</h3></div>
+          <small>Read-only snapshot · not a reservation system</small>
+        </div>
+        <div className="inventory-summary">
+          <div><span>NEW ORDER DEMAND</span><strong>{number(inventory.pending_new_total_ml || 0, 1)} ml</strong></div>
+          <div><span>TRACKED FRAGRANCES</span><strong>{number(pendingAuditRows.length)}</strong></div>
+          <div><span>UNMATCHED NAMES</span><strong>{number(pendingUnmatched.length)}</strong></div>
+          <div><span>POSSIBLE SHORTFALLS · ADMIN ONLY</span><strong>{number(pendingAdvisories.possibleShortfalls)}</strong></div>
+          <div><span>LOW BUFFER · ADMIN ONLY</span><strong>{number(pendingAdvisories.lowBuffers)}</strong></div>
+        </div>
+        <p className="analytics-note">Advisory estimate from accepted NEW order decants only. Preview and PNTEST orders are excluded. A possible shortfall means NEW demand exceeds recorded Remaining; low buffer means 0–20 ml after demand. Figures may be estimated or stale, do not account for all gifts/returns and are NOT stock reservations. Inform the administrator, never block an order.</p>
+        {pendingAuditRows.length ? <div className="inventory-list">
+          {pendingAuditRows.slice(0, 12).map((row) => <div className="inventory-row" key={row.product_name}>
+            <div><strong>{row.product_name}</strong><small>Current calculated balance {number(row.remaining_ml, 1)} ml · NEW order demand {number(row.pending_new_ml, 1)} ml</small></div>
+            <div className="inventory-volume-cells"><span className="inventory-volume-remaining"><small>IF RESERVED</small><strong>{number(row.hypothetical_after_new_ml, 1)} ml</strong></span></div>
+            {reviewNewOrderDemand(row).level === "POSSIBLE_SHORTFALL" ?
+              <em className="inventory-admin-advisory">MOGUĆI MANJAK · PROVERI</em> :
+              reviewNewOrderDemand(row).level === "LOW_BUFFER" ?
+              <em className="inventory-admin-advisory">NIZAK OSTATAK · PROVERI</em> : null}
+          </div>)}
+        </div> : <p className="analytics-note">No matched NEW order decant demand in the current snapshot.</p>}
+        {pendingUnmatched.length ? <p className="analytics-note">Attention: {pendingUnmatched.length} name(s) from NEW orders have no matching tracked inventory record. Proveri mapiranje pre zaključivanja o raspoloživosti. Kupovina se ne blokira.</p> : null}
+      </article>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head"><div><span>INVENTORY PROTECTION / EVENT MONITOR</span><h3>Shadow telemetry</h3></div><small>Read-only · event collection not activated by this PR</small></div>
+        {shadowState === "AVAILABLE" && shadowReport
+          ? <>
+            <div className="inventory-summary">
+              <div><span>CHECKS</span><strong>{number(shadowReport.counts?.total || 0)}</strong></div>
+              <div><span>ALLOWED</span><strong>{number(shadowReport.counts?.allow || 0)}</strong></div>
+              <div><span>WOULD BLOCK</span><strong>{number(shadowReport.counts?.would_block || 0)}</strong></div>
+              <div><span>UNKNOWN</span><strong>{number(shadowReport.counts?.unknown || 0)}</strong></div>
+            </div>
+            <p className="analytics-note">Server-recorded production decisions from the last 24 hours, where collection is enabled. These events do not block checkout. Zero events may mean collection has not been activated.</p>
+            <div className="inventory-list">
+              {(shadowReport.recent || []).slice(0, 12).map((event, index) => <div className="inventory-row" key={String(event.created_at) + "-" + index}>
+                <div><strong>{event.product_key}</strong><small>{event.source} · {event.reason} · {event.created_at ? new Date(event.created_at).toLocaleString("sr-ME") : "—"}</small></div>
+                <em>{event.decision}</em>
+              </div>)}
+            </div>
+          </>
+          : <p className="analytics-note">NOT CONFIGURED — server-side event ingestion and telemetry migration are not yet active. No live customer-cart checks are being recorded. This is not a zero-event result.</p>}
+      </article>
+      <article className="analytics-panel" style={{marginBottom:20}}>
+        <div className="analytics-panel-head">
+          <div><span>INVENTORY PROTECTION / SYNTHETIC TEST LAB</span><h3>Reservation test scenarios</h3></div>
+          <small>Browser-only simulation · no Supabase writes</small>
+        </div>
+        <p className="analytics-note">
+          This lab runs deterministic scenarios using invented fragrance balances and orders.
+          It never calls checkout, Inventory APIs or Supabase. It does not test simultaneous
+          PostgreSQL transactions and cannot establish Production stock safety.
+        </p>
+        <div className="inventory-lab-actions">
+          <button type="button" className="inventory-lab-run" onClick={() => setSyntheticLabReport(runInventoryPreviewLab())}>
+            Run 8 synthetic scenarios
+          </button>
+          <button type="button" className="inventory-lab-run" onClick={() => setSafetyLabReport(runInventorySafetyLab())}>
+            Run 8 safety scenarios
+          </button>
+        </div>
+        {syntheticLabReport ? <>
+          <div className="inventory-summary">
+            <div><span>PASSED</span><strong>{number(syntheticLabReport.passed)} / {number(syntheticLabReport.total)}</strong></div>
+            <div><span>DATABASE WRITES</span><strong>0</strong></div>
+            <div><span>REAL DB CONCURRENCY</span><strong>NOT TESTED</strong></div>
+          </div>
+          <div className="inventory-list" aria-live="polite">
+            {syntheticLabReport.scenarios.map((scenario) => <div className="inventory-row" key={scenario.id}>
+              <div><strong>{scenario.label}</strong><small>{scenario.detail}</small></div>
+              <em>{scenario.passed ? "PASS" : "FAIL"}</em>
+            </div>)}
+          </div>
+        </> : <p className="analytics-note">Not run in this browser session.</p>}
+        {safetyLabReport ? <div className="inventory-lab-safety-results">
+          <div className="inventory-summary">
+            <div><span>SAFETY PASSED</span><strong>{number(safetyLabReport.passed)} / {number(safetyLabReport.total)}</strong></div>
+            <div><span>DATABASE WRITES</span><strong>0</strong></div>
+            <div><span>REAL NETWORK / DATABASE</span><strong>NOT TESTED</strong></div>
+          </div>
+          <div className="inventory-list" aria-live="polite">
+            {safetyLabReport.scenarios.map((scenario) => <div className="inventory-row" key={scenario.id}>
+              <div><strong>{scenario.label}</strong><small>{scenario.detail}</small></div>
+              <em>{scenario.passed ? "PASS" : "FAIL"}</em>
+            </div>)}
+          </div>
+        </div> : <p className="analytics-note">Safety scenarios not run in this browser session.</p>}
+      </article>
+        </div>
+      </details>
       <div className="sales-grid inventory-grid">
         <article className="analytics-panel sales-wide inventory-panel">
           <div className="analytics-panel-head">
             <div><span>INVENTORY</span><h3>Inventory watch</h3></div>
-            <small>Full catalog · measured + provisional stock · low alert ≤20 ml</small>
+            <small>Full catalog · low ≤20 ml · critical ≤10 ml</small>
           </div>
 
           <div className="inventory-summary">
             <div><span>MEASURED</span><strong>{number(inventory.tracked_count)}</strong></div><div><span>ESTIMATED</span><strong>{number(inventoryRows.filter((row) => row.estimated).length)}</strong></div>
-            <div><span>LOW STOCK</span><strong>{number(inventoryRows.filter((row) => row.stock_status === "LOW").length)}</strong></div>
+            <div><span>LOW STOCK</span><strong>{number(lowAlerts.length)}</strong></div><div><span>CRITICAL</span><strong>{number(criticalAlerts.length)}</strong></div>
             <div><span>DEPLETED</span><strong>{number(inventoryRows.filter((row) => ["DEPLETED", "REVIEW"].includes(row.stock_status)).length)}</strong></div>
             <div><span>REMAINING</span><strong>{number(inventoryRows.reduce((sum, row) => sum + Math.max(0, Number(row.remaining_ml || 0)), 0), 1)} ml</strong></div>
           </div>
 
+          {stockAlerts.length ? <div className="inventory-stock-alerts" role="status" aria-label="Fragrance replenishment alerts">
+            <strong>REPLENISHMENT WATCH · {stockAlerts.length} fragrances</strong>
+            <p className="analytics-note">{criticalAlerts.length} critical (≤10 ml) · {lowAlerts.length} low (10–20 ml). Alerts are derived from Control Center Remaining and clear automatically after replenishment.</p>
+            <div className="inventory-filter-toolbar">
+              {stockAlerts.map((alert) => <button type="button" key={alert.name}
+                onClick={() => {setInventorySearch(alert.name);setInventoryProduct(alert.name);}}
+                aria-label={alert.severity+" stock: "+alert.name+" "+alert.remaining+" millilitres"}>
+                {alert.severity==="CRITICAL"?"● CRITICAL":"▲ LOW"} · {alert.name} · {number(alert.remaining,1)} ml
+              </button>)}
+            </div>
+          </div> : null}
           <p className="analytics-note">Provisional rows assume an original 100 ml bottle and deduct recorded historical shipments. They are estimates, not confirmed physical stock. A negative figure means the assumed bottle size is insufficient.</p>
           <div className="inventory-filter-toolbar">
             <label><span>SEARCH INVENTORY · {inventoryRows.length} FRAGRANCES</span><input type="search" value={inventorySearch} onChange={(event)=>setInventorySearch(event.target.value)} placeholder="Find a fragrance…" /></label>
@@ -441,7 +737,7 @@ export default function AnalyticsManager() {
               <button type="button" aria-pressed={inventorySort === "remaining"} onClick={() => toggleInventorySort("remaining")}>Remaining ml {inventorySort === "remaining" ? inventoryDescending ? "↓" : "↑" : "↕"}</button>
             </div>
           </div>
-          <div className="inventory-list">
+          <div className="inventory-list inventory-catalog-scroll" role="region" aria-label="Fragrance inventory list" tabIndex={0}>
             {visibleInventoryRows.length ? visibleInventoryRows.map((row) => <button type="button" className={"inventory-row inventory-select-row stock-" + String(row.stock_status || "ok").toLowerCase() + (inventoryProduct === row.product_name ? " is-selected" : "")} key={row.product_name} onClick={() => {setInventoryProduct(row.product_name);setInventoryNotice("");}} aria-pressed={inventoryProduct === row.product_name} title="Select fragrance for stock management">
               <div>
                 <strong>{row.product_name}</strong>
@@ -452,11 +748,34 @@ export default function AnalyticsManager() {
                 <span><small>OUT</small><strong>{number(Number(row.consumed_since_tracking_ml || 0) + Number(row.manual_out_ml || 0) + Number(row.resale_out_ml || 0), 1)} ml</strong></span>
                 <span className="inventory-volume-remaining"><small>REMAINING</small><strong>{number(row.remaining_ml, 1)} ml</strong></span>
               </div>
-              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? "LOW · ≤20 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
+              {row.stock_status === "OK" ? null : <em>{row.stock_status === "LOW" ? (Number(row.remaining_ml) <= 10 ? "CRITICAL · ≤10 ml" : "LOW · ≤20 ml") : row.stock_status === "DEPLETED" ? "CRITICAL · 0 ml" : row.stock_status === "REVIEW" ? "VERIFY BASELINE" : row.stock_status}</em>}
             </button>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
           </div>
         </article>
 
+        <article className="analytics-panel inventory-entry-panel">
+          <div className="analytics-panel-head"><div><span>SHOP POLICY · PER ORDER</span><h3>Fragrance purchase limit</h3></div>
+            <small>Default 30 ml per fragrance · 2–200 ml overrides</small></div>
+          <p className="analytics-note">The combined ml of every size of one fragrance in a single order counts towards its cap. This is independent of the Remaining stock check and is not a limit per customer.</p>
+          <div className="inventory-form">
+            <label><span>SELECTED FRAGRANCE</span><strong>{inventoryProduct||"Choose a fragrance in Inventory Watch"}</strong></label>
+            <label><span>MAXIMUM ML PER ORDER</span>
+              <input type="number" min="2" max="200" step="0.01" value={purchaseCapDraft}
+                disabled={!purchaseCapPreview || purchaseCapsStatus!=="READY" || purchaseCapSaving || !inventoryProduct}
+                onChange={(event)=>setPurchaseCapDraft(event.target.value)}
+                aria-label="Maximum millilitres per fragrance per order"/>
+            </label>
+            <div className="inventory-filter-toolbar">
+              <button type="button" disabled={!purchaseCapPreview || purchaseCapsStatus!=="READY" || purchaseCapSaving || !inventoryProduct} onClick={()=>savePurchaseCap(false)}>Save limit</button>
+              <button type="button" disabled={!purchaseCapPreview || purchaseCapsStatus!=="READY" || purchaseCapSaving || !inventoryProduct} onClick={()=>savePurchaseCap(true)}>Reset to 30 ml</button>
+            </div>
+            <small role="status">{purchaseCapNotice||(
+              purchaseCapsStatus==="READY"
+                ? purchaseCapPreview?"Preview policy editor ready; no customer enforcement enabled.":"Editor is Preview-only."
+                :"Persistent policy storage not installed. Settings cannot be saved yet."
+            )}</small>
+          </div>
+        </article>
         <article className="analytics-panel inventory-entry-panel">
           <div className="analytics-panel-head">
             <div><span>STOCK LEDGER</span><h3>{inventoryMode === "out" ? "Remove stock" : inventoryIsTracked ? "Add bottle" : "Verify physical stock"}</h3></div>
@@ -489,6 +808,7 @@ export default function AnalyticsManager() {
           </div>
         </article>
       </div>
+
     </section>
     </>}
   </section>, slot);

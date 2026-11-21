@@ -1024,3 +1024,18 @@
   }
 
 }
+
+/* Mobile CTA mirrors the disabled desktop stock-cap appearance. */
+.mobile-product-page__add:disabled,
+.mobile-product-page__add:disabled:hover,
+.mobile-product-page__buy-now:disabled {
+  background: #353638;
+  color: #9b9da0;
+  border-color: #55575a;
+  box-shadow: none;
+  text-shadow: none;
+  filter: grayscale(1);
+  opacity: 0.72;
+  transform: none;
+  cursor: not-allowed;
+}

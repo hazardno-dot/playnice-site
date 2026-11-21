@@ -357,8 +357,21 @@ global.fetch = async (...args) => {
 
 const legacyModule = require("../server/checkout-legacy");
 const legacyHandler = legacyModule.default || legacyModule;
+const {isCheckoutPreflightEnabled} = require("../server/inventory-rollout-gate.cjs");
 
 export default async function handler(req, res) {
+  // Isolated server-side admission check on the audit Preview branch only.
+  // No new order persistence or reservation side effects; Production unchanged.
+  if (req.method === "POST" && isDomesticCheckout(req) &&
+      isCheckoutPreflightEnabled(process.env)) {
+    const {checkPreviewCheckout} = await import("../server/inventory-preview-checkout-preflight.mjs");
+    const preflight = await checkPreviewCheckout(req.body);
+    if (preflight.decision !== "ALLOW") {
+      res.setHeader("Cache-Control", "private, no-store");
+      return res.status(preflight.decision === "INVALID_ORDER" ? 400 : 409)
+        .json({error:"Cart quantity limit reached. Please review your cart."});
+    }
+  }
   const context = {
     startedAt: Date.now(),
     parallelizeDomesticEmails: isDomesticCheckout(req),

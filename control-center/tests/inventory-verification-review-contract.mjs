@@ -1,0 +1,25 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import { inventoryVerificationSnapshot, checkVerificationStillCurrent } from "../lib/inventory-verification-v1.mjs";
+const row={product_name:"Naxos",baseline_verified:true,estimated:true,provisional:false,opening_balance_ml:100,restock_ml:20,consumed_since_tracking_ml:30,manual_out_ml:5,remaining_ml:85,pending_new_ml:0};
+const baseline=inventoryVerificationSnapshot(row);
+assert.equal(baseline.eligible,true,"A valid BASELINE_SET-based calculated balance should be reviewable even when estimated=true");
+assert.equal(baseline.remainingMl,85);
+assert.equal(checkVerificationStillCurrent(row,baseline.snapshot),true);
+assert.equal(checkVerificationStillCurrent({...row,restock_ml:30,remaining_ml:95},baseline.snapshot),false);
+assert.equal(inventoryVerificationSnapshot({...row,remaining_ml:86}).reason,"BALANCE_MISMATCH");
+assert.equal(inventoryVerificationSnapshot({...row,pending_new_ml:10}).reason,"PENDING_NEW_ORDER_REVIEW");
+assert.equal(inventoryVerificationSnapshot({...row,baseline_verified:false}).eligible,false);
+assert.equal(inventoryVerificationSnapshot({...row,provisional:true}).eligible,false);
+assert.equal(inventoryVerificationSnapshot({...row,remaining_ml:-1}).eligible,false);
+assert.equal(inventoryVerificationSnapshot({...row,consumed_since_tracking_ml:NaN}).eligible,false);
+
+const ui=fs.readFileSync("control-center/src/AnalyticsManager.jsx","utf8");
+const sql=fs.readFileSync("control-center/supabase/inventory_verification_v1.sql","utf8");
+assert.match(ui,/READY FOR ADMIN REVIEW/);
+assert.match(ui,/no verification writes/);
+assert.match(ui,/selectedInventoryRow\.remaining_ml/);
+assert.match(sql,/enable row level security/);
+assert.match(sql,/get_control_center_inventory_balance_verifications/);
+assert.doesNotMatch(sql,/\b(update|delete)\s+public\.fragrance_inventory_events\b/i);
+console.log("PASS read-only Inventory Verification review contract");

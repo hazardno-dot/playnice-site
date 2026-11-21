@@ -87,6 +87,17 @@ export default function DesktopQuickView() {
   const [analyticsListContext, setAnalyticsListContext] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [, refreshCartAvailability] = useState(0);
+
+  useEffect(() => {
+    const refresh = () => refreshCartAvailability((previous) => previous + 1);
+    window.addEventListener("playnice:cart-quantity-updated", refresh);
+    window.addEventListener("playnice:stock-decision-updated", refresh);
+    return () => {
+      window.removeEventListener("playnice:cart-quantity-updated", refresh);
+      window.removeEventListener("playnice:stock-decision-updated", refresh);
+    };
+  }, []);
 
   useEffect(() => {
     const openQuickView = (event) => {
@@ -194,6 +205,12 @@ export default function DesktopQuickView() {
     () => (product ? productCopy[product.name] || {} : {}),
     [product]
   );
+  // Hooks must run before the conditional "no product" return.
+  useEffect(() => {
+    if(!product) return;
+    const active=selectedSize || Object.keys(product.sizes||{})[0] || "";
+    if(active) void getProductActions()?.warmInventoryDecision?.(product,active);
+  },[product,selectedSize]);
 
   const {
     displayName: productTitle,
@@ -224,10 +241,15 @@ export default function DesktopQuickView() {
   const selectSize = (size) => {
     setSelectedSize(size);
     getProductActions()?.selectSize?.(product, size);
+    void getProductActions()?.warmInventoryDecision?.(product,size);
   };
 
+  const limitReached = getProductActions()?.canAddToCart?.(product, activeSize) === false;
+  const stockLimitReached = getProductActions()?.isAtStockLimit?.(product,activeSize) === true;
+
   const addToCart = () => {
-    getProductActions()?.addToCart?.(
+    if (getProductActions()?.canAddToCart?.(product, activeSize) === false) return;
+    const added = getProductActions()?.addToCart?.(
       product,
       activeSize,
       {
@@ -245,6 +267,7 @@ export default function DesktopQuickView() {
         openedAt: Date.now(),
       }
     );
+    if (added === false) return;
     setIsAdded(true);
     window.setTimeout(() => setIsAdded(false), 1200);
   };
@@ -435,6 +458,8 @@ export default function DesktopQuickView() {
             type="button"
             className={`desktop-quick-view__add ${isAdded ? "is-added" : ""}`}
             onClick={addToCart}
+            disabled={limitReached}
+            title={limitReached ? (lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem." : "Maximum quantity reached for this fragrance.") : undefined}
           >
             {isAdded
               ? lang === "sr"
@@ -444,6 +469,10 @@ export default function DesktopQuickView() {
                 ? "DODAJ U KORPU"
                 : "ADD TO CART"}
           </button>
+
+          {stockLimitReached && <p className="inventory-limit-message" role="status">
+            {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+          </p>}
 
           <button
             type="button"

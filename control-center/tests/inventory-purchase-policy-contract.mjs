@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {DEFAULT_PURCHASE_CAP_ML,purchaseCapForProduct,checkOrderFragranceCap} from "../lib/inventory-purchase-policy.mjs";
+assert.equal(DEFAULT_PURCHASE_CAP_ML,30);
+const item=(size_ml,quantity)=>({product_name:"Naxos",size_ml,quantity});
+assert.equal(checkOrderFragranceCap([item(10,2)],"Naxos",10).decision,"ALLOW");
+assert.equal(checkOrderFragranceCap([item(5,6)],"Naxos",5).decision,"LIMIT_REACHED");
+assert.equal(checkOrderFragranceCap([item(20,1),item(5,1)],"Naxos",5).decision,"ALLOW");
+assert.equal(checkOrderFragranceCap([item(20,1),item(5,1)],"Naxos",10).decision,"LIMIT_REACHED");
+assert.equal(checkOrderFragranceCap([item(10,3)],"Other",10).decision,"ALLOW");
+assert.equal(purchaseCapForProduct("Naxos",{overrides:{Naxos:20}}),20);
+assert.equal(checkOrderFragranceCap([item(10,2)],"Naxos",5,{overrides:{Naxos:20}}).decision,"LIMIT_REACHED");
+assert.equal(purchaseCapForProduct("Naxos",{overrides:{Naxos:-1}}),30);
+assert.equal(checkOrderFragranceCap([item(10,-1)],"Naxos",10).decision,"UNKNOWN");
+console.log("PASS purchase policy: 30 ml per fragrance/order, combinations, per-product override");

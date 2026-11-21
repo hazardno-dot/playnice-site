@@ -25,6 +25,9 @@ import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
 import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
 import { getJournalArticleSlug } from "./lib/journalSlug";
 import { registerProductActions } from "./lib/productActionsGateway";
+import { observeInventoryCartIntent } from "./features/cart/inventoryShadowObserver";
+import { assessCartQuantityCap, previewCapForProduct, warmPurchaseCapPolicy } from "./features/cart/cartQuantityCap";
+import { isStockDecisionBlocked, isStockDecisionPending, noteInventoryCartClick, warmStockDecision } from "./features/cart/shopInventoryDecision";
 import {
   SITE_BASE_URL,
   getProductSlug,
@@ -2751,6 +2754,63 @@ const goToHomeSection = (selector, block = "start") => {
     setAddedFeedback(text);
   };
 
+  const isAtStockLimit = (product,size) =>
+    assessCartQuantityCap(cart,product?.id,size,previewCapForProduct(product)).blocked ||
+    isStockDecisionBlocked(product,cart,size);
+  // Temporary anti-double-click pause stays in the add/update handlers.
+  // Only a confirmed stock cap may disable or visually dim the UI control.
+  const canAddDecant = (product,size) =>
+    !isAtStockLimit(product,size);
+
+  const [, setInventoryCheckRevision] = useState(0);
+  useEffect(() => {
+    const handler=()=>setInventoryCheckRevision((n)=>n+1);
+    window.addEventListener("playnice:stock-decision-updated",handler);
+    return ()=>window.removeEventListener("playnice:stock-decision-updated",handler);
+  }, []);
+
+  useEffect(() => {
+    for(const item of cart){
+      const product=products.find((p)=>p.id===item.id);
+      if(product) {
+        void warmStockDecision(product,cart,item.size);
+        void warmPurchaseCapPolicy(product);
+      }
+    }
+    if(selectedProduct){
+      void warmPurchaseCapPolicy(selectedProduct);
+      for(const size of Object.keys(selectedProduct.sizes||{}))
+        void warmStockDecision(selectedProduct,cart,size);
+    }
+  }, [cart,selectedProduct]);
+
+  useEffect(() => {
+    const refresh=()=>{
+      for(const item of cart){
+        const product=products.find(p=>p.id===item.id);
+        if(product){
+          void warmPurchaseCapPolicy(product);
+          void warmStockDecision(product,cart,item.size);
+        }
+      }
+      if(selectedProduct){
+        void warmPurchaseCapPolicy(selectedProduct);
+        for(const size of Object.keys(selectedProduct.sizes||{}))
+          void warmStockDecision(selectedProduct,cart,size);
+      }
+    };
+    const interval=window.setInterval(refresh,8000);
+    window.addEventListener("focus",refresh);
+    return ()=>{
+      window.clearInterval(interval);
+      window.removeEventListener("focus",refresh);
+    };
+  },[cart,selectedProduct]);
+
+  useEffect(() => {
+    window.dispatchEvent(new Event("playnice:cart-quantity-updated"));
+  }, [cart]);
+
   const addToCart = (
   product,
   size,
@@ -2759,6 +2819,16 @@ const goToHomeSection = (selector, block = "start") => {
   options = {}
 ) => {
   const { showToast = true, showMiniPreview = true } = options;
+
+  const addLimit = previewCapForProduct(product);
+  if(isStockDecisionPending(product))return false;
+  if (assessCartQuantityCap(cart, product.id, size, addLimit).blocked ||
+      isStockDecisionBlocked(product,cart,size)) {
+    showFeedback(lang === "sr"
+      ? "Dostignuta je maksimalna količina za ovaj parfem."
+      : "Maximum quantity reached for this fragrance.");
+    return false;
+  }
 
   const key = `${product.id}-${size}-${customLabel || ""}`;
   const price = customPrice ?? product.sizes[size];
@@ -2841,7 +2911,19 @@ const goToHomeSection = (selector, block = "start") => {
     currency: "EUR"
   });
 
+  // Optional passive observer: currently disabled, must never alter a cart mutation.
+  observeInventoryCartIntent({
+    source: "ADD_TO_CART",
+    product,
+    size,
+    cart,
+    extraCount: 1
+  });
+
   setCart((prev) => {
+    // Functional guard also protects against fast repeated taps before render.
+    if (assessCartQuantityCap(prev, product.id, size, addLimit).blocked ||
+        isStockDecisionBlocked(product,prev,size)) return prev;
     const existing = prev.find((item) => item.key === key);
 
     if (existing) {
@@ -2923,6 +3005,8 @@ const goToHomeSection = (selector, block = "start") => {
   if (showToast && !showMiniPreview) {
     showFeedback(`${product.name} ${tr.addedToCart}`);
   }
+  noteInventoryCartClick(product);
+  return true;
 };
 
 /* =========================================
@@ -3040,17 +3124,24 @@ useEffect(() => {
       toggleWishlist(productId);
     },
 
+    canAddToCart: (product, size) => !product || !size || canAddDecant(product, size),
+    isAtStockLimit: (product,size)=>isAtStockLimit(product,size),
+    warmInventoryDecision: (product, size) => {
+      void warmPurchaseCapPolicy(product);
+      return warmStockDecision(product,cart,size);
+    },
+
     addToCart: (
       product,
       size,
       analyticsContext = null
     ) => {
-      if (!product || !size) return;
+      if (!product || !size) return false;
 
       const productForCart =
         getDirectPurchaseProduct(product, size);
 
-      addToCart(
+      return addToCart(
         productForCart,
         size,
         null,
@@ -3103,6 +3194,22 @@ const addHeroBottleToCart = () => {
 };
 
   const updateQuantity = (key, delta) => {
+    const increasing = Number(delta) > 0;
+    const target = increasing ? cart.find((candidate) => candidate.key === key) : null;
+    const targetProduct = target && products.find((candidate) => candidate.id === target.id);
+    const targetLimit = targetProduct ? previewCapForProduct(targetProduct) : null;
+    if (increasing && target && isStockDecisionPending(targetProduct))return;
+    if (increasing && target &&
+        (assessCartQuantityCap(cart, target.id, target.size, targetLimit, Number(delta)).blocked ||
+        (Number(delta)===1 && isStockDecisionBlocked(targetProduct,cart,target.size)))) return;
+    if (Number(delta) > 0) {
+      const item = cart.find((candidate) => candidate.key === key);
+      const product = item && products.find((candidate) => candidate.id === item.id);
+      if (item && product) observeInventoryCartIntent({
+        source: "CART_QUANTITY", product, size: item.size,
+        cart, extraCount: Number(delta)
+      });
+    }
     if (Number(delta) < 0) {
       const item = cart.find(
         (candidate) =>
@@ -3122,13 +3229,15 @@ const addHeroBottleToCart = () => {
       }
     }
 
-    setCart((prev) =>
-      updateCartItemQuantity(
-        prev,
-        key,
-        delta
-      )
-    );
+    setCart((prev) => {
+      if (increasing) {
+        const current = prev.find((candidate) => candidate.key === key);
+        if (current && (assessCartQuantityCap(prev, current.id, current.size, targetLimit, Number(delta)).blocked ||
+          (Number(delta)===1 && isStockDecisionBlocked(targetProduct,prev,current.size)))) return prev;
+      }
+      return updateCartItemQuantity(prev, key, delta);
+    })
+    if(increasing && targetProduct)noteInventoryCartClick(targetProduct);;
   };
 
   const removeFromCart = (key) => {
@@ -3376,6 +3485,14 @@ const handlePlaceOrder = async () => {
       body: JSON.stringify(payload)
     });
 
+    if (response.status === 409) {
+      alert(
+        lang === "sr"
+          ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom."
+          : "The maximum quantity for this fragrance has been reached. You can continue shopping with the quantity already in your cart."
+      );
+      return;
+    }
     if (!response.ok) {
       throw new Error("Checkout request failed");
     }
@@ -4956,17 +5073,17 @@ const openFromProductCard = () => {
         className={`size-chip ${isRecommendedSize ? "is-recommended" : ""} ${
           discount ? "has-discount" : ""
         }`}
+        disabled={!canAddDecant(productForCart, size)}
+        title={!canAddDecant(productForCart, size) ? (lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem." : "Maximum quantity reached for this fragrance.") : undefined}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
           e.currentTarget.blur();
 
-          addToCart(productForCart, size, null, null, {
+          if (addToCart(productForCart, size, null, null, {
             showToast: false,
             showMiniPreview: true,
-          });
-
-          triggerInlineAddedFeedback(product.id, size);
+          })) triggerInlineAddedFeedback(product.id, size);
         }}
       >
         <span className="size-chip-main-wrap">
@@ -5419,6 +5536,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               setSelectedSize(size);
               setHasUserPickedSize(true);
             }}
+            canAddToCart={canAddDecant}
+            isAtStockLimit={isAtStockLimit}
             onAddToCart={(product, size) => {
               const { productForCart } =
                 getProductPurchaseSelection(
@@ -5426,7 +5545,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   size
                 );
 
-              addToCart(productForCart, size, null, null, {
+              return addToCart(productForCart, size, null, null, {
                 showToast: false,
                 showMiniPreview: true
               });
@@ -5438,10 +5557,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   size
                 );
 
-              addToCart(productForCart, size, null, null, {
+              const added = addToCart(productForCart, size, null, null, {
                 showToast: false,
                 showMiniPreview: false
               });
+              if (!added) return;
               setMiniCartPreview(null);
               openCheckout();
             }}
@@ -8762,11 +8882,17 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.key, 1)}
+                      disabled={!canAddDecant(
+                        products.find((candidate) => candidate.id === item.id), item.size
+                      )}
+                      title={!canAddDecant(products.find((candidate) => candidate.id === item.id), item.size)
+                        ? (lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem." : "Maximum quantity reached for this fragrance.")
+                        : (lang === "sr" ? "Dodaj još jedan dekant" : "Add one more decant")}
+                      aria-label={lang === "sr" ? "Povećaj količinu" : "Increase quantity"}
                     >
                       +
                     </button>
                   </div>
-
                   <button
                     className="remove-link"
                     type="button"
@@ -8775,6 +8901,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     {tr.remove}
                   </button>
                 </div>
+                {isAtStockLimit(products.find((candidate) => candidate.id === item.id), item.size) && (
+                  <p className="inventory-limit-message inventory-limit-message--cart" role="status">
+                    {lang === "sr" ? "Dostignuta je maksimalna količina za ovaj parfem. Možete nastaviti kupovinu sa već dodatom količinom." : "Maximum quantity reached for this fragrance. You can continue shopping with the quantity already added."}
+                  </p>
+                )}
               </div>
             );
           })}
