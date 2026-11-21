@@ -12,7 +12,9 @@ assert.equal(IMAGE_OPTIMIZER_PRESETS.notes.height, 256);
 assert.equal(IMAGE_OPTIMIZER_PRESETS.notes.fit, "cover");
 assert.equal(IMAGE_OPTIMIZER_PRESETS.notes.maxBytes, 20_000);
 assert.equal(IMAGE_OPTIMIZER_PRESETS.heroMobile.maxBytes, 150_000);
-assert.equal(IMAGE_OPTIMIZER_PRESETS.heroMobile.neverIncreaseBytes, true);
+assert.notEqual(IMAGE_OPTIMIZER_PRESETS.heroMobile.neverIncreaseBytes, true);
+assert.equal(IMAGE_OPTIMIZER_PRESETS.heroMobile.width, 1200);
+assert.equal(IMAGE_OPTIMIZER_PRESETS.heroMobile.height, 900);
 assert.ok(optimizer.includes("function drawCover"), "optimizer must provide canonical center-crop cover rendering");
 assert.ok(optimizer.includes('if (preset.fit === "cover") drawCover(ctx, image, width, height)'), "fixed-size Notes preset must use cover crop");
 assert.ok(optimizer.includes('blob.size <= targetBytes'), "optimizer must gate output by effective preset byte target");
@@ -26,5 +28,5 @@ assert.ok(!uploader.includes('Note image must be WebP.'), "Notes must no longer 
 
 console.log("PASS  shared image optimizer exposes canonical 256x256 Notes WebP preset");
 console.log("PASS  optimizer gates output against the effective byte target");
-console.log("PASS  Hero mobile output is capped at 150 KB and never larger than its source");
+console.log("PASS  Hero mobile output uses a fixed 150 KB budget and preserves valid source JPEGs");
 console.log("PASS  Notes accept JPG/PNG/WebP and auto crop/resize/compress before staging");
