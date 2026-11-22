@@ -32,6 +32,25 @@ function safeErrorMessage(error, fallback) {
   return error?.message || fallback;
 }
 
+// Resend SDK resolves { data: null, error } for 4xx responses instead of rejecting.
+// A fulfilled promise is NOT proof that an email was accepted.
+function requireResendAccepted(result) {
+  if (result?.error || !result?.data?.id) {
+    const error = result?.error;
+    throw new Error(
+      String(error?.message || error?.name || "Resend did not accept the email").slice(0, 300)
+    );
+  }
+  return result;
+}
+
+// Reply-To is optional. A malformed customer address must never block the
+// merchant notification. Customer delivery is validated independently.
+function validReplyTo(value) {
+  const email = String(value || "").trim();
+  return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) && !email.includes("..");
+}
+
 function roundMoney(value) {
   return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
 }
@@ -169,8 +188,8 @@ class CheckoutResend extends OriginalResend {
         context.pendingEmail = null;
         context.emailsMs = 0;
         context.emailDuplicateSuppressed = true;
-        context.adminEmailSent = true;
-        context.customerEmailSent = true;
+        context.adminEmailSent = null;
+        context.customerEmailSent = null;
         return { data: { id: null } };
       }
 
@@ -184,15 +203,19 @@ class CheckoutResend extends OriginalResend {
       context.pendingEmail = null;
       const emailStart = Date.now();
 
+      const adminPayload = { ...firstEmail.payload };
+      if (adminPayload.replyTo && !validReplyTo(adminPayload.replyTo)) {
+        delete adminPayload.replyTo;
+      }
       const [adminResult, customerResult] = await Promise.allSettled([
-        originalSend(firstEmail.payload),
-        originalSend(payload)
+        originalSend(adminPayload).then(requireResendAccepted),
+        originalSend(payload).then(requireResendAccepted)
       ]);
 
       context.emailsMs = Date.now() - emailStart;
 
       if (adminResult.status === "fulfilled") {
-        firstEmail.placeholder.data.id = adminResult.value?.data?.id || null;
+        firstEmail.placeholder.data.id = adminResult.value.data.id;
         context.adminEmailSent = true;
       } else {
         context.adminEmailSent = false;
