@@ -141,8 +141,22 @@ async function readOrdersWorkspace(token) {
     readCustomerWatches(token),
     readEmailEvents(token)
   ]);
+  let retryClaims = [];
+  if (emailAudit.ready) {
+    try {
+      const claims = await rpc("get_control_center_email_retry_claims", token, {});
+      retryClaims = Array.isArray(claims) ? claims : [];
+    } catch (error) {
+      // Fail closed: missing claim visibility must hide the retry button.
+      console.warn("Order email retry claims unavailable", String(error?.message || error));
+      return { ...orderData, customer_watches: customerWatches,
+        email_events: emailAudit.events, email_tracking_ready: emailAudit.ready,
+        email_retry_claims: [], email_retry_enabled: false };
+    }
+  }
   return { ...orderData, customer_watches: customerWatches,
     email_events: emailAudit.events, email_tracking_ready: emailAudit.ready,
+    email_retry_claims: retryClaims,
     email_retry_enabled: STATUS_EMAIL_ENABLED && WRITE_THROUGH_ENABLED && emailAudit.ready };
 }
 
