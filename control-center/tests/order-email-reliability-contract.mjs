@@ -29,7 +29,7 @@ assert.ok(orders.includes('status_email_status: "audit_unavailable"'), "PACKED s
 assert.ok(orders.includes('status_email_audit_warning'), "Audit write failures must be disclosed without re-sending.");
 assert.ok(ui.includes("Unverified") && ui.includes("Not tracked"), "Historical and shipped statuses must not be represented as delivered.");
 assert.ok(ui.includes("Accepted means Resend acknowledged"), "Accepted must not be represented as delivered.");
-assert.ok(edge.includes('eq("sync_token", syncToken)'), "Email audit writes must verify order-specific sync token.");
+assert.ok(edge.includes('record_checkout_email_acceptances') && edge.includes('p_sync_token: syncToken'), "Email audit must use token-verified, service-only RPC.");
 assert.ok(schema.includes("enable row level security"), "Email events table must enforce RLS.");
 assert.ok(!orders.includes('sendShippedStatusEmail('), "Do not duplicate existing SHIPPED messaging flow.");
 
@@ -53,8 +53,8 @@ assert.ok(orders.includes('action === "retry_packed_email"'), "Retry is routed t
 assert.ok(orders.includes("packedEmailAlreadyAccepted"), "Retry must check existing accepted events.");
 assert.ok(orders.includes("STATUS_EMAIL_ENABLED && WRITE_THROUGH_ENABLED && emailAudit.ready"), "Retry UI must be disabled in Preview.");
 assert.ok(webhook.includes('req.headers.get("svix-id")') && webhook.includes("verifyResendSignature"), "Signed webhook must validate Svix headers.");
-assert.ok(webhook.includes('.eq("provider_message_id", providerId)') && webhook.includes('.eq("state", "accepted")'), "Webhook must match known provider ID, not recipient address.");
-assert.ok(webhook.includes('insertError?.code === "23505"'), "Duplicate provider events must be idempotent.");
+assert.ok(webhook.includes('record_resend_lifecycle_event') && webhook.includes('p_message_id: providerId'), "Webhook RPC must match provider ID, never recipient address.");
+assert.ok(schema.includes('order_email_events_provider_event_uidx') && read("control-center/supabase/email_audit_service_rpc_v1.sql").includes('on conflict (provider_event_id)'), "Provider event replay must be idempotent.");
 
 const verifierSource = webhook.match(/async function verifyResendSignature\([\s\S]*?\n\}/)?.[0];
 assert.ok(verifierSource, "Signature verifier must be present.");
