@@ -142,7 +142,8 @@ async function readOrdersWorkspace(token) {
     readEmailEvents(token)
   ]);
   return { ...orderData, customer_watches: customerWatches,
-    email_events: emailAudit.events, email_tracking_ready: emailAudit.ready };
+    email_events: emailAudit.events, email_tracking_ready: emailAudit.ready,
+    email_retry_enabled: STATUS_EMAIL_ENABLED && WRITE_THROUGH_ENABLED && emailAudit.ready };
 }
 
 function normalizeWatchEmail(value) {
