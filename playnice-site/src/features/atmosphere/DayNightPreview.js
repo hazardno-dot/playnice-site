@@ -23,9 +23,7 @@ if (production || preview) {
   controls.className = "pn-atmosphere-controls";
   controls.setAttribute("role", "group");
   controls.setAttribute("aria-label", production ? "Upravljanje PlayNice atmosferom" : "PlayNice Living Sky — preview test");
-  controls.innerHTML = production ? `
-    <button type="button" class="pn-production-toggle" aria-label="Isključi PlayNice atmosferu" aria-pressed="true">Atmosfera · On</button>
-  ` : `
+  controls.innerHTML = production ? "" : `
     <div class="pn-head">
       <strong>Living Sky · 24h</strong>
       <span class="pn-hint">Preview only</span>
@@ -41,13 +39,12 @@ if (production || preview) {
     </label>
     <div class="pn-status" role="status" aria-live="polite">Priprema solarnog ciklusa…</div>
   `;
-  document.body.appendChild(controls);
-  if (production) controls.classList.add("pn-atmosphere-controls--production");
+  if (!production) document.body.appendChild(controls);
   const slider=controls.querySelector("#pn-solar-slider");
   const sliderLabel=controls.querySelector("#pn-solar-label");
   const status=controls.querySelector(".pn-status");
   const buttons=Array.from(controls.querySelectorAll("[data-mode]"));
-  const productionToggle=controls.querySelector(".pn-production-toggle");
+
 
   const rgb=values=>`rgb(${values.join(" ")})`;
   const pad=v=>String(v).padStart(2,"0");
@@ -73,11 +70,7 @@ if (production || preview) {
   }
   function apply() {
     buttons.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.mode===mode)));
-    if (productionToggle) {
-      productionToggle.textContent = mode==="off" ? "Atmosfera · Off" : "Atmosfera · On";
-      productionToggle.setAttribute("aria-pressed",String(mode!=="off"));
-      productionToggle.setAttribute("aria-label",mode==="off"?"Uključi PlayNice atmosferu":"Isključi PlayNice atmosferu");
-    }
+
     if (slider) slider.disabled=mode!=="manual";
     if (sliderLabel) sliderLabel.textContent=`Vreme: ${minuteText(manualMinute)}`;
     if(mode==="off"){
@@ -113,9 +106,14 @@ if (production || preview) {
     try{(production ? localStorage : sessionStorage).setItem(STORAGE_KEY,mode==="off"?"off":"auto");}catch{}
     apply();
   }));
-  if (productionToggle) productionToggle.addEventListener("click",()=>{
-    mode=mode==="off"?"auto":"off";
-    try{localStorage.setItem(STORAGE_KEY,mode==="off"?"off":"auto");}catch{}
+  window.addEventListener("playnice:atmosphere-change",(event)=>{
+    if (!production) return;
+    mode=event.detail?.enabled===false?"off":"auto";
+    apply();
+  });
+  window.addEventListener("storage",(event)=>{
+    if (!production || event.key!==STORAGE_KEY) return;
+    mode=event.newValue==="off"?"off":"auto";
     apply();
   });
   if (slider) slider.addEventListener("input",()=>{
