@@ -181,6 +181,7 @@ function OrdersWorkspace() {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [emailEvents, setEmailEvents] = useState([]);
   const [emailTrackingReady, setEmailTrackingReady] = useState(false);
+  const [emailRetryEnabled, setEmailRetryEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
@@ -202,6 +203,7 @@ function OrdersWorkspace() {
     setCustomerWatches(Array.isArray(payload?.customer_watches) ? payload.customer_watches : []);
     setEmailEvents(Array.isArray(payload?.email_events) ? payload.email_events : []);
     setEmailTrackingReady(Boolean(payload?.email_tracking_ready));
+    setEmailRetryEnabled(Boolean(payload?.email_retry_enabled));
     setWriteEnabled(Boolean(payload?.write_enabled));
     setSelectedId((current) => nextOrders.some((order) => order.id === current) ? current : (nextOrders[0]?.id || ""));
   };
@@ -431,6 +433,11 @@ function OrdersWorkspace() {
     }, "status:" + status);
   };
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
+  const retryPackedEmail = () => {
+    if (!selected || !emailRetryEnabled || selected.status !== "PACKED") return;
+    if (!window.confirm("Resend will attempt one PACKED email retry for this customer. This action cannot be repeated automatically. Continue?")) return;
+    mutate({ action: "retry_packed_email", id: selected.id }, "retry-packed-email");
+  };
   const settleSelected = () => {
     if (!settlementSelection.length) return;
     const confirmed = window.confirm(
@@ -960,11 +967,20 @@ function OrdersWorkspace() {
                     <span className="orders-email-audit-name">{label}</span>
                     <small className="orders-email-audit-detail">{result.detail}</small>
                   </div>
-                  <strong className={"orders-email-state state-" + result.state}>{result.state === "accepted" ? "Accepted" :
-                    result.state === "unverified" ? "Unverified" : result.state === "untracked" ? "Not tracked" :
-                    result.state === "failed" ? "Failed" : result.state === "pending" ? "Pending" :
-                    result.state === "delivered" ? "Delivered" : result.state === "bounced" ? "Bounced" :
-                    result.state === "delayed" ? "Delayed" : result.state}</strong>
+                  <div className="orders-email-audit-side">
+                    <strong className={"orders-email-state state-" + result.state}>{result.state === "accepted" ? "Accepted" :
+                      result.state === "unverified" ? "Unverified" : result.state === "untracked" ? "Not tracked" :
+                      result.state === "failed" ? "Failed" : result.state === "pending" ? "Pending" :
+                      result.state === "delivered" ? "Delivered" : result.state === "bounced" ? "Bounced" :
+                      result.state === "complained" ? "Complained" :
+                      result.state === "delayed" ? "Delayed" : result.state}</strong>
+                    {stage === "PACKED" && role === "customer" && result.state === "failed" &&
+                     emailRetryEnabled && selected.status === "PACKED" &&
+                     !emailEvents.some((e) => e.order_id === selected.order_id && e.stage === "PACKED" && e.recipient_role === "customer" && e.state === "accepted")
+                      ? <button type="button" className="orders-email-retry" onClick={retryPackedEmail} disabled={Boolean(busy)}>
+                          {busy === "retry-packed-email" ? "Retrying…" : "Retry once"}
+                        </button> : null}
+                  </div>
                 </div>;
               })}
             </div>
