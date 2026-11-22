@@ -95,12 +95,48 @@ async function readCustomerWatches(token) {
   return Array.isArray(rows) ? rows : [];
 }
 
+async function readEmailEvents(token) {
+  const response = await userFetch(
+    "/rest/v1/order_email_events?select=order_id,stage,recipient_role,state,provider_message_id,error_message,created_at&order=created_at.desc&limit=500",
+    token, { method: "GET" }
+  );
+  if (response.status === 404) return { events: [], ready: false }; // migration not applied yet
+  const rows = await safeJson(response);
+  if (!response.ok) {
+    console.warn("Order email audit read unavailable", response.status);
+    return { events: [], ready: false };
+  }
+  return { events: Array.isArray(rows) ? rows : [], ready: true };
+}
+
+async function recordEmailEvent(token, orderId, result) {
+  if (!["sent", "failed"].includes(result?.status_email_status)) return null;
+  const record = {
+    order_id: orderId,
+    stage: "PACKED",
+    recipient_role: "customer",
+    state: result.status_email_status === "sent" ? "accepted" : "failed",
+    provider_message_id: result.status_email_message_id || null,
+    error_message: result.status_email_status === "failed"
+      ? String(result.status_email_warning || "Resend request failed").slice(0, 300) : null
+  };
+  const response = await userFetch("/rest/v1/order_email_events", token, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Prefer: "return=minimal" },
+    body: JSON.stringify(record)
+  });
+  if (!response.ok) throw new Error("Email audit write returned HTTP " + response.status);
+  return record.state;
+}
+
 async function readOrdersWorkspace(token) {
-  const [orderData, customerWatches] = await Promise.all([
+  const [orderData, customerWatches, emailAudit] = await Promise.all([
     readOrders(token),
-    readCustomerWatches(token)
+    readCustomerWatches(token),
+    readEmailEvents(token)
   ]);
-  return { ...orderData, customer_watches: customerWatches };
+  return { ...orderData, customer_watches: customerWatches,
+    email_events: emailAudit.events, email_tracking_ready: emailAudit.ready };
 }
 
 function normalizeWatchEmail(value) {
@@ -345,6 +381,17 @@ async function mutateOrder(token, body) {
   const emailResult = action === "set_status"
     ? await sendPackedStatusEmail(token, mutation.order, previousStatus)
     : { status_email_status: "not_applicable", status_email_warning: null };
+
+  // Audit is best-effort: never revert a successful PACKED status or re-send an
+  // accepted email because the audit database is temporarily unavailable.
+  if (emailResult.status_email_status === "sent" || emailResult.status_email_status === "failed") {
+    try {
+      await recordEmailEvent(token, mutation.order.order_id, emailResult);
+    } catch (auditError) {
+      console.error("Email outcome audit failed", String(auditError?.message || auditError));
+      emailResult.status_email_audit_warning = "Email send outcome could not be recorded. Check Resend before retrying.";
+    }
+  }
 
   return {
     order: mutation.order,
