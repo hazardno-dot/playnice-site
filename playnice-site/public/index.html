@@ -12,9 +12,24 @@
         --sky-top: rgb(18 25 46);
         --sky-glow: rgb(150 162 207);
         --sky-star-opacity: .14;
+        /* Cover the browser canvas before #root / React has rendered. */
+        min-height: 100%;
       }
+      html.pn-atmosphere-preview[data-pn-sky="active"],
       html.pn-atmosphere-preview[data-pn-sky="active"] body {
+        min-height: 100%;
         background-color: var(--sky-base);
+        background-image:
+          radial-gradient(ellipse 66% 38% at 87% 8%,
+            color-mix(in srgb, var(--sky-glow) 19%, transparent), transparent 78%),
+          radial-gradient(ellipse 56% 28% at 18% 16%,
+            color-mix(in srgb, var(--sky-glow) 8%, transparent), transparent 78%),
+          linear-gradient(180deg,
+            var(--sky-top) 0%, var(--sky-base) 48%, var(--sky-base) 100%);
+        background-repeat: no-repeat;
+      }
+      html.pn-atmosphere-preview[data-pn-sky="active"] #root {
+        min-height: 100vh;
       }
       html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell {
         background-color: var(--sky-base);
