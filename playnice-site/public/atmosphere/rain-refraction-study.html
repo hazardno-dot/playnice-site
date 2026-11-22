@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PlayNice Atmosphere — Rain on Glass · Refraction Study</title>
+<title>PlayNice Atmosphere — Rain on Glass · Wet Film Study v1.4</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0d0e10;color:#e8e0d3}
@@ -91,39 +91,62 @@ function position(d,age){
  return {x:d.x+sway+p*d.horizontal,y:d.y+eased*d.travel,p:p};
 }
 function wetTrail(ctx,d){
- // A short, evaporating, discontinuous water track. Render before the main drop.
- var history=d.history;
- if(history.length<2)return;
- ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
- for(var i=1;i<history.length;i++){
-  var prev=history[i-1],point=history[i];
-  var elapsed=d.age-point.t;
-  var life=Math.max(0,1-elapsed/2600);
-  // A thin remaining lens edge, never a continuous white paint line.
-  if(life<=0)continue;
-  ctx.strokeStyle='rgba(219,232,241,'+(life*.13).toFixed(3)+')';
-  ctx.lineWidth=Math.max(.6,d.width*.055*life);
-  ctx.beginPath();ctx.moveTo(prev.x-d.width*.085,prev.y+d.height*.55);
-  ctx.lineTo(point.x-d.width*.085,point.y+d.height*.55);ctx.stroke();
-  ctx.strokeStyle='rgba(8,12,19,'+(life*.23).toFixed(3)+')';
-  ctx.lineWidth=Math.max(.4,d.width*.035*life);
-  ctx.beginPath();ctx.moveTo(prev.x+d.width*.07,prev.y+d.height*.55);
-  ctx.lineTo(point.x+d.width*.07,point.y+d.height*.55);ctx.stroke();
+ // Rain-on-glass v1.4: NO connected straight stroke. This is a short,
+ // irregular damp film (flecks) with independent beads and a fading lifetime.
+ var track=d.history;
+ if(track.length===0)return;
+ ctx.save();
+ for(var i=0;i<track.length;i++){
+  var sample=track[i],age=d.age-sample.t;
+  var remaining=Math.max(0,1-age/3300);
+  if(!remaining)continue;
+  var n=sample.seed;
+  // Irregularly distributed film islands. Many locations deliberately have gaps.
+  if(n>.71)continue;
+  var filmWidth=d.width*(.07+.16*sample.spread);
+  var filmLength=1.3+sample.spread*4.8;
+  var cx=sample.x+sample.offset;
+  var cy=sample.y+d.height*.26;
+  var op=remaining*remaining*(.045+.13*sample.spread);
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(sample.angle);
+  // Refracted fragment, never an opaque line. Optical distortion is local to
+  // the prototype canvas, not to HTML/React elements.
+  ctx.beginPath();
+  ctx.ellipse(0,0,filmWidth,filmLength,0,0,Math.PI*2);
+  ctx.clip();
+  var sx=Math.max(0,Math.min(base.width-2,Math.round((cx-filmWidth*1.1)*dpr)));
+  var sy=Math.max(0,Math.min(base.height-2,Math.round((cy-filmLength*1.1)*dpr)));
+  var sw=Math.max(1,Math.min(base.width-sx,Math.round(filmWidth*2.2*dpr)));
+  var sh=Math.max(1,Math.min(base.height-sy,Math.round(filmLength*2.2*dpr)));
+  ctx.globalAlpha=remaining*.28;
+  ctx.drawImage(base,sx,sy,sw,sh,cx-filmWidth*1.13,cy-filmLength*1.04,filmWidth*2.2,filmLength*2.2);
+  ctx.restore();
+  ctx.beginPath();
+  ctx.ellipse(cx,cy,filmWidth,filmLength,sample.angle,0,Math.PI*2);
+  ctx.fillStyle='rgba(187,209,219,'+op.toFixed(4)+')';ctx.fill();
+  ctx.lineWidth=.38;
+  ctx.strokeStyle='rgba(239,248,252,'+(op*.82).toFixed(4)+')';ctx.stroke();
  }
- // Retained micro-droplets: the larger drop gradually catches them visually.
+ // Pearl droplets left on the moving meniscus. They fade, and some chase
+ // the main drop while others stay pinned briefly to the glass.
  for(var j=0;j<d.satellites.length;j++){
-  var dot=d.satellites[j],lag=d.age-dot.born;
-  var last=history[history.length-1];
-  var distance=Math.hypot(last.x-dot.x,last.y-dot.y);
-  var visibility=Math.max(0,1-lag/3100)*Math.min(1,distance/9);
-  if(visibility<=0)continue;
-  var radius=dot.radius*(.72+.28*visibility);
-  ctx.beginPath();ctx.ellipse(dot.x,dot.y,radius,radius*1.36,-.12,0,Math.PI*2);
-  ctx.fillStyle='rgba(184,201,211,'+(visibility*.2).toFixed(3)+')';ctx.fill();
-  ctx.strokeStyle='rgba(230,238,244,'+(visibility*.45).toFixed(3)+')';
-  ctx.lineWidth=.6;ctx.stroke();
-  ctx.beginPath();ctx.arc(dot.x-radius*.28,dot.y-radius*.3,Math.max(.35,radius*.22),0,Math.PI*2);
-  ctx.fillStyle='rgba(255,255,255,'+(visibility*.42).toFixed(3)+')';ctx.fill();
+  var bead=d.satellites[j],elapsed=d.age-bead.born;
+  var life=Math.max(0,1-elapsed/bead.life);
+  if(!life)continue;
+  var r=bead.radius*(.78+.22*life);
+  var spec=ctx.createLinearGradient(bead.x-r,bead.y-r,bead.x+r,bead.y+r);
+  spec.addColorStop(0,'rgba(255,255,255,'+(life*.47).toFixed(4)+')');
+  spec.addColorStop(.45,'rgba(203,225,235,'+(life*.065).toFixed(4)+')');
+  spec.addColorStop(1,'rgba(2,12,22,'+(life*.34).toFixed(4)+')');
+  ctx.beginPath();
+  ctx.ellipse(bead.x,bead.y,r,r*bead.aspect,bead.angle,0,Math.PI*2);
+  ctx.fillStyle=spec;ctx.fill();
+  ctx.strokeStyle='rgba(237,246,251,'+(life*.35).toFixed(4)+')';
+  ctx.lineWidth=.45;ctx.stroke();
+  ctx.beginPath();ctx.ellipse(bead.x-r*.25,bead.y-r*.28,r*.2,r*.26,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,'+(life*.5).toFixed(4)+')';ctx.fill();
  }
  ctx.restore();
 }
@@ -186,23 +209,37 @@ function loop(t){
  drops=drops.filter(function(d){
   d.age+=delta;
   var xy=position(d,d.age);
-  if(d.age>d.hold&&d.age<d.hold+d.moveMs&&d.age-d.lastSample>=75){
+  if(d.age>d.hold&&d.age<d.hold+d.moveMs&&d.age-d.lastSample>=95){
    var previous=d.history[d.history.length-1];
-   var moved=!previous||Math.hypot(xy.x-previous.x,xy.y-previous.y)>1.2;
+   var moved=!previous||Math.hypot(xy.x-previous.x,xy.y-previous.y)>1.5;
    if(moved){
-    d.history.push({x:xy.x,y:xy.y,t:d.age});d.lastSample=d.age;
-    if(Math.random()<.075&&d.satellites.length<4){
-     d.satellites.push({x:xy.x+random(-d.width*.18,d.width*.18),y:xy.y+d.height*.5,born:d.age,radius:random(.8,1.65)});
+    d.lastSample=d.age;
+    // Fragmentary wetting patches, with gaps and irregular lateral scatter.
+    if(Math.random()<.78){
+     d.history.push({x:xy.x,y:xy.y,t:d.age,seed:Math.random(),
+      spread:Math.random(),offset:random(-d.width*.24,d.width*.24),
+      angle:random(-.22,.22)});
+    }
+    if(Math.random()<.18&&d.satellites.length<9){
+     d.satellites.push({x:xy.x+random(-d.width*.31,d.width*.31),
+      y:xy.y+d.height*.23+random(-7,7),born:d.age,
+      radius:random(.65,2.05),aspect:random(1.05,1.65),
+      angle:random(-.24,.24),life:random(1700,4500),
+      pinned:random(200,1300),speed:random(.17,.5)});
     }
    }
   }
-  d.history=d.history.filter(function(p){return d.age-p.t<2650;});
+  d.history=d.history.filter(function(p){return d.age-p.t<3400;});
   d.satellites=d.satellites.filter(function(dot){
-   // Surface-water cohesion: tiny beads begin slowly then drift toward the main droplet.
-   var factor=Math.min(.115,delta/850);
-   dot.x+=(xy.x-dot.x)*factor;
-   dot.y+=(xy.y+d.height*.53-dot.y)*factor;
-   return d.age-dot.born<3200;
+   var age=d.age-dot.born;
+   if(age>dot.pinned){
+    // Stick-slip start followed by delayed acceleration and eventual merger.
+    var factor=Math.min(.23,delta/1000*dot.speed);
+    dot.x+=(xy.x-dot.x)*factor;
+    dot.y+=(xy.y+d.height*.66-dot.y)*factor;
+   }
+   var merged=age>dot.pinned&&Math.hypot(dot.x-xy.x,dot.y-(xy.y+d.height*.66))<Math.max(1.5,d.width*.22);
+   return age<dot.life&&!merged;
   });
   return d.age<d.lifetime;
  });
