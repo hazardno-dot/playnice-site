@@ -5,18 +5,26 @@
 }
 
 @media (min-width: 769px) {
-  /* One uninterrupted PlayNice black surface. */
-  html,
-  body.desktop-product-route-active,
-  body.desktop-product-route-active #root,
-  body.desktop-product-route-active .app-shell,
-  body.desktop-product-route-active main,
-  body.desktop-product-route-active .desktop-product-route-host,
-  body.desktop-product-route-active .desktop-product-page,
-  body.desktop-product-route-active .site-footer,
-  body.desktop-product-route-active .header-system {
+  /* Retain the original uninterrupted black PDP only when Living Sky is Off.
+     When active, the shared app-shell solar gradient must not be erased. */
+  html:not([data-pn-sky="active"]),
+  html:not([data-pn-sky="active"]) body.desktop-product-route-active,
+  html:not([data-pn-sky="active"]) body.desktop-product-route-active #root,
+  html:not([data-pn-sky="active"]) body.desktop-product-route-active .app-shell,
+  html:not([data-pn-sky="active"]) body.desktop-product-route-active main,
+  html:not([data-pn-sky="active"]) body.desktop-product-route-active .desktop-product-route-host,
+  html:not([data-pn-sky="active"]) body.desktop-product-route-active .desktop-product-page,
+  html:not([data-pn-sky="active"]) body.desktop-product-route-active .site-footer,
+  html:not([data-pn-sky="active"]) body.desktop-product-route-active .header-system {
     background: #050505 !important;
     background-image: none !important;
+  }
+
+  /* Product details must expose the shell's Living Sky without affecting
+     the opaque product photo stage, purchase cards, or modal overlays. */
+  html.pn-atmosphere-preview[data-pn-sky="active"]
+    body.desktop-product-route-active .desktop-product-page {
+    background: transparent;
   }
 
   body.desktop-product-route-active .desktop-product-route-host::before {
