@@ -83,14 +83,53 @@ function shape(ctx,x,y,w,h,s){
  ctx.bezierCurveTo(x-w*.34,y+h*.17,x-w*.26,y+h*.02,x-w*.10,y);
  ctx.closePath();
 }
-function droplet(ctx,d){
- var age=d.age;
+function position(d,age){
  var slip=Math.max(0,age-d.hold);
  var p=Math.min(1,slip/d.moveMs);
  var eased=p*p*(3-2*p);
  var sway=Math.sin(age*.00074+d.phase)*d.swing+Math.sin(age*.00121+d.phase*.7)*d.swing*.36;
- var y=d.y+eased*d.travel;
- var x=d.x+sway+p*d.horizontal;
+ return {x:d.x+sway+p*d.horizontal,y:d.y+eased*d.travel,p:p};
+}
+function wetTrail(ctx,d){
+ // A short, evaporating, discontinuous water track. Render before the main drop.
+ var history=d.history;
+ if(history.length<2)return;
+ ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
+ for(var i=1;i<history.length;i++){
+  var prev=history[i-1],point=history[i];
+  var elapsed=d.age-point.t;
+  var life=Math.max(0,1-elapsed/2600);
+  // A thin remaining lens edge, never a continuous white paint line.
+  if(life<=0)continue;
+  ctx.strokeStyle='rgba(219,232,241,'+(life*.13).toFixed(3)+')';
+  ctx.lineWidth=Math.max(.6,d.width*.055*life);
+  ctx.beginPath();ctx.moveTo(prev.x-d.width*.085,prev.y+d.height*.55);
+  ctx.lineTo(point.x-d.width*.085,point.y+d.height*.55);ctx.stroke();
+  ctx.strokeStyle='rgba(8,12,19,'+(life*.23).toFixed(3)+')';
+  ctx.lineWidth=Math.max(.4,d.width*.035*life);
+  ctx.beginPath();ctx.moveTo(prev.x+d.width*.07,prev.y+d.height*.55);
+  ctx.lineTo(point.x+d.width*.07,point.y+d.height*.55);ctx.stroke();
+ }
+ // Retained micro-droplets: the larger drop gradually catches them visually.
+ for(var j=0;j<d.satellites.length;j++){
+  var dot=d.satellites[j],lag=d.age-dot.born;
+  var last=history[history.length-1];
+  var distance=Math.hypot(last.x-dot.x,last.y-dot.y);
+  var visibility=Math.max(0,1-lag/3100)*Math.min(1,distance/9);
+  if(visibility<=0)continue;
+  var radius=dot.radius*(.72+.28*visibility);
+  ctx.beginPath();ctx.ellipse(dot.x,dot.y,radius,radius*1.36,-.12,0,Math.PI*2);
+  ctx.fillStyle='rgba(184,201,211,'+(visibility*.2).toFixed(3)+')';ctx.fill();
+  ctx.strokeStyle='rgba(230,238,244,'+(visibility*.45).toFixed(3)+')';
+  ctx.lineWidth=.6;ctx.stroke();
+  ctx.beginPath();ctx.arc(dot.x-radius*.28,dot.y-radius*.3,Math.max(.35,radius*.22),0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,'+(visibility*.42).toFixed(3)+')';ctx.fill();
+ }
+ ctx.restore();
+}
+function droplet(ctx,d){
+ var age=d.age;
+ var xy=position(d,age),p=xy.p,x=xy.x,y=xy.y;
  var stretch=1+Math.min(.19,p*.22);
  var w=d.width,h=d.height*stretch;
  var appear=Math.min(1,age/650);
@@ -138,12 +177,35 @@ function draw(){
  context.clearRect(0,0,canvas.width,canvas.height);
  context.drawImage(base,0,0);
  context.setTransform(dpr,0,0,dpr,0,0);
- for(var i=0;i<drops.length;i++)droplet(context,drops[i]);
+ for(var i=0;i<drops.length;i++)wetTrail(context,drops[i]);
+ for(var j=0;j<drops.length;j++)droplet(context,drops[j]);
 }
 function loop(t){
  raf=0;if(!running()){lastFrame=0;return;}
  var delta=Math.min(50,t-(lastFrame||t));lastFrame=t;
- drops=drops.filter(function(d){d.age+=delta;return d.age<d.lifetime;});
+ drops=drops.filter(function(d){
+  d.age+=delta;
+  var xy=position(d,d.age);
+  if(d.age>d.hold&&d.age<d.hold+d.moveMs&&d.age-d.lastSample>=75){
+   var previous=d.history[d.history.length-1];
+   var moved=!previous||Math.hypot(xy.x-previous.x,xy.y-previous.y)>1.2;
+   if(moved){
+    d.history.push({x:xy.x,y:xy.y,t:d.age});d.lastSample=d.age;
+    if(Math.random()<.075&&d.satellites.length<4){
+     d.satellites.push({x:xy.x+random(-d.width*.18,d.width*.18),y:xy.y+d.height*.5,born:d.age,radius:random(.8,1.65)});
+    }
+   }
+  }
+  d.history=d.history.filter(function(p){return d.age-p.t<2650;});
+  d.satellites=d.satellites.filter(function(dot){
+   // Surface-water cohesion: tiny beads begin slowly then drift toward the main droplet.
+   var factor=Math.min(.115,delta/850);
+   dot.x+=(xy.x-dot.x)*factor;
+   dot.y+=(xy.y+d.height*.53-dot.y)*factor;
+   return d.age-dot.born<3200;
+  });
+  return d.age<d.lifetime;
+ });
  draw();
  if(drops.length)raf=requestAnimationFrame(loop);else lastFrame=0;
 }
@@ -158,7 +220,7 @@ function spawn(){
  var moveMs=random(6500,14000);
  drops.push({x:x,y:y,width:width,height:height,hold:hold,moveMs:moveMs,
   lifetime:hold+moveMs+900,travel:travel,swing:random(1.5,6),horizontal:random(-9,9),
-  phase:random(0,20),tilt:random(-.07,.07),age:0});
+  phase:random(0,20),tilt:random(-.07,.07),age:0,history:[],satellites:[],lastSample:0});
  draw();if(!raf)raf=requestAnimationFrame(loop);
 }
 function queue(){
