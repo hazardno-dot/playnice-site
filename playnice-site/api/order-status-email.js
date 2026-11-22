@@ -365,10 +365,16 @@ module.exports = async function handler(req, res) {
       text: packedEmailText({ orderId, fullName, items, language })
     });
 
+    if (result?.error || !result?.data?.id) {
+      const message = String(result?.error?.message || "Resend did not accept the status email").slice(0, 300);
+      console.error("Packed status email rejected by Resend:", message);
+      return res.status(502).json({ ok: false, error: message });
+    }
+
     return res.status(200).json({
       ok: true,
       status: "PACKED",
-      messageId: result?.data?.id || null
+      messageId: result.data.id
     });
   } catch (error) {
     console.error("Packed status email failed:", error);
