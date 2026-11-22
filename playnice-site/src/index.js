@@ -109,3 +109,14 @@ if (window.matchMedia("(min-width: 769px)").matches) {
 } else {
   renderApp();
 }
+
+/* Explicit preview opt-in; never activate on the production host. */
+const atmosphereParams = new URLSearchParams(window.location.search);
+const atmosphereHost = window.location.hostname.toLowerCase();
+if (
+  atmosphereParams.get("atmospherePreview") === "1" &&
+  atmosphereHost !== "playniceshop.me" &&
+  atmosphereHost !== "www.playniceshop.me"
+) {
+  import("./features/atmosphere/DayNightPreview").catch(() => {});
+}
