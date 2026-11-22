@@ -13,6 +13,12 @@
     color: #f4ead8;
   }
 
+  /* Only the page canvas inherits Living Sky; product media and cards
+     retain their intentionally dark surfaces. Atmosphere Off stays original. */
+  html.pn-atmosphere-preview[data-pn-sky="active"] .mobile-product-page {
+    background: transparent;
+  }
+
   .mobile-product-page > section,
   .mobile-product-page > footer {
     width: 100%;
