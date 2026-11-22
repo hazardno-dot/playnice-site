@@ -222,10 +222,10 @@ function OrdersWorkspace() {
   const emailStatus = (order, stage, role) => {
     const event = latestEmailEvent(order.order_id, stage, role);
     if (event) return { state: event.state, detail: event.error_message || (event.provider_message_id ? "Resend message " + event.provider_message_id : "") };
-    if (stage === "ORDER_RECEIVED" && order.origin === "supabase_checkout") {
-      const result = role === "admin" ? order.admin_email_sent : order.customer_email_sent;
-      if (result === false) return { state: "failed", detail: "Checkout reported a send failure." };
-      if (result === true) return { state: "unverified", detail: "Legacy checkout flag; provider acceptance was not verified." };
+    // Historical checkout flags are not projected by get_control_center_orders,
+    // and even when present they were affected by the Resend 422 false-positive.
+    if (stage === "ORDER_RECEIVED") {
+      return { state: "unverified", detail: "No verified Resend event recorded for this order." };
     }
     if (stage === "SHIPPED") return { state: "untracked", detail: "Existing shipping notifications are managed outside this audit; delivery not verified." };
     const stageReached = stage === "PACKED" && !["NEW", "CANCELLED", "DUPLICATE"].includes(order.status);
@@ -946,6 +946,7 @@ function OrdersWorkspace() {
 
           <section className="orders-email-audit">
             <div className="orders-section-title"><span>EMAIL NOTIFICATIONS</span><strong>{emailTrackingReady ? "Provider acceptance audit" : "Legacy tracking"}</strong></div>
+            {!emailTrackingReady ? <p className="orders-email-audit-disclaimer">Provider audit database is not active or is unavailable. No delivery claims can be verified here.</p> : null}
             <div className="orders-email-audit-list">
               {[
                 ["ORDER_RECEIVED", "admin", "New order · merchant"],
