@@ -278,6 +278,22 @@ async function mirrorWithAudit(token, order, mirror) {
   }
 }
 
+// Re-packing an order must not send a second confirmation if Resend already
+// accepted one. If the audit cannot be consulted, skip rather than risk a
+// duplicate delivery. The order status change still succeeds.
+async function packedEmailAlreadyAccepted(token, orderId) {
+  const filter = "/rest/v1/order_email_events?select=state,provider_message_id" +
+    "&order_id=eq." + encodeURIComponent(orderId) +
+    "&stage=eq.PACKED&recipient_role=eq.customer&state=eq.accepted&limit=1";
+  const response = await userFetch(filter, token, {
+    method: "GET", signal: AbortSignal.timeout(4000)
+  });
+  if (!response.ok) throw new Error("PACKED email acceptance audit unavailable (HTTP " + response.status + ")");
+  const rows = await safeJson(response);
+  if (!Array.isArray(rows)) throw new Error("PACKED email acceptance audit returned invalid data");
+  return rows.length > 0;
+}
+
 async function sendPackedStatusEmail(token, order, previousStatus) {
   if (previousStatus !== "NEW" || order?.status !== "PACKED") {
     return { status_email_status: "not_applicable", status_email_warning: null };
@@ -285,6 +301,20 @@ async function sendPackedStatusEmail(token, order, previousStatus) {
 
   if (!STATUS_EMAIL_ENABLED) {
     return { status_email_status: "preview_skipped", status_email_warning: null };
+  }
+
+  try {
+    if (await packedEmailAlreadyAccepted(token, order.order_id)) {
+      return {
+        status_email_status: "already_accepted",
+        status_email_warning: null
+      };
+    }
+  } catch (error) {
+    return {
+      status_email_status: "audit_unavailable",
+      status_email_warning: "Order marked PACKED, but the email was not sent because earlier acceptance could not be checked. Verify Resend before retrying."
+    };
   }
 
   const payload = order?.source_payload || {};
