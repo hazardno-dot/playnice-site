@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
+import vm from "node:vm";
 
 const root = process.cwd();
 const read = (p) => fs.readFileSync(path.join(root, p), "utf8");
@@ -25,5 +26,17 @@ assert.ok(ui.includes("Accepted means Resend acknowledged"), "Accepted must not 
 assert.ok(edge.includes('eq("sync_token", syncToken)'), "Email audit writes must verify order-specific sync token.");
 assert.ok(schema.includes("enable row level security"), "Email events table must enforce RLS.");
 assert.ok(!orders.includes('sendShippedStatusEmail('), "Do not duplicate existing SHIPPED messaging flow.");
+
+
+const acceptanceSrc = checkout.match(/function requireResendAccepted\\(result\\) \\{[\\s\\S]*?\\n\\}/)?.[0];
+const replySrc = checkout.match(/function validReplyTo\\(value\\) \\{[\\s\\S]*?\\n\\}/)?.[0];
+assert.ok(acceptanceSrc && replySrc, "Email acceptance helpers must exist.");
+const helpers = vm.runInNewContext(acceptanceSrc + "\\n" + replySrc + "\\n({ requireResendAccepted, validReplyTo })");
+assert.equal(helpers.requireResendAccepted({ data: { id: "msg_123" }, error: null }).data.id, "msg_123");
+assert.throws(() => helpers.requireResendAccepted({ data: null, error: { message: "Invalid reply_to field" } }), /Invalid reply_to/);
+assert.throws(() => helpers.requireResendAccepted({ data: null, error: null }), /did not accept/);
+assert.equal(helpers.validReplyTo("buyer.@gmail.com"), false);
+assert.equal(helpers.validReplyTo(".buyer@gmail.com"), false);
+assert.equal(helpers.validReplyTo("buyer@gmail.com"), true);
 
 console.log("PASS  Email reliability and CC visibility contract (no live emails or order writes)");
