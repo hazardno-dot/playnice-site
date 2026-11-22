@@ -449,6 +449,7 @@ function HeaderNext({
                 <button
                   key={item.key}
                   type="button"
+                  className={item.key === "scent" ? "header-next-discover-scent" : undefined}
                   style={{ "--discover-index": index }}
                   onClick={() => runAction(item.action)}
                 >
