@@ -179,6 +179,8 @@ function OrdersWorkspace() {
   const [selectedId, setSelectedId] = useState("");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [emailEvents, setEmailEvents] = useState([]);
+  const [emailTrackingReady, setEmailTrackingReady] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
@@ -198,6 +200,8 @@ function OrdersWorkspace() {
     setOrders(nextOrders);
     setEvents(Array.isArray(payload?.events) ? payload.events : []);
     setCustomerWatches(Array.isArray(payload?.customer_watches) ? payload.customer_watches : []);
+    setEmailEvents(Array.isArray(payload?.email_events) ? payload.email_events : []);
+    setEmailTrackingReady(Boolean(payload?.email_tracking_ready));
     setWriteEnabled(Boolean(payload?.write_enabled));
     setSelectedId((current) => nextOrders.some((order) => order.id === current) ? current : (nextOrders[0]?.id || ""));
   };
@@ -212,6 +216,21 @@ function OrdersWorkspace() {
   useEffect(() => { load(); }, []);
 
   const selected = orders.find((order) => order.id === selectedId) || null;
+  const latestEmailEvent = (orderId, stage, role) => emailEvents.find((event) =>
+    event.order_id === orderId && event.stage === stage && event.recipient_role === role
+  ) || null;
+  const emailStatus = (order, stage, role) => {
+    const event = latestEmailEvent(order.order_id, stage, role);
+    if (event) return { state: event.state, detail: event.error_message || (event.provider_message_id ? "Resend message " + event.provider_message_id : "") };
+    if (stage === "ORDER_RECEIVED" && order.origin === "supabase_checkout") {
+      const result = role === "admin" ? order.admin_email_sent : order.customer_email_sent;
+      if (result === false) return { state: "failed", detail: "Checkout reported a send failure." };
+      if (result === true) return { state: "unverified", detail: "Legacy checkout flag; provider acceptance was not verified." };
+    }
+    if (stage === "SHIPPED") return { state: "untracked", detail: "Existing shipping notifications are managed outside this audit; delivery not verified." };
+    const stageReached = stage === "PACKED" && !["NEW", "CANCELLED", "DUPLICATE"].includes(order.status);
+    return { state: stageReached ? "untracked" : "pending", detail: stageReached ? "No recorded provider response." : "Awaiting this order stage." };
+  };
   const selectedWatch = useMemo(() => customerWatchFor(selected, customerWatches), [selected, customerWatches]);
   const selectedHistory = useMemo(() => customerHistory(orders, selected), [orders, selected]);
 
@@ -638,7 +657,11 @@ function OrdersWorkspace() {
             const history = customerHistory(orders, order);
             return <button type="button" key={order.id} className={`orders-row status-row-${String(order.status || "").toLowerCase()} ${customerWatch ? "customer-watch-row" : ""} ${selectedId === order.id ? "active" : ""}`} onClick={() => setSelectedId(order.id)}>
               <div className="orders-row-main"><strong>{order.order_id}{customerWatch ? <em className="customer-watch-badge">{WATCH_BADGES[customerWatch.level] || "WATCH"}</em> : null}{history.vip ? <em className="orders-loyalty-badge vip">VIP</em> : history.prior.length ? <em className="orders-loyalty-badge returning">RETURNING</em> : null}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
-              <div className="orders-row-side"><strong>{money(data.total)}</strong><span className={"order-status status-" + String(order.status || "").toLowerCase()}>{STATUS_LABELS[order.status] || order.status}</span><time>{dateTime(order.created_at)}</time></div>
+              <div className="orders-row-side"><strong>{money(data.total)}</strong>
+                {["admin", "customer"].some((role) => emailStatus(order, "ORDER_RECEIVED", role).state === "failed") ||
+                 emailStatus(order, "PACKED", "customer").state === "failed"
+                  ? <span className="orders-email-list-alert" title="Email notification failed. Inspect the email section.">✉ Email issue</span> : null}
+                <span className={"order-status status-" + String(order.status || "").toLowerCase()}>{STATUS_LABELS[order.status] || order.status}</span><time>{dateTime(order.created_at)}</time></div>
             </button>;
           }) : <div className="orders-empty">No orders match this filter.</div>}
         </div>
@@ -917,6 +940,29 @@ function OrdersWorkspace() {
                   ? <button type="button" onClick={retrySync} disabled={Boolean(busy)}>{busy === "retry" ? "Retrying…" : "Retry backup sync"}</button>
                   : null}
             </div>
+          </section>
+
+          <section className="orders-email-audit">
+            <div className="orders-section-title"><span>EMAIL NOTIFICATIONS</span><strong>{emailTrackingReady ? "Provider acceptance audit" : "Legacy tracking"}</strong></div>
+            <div className="orders-email-audit-list">
+              {[
+                ["ORDER_RECEIVED", "admin", "New order · merchant"],
+                ["ORDER_RECEIVED", "customer", "Order confirmation · customer"],
+                ["PACKED", "customer", "Packed · customer"],
+                ["SHIPPED", "customer", "Shipped · customer"]
+              ].map(([stage, role, label]) => {
+                const result = emailStatus(selected, stage, role);
+                return <div className="orders-email-audit-row" key={stage + role}>
+                  <span>{label}<small>{result.detail}</small></span>
+                  <strong className={"orders-email-state state-" + result.state}>{result.state === "accepted" ? "Accepted" :
+                    result.state === "unverified" ? "Unverified" : result.state === "untracked" ? "Not tracked" :
+                    result.state === "failed" ? "Failed" : result.state === "pending" ? "Pending" :
+                    result.state === "delivered" ? "Delivered" : result.state === "bounced" ? "Bounced" :
+                    result.state === "delayed" ? "Delayed" : result.state}</strong>
+                </div>;
+              })}
+            </div>
+            <p className="orders-email-audit-disclaimer">Accepted means Resend acknowledged the request; it does not confirm inbox delivery. Old checkout flags are unverified. Do not retry solely from this panel.</p>
           </section>
 
           <section className="orders-source">
