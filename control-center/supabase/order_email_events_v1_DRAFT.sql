@@ -33,3 +33,60 @@ create policy "PlayNice admins can record email events"
 
 comment on table public.order_email_events is
   'Append-only Resend lifecycle history. accepted != delivered; provider_event_id deduplicates verified webhook events.';
+
+
+-- At most one operator-initiated PACKED retry per order, claimed atomically.
+-- This is deliberately fail-closed: uncertain outcomes require manual
+-- inspection in Resend, NOT a second attempt.
+create table if not exists public.order_email_retry_claims (
+  order_id text not null references public.checkout_orders(order_id) on delete cascade,
+  stage text not null check (stage = 'PACKED'),
+  recipient_role text not null check (recipient_role = 'customer'),
+  claimed_by uuid not null,
+  claimed_at timestamptz not null default now(),
+  primary key (order_id,stage,recipient_role)
+);
+alter table public.order_email_retry_claims enable row level security;
+revoke all on public.order_email_retry_claims from anon, authenticated;
+
+create or replace function public.claim_packed_email_retry(p_order_id text)
+returns boolean
+language plpgsql security definer set search_path = ''
+as $$
+declare v_user uuid := auth.uid();
+begin
+  if v_user is null or not exists (
+    select 1 from public.admin_users where user_id = v_user
+  ) then
+    raise exception 'ADMIN_REQUIRED' using errcode='42501';
+  end if;
+  if not exists (
+    select 1 from public.checkout_orders
+    where order_id=p_order_id and status='PACKED' and environment='production'
+  ) then
+    return false;
+  end if;
+  -- A provider-accepted message must never be manually resent just because
+  -- it later bounced, delayed, or the inbox is full.
+  if exists (
+    select 1 from public.order_email_events
+    where order_id=p_order_id and stage='PACKED'
+      and recipient_role='customer' and state='accepted'
+  ) then
+    return false;
+  end if;
+  if not exists (
+    select 1 from public.order_email_events
+    where order_id=p_order_id and stage='PACKED'
+      and recipient_role='customer' and state='failed'
+  ) then
+    return false;
+  end if;
+  insert into public.order_email_retry_claims(order_id,stage,recipient_role,claimed_by)
+  values(p_order_id,'PACKED','customer',v_user)
+  on conflict do nothing;
+  return found;
+end;
+$$;
+revoke all on function public.claim_packed_email_retry(text) from public, anon;
+grant execute on function public.claim_packed_email_retry(text) to authenticated;
