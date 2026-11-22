@@ -1,0 +1,111 @@
+/* PlayNice Living Sky v1 — preview opt-in only, dark premium identity preserved. */
+html.pn-atmosphere-preview {
+  --sky-base: rgb(9 12 24);
+  --sky-top: rgb(18 25 46);
+  --sky-glow: rgb(150 162 207);
+  --sky-warm-opacity: .07;
+  --sky-star-opacity: .14;
+}
+html.pn-atmosphere-preview[data-pn-sky="active"] body { background-color: var(--sky-base); }
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell,
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell--home {
+  background-color: var(--sky-base);
+  background-image:
+    radial-gradient(ellipse 66% 38% at 87% 8%,
+      color-mix(in srgb, var(--sky-glow) 19%, transparent), transparent 78%),
+    radial-gradient(ellipse 56% 28% at 18% 16%,
+      color-mix(in srgb, var(--sky-glow) 8%, transparent), transparent 78%),
+    linear-gradient(180deg,
+      var(--sky-top) 0%, var(--sky-base) 48%, var(--sky-base) 100%);
+  background-repeat: no-repeat;
+}
+/* Stars are tiny pinpoints inside the shell background, never over photographs/text. */
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: var(--sky-star-opacity);
+  background-image:
+    radial-gradient(circle at 11% 4%, #e5ebff 0 .55px, transparent .9px),
+    radial-gradient(circle at 72% 9%, #dce8ff 0 .65px, transparent 1px),
+    radial-gradient(circle at 33% 19%, #f4f1ff 0 .55px, transparent .9px),
+    radial-gradient(circle at 87% 36%, #e9ebff 0 .55px, transparent .9px),
+    radial-gradient(circle at 59% 65%, #dee8fa 0 .55px, transparent .9px);
+  background-repeat: no-repeat;
+}
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell { position: relative; }
+/* Do not alter positioning of existing header, overlays or sticky children. */
+/* Stars never intercept clicks; no image, CTA or typography styling is changed. */
+.pn-atmosphere-controls {
+  position: fixed;
+  left: 12px;
+  bottom: max(12px,env(safe-area-inset-bottom));
+  z-index: 2147483000;
+  width: min(550px,calc(100vw - 24px));
+  background: rgba(15,17,21,.97);
+  border: 1px solid rgba(219,181,113,.35);
+  border-radius: 13px;
+  padding: 12px;
+  box-shadow: 0 14px 40px #0009;
+  color: #f4eddf;
+  font: 12px/1.45 Inter,system-ui,sans-serif;
+}
+.pn-atmosphere-controls .pn-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-bottom: 8px;
+}
+.pn-atmosphere-controls .pn-head strong { font-size: 12px; color: #d9bd8f; }
+.pn-atmosphere-controls .pn-hint { color: #b6ac9d; }
+.pn-atmosphere-controls .pn-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 9px; }
+.pn-atmosphere-controls button {
+  color: #f4eddf;
+  background: #2d2b29;
+  padding: 8px 11px;
+  border: 1px solid #b69d744d;
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+}
+.pn-atmosphere-controls button[aria-pressed="true"] { color: #15110c; background: #d1b182; }
+.pn-atmosphere-controls button:focus-visible,
+.pn-atmosphere-controls input:focus-visible { outline: 2px solid #e5c695; outline-offset: 2px; }
+.pn-atmosphere-controls input[type="range"] { width: 100%; accent-color: #d1b182; cursor: pointer; }
+.pn-atmosphere-controls .pn-slider {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.pn-atmosphere-controls .pn-status { margin-top: 7px; color: #c4b9a8; font-size: 11px; }
+@media(max-width:480px) {
+ .pn-atmosphere-controls { font-size: 11px; padding: 10px; }
+ .pn-atmosphere-controls .pn-actions { gap: 5px; }
+ .pn-atmosphere-controls button { padding: 7px 8px; }
+}
+@media(prefers-reduced-motion:reduce){
+ .pn-atmosphere-controls * { scroll-behavior: auto; }
+}
+
+/* Public control: intentionally tiny, visually separate from QA panel. */
+.pn-atmosphere-controls--production {
+  left: 12px;
+  right: auto;
+  bottom: max(18px,env(safe-area-inset-bottom));
+  width: auto;
+  max-width: 150px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(12,14,18,.84);
+}
+.pn-atmosphere-controls--production .pn-production-toggle {
+  border: 0;
+  background: transparent;
+  color: #cbb895;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 11px;
+  letter-spacing: .01em;
+}
+.pn-atmosphere-controls--production .pn-production-toggle[aria-pressed="false"] {
+  background: transparent;
+  color: #a5a09a;
+}

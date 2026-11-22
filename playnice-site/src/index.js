@@ -109,3 +109,11 @@ if (window.matchMedia("(min-width: 769px)").matches) {
 } else {
   renderApp();
 }
+
+/* Living Sky runs automatically in Production and only by opt-in on previews. */
+const atmosphereParams = new URLSearchParams(window.location.search);
+const atmosphereHost = window.location.hostname.toLowerCase();
+const isProductionAtmosphereHost = atmosphereHost === "playniceshop.me" || atmosphereHost === "www.playniceshop.me";
+if (isProductionAtmosphereHost || atmosphereParams.get("atmospherePreview") === "1") {
+  import("./features/atmosphere/DayNightPreview").catch(() => {});
+}
