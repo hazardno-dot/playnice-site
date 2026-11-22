@@ -163,6 +163,10 @@ async function markEmailDeliveryStatus(context) {
     if (!response.ok) {
       throw new Error(`Email audit returned HTTP ${response.status}`);
     }
+    const auditResult = await response.json();
+    if (auditResult?.emailAuditRecorded === false) {
+      throw new Error("Email delivery flags saved, but provider event audit was not recorded");
+    }
 
     context.emailAuditMs = Date.now() - startedAt;
   } catch (error) {
