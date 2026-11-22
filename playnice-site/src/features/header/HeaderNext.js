@@ -80,6 +80,22 @@ function HeaderNext({
   const [lensMoving, setLensMoving] = useState(false);
   const [discoverOpen, setDiscoverOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const atmosphereAvailable = typeof window !== "undefined" && (
+    ["playniceshop.me", "www.playniceshop.me"].includes(window.location.hostname.toLowerCase()) ||
+    new URLSearchParams(window.location.search).get("atmospherePreview") === "1"
+  );
+  const [atmosphereEnabled, setAtmosphereEnabled] = useState(() => {
+    try { return window.localStorage.getItem("playnice_living_sky_enabled") !== "off"; }
+    catch { return true; }
+  });
+  const toggleAtmosphere = () => {
+    setAtmosphereEnabled(current => {
+      const next = !current;
+      try { window.localStorage.setItem("playnice_living_sky_enabled", next ? "auto" : "off"); } catch {}
+      window.dispatchEvent(new CustomEvent("playnice:atmosphere-change", { detail: { enabled: next } }));
+      return next;
+    });
+  };
   const [languageSpinning, setLanguageSpinning] = useState(false);
   const [cartSpinning, setCartSpinning] = useState(false);
   const [cartFeedbackCount, setCartFeedbackCount] = useState(null);
@@ -447,6 +463,15 @@ function HeaderNext({
                   </span>
                 </button>
               ))}
+              {atmosphereAvailable && (
+                <button type="button" className="header-next-atmosphere-desktop"
+                  onClick={toggleAtmosphere}
+                  aria-label={lang === "sr" ? "Uključi ili isključi atmosferu" : "Toggle atmosphere"}
+                  aria-pressed={atmosphereEnabled}>
+                  <span>{lang === "sr" ? "Atmosfera" : "Atmosphere"}</span>
+                  <span className="header-next-atmosphere-state">{atmosphereEnabled ? "On" : "Off"}</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -588,6 +613,15 @@ function HeaderNext({
           <span>{copy.language}</span>
           <strong>{lang === "sr" ? "SR / EN" : "EN / SR"}</strong>
         </button>
+        {atmosphereAvailable && (
+          <button className="header-next-mobile-atmosphere" type="button"
+            onClick={toggleAtmosphere}
+            aria-label={lang === "sr" ? "Uključi ili isključi atmosferu" : "Toggle atmosphere"}
+            aria-pressed={atmosphereEnabled}>
+            <span>{lang === "sr" ? "Atmosfera" : "Atmosphere"}</span>
+            <strong>{atmosphereEnabled ? "On" : "Off"}</strong>
+          </button>
+        )}
       </div>
     </header>
   );
