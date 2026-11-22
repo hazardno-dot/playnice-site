@@ -5,15 +5,20 @@ create table if not exists public.order_email_events (
   order_id text not null references public.checkout_orders(order_id) on delete cascade,
   stage text not null check (stage in ('ORDER_RECEIVED','PACKED','SHIPPED')),
   recipient_role text not null check (recipient_role in ('admin','customer')),
-  state text not null check (state in ('accepted','failed','delivered','delayed','bounced')),
+  state text not null check (state in ('accepted','failed','delivered','delayed','bounced','complained')),
+  provider_event_id text,
+  source text not null default 'send_api' check (source in ('send_api','resend_webhook')),
   provider_message_id text,
   error_message text,
   created_at timestamptz not null default now()
 );
 create index if not exists order_email_events_order_time_idx
   on public.order_email_events(order_id,created_at desc);
-create unique index if not exists order_email_events_provider_message_uidx
+-- A provider message generates MULTIPLE lifecycle events. Do not make message ID unique.
+create index if not exists order_email_events_provider_message_idx
   on public.order_email_events(provider_message_id) where provider_message_id is not null;
+create unique index if not exists order_email_events_provider_event_uidx
+  on public.order_email_events(provider_event_id) where provider_event_id is not null;
 
 alter table public.order_email_events enable row level security;
 revoke all on public.order_email_events from anon;
@@ -27,4 +32,4 @@ create policy "PlayNice admins can record email events"
   with check (exists (select 1 from public.admin_users where user_id = (select auth.uid())));
 
 comment on table public.order_email_events is
-  'Append-only provider outcome history. Accepted != delivered. Webhook delivery status requires separate verified integration.';
+  'Append-only Resend lifecycle history. accepted != delivered; provider_event_id deduplicates verified webhook events.';
