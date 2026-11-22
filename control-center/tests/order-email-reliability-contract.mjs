@@ -56,10 +56,10 @@ assert.ok(webhook.includes('req.headers.get("svix-id")') && webhook.includes("ve
 assert.ok(webhook.includes('.eq("provider_message_id", providerId)') && webhook.includes('.eq("state", "accepted")'), "Webhook must match known provider ID, not recipient address.");
 assert.ok(webhook.includes('insertError?.code === "23505"'), "Duplicate provider events must be idempotent.");
 
-const verifierSource = webhook.match(/async function verifyResendSignature\\([\\s\\S]*?\\n\\}/)?.[0];
+const verifierSource = webhook.match(/async function verifyResendSignature\([\s\S]*?\n\}/)?.[0];
 assert.ok(verifierSource, "Signature verifier must be present.");
-const verifierJs = verifierSource.replace(/:\\s*(?:string|Headers|Uint8Array)/g, "");
-const verifySignature = vm.runInNewContext(verifierJs + "\\nverifyResendSignature", {
+const verifierJs = verifierSource.replace(/:\s*(?:string|Headers|Uint8Array)/g, "");
+const verifySignature = vm.runInNewContext(verifierJs + "\nverifyResendSignature", {
   crypto: webcrypto, Uint8Array, Date, TextEncoder, atob
 });
 const raw = JSON.stringify({ type: "email.delivered", data: { email_id: "msg_test" } });
