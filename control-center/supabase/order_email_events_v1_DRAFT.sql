@@ -17,6 +17,14 @@ create index if not exists order_email_events_order_time_idx
 -- A provider message generates MULTIPLE lifecycle events. Do not make message ID unique.
 create index if not exists order_email_events_provider_message_idx
   on public.order_email_events(provider_message_id) where provider_message_id is not null;
+-- No provider acknowledgement may be reused for two orders; prevent
+-- multiple accepted sends for the same stage and customer role.
+create unique index if not exists order_email_events_acceptance_provider_uidx
+  on public.order_email_events(provider_message_id)
+  where provider_message_id is not null and state='accepted';
+create unique index if not exists order_email_events_one_accepted_stage_uidx
+  on public.order_email_events(order_id,stage,recipient_role)
+  where state='accepted';
 create unique index if not exists order_email_events_provider_event_uidx
   on public.order_email_events(provider_event_id) where provider_event_id is not null;
 
