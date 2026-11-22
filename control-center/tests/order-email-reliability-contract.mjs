@@ -20,6 +20,9 @@ assert.ok(checkout.includes("delete adminPayload.replyTo"), "Invalid admin Reply
 assert.ok(checkout.includes("context.adminEmailSent = null"), "Duplicate suppression cannot report a message as sent.");
 assert.ok(packed.includes("if (result?.error || !result?.data?.id)"), "PACKED email must require Resend acknowledgement.");
 assert.ok(orders.includes("recordEmailEvent"), "PACKED acceptance must be auditable.");
+assert.ok(orders.includes("packedEmailAlreadyAccepted"), "PACKED re-entry must check for prior acceptance.");
+assert.ok(orders.includes('status_email_status: "already_accepted"'), "Previously accepted PACKED email must not be resent.");
+assert.ok(orders.includes('status_email_status: "audit_unavailable"'), "PACKED send must fail closed when its acceptance audit cannot be consulted.");
 assert.ok(orders.includes('status_email_audit_warning'), "Audit write failures must be disclosed without re-sending.");
 assert.ok(ui.includes("Unverified") && ui.includes("Not tracked"), "Historical and shipped statuses must not be represented as delivered.");
 assert.ok(ui.includes("Accepted means Resend acknowledged"), "Accepted must not be represented as delivered.");
