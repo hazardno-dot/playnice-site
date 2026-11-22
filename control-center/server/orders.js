@@ -116,7 +116,7 @@ async function readEmailEvents(token) {
 }
 
 async function recordEmailEvent(token, orderId, result) {
-  if (!["sent", "failed"].includes(result?.status_email_status)) return null;
+  if (!["sent", "failed", "skipped_missing_customer_email"].includes(result?.status_email_status)) return null;
   const record = {
     order_id: orderId,
     stage: "PACKED",
@@ -420,7 +420,7 @@ async function mutateOrder(token, body) {
 
   // Audit is best-effort: never revert a successful PACKED status or re-send an
   // accepted email because the audit database is temporarily unavailable.
-  if (emailResult.status_email_status === "sent" || emailResult.status_email_status === "failed") {
+  if (["sent", "failed", "skipped_missing_customer_email"].includes(emailResult.status_email_status)) {
     try {
       await recordEmailEvent(token, mutation.order.order_id, emailResult);
     } catch (auditError) {
