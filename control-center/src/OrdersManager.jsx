@@ -956,7 +956,10 @@ function OrdersWorkspace() {
               ].map(([stage, role, label]) => {
                 const result = emailStatus(selected, stage, role);
                 return <div className="orders-email-audit-row" key={stage + role}>
-                  <span>{label}<small>{result.detail}</small></span>
+                  <div className="orders-email-audit-copy">
+                    <span className="orders-email-audit-name">{label}</span>
+                    <small className="orders-email-audit-detail">{result.detail}</small>
+                  </div>
                   <strong className={"orders-email-state state-" + result.state}>{result.state === "accepted" ? "Accepted" :
                     result.state === "unverified" ? "Unverified" : result.state === "untracked" ? "Not tracked" :
                     result.state === "failed" ? "Failed" : result.state === "pending" ? "Pending" :
