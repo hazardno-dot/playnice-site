@@ -1283,3 +1283,18 @@
   cursor:pointer;
 }
 .orders-email-retry:disabled { opacity:.45; cursor:wait; }
+
+/* PNTEST audit is isolated from live fulfillment and available only in Preview. */
+.orders-preview-tests { margin: 16px 0; padding: 16px; border: 1px solid rgba(213,173,98,.38); border-radius: 14px; background: rgba(213,173,98,.055); }
+.orders-preview-tests > summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; color: #e5c88e; }
+.orders-preview-tests > summary strong { font-size: 13px; font-weight: 600; }
+.orders-preview-tests-note, .orders-preview-tests-empty { color: #b8b7ac; font-size: 12px; line-height: 1.55; }
+.orders-preview-tests-list { display: grid; gap: 10px; margin-top: 14px; }
+.orders-preview-tests-card { padding: 12px; border-radius: 10px; border: 1px solid rgba(213,173,98,.2); background: rgba(0,0,0,.16); }
+.orders-preview-tests-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 13px; }
+.orders-preview-tests-head > span { color: #b8b7ac; }
+.orders-preview-tests-detail { display: grid; gap: 4px; color: #c8c8bd; font-size: 12px; padding: 8px 0; overflow-wrap: anywhere; }
+.orders-preview-tests-email { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
+.orders-preview-tests-email > div { border-top: 1px solid rgba(213,173,98,.18); padding-top: 8px; display: grid; gap: 3px; font-size: 11px; color: #b8b7ac; }
+.orders-preview-tests-email strong { color: #dfc894; font-size: 12px; text-transform: capitalize; }
+@media (max-width: 700px) { .orders-preview-tests-email { grid-template-columns: repeat(2,minmax(0,1fr)); } }

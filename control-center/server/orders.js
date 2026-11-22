@@ -90,6 +90,21 @@ async function readOrders(token) {
   };
 }
 
+// Preview-only read access to PNTEST records; ordinary Orders RPC remains production-only.
+async function readPreviewTestOrders(token) {
+  if (process.env.VERCEL_ENV !== "preview") {
+    return { preview_test_mode: false, preview_test_orders: [], preview_test_orders_ready: false };
+  }
+  try {
+    const rows = await rpc("get_control_center_preview_test_orders", token, {});
+    if (!Array.isArray(rows)) throw new Error("Invalid test order response");
+    return { preview_test_mode: true, preview_test_orders: rows, preview_test_orders_ready: true };
+  } catch (error) {
+    console.warn("Preview test orders unavailable", String(error?.message || error));
+    return { preview_test_mode: true, preview_test_orders: [], preview_test_orders_ready: false };
+  }
+}
+
 async function readCustomerWatches(token) {
   const rows = await rpc("get_control_center_customer_watches", token, {});
   return Array.isArray(rows) ? rows : [];
@@ -136,10 +151,11 @@ async function recordEmailEvent(token, orderId, result) {
 }
 
 async function readOrdersWorkspace(token) {
-  const [orderData, customerWatches, emailAudit] = await Promise.all([
+  const [orderData, customerWatches, emailAudit, previewTests] = await Promise.all([
     readOrders(token),
     readCustomerWatches(token),
-    readEmailEvents(token)
+    readEmailEvents(token),
+    readPreviewTestOrders(token)
   ]);
   let retryClaims = [];
   if (emailAudit.ready) {
@@ -149,12 +165,12 @@ async function readOrdersWorkspace(token) {
     } catch (error) {
       // Fail closed: missing claim visibility must hide the retry button.
       console.warn("Order email retry claims unavailable", String(error?.message || error));
-      return { ...orderData, customer_watches: customerWatches,
+      return { ...orderData, ...previewTests, customer_watches: customerWatches,
         email_events: emailAudit.events, email_tracking_ready: emailAudit.ready,
         email_retry_claims: [], email_retry_enabled: false };
     }
   }
-  return { ...orderData, customer_watches: customerWatches,
+  return { ...orderData, ...previewTests, customer_watches: customerWatches,
     email_events: emailAudit.events, email_tracking_ready: emailAudit.ready,
     email_retry_claims: retryClaims,
     email_retry_enabled: STATUS_EMAIL_ENABLED && WRITE_THROUGH_ENABLED && emailAudit.ready };

@@ -180,6 +180,9 @@ function OrdersWorkspace() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [emailEvents, setEmailEvents] = useState([]);
+  const [previewTestOrders, setPreviewTestOrders] = useState([]);
+  const [previewTestMode, setPreviewTestMode] = useState(false);
+  const [previewTestOrdersReady, setPreviewTestOrdersReady] = useState(false);
   const [emailTrackingReady, setEmailTrackingReady] = useState(false);
   const [emailRetryEnabled, setEmailRetryEnabled] = useState(false);
   const [emailRetryClaims, setEmailRetryClaims] = useState([]);
@@ -203,6 +206,9 @@ function OrdersWorkspace() {
     setEvents(Array.isArray(payload?.events) ? payload.events : []);
     setCustomerWatches(Array.isArray(payload?.customer_watches) ? payload.customer_watches : []);
     setEmailEvents(Array.isArray(payload?.email_events) ? payload.email_events : []);
+    setPreviewTestMode(payload?.preview_test_mode === true);
+    setPreviewTestOrdersReady(payload?.preview_test_orders_ready === true);
+    setPreviewTestOrders(Array.isArray(payload?.preview_test_orders) ? payload.preview_test_orders : []);
     setEmailTrackingReady(Boolean(payload?.email_tracking_ready));
     setEmailRetryEnabled(Boolean(payload?.email_retry_enabled));
     setEmailRetryClaims(Array.isArray(payload?.email_retry_claims) ? payload.email_retry_claims : []);
@@ -585,6 +591,55 @@ function OrdersWorkspace() {
         ? "Supabase is primary. Every Control Center change is mirrored to Google Sheets and sync failures stay visible."
         : "Supabase remains canonical. Control Center writes are disabled until the Google Sheets backup mirror configuration is restored."}</span>
     </div>
+
+    {previewTestMode ? (
+      <details className="orders-preview-tests">
+        <summary>
+          <span>PREVIEW ONLY · TEST ORDERS</span>
+          <strong>{previewTestOrdersReady ? previewTestOrders.length + " PNTEST records" : "Read unavailable"}</strong>
+        </summary>
+        <p className="orders-preview-tests-note">
+          Read-only audit view. Test orders are excluded from live Orders, sales, courier settlement and fulfillment actions.
+          No status, courier or email actions are available here.
+        </p>
+        {!previewTestOrdersReady ? (
+          <div className="orders-preview-tests-empty">Test order lookup is not configured or is unavailable. Do not submit a test checkout until this view is ready.</div>
+        ) : previewTestOrders.length === 0 ? (
+          <div className="orders-preview-tests-empty">No PNTEST checkout records yet.</div>
+        ) : (
+          <div className="orders-preview-tests-list">
+            {previewTestOrders.map((testOrder) => {
+              const testData = testOrder.source_payload || {};
+              return <article key={testOrder.id} className="orders-preview-tests-card">
+                <div className="orders-preview-tests-head">
+                  <strong>{testOrder.order_id}</strong>
+                  <span>{STATUS_LABELS[testOrder.status] || testOrder.status} · {dateTime(testOrder.created_at)}</span>
+                </div>
+                <div className="orders-preview-tests-detail">
+                  <span>{testData.fullName || "Test customer"} · {testData.email || "No email"}</span>
+                  <span>{itemSummary(testData.items)} · {money(testData.total)}</span>
+                  <span>Sheets backup: {testOrder.sheet_sync_status || "pending"} · Tracking: {testOrder.tracking_number || "—"}</span>
+                </div>
+                <div className="orders-preview-tests-email">
+                  {[
+                    ["ORDER_RECEIVED", "admin", "Merchant"],
+                    ["ORDER_RECEIVED", "customer", "Customer"],
+                    ["PACKED", "customer", "Packed"],
+                    ["SHIPPED", "customer", "Shipped"]
+                  ].map(([stage, role, label]) => {
+                    const result = emailStatus(testOrder, stage, role);
+                    return <div key={stage + role}>
+                      <span>{label}</span>
+                      <strong>{result.state}</strong>
+                    </div>;
+                  })}
+                </div>
+              </article>;
+            })}
+          </div>
+        )}
+      </details>
+    ) : null}
 
     <div className="orders-kpis">
       <div><span>ALL RECORDS</span><strong>{orders.length}</strong><small>{saleOrders.length} orders · {counts.DUPLICATE || 0} duplicate</small></div>
