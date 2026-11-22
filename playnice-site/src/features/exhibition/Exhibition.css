@@ -458,6 +458,13 @@ html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell--exhibition .exhibit
   text-align: center;
 }
 
+/* The closing exhibition CTA shares the same sky as the page canvas.
+   Retain the original solid black panel when Atmosphere is Off. */
+html.pn-atmosphere-preview[data-pn-sky="active"]
+  .app-shell--exhibition .exhibition-outro {
+  background: transparent;
+}
+
 .exhibition-outro-kicker {
   color: var(--exhibition-muted);
   font-size: 10px;
