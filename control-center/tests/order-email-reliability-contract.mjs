@@ -28,10 +28,10 @@ assert.ok(schema.includes("enable row level security"), "Email events table must
 assert.ok(!orders.includes('sendShippedStatusEmail('), "Do not duplicate existing SHIPPED messaging flow.");
 
 
-const acceptanceSrc = checkout.match(/function requireResendAccepted\\(result\\) \\{[\\s\\S]*?\\n\\}/)?.[0];
-const replySrc = checkout.match(/function validReplyTo\\(value\\) \\{[\\s\\S]*?\\n\\}/)?.[0];
+const acceptanceSrc = checkout.match(/function requireResendAccepted\(result\) \{[\s\S]*?\n\}/)?.[0];
+const replySrc = checkout.match(/function validReplyTo\(value\) \{[\s\S]*?\n\}/)?.[0];
 assert.ok(acceptanceSrc && replySrc, "Email acceptance helpers must exist.");
-const helpers = vm.runInNewContext(acceptanceSrc + "\\n" + replySrc + "\\n({ requireResendAccepted, validReplyTo })");
+const helpers = vm.runInNewContext(acceptanceSrc + "\n" + replySrc + "\n({ requireResendAccepted, validReplyTo })");
 assert.equal(helpers.requireResendAccepted({ data: { id: "msg_123" }, error: null }).data.id, "msg_123");
 assert.throws(() => helpers.requireResendAccepted({ data: null, error: { message: "Invalid reply_to field" } }), /Invalid reply_to/);
 assert.throws(() => helpers.requireResendAccepted({ data: null, error: null }), /did not accept/);
