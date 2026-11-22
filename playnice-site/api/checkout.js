@@ -34,6 +34,7 @@ function safeErrorMessage(error, fallback) {
 
 // Resend SDK resolves { data: null, error } for 4xx responses instead of rejecting.
 // A fulfilled promise is NOT proof that an email was accepted.
+// Keep the provider message ID as the acceptance boundary for email audit tracking.
 function requireResendAccepted(result) {
   if (result?.error || !result?.data?.id) {
     const error = result?.error;
