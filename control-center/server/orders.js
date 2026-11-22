@@ -96,17 +96,23 @@ async function readCustomerWatches(token) {
 }
 
 async function readEmailEvents(token) {
-  const response = await userFetch(
-    "/rest/v1/order_email_events?select=order_id,stage,recipient_role,state,provider_message_id,error_message,created_at&order=created_at.desc&limit=500",
-    token, { method: "GET" }
-  );
-  if (response.status === 404) return { events: [], ready: false }; // migration not applied yet
-  const rows = await safeJson(response);
-  if (!response.ok) {
-    console.warn("Order email audit read unavailable", response.status);
+  // This secondary panel must never break the primary Orders workspace.
+  try {
+    const response = await userFetch(
+      "/rest/v1/order_email_events?select=order_id,stage,recipient_role,state,provider_message_id,error_message,created_at&order=created_at.desc&limit=500",
+      token, { method: "GET", signal: AbortSignal.timeout(4000) }
+    );
+    if (response.status === 404) return { events: [], ready: false }; // schema not yet deployed
+    const rows = await safeJson(response);
+    if (!response.ok) {
+      console.warn("Order email audit read unavailable", response.status);
+      return { events: [], ready: false };
+    }
+    return { events: Array.isArray(rows) ? rows : [], ready: true };
+  } catch (error) {
+    console.warn("Optional email audit unavailable", String(error?.message || error));
     return { events: [], ready: false };
   }
-  return { events: Array.isArray(rows) ? rows : [], ready: true };
 }
 
 async function recordEmailEvent(token, orderId, result) {
