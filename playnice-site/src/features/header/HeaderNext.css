@@ -1254,3 +1254,38 @@
     display: none;
   }
 }
+/* Living Sky controls belong to navigation, never float above content. */
+.header-next-discover-panel .header-next-atmosphere-desktop {
+  border-color: rgba(220,181,107,.26);
+  background: linear-gradient(180deg,rgba(24,26,33,.96),rgba(12,15,23,.96));
+}
+.header-next-atmosphere-state {
+  color: #dcb56b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+@media (max-width: 900px) {
+  .header-next-mobile-atmosphere {
+    min-height: 42px;
+    padding: 0 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border: 1px solid rgba(220,181,107,.14);
+    border-radius: 14px;
+    background: rgba(220,181,107,.06);
+    color: rgba(255,248,235,.78);
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .header-next-mobile-atmosphere strong {
+    color: #dcb56b;
+    letter-spacing: .08em;
+  }
+  .header-next-mobile-atmosphere:focus-visible {
+    outline: 2px solid #dcb56b;
+    outline-offset: 2px;
+  }
+}

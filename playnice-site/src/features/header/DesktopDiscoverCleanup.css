@@ -1,5 +1,7 @@
+/* Desktop Discover intentionally omits the redundant Scent Request link.
+   Target the semantic item, not the last child (Living Sky follows it). */
 @media (min-width: 901px) {
-  .header-next-discover-panel > button:last-child {
+  .header-next-discover-panel > .header-next-discover-scent {
     display: none;
   }
 }

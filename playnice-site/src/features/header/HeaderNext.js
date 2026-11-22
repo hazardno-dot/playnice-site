@@ -80,6 +80,23 @@ function HeaderNext({
   const [lensMoving, setLensMoving] = useState(false);
   const [discoverOpen, setDiscoverOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const atmosphereAvailable = typeof window !== "undefined" && (
+    ["playniceshop.me", "www.playniceshop.me"].includes(window.location.hostname.toLowerCase()) ||
+    new URLSearchParams(window.location.search).get("atmospherePreview") === "1"
+  );
+  const atmosphereProduction = typeof window !== "undefined" &&
+    ["playniceshop.me", "www.playniceshop.me"].includes(window.location.hostname.toLowerCase());
+  const atmosphereStorage = atmosphereProduction ? "playnice_living_sky_enabled" : "playnice_living_sky_preview";
+  const [atmosphereEnabled, setAtmosphereEnabled] = useState(() => {
+    try { return (atmosphereProduction ? window.localStorage : window.sessionStorage).getItem(atmosphereStorage) !== "off"; }
+    catch { return true; }
+  });
+  const toggleAtmosphere = () => {
+    const next = !atmosphereEnabled;
+    setAtmosphereEnabled(next);
+    try { (atmosphereProduction ? window.localStorage : window.sessionStorage).setItem(atmosphereStorage, next ? "auto" : "off"); } catch {}
+    window.dispatchEvent(new CustomEvent("playnice:atmosphere-change", { detail: { enabled: next } }));
+  };
   const [languageSpinning, setLanguageSpinning] = useState(false);
   const [cartSpinning, setCartSpinning] = useState(false);
   const [cartFeedbackCount, setCartFeedbackCount] = useState(null);
@@ -432,6 +449,7 @@ function HeaderNext({
                 <button
                   key={item.key}
                   type="button"
+                  className={item.key === "scent" ? "header-next-discover-scent" : undefined}
                   style={{ "--discover-index": index }}
                   onClick={() => runAction(item.action)}
                 >
@@ -447,6 +465,16 @@ function HeaderNext({
                   </span>
                 </button>
               ))}
+              {atmosphereAvailable && (
+                <button type="button" className="header-next-atmosphere-desktop"
+                  style={{ "--discover-index": discoverItems.length }}
+                  onClick={toggleAtmosphere}
+                  aria-label={lang === "sr" ? "Uključi ili isključi atmosferu" : "Toggle atmosphere"}
+                  aria-pressed={atmosphereEnabled}>
+                  <span>{lang === "sr" ? "Atmosfera" : "Atmosphere"}</span>
+                  <span className="header-next-atmosphere-state">{atmosphereEnabled ? "On" : "Off"}</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -584,10 +612,21 @@ function HeaderNext({
           </div>
         </div>
 
-        <button className="header-next-mobile-language" type="button" onClick={onLanguage}>
-          <span>{copy.language}</span>
-          <strong>{lang === "sr" ? "SR / EN" : "EN / SR"}</strong>
-        </button>
+        <div className="header-next-mobile-preferences">
+          <button className="header-next-mobile-language" type="button" onClick={onLanguage}>
+            <span>{copy.language}</span>
+            <strong>{lang === "sr" ? "SR / EN" : "EN / SR"}</strong>
+          </button>
+          {atmosphereAvailable && (
+            <button className="header-next-mobile-atmosphere" type="button"
+              onClick={toggleAtmosphere}
+              aria-label={lang === "sr" ? "Uključi ili isključi atmosferu" : "Toggle atmosphere"}
+              aria-pressed={atmosphereEnabled}>
+              <span>{lang === "sr" ? "Atmosfera" : "Atmosphere"}</span>
+              <strong>{atmosphereEnabled ? "On" : "Off"}</strong>
+            </button>
+          )}
+        </div>
       </div>
     </header>
   );
