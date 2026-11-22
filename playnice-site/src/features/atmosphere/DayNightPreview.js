@@ -5,19 +5,17 @@ import { atmosphere } from "./solarCycle";
 
 const params = new URLSearchParams(window.location.search);
 const host = window.location.hostname.toLowerCase();
-if (
-  params.get("atmospherePreview") === "1" &&
-  host !== "playniceshop.me" &&
-  host !== "www.playniceshop.me"
-) {
+const production = host === "playniceshop.me" || host === "www.playniceshop.me";
+const preview = !production && params.get("atmospherePreview") === "1";
+if (production || preview) {
   const root = document.documentElement;
-  const STORAGE_KEY = "playnice_living_sky_preview";
+  const STORAGE_KEY = production ? "playnice_living_sky_enabled" : "playnice_living_sky_preview";
   const FALLBACK = { latitude: 42.4304, longitude: 18.6967, city: "Tivat", timezone: "Europe/Podgorica", source: "fallback-tivat" };
   let location = { ...FALLBACK };
   let mode = "auto";
   let manualMinute = 720;
   let refreshTimer = null;
-  const stored = (() => { try {return sessionStorage.getItem(STORAGE_KEY);} catch {return null;} })();
+  const stored = (() => { try {return (production ? localStorage : sessionStorage).getItem(STORAGE_KEY);} catch {return null;} })();
   if (stored === "off") mode = "off";
   root.classList.add("pn-atmosphere-preview");
 
@@ -25,7 +23,12 @@ if (
   controls.className = "pn-atmosphere-controls";
   controls.setAttribute("role", "group");
   controls.setAttribute("aria-label", "PlayNice Living Sky — preview test");
-  controls.innerHTML = `
+  controls.innerHTML = production ? `
+    <div class="pn-actions pn-production-actions">
+      <button type="button" data-mode="auto" aria-label="Uključi atmosferu">Atmosfera: uključena</button>
+      <button type="button" data-mode="off" aria-label="Isključi atmosferu">Isključi</button>
+    </div>
+  ` : `
     <div class="pn-head">
       <strong>Living Sky · 24h</strong>
       <span class="pn-hint">Preview only</span>
@@ -42,6 +45,7 @@ if (
     <div class="pn-status" role="status" aria-live="polite">Priprema solarnog ciklusa…</div>
   `;
   document.body.appendChild(controls);
+  if (production) controls.classList.add("pn-atmosphere-controls--production");
   const slider=controls.querySelector("#pn-solar-slider");
   const sliderLabel=controls.querySelector("#pn-solar-label");
   const status=controls.querySelector(".pn-status");
@@ -71,8 +75,8 @@ if (
   }
   function apply() {
     buttons.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.mode===mode)));
-    slider.disabled=mode!=="manual";
-    sliderLabel.textContent=`Vreme: ${minuteText(manualMinute)}`;
+    if (slider) slider.disabled=mode!=="manual";
+    if (sliderLabel) sliderLabel.textContent=`Vreme: ${minuteText(manualMinute)}`;
     if(mode==="off"){
       root.removeAttribute("data-pn-sky");
       root.style.removeProperty("--sky-base");
@@ -80,7 +84,7 @@ if (
       root.style.removeProperty("--sky-glow");
       root.style.removeProperty("--sky-star-opacity");
       root.style.removeProperty("--sky-warm-opacity");
-      status.textContent="Atmosfera isključena · originalna pozadina";
+      if (status) status.textContent="Atmosfera isključena · originalna pozadina";
       return;
     }
     const date=mode==="auto"?new Date():simulateAt(manualMinute);
@@ -94,19 +98,19 @@ if (
     const locationLabel=location.source==="approximate-ip"
       ? `Približno: ${location.city}` : "Rezervna lokacija: Tivat";
     const clock=mode==="auto"?minuteText(localParts(date,location.timezone)):minuteText(manualMinute);
-    status.textContent=`${PHASE_NAMES[solar.phase]} · ${clock} · ${locationLabel}`;
+    if (status) status.textContent=`${PHASE_NAMES[solar.phase]} · ${clock} · ${locationLabel}`;
   }
 
   buttons.forEach(button=>button.addEventListener("click",()=>{
     mode=button.dataset.mode;
     if(mode==="manual"){
       manualMinute=Math.floor(localParts(new Date(),location.timezone)/5)*5;
-      slider.value=manualMinute;
+      if (slider) slider.value=manualMinute;
     }
-    try{sessionStorage.setItem(STORAGE_KEY,mode==="off"?"off":"auto");}catch{}
+    try{(production ? localStorage : sessionStorage).setItem(STORAGE_KEY,mode==="off"?"off":"auto");}catch{}
     apply();
   }));
-  slider.addEventListener("input",()=>{
+  if (slider) slider.addEventListener("input",()=>{
     manualMinute=Number(slider.value);
     if(mode!=="manual")mode="manual";
     apply();
@@ -115,7 +119,7 @@ if (
   refreshTimer=window.setInterval(()=>{if(!document.hidden)apply();},60000);
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)apply();});
   manualMinute=Math.floor(localParts(new Date(),location.timezone)/5)*5;
-  slider.value=manualMinute;
+  if (slider) slider.value=manualMinute;
   apply();
 
   async function loadLocation(){
