@@ -90,3 +90,22 @@ end;
 $$;
 revoke all on function public.claim_packed_email_retry(text) from public, anon;
 grant execute on function public.claim_packed_email_retry(text) to authenticated;
+
+-- Read-only admin projection for disabling already-consumed retry controls.
+create or replace function public.get_control_center_email_retry_claims()
+returns jsonb language plpgsql security definer set search_path = ''
+as $$
+declare v_user uuid := auth.uid(); v_result jsonb;
+begin
+  if v_user is null or not exists (
+    select 1 from public.admin_users where user_id = v_user
+  ) then
+    raise exception 'ADMIN_REQUIRED' using errcode='42501';
+  end if;
+  select coalesce(jsonb_agg(order_id),'[]'::jsonb) into v_result
+  from public.order_email_retry_claims;
+  return v_result;
+end;
+$$;
+revoke all on function public.get_control_center_email_retry_claims() from public, anon;
+grant execute on function public.get_control_center_email_retry_claims() to authenticated;
