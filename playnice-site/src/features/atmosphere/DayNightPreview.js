@@ -107,8 +107,8 @@ if (production || preview) {
     apply();
   }));
   window.addEventListener("playnice:atmosphere-change",(event)=>{
-    if (!production) return;
     mode=event.detail?.enabled===false?"off":"auto";
+    try {(production ? localStorage : sessionStorage).setItem(STORAGE_KEY,mode==="off"?"off":"auto");}catch{}
     apply();
   });
   window.addEventListener("storage",(event)=>{
