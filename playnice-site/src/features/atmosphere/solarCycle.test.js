@@ -8,6 +8,10 @@ describe("Living Sky solar cycle", () => {
     const midnight = solarAltitude(new Date("2026-03-21T00:00:00Z"), lat, lon);
     expect(noon).toBeGreaterThan(30);
     expect(midnight).toBeLessThan(-20);
+    // Longitude direction matters: Tivat solar noon is near 11:00 UTC, not 14:00 UTC.
+    const afternoon = solarAltitude(new Date("2026-03-21T14:00:00Z"), lat, lon);
+    expect(noon).toBeGreaterThan(afternoon);
+    expect(solarAltitude(new Date("2026-03-21T06:00:00Z"), lat, lon)).toBeGreaterThan(0);
   });
   test("atmosphere has a plausible day and night palette", () => {
     const noon = atmosphere(new Date("2026-03-21T11:00:00Z"), lat, lon);
