@@ -12,6 +12,13 @@
     background: #050505 !important;
   }
 
+  /* Keep the fixed header geometry; only remove its solid PDP backdrop
+     while Living Sky is active. */
+  html.pn-atmosphere-preview[data-pn-sky="active"]
+    body.desktop-product-route-active .header-system.header-next-system {
+    background: transparent !important;
+  }
+
   body.desktop-product-route-active .desktop-product-route-host {
     margin-top: 108px !important;
   }

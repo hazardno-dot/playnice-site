@@ -97,6 +97,13 @@
     background: #050505;
   }
 
+  /* The portal host itself is the opaque desktop PDP canvas. Reveal the
+     shared .app-shell Living Sky only when Atmosphere is enabled. */
+  html.pn-atmosphere-preview[data-pn-sky="active"]
+    body.desktop-product-route-active .desktop-product-route-host {
+    background: transparent;
+  }
+
   .desktop-product-route-host::before {
     display: none !important;
     content: none !important;
