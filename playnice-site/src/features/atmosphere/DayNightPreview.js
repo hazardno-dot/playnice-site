@@ -24,10 +24,7 @@ if (production || preview) {
   controls.setAttribute("role", "group");
   controls.setAttribute("aria-label", production ? "Upravljanje PlayNice atmosferom" : "PlayNice Living Sky — preview test");
   controls.innerHTML = production ? `
-    <div class="pn-actions pn-production-actions">
-      <button type="button" data-mode="auto" aria-label="Uključi atmosferu">Atmosfera: uključena</button>
-      <button type="button" data-mode="off" aria-label="Isključi atmosferu">Isključi</button>
-    </div>
+    <button type="button" class="pn-production-toggle" aria-label="Isključi PlayNice atmosferu" aria-pressed="true">Atmosfera · On</button>
   ` : `
     <div class="pn-head">
       <strong>Living Sky · 24h</strong>
@@ -50,6 +47,7 @@ if (production || preview) {
   const sliderLabel=controls.querySelector("#pn-solar-label");
   const status=controls.querySelector(".pn-status");
   const buttons=Array.from(controls.querySelectorAll("[data-mode]"));
+  const productionToggle=controls.querySelector(".pn-production-toggle");
 
   const rgb=values=>`rgb(${values.join(" ")})`;
   const pad=v=>String(v).padStart(2,"0");
@@ -75,6 +73,11 @@ if (production || preview) {
   }
   function apply() {
     buttons.forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.mode===mode)));
+    if (productionToggle) {
+      productionToggle.textContent = mode==="off" ? "Atmosfera · Off" : "Atmosfera · On";
+      productionToggle.setAttribute("aria-pressed",String(mode!=="off"));
+      productionToggle.setAttribute("aria-label",mode==="off"?"Uključi PlayNice atmosferu":"Isključi PlayNice atmosferu");
+    }
     if (slider) slider.disabled=mode!=="manual";
     if (sliderLabel) sliderLabel.textContent=`Vreme: ${minuteText(manualMinute)}`;
     if(mode==="off"){
@@ -110,6 +113,11 @@ if (production || preview) {
     try{(production ? localStorage : sessionStorage).setItem(STORAGE_KEY,mode==="off"?"off":"auto");}catch{}
     apply();
   }));
+  if (productionToggle) productionToggle.addEventListener("click",()=>{
+    mode=mode==="off"?"auto":"off";
+    try{localStorage.setItem(STORAGE_KEY,mode==="off"?"off":"auto");}catch{}
+    apply();
+  });
   if (slider) slider.addEventListener("input",()=>{
     manualMinute=Number(slider.value);
     if(mode!=="manual")mode="manual";
