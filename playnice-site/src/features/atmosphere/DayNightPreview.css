@@ -6,7 +6,7 @@ html.pn-atmosphere-preview {
   --sky-warm-opacity: .07;
   --sky-star-opacity: .14;
 }
-html.pn-atmosphere-preview body { background-color: var(--sky-base); }
+html.pn-atmosphere-preview[data-pn-sky="active"] body { background-color: var(--sky-base); }
 html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell,
 html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell--home {
   background-color: var(--sky-base);
