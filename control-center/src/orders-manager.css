@@ -1214,11 +1214,56 @@
 
 /* Email status audit: intentionally distinguishes provider acceptance from delivery. */
 .orders-email-audit { border:1px solid rgba(118,151,137,.22);border-radius:10px;padding:13px;margin-top:12px; }
-.orders-email-audit-list { display:grid;gap:0;margin-top:8px; }
-.orders-email-audit-row { display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid rgba(118,151,137,.13);font-size:12px;color:#bdd2c5; }
-.orders-email-audit-row > span { min-width:0; }
-.orders-email-audit-row small { display:block;font-size:10px;font-weight:400;color:#819b8c;margin-top:3px;overflow-wrap:anywhere; }
-.orders-email-state { font-size:10px;white-space:nowrap;font-weight:600; }
+.orders-email-audit-list { display:grid;gap:0;margin-top:10px; }
+.orders-email-audit .orders-email-audit-row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  column-gap:18px;
+  padding:12px 2px;
+  border-top:1px solid rgba(118,151,137,.13);
+  text-align:left;
+}
+.orders-email-audit .orders-email-audit-copy {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  text-align:left;
+}
+.orders-email-audit .orders-email-audit-name {
+  display:block;
+  width:100%;
+  color:#c6dcd0;
+  font-size:12px;
+  font-weight:600;
+  line-height:1.35;
+  text-align:left;
+}
+.orders-email-audit .orders-email-audit-detail {
+  display:block;
+  width:100%;
+  margin:0;
+  color:#8da598;
+  font-size:10px;
+  font-weight:400;
+  line-height:1.5;
+  text-align:left;
+  overflow-wrap:anywhere;
+}
+.orders-email-audit .orders-email-state {
+  justify-self:end;
+  align-self:center;
+  font-size:11px;
+  white-space:nowrap;
+  font-weight:600;
+  text-align:right;
+}
+@media (max-width:560px) {
+  .orders-email-audit .orders-email-audit-row { column-gap:10px; padding:11px 0; }
+  .orders-email-audit .orders-email-state { font-size:10px; }
+}
 .orders-email-state.state-accepted,.orders-email-state.state-delivered { color:#9fd4b2; }
 .orders-email-state.state-failed,.orders-email-state.state-bounced,.orders-email-list-alert { color:#e8a5a5; }
 .orders-email-state.state-delayed { color:#dfc37a; }
