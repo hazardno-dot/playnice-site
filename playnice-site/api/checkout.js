@@ -48,7 +48,10 @@ function requireResendAccepted(result) {
 // merchant notification. Customer delivery is validated independently.
 function validReplyTo(value) {
   const email = String(value || "").trim();
-  return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) && !email.includes("..");
+  const localPart = email.split("@")[0] || "";
+  return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) &&
+    !localPart.startsWith(".") && !localPart.endsWith(".") &&
+    !email.includes("..");
 }
 
 function roundMoney(value) {
@@ -147,7 +150,11 @@ async function markEmailDeliveryStatus(context) {
           orderId: context.primaryStoreOrderId,
           syncToken: context.primaryStoreSyncToken,
           adminEmailSent: context.adminEmailSent,
-          customerEmailSent: context.customerEmailSent
+          customerEmailSent: context.customerEmailSent,
+          adminMessageId: context.adminMessageId,
+          customerMessageId: context.customerMessageId,
+          adminEmailError: context.adminEmailError,
+          customerEmailError: context.customerEmailError
         })
       },
       EMAIL_AUDIT_TIMEOUT_MS
@@ -216,6 +223,7 @@ class CheckoutResend extends OriginalResend {
 
       if (adminResult.status === "fulfilled") {
         firstEmail.placeholder.data.id = adminResult.value.data.id;
+        context.adminMessageId = adminResult.value.data.id;
         context.adminEmailSent = true;
       } else {
         context.adminEmailSent = false;
@@ -234,6 +242,7 @@ class CheckoutResend extends OriginalResend {
         );
       } else {
         context.customerEmailSent = true;
+        context.customerMessageId = customerResult.value.data.id;
       }
 
       await markEmailDeliveryStatus(context);
@@ -409,8 +418,10 @@ export default async function handler(req, res) {
     emailAuditError: null,
     emailDuplicateSuppressed: false,
     adminEmailSent: null,
+    adminMessageId: null,
     adminEmailError: null,
     customerEmailSent: null,
+    customerMessageId: null,
     customerEmailError: null
   };
 
