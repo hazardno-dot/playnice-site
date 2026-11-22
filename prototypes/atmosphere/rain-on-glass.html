@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlayNice Atmosphere · Rain on Glass · Visual PoC</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:#0d0d0f;color:#e9e5db}
+.stage{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 76% 12%,#413526 0%,transparent 32%),linear-gradient(140deg,#0c0d11,#1b1a19 52%,#0b0d12)}
+.stage:before{content:"";position:absolute;inset:8%;border:1px solid #c5a57124;pointer-events:none}
+.light{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 89% 5%,#e9bb7026,transparent 38%)}
+.background{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;padding:120px 30px;z-index:1;pointer-events:none}
+.brand{font-family:Georgia,serif;font-size:clamp(3.3rem,10vw,8rem);font-weight:400;letter-spacing:-.035em;color:#d4b681;text-shadow:0 10px 45px #0009}
+.eyebrow{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:#baa68a}
+.headline{font-family:Georgia,serif;font-size:clamp(1.3rem,3.5vw,2.8rem);font-weight:400;color:#dfd9cd;margin-top:24px}
+.subtitle{color:#9d9486;font-size:14px;line-height:1.8;max-width:460px;margin:15px auto}
+.glass{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.drop{position:absolute;top:0;left:0;display:block;will-change:transform,opacity;transform-origin:50% 20%;filter:drop-shadow(0 2px 1.5px #0007);opacity:0}
+.drop svg{display:block;width:100%;height:100%;overflow:visible}
+.drop .body{fill:url(#waterCore);stroke:url(#waterRim);stroke-width:1.25}
+.drop .edge{fill:none;stroke:#eef5fc;stroke-opacity:.3;stroke-width:.75}
+.drop .highlight{fill:url(#waterHighlight)}
+.drop .shade{fill:url(#waterShade)}
+.drop .glint{fill:#fff;opacity:.65}
+.controls{position:fixed;left:20px;bottom:20px;z-index:10;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:calc(100vw - 40px);padding:12px 14px;border:1px solid #dac5a32b;border-radius:12px;background:#121416dd;backdrop-filter:blur(12px);font:12px ui-sans-serif,system-ui}
+.controls button{background:#bda070;color:#14120f;border:0;padding:9px 12px;border-radius:7px;cursor:pointer;font-weight:650}
+.controls button.secondary{background:#31302e;color:#eee}
+.controls label{display:flex;gap:8px;align-items:center}
+.status{color:#ada497}
+.note{position:fixed;top:20px;left:20px;z-index:5;font-size:10px;letter-spacing:.13em;color:#b6a999;opacity:.8;max-width:65vw}
+@media(prefers-reduced-motion:reduce){.drop{display:none}}
+</style>
+</head>
+<body>
+<main class="stage">
+ <div class="light"></div>
+ <div class="background">
+  <div><div class="eyebrow">Atmosphere / Study 01</div><div class="brand">PlayNice.</div><div class="headline">A quiet moment, held in glass.</div><p class="subtitle">An isolated exploration of tiny water droplets. Nothing here is connected to the live store or weather data.</p></div>
+ </div>
+ <div class="glass" id="glass" aria-hidden="true"></div>
+ <div class="note">VISUAL PROOF OF CONCEPT · NOT APPROVED FOR PRODUCTION</div>
+</main>
+<section class="controls" aria-label="Atmosphere prototype controls">
+ <label><input type="checkbox" id="enabled" checked> Atmosphere on</label>
+ <button type="button" id="single">One droplet</button>
+ <button type="button" id="triple" class="secondary">Three droplets</button>
+ <span class="status" id="status">Waiting for first appearance…</span>
+</section>
+<svg aria-hidden="true" width="0" height="0" style="position:absolute">
+ <defs>
+  <radialGradient id="waterCore" cx="48%" cy="24%" r="82%">
+   <stop offset="0%" stop-color="#fafcff" stop-opacity=".025"/>
+   <stop offset="44%" stop-color="#aeb7c6" stop-opacity=".09"/>
+   <stop offset="78%" stop-color="#f3faff" stop-opacity=".035"/>
+   <stop offset="95%" stop-color="#14151c" stop-opacity=".27"/>
+   <stop offset="100%" stop-color="#f9fcff" stop-opacity=".15"/>
+  </radialGradient>
+  <linearGradient id="waterRim" x1="0" y1="0" x2="1" y2="1">
+   <stop offset="0" stop-color="#fff" stop-opacity=".64"/>
+   <stop offset=".3" stop-color="#cbd7e5" stop-opacity=".13"/>
+   <stop offset=".72" stop-color="#0a0c12" stop-opacity=".5"/>
+   <stop offset="1" stop-color="#fff" stop-opacity=".48"/>
+  </linearGradient>
+  <radialGradient id="waterHighlight" cx="20%" cy="10%" r="85%">
+   <stop offset="0" stop-color="#fff" stop-opacity=".53"/>
+   <stop offset=".35" stop-color="#fff" stop-opacity=".075"/>
+   <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="waterShade" x1="0" y1="0" x2="1" y2="1">
+   <stop offset="0" stop-color="#0e1520" stop-opacity="0"/>
+   <stop offset=".7" stop-color="#080b11" stop-opacity=".08"/>
+   <stop offset="1" stop-color="#03070c" stop-opacity=".45"/>
+  </linearGradient>
+ </defs>
+</svg>
+<script>
+(()=>{
+'use strict';
+const glass=document.querySelector('#glass'),enabled=document.querySelector('#enabled'),status=document.querySelector('#status');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let active=new Set(),timer=null,frame=null,previous=0;
+const rand=(a,b)=>a+Math.random()*(b-a);
+const template=()=>`<svg viewBox="0 0 60 94" preserveAspectRatio="none" aria-hidden="true">
+<path class="body" d="M30 2 C40 2 49 20 52 40 C57 62 54 79 43 87 C34 94 22 93 14 86 C3 76 6 60 9 43 C12 24 21 2 30 2Z"/>
+<path class="shade" d="M30 2 C40 2 49 20 52 40 C57 62 54 79 43 87 C34 94 22 93 14 86 C3 76 6 60 9 43 C12 24 21 2 30 2Z"/>
+<path class="edge" d="M14 48 C17 20 24 7 30 5 M50 56 C53 76 44 88 32 89"/>
+<ellipse class="highlight" cx="20" cy="31" rx="7" ry="22" transform="rotate(15 20 31)"/>
+<ellipse class="glint" cx="20" cy="20" rx="2.1" ry="5.5" transform="rotate(18 20 20)"/>
+</svg>`;
+const canRun=()=>enabled.checked&&!reduced.matches&&!document.hidden;
+function remove(d){d.el.remove();active.delete(d);}
+function spawn(){
+ if(!canRun()||active.size>=3)return;
+ const w=rand(12,28),h=w*rand(1.25,1.8);
+ const el=document.createElement('div');el.className='drop';el.style.width=w+'px';el.style.height=h+'px';
+ el.innerHTML=template();
+ const d={el,x:rand(35,innerWidth-35),y:rand(30,Math.max(65,innerHeight*.55)),w,h,age:0,duration:rand(6500,15000),speed:rand(5,19),seed:rand(0,100),angle:rand(-4,4),slideAfter:rand(1700,6500),drift:rand(2,9),paused:rand(400,1600)};
+ glass.append(el);active.add(d);ensureFrame();
+}
+function tick(t){
+ frame=null;if(!canRun()){previous=0;return;}
+ const dt=Math.min(45,t-(previous||t));previous=t;
+ for(const d of [...active]){
+  d.age+=dt;
+  const sliding=Math.max(0,d.age-d.slideAfter);
+  const progress=Math.min(1,sliding/Math.max(1,d.duration-d.slideAfter));
+  const adhesion=sliding<d.paused?0:1;
+  const easing=progress*progress*(3-2*progress);
+  const irregular=Math.sin(d.age*.0012+d.seed)*Math.sin(d.age*.00047+d.seed);
+  const displacement=adhesion*(progress*56+easing*125)*(d.speed/14);
+  const x=d.x+Math.sin(d.age*.00065+d.seed)*d.drift+irregular*3;
+  const y=d.y+displacement;
+  const rot=d.angle+Math.sin(d.age*.00055+d.seed)*2.1;
+  const stretch=1+Math.min(.22,sliding/28000);
+  const appear=Math.min(1,d.age/850);
+  const fade=Math.min(1,(d.duration-d.age)/1100);
+  d.el.style.opacity=(Math.max(0,Math.min(appear,fade))*.89).toFixed(3);
+  d.el.style.transform=`translate3d(${x}px,${y}px,0) rotate(${rot}deg) scaleY(${stretch})`;
+  if(d.age>=d.duration||y>innerHeight+50)remove(d);
+ }
+ if(active.size)frame=requestAnimationFrame(tick);else previous=0;
+}
+function ensureFrame(){if(!frame&&canRun())frame=requestAnimationFrame(tick);}
+function schedule(){
+ clearTimeout(timer);
+ if(!canRun())return;
+ timer=setTimeout(()=>{if(canRun()){const number=Math.random()<.75?1:Math.random()<.82?2:3;for(let i=0;i<number;i++)setTimeout(()=>{if(canRun())spawn();},i*rand(300,1300));}schedule();},rand(12000,36000));
+}
+function reset(){
+ clearTimeout(timer);if(frame)cancelAnimationFrame(frame);frame=null;previous=0;
+ for(const d of [...active])remove(d);
+ status.textContent=!enabled.checked?'Disabled':reduced.matches?'Reduced motion: disabled':document.hidden?'Paused':'Atmosphere enabled';
+ if(canRun())schedule();
+}
+document.querySelector('#single').addEventListener('click',spawn);
+document.querySelector('#triple').addEventListener('click',()=>{spawn();spawn();spawn();});
+enabled.addEventListener('change',()=>{localStorage.setItem('playnice-atmosphere-prototype',enabled.checked?'on':'off');reset();});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&active.size)ensureFrame();reset();});
+reduced.addEventListener('change',reset);
+enabled.checked=localStorage.getItem('playnice-atmosphere-prototype')!=='off';
+reset();
+if(canRun())setTimeout(()=>{if(canRun())spawn();},rand(4000,8000));
+})();
+</script>
+</body>
+</html>
