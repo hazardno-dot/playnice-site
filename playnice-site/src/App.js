@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
+import { isValidCheckoutEmail } from "./lib/checkoutEmailValidation";
 import HeaderNext, { CartIcon } from "./features/header/HeaderNext";
 import FragranceVoiceDictation from "./features/discovery/FragranceVoiceDictation";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
@@ -172,9 +173,7 @@ function formatPrice(value) {
   return `€${Number(value).toFixed(2)}`;
 }
 
-function isValidEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
-}
+const isValidEmail = isValidCheckoutEmail;
 
 const getMinPrice = (product) =>
   getMinPricePure(product);
@@ -581,6 +580,7 @@ const getInitialShopState = () => {
   );
   const [sprayingWishlistId, setSprayingWishlistId] = useState(null);
 
+  const [checkoutEmailTouched, setCheckoutEmailTouched] = useState(false);
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: "",
     lastName: "",
@@ -3270,6 +3270,10 @@ const addHeroBottleToCart = () => {
     const { name, value } = e.target;
     setCheckoutForm((prev) => ({ ...prev, [name]: value }));
   };
+  const checkoutEmailInvalid =
+    Boolean(checkoutForm.email.trim()) &&
+    (checkoutEmailTouched || checkoutForm.email.includes("@")) &&
+    !isValidEmail(checkoutForm.email);
 
   const handleInternationalEnquiry = async () => {
   if (!acquireSubmissionLock(checkoutSubmissionInFlightRef)) {
@@ -9077,16 +9081,28 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <label className="visually-hidden" htmlFor="checkout-email">
           {tr.email}
         </label>
-        <input
-          id="checkout-email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          maxLength={254}
-          placeholder={tr.email}
-          value={checkoutForm.email}
-          onChange={handleCheckoutInput}
-        />
+        <div className="checkout-email-field">
+          <input
+            id="checkout-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            maxLength={254}
+            placeholder={tr.email}
+            value={checkoutForm.email}
+            onChange={handleCheckoutInput}
+            onBlur={() => setCheckoutEmailTouched(true)}
+            aria-invalid={checkoutEmailInvalid}
+            aria-describedby={checkoutEmailInvalid ? "checkout-email-error" : undefined}
+          />
+          {checkoutEmailInvalid && (
+            <span id="checkout-email-error" className="checkout-email-error" role="alert">
+              {lang === "sr"
+                ? "Email adresa nije ispravnog formata. Proverite unos."
+                : "The email address format is invalid. Please check it."}
+            </span>
+          )}
+        </div>
         <label className="visually-hidden" htmlFor="checkout-phone">
           {tr.phone}
         </label>

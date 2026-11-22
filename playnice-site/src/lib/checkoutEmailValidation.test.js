@@ -1,0 +1,60 @@
+import { isValidCheckoutEmail } from "./checkoutEmailValidation";
+
+describe("checkout email format validation", () => {
+  test.each([
+  [
+    "customer@example.com",
+    true
+  ],
+  [
+    "first.last+promo@mail.example.co.uk",
+    true
+  ],
+  [
+    "ime.@gmail.com",
+    false
+  ],
+  [
+    ".ime@gmail.com",
+    false
+  ],
+  [
+    "ime..prezime@gmail.com",
+    false
+  ],
+  [
+    "ime@gmail.com.",
+    false
+  ],
+  [
+    "ime@-gmail.com",
+    false
+  ],
+  [
+    "ime@gmail..com",
+    false
+  ],
+  [
+    "ime @gmail.com",
+    false
+  ],
+  [
+    "ime@gmail",
+    false
+  ],
+  [
+    "ime@gmail.c",
+    false
+  ],
+  [
+    "a@b.co",
+    true
+  ],
+  [
+    "",
+    false
+  ]
+])("%s should be %s", (address, valid) => {
+    expect(isValidCheckoutEmail(address)).toBe(valid);
+  });
+});

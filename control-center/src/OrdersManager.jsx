@@ -179,6 +179,13 @@ function OrdersWorkspace() {
   const [selectedId, setSelectedId] = useState("");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [emailEvents, setEmailEvents] = useState([]);
+  const [previewTestOrders, setPreviewTestOrders] = useState([]);
+  const [previewTestMode, setPreviewTestMode] = useState(false);
+  const [previewTestOrdersReady, setPreviewTestOrdersReady] = useState(false);
+  const [emailTrackingReady, setEmailTrackingReady] = useState(false);
+  const [emailRetryEnabled, setEmailRetryEnabled] = useState(false);
+  const [emailRetryClaims, setEmailRetryClaims] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
@@ -198,6 +205,13 @@ function OrdersWorkspace() {
     setOrders(nextOrders);
     setEvents(Array.isArray(payload?.events) ? payload.events : []);
     setCustomerWatches(Array.isArray(payload?.customer_watches) ? payload.customer_watches : []);
+    setEmailEvents(Array.isArray(payload?.email_events) ? payload.email_events : []);
+    setPreviewTestMode(payload?.preview_test_mode === true);
+    setPreviewTestOrdersReady(payload?.preview_test_orders_ready === true);
+    setPreviewTestOrders(Array.isArray(payload?.preview_test_orders) ? payload.preview_test_orders : []);
+    setEmailTrackingReady(Boolean(payload?.email_tracking_ready));
+    setEmailRetryEnabled(Boolean(payload?.email_retry_enabled));
+    setEmailRetryClaims(Array.isArray(payload?.email_retry_claims) ? payload.email_retry_claims : []);
     setWriteEnabled(Boolean(payload?.write_enabled));
     setSelectedId((current) => nextOrders.some((order) => order.id === current) ? current : (nextOrders[0]?.id || ""));
   };
@@ -212,6 +226,21 @@ function OrdersWorkspace() {
   useEffect(() => { load(); }, []);
 
   const selected = orders.find((order) => order.id === selectedId) || null;
+  const latestEmailEvent = (orderId, stage, role) => emailEvents.find((event) =>
+    event.order_id === orderId && event.stage === stage && event.recipient_role === role
+  ) || null;
+  const emailStatus = (order, stage, role) => {
+    const event = latestEmailEvent(order.order_id, stage, role);
+    if (event) return { state: event.state, detail: event.error_message || (event.provider_message_id ? "Resend message " + event.provider_message_id : "") };
+    // Historical checkout flags are not projected by get_control_center_orders,
+    // and even when present they were affected by the Resend 422 false-positive.
+    if (stage === "ORDER_RECEIVED") {
+      return { state: "unverified", detail: "No verified Resend event recorded for this order." };
+    }
+    if (stage === "SHIPPED") return { state: "untracked", detail: "Existing shipping notifications are managed outside this audit; delivery not verified." };
+    const stageReached = stage === "PACKED" && !["NEW", "CANCELLED", "DUPLICATE"].includes(order.status);
+    return { state: stageReached ? "untracked" : "pending", detail: stageReached ? "No recorded provider response." : "Awaiting this order stage." };
+  };
   const selectedWatch = useMemo(() => customerWatchFor(selected, customerWatches), [selected, customerWatches]);
   const selectedHistory = useMemo(() => customerHistory(orders, selected), [orders, selected]);
 
@@ -368,7 +397,9 @@ function OrdersWorkspace() {
       absorb(result);
       if (key === "settlement") setSettlementSelection([]);
       if (key === "gift") setGiftUnlocked(false);
-      if (result?.status_email_warning) setNotice(result.status_email_warning);
+      if (result?.status_email_warning || result?.status_email_audit_warning) {
+        setNotice([result.status_email_warning, result.status_email_audit_warning].filter(Boolean).join(" "));
+      }
       else if (result?.mirror_warning) setNotice(result.mirror_warning);
       else if (result?.settlement?.batch_id) {
         setNotice("Courier settlement " + result.settlement.batch_id + " recorded · " + money(result.settlement.total) + ".");
@@ -410,6 +441,11 @@ function OrdersWorkspace() {
     }, "status:" + status);
   };
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
+  const retryPackedEmail = () => {
+    if (!selected || !emailRetryEnabled || selected.status !== "PACKED") return;
+    if (!window.confirm("Resend will attempt one PACKED email retry for this customer. This action cannot be repeated automatically. Continue?")) return;
+    mutate({ action: "retry_packed_email", id: selected.id }, "retry-packed-email");
+  };
   const settleSelected = () => {
     if (!settlementSelection.length) return;
     const confirmed = window.confirm(
@@ -556,6 +592,55 @@ function OrdersWorkspace() {
         : "Supabase remains canonical. Control Center writes are disabled until the Google Sheets backup mirror configuration is restored."}</span>
     </div>
 
+    {previewTestMode ? (
+      <details className="orders-preview-tests">
+        <summary>
+          <span>PREVIEW ONLY · TEST ORDERS</span>
+          <strong>{previewTestOrdersReady ? previewTestOrders.length + " PNTEST records" : "Read unavailable"}</strong>
+        </summary>
+        <p className="orders-preview-tests-note">
+          Read-only audit view. Test orders are excluded from live Orders, sales, courier settlement and fulfillment actions.
+          No status, courier or email actions are available here.
+        </p>
+        {!previewTestOrdersReady ? (
+          <div className="orders-preview-tests-empty">Test order lookup is not configured or is unavailable. Do not submit a test checkout until this view is ready.</div>
+        ) : previewTestOrders.length === 0 ? (
+          <div className="orders-preview-tests-empty">No PNTEST checkout records yet.</div>
+        ) : (
+          <div className="orders-preview-tests-list">
+            {previewTestOrders.map((testOrder) => {
+              const testData = testOrder.source_payload || {};
+              return <article key={testOrder.id} className="orders-preview-tests-card">
+                <div className="orders-preview-tests-head">
+                  <strong>{testOrder.order_id}</strong>
+                  <span>{STATUS_LABELS[testOrder.status] || testOrder.status} · {dateTime(testOrder.created_at)}</span>
+                </div>
+                <div className="orders-preview-tests-detail">
+                  <span>{testData.fullName || "Test customer"} · {testData.email || "No email"}</span>
+                  <span>{itemSummary(testData.items)} · {money(testData.total)}</span>
+                  <span>Sheets backup: {testOrder.sheet_sync_status || "pending"} · Tracking: {testOrder.tracking_number || "—"}</span>
+                </div>
+                <div className="orders-preview-tests-email">
+                  {[
+                    ["ORDER_RECEIVED", "admin", "Merchant"],
+                    ["ORDER_RECEIVED", "customer", "Customer"],
+                    ["PACKED", "customer", "Packed"],
+                    ["SHIPPED", "customer", "Shipped"]
+                  ].map(([stage, role, label]) => {
+                    const result = emailStatus(testOrder, stage, role);
+                    return <div key={stage + role}>
+                      <span>{label}</span>
+                      <strong>{result.state}</strong>
+                    </div>;
+                  })}
+                </div>
+              </article>;
+            })}
+          </div>
+        )}
+      </details>
+    ) : null}
+
     <div className="orders-kpis">
       <div><span>ALL RECORDS</span><strong>{orders.length}</strong><small>{saleOrders.length} orders · {counts.DUPLICATE || 0} duplicate</small></div>
       <div><span>NEW</span><strong>{counts.NEW || 0}</strong><small>waiting to pack</small></div>
@@ -638,7 +723,11 @@ function OrdersWorkspace() {
             const history = customerHistory(orders, order);
             return <button type="button" key={order.id} className={`orders-row status-row-${String(order.status || "").toLowerCase()} ${customerWatch ? "customer-watch-row" : ""} ${selectedId === order.id ? "active" : ""}`} onClick={() => setSelectedId(order.id)}>
               <div className="orders-row-main"><strong>{order.order_id}{customerWatch ? <em className="customer-watch-badge">{WATCH_BADGES[customerWatch.level] || "WATCH"}</em> : null}{history.vip ? <em className="orders-loyalty-badge vip">VIP</em> : history.prior.length ? <em className="orders-loyalty-badge returning">RETURNING</em> : null}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
-              <div className="orders-row-side"><strong>{money(data.total)}</strong><span className={"order-status status-" + String(order.status || "").toLowerCase()}>{STATUS_LABELS[order.status] || order.status}</span><time>{dateTime(order.created_at)}</time></div>
+              <div className="orders-row-side"><strong>{money(data.total)}</strong>
+                {["admin", "customer"].some((role) => emailStatus(order, "ORDER_RECEIVED", role).state === "failed") ||
+                 emailStatus(order, "PACKED", "customer").state === "failed"
+                  ? <span className="orders-email-list-alert" title="Email notification failed. Inspect the email section.">✉ Email issue</span> : null}
+                <span className={"order-status status-" + String(order.status || "").toLowerCase()}>{STATUS_LABELS[order.status] || order.status}</span><time>{dateTime(order.created_at)}</time></div>
             </button>;
           }) : <div className="orders-empty">No orders match this filter.</div>}
         </div>
@@ -917,6 +1006,44 @@ function OrdersWorkspace() {
                   ? <button type="button" onClick={retrySync} disabled={Boolean(busy)}>{busy === "retry" ? "Retrying…" : "Retry backup sync"}</button>
                   : null}
             </div>
+          </section>
+
+          <section className="orders-email-audit">
+            <div className="orders-section-title"><span>EMAIL NOTIFICATIONS</span><strong>{emailTrackingReady ? "Provider acceptance audit" : "Legacy tracking"}</strong></div>
+            {!emailTrackingReady ? <p className="orders-email-audit-disclaimer">Provider audit database is not active or is unavailable. No delivery claims can be verified here.</p> : null}
+            <div className="orders-email-audit-list">
+              {[
+                ["ORDER_RECEIVED", "admin", "New order · merchant"],
+                ["ORDER_RECEIVED", "customer", "Order confirmation · customer"],
+                ["PACKED", "customer", "Packed · customer"],
+                ["SHIPPED", "customer", "Shipped · customer"]
+              ].map(([stage, role, label]) => {
+                const result = emailStatus(selected, stage, role);
+                return <div className="orders-email-audit-row" key={stage + role}>
+                  <div className="orders-email-audit-copy">
+                    <span className="orders-email-audit-name">{label}</span>
+                    <small className="orders-email-audit-detail">{result.detail}</small>
+                  </div>
+                  <div className="orders-email-audit-side">
+                    <strong className={"orders-email-state state-" + result.state}>{result.state === "accepted" ? "Accepted" :
+                      result.state === "unverified" ? "Unverified" : result.state === "untracked" ? "Not tracked" :
+                      result.state === "failed" ? "Failed" : result.state === "pending" ? "Pending" :
+                      result.state === "delivered" ? "Delivered" : result.state === "bounced" ? "Bounced" :
+                      result.state === "complained" ? "Complained" :
+                      result.state === "delayed" ? "Delayed" : result.state}</strong>
+                    {stage === "PACKED" && role === "customer" && result.state === "failed" &&
+                     emailRetryEnabled && !emailRetryClaims.includes(selected.order_id) && selected.status === "PACKED" &&
+                     !emailEvents.some((e) => e.order_id === selected.order_id && e.stage === "PACKED" && e.recipient_role === "customer" && e.state === "accepted")
+                      ? <button type="button" className="orders-email-retry" onClick={retryPackedEmail} disabled={Boolean(busy)}>
+                          {busy === "retry-packed-email" ? "Retrying…" : "Retry once"}
+                        </button> : null}
+                    {stage === "PACKED" && result.state === "failed" && emailRetryClaims.includes(selected.order_id)
+                      ? <small className="orders-email-retry-used">Retry already used</small> : null}
+                  </div>
+                </div>;
+              })}
+            </div>
+            <p className="orders-email-audit-disclaimer">Accepted means Resend acknowledged the request; it does not confirm inbox delivery. Old checkout flags are unverified. Do not retry solely from this panel.</p>
           </section>
 
           <section className="orders-source">

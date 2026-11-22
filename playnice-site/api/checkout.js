@@ -32,6 +32,29 @@ function safeErrorMessage(error, fallback) {
   return error?.message || fallback;
 }
 
+// Resend SDK resolves { data: null, error } for 4xx responses instead of rejecting.
+// A fulfilled promise is NOT proof that an email was accepted.
+// Keep the provider message ID as the acceptance boundary for email audit tracking.
+function requireResendAccepted(result) {
+  if (result?.error || !result?.data?.id) {
+    const error = result?.error;
+    throw new Error(
+      String(error?.message || error?.name || "Resend did not accept the email").slice(0, 300)
+    );
+  }
+  return result;
+}
+
+// Reply-To is optional. A malformed customer address must never block the
+// merchant notification. Customer delivery is validated independently.
+function validReplyTo(value) {
+  const email = String(value || "").trim();
+  const localPart = email.split("@")[0] || "";
+  return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email) &&
+    !localPart.startsWith(".") && !localPart.endsWith(".") &&
+    !email.includes("..");
+}
+
 function roundMoney(value) {
   return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
 }
@@ -128,7 +151,11 @@ async function markEmailDeliveryStatus(context) {
           orderId: context.primaryStoreOrderId,
           syncToken: context.primaryStoreSyncToken,
           adminEmailSent: context.adminEmailSent,
-          customerEmailSent: context.customerEmailSent
+          customerEmailSent: context.customerEmailSent,
+          adminMessageId: context.adminMessageId,
+          customerMessageId: context.customerMessageId,
+          adminEmailError: context.adminEmailError,
+          customerEmailError: context.customerEmailError
         })
       },
       EMAIL_AUDIT_TIMEOUT_MS
@@ -136,6 +163,10 @@ async function markEmailDeliveryStatus(context) {
 
     if (!response.ok) {
       throw new Error(`Email audit returned HTTP ${response.status}`);
+    }
+    const auditResult = await response.json();
+    if (auditResult?.emailAuditRecorded === false) {
+      throw new Error("Email delivery flags saved, but provider event audit was not recorded");
     }
 
     context.emailAuditMs = Date.now() - startedAt;
@@ -169,8 +200,8 @@ class CheckoutResend extends OriginalResend {
         context.pendingEmail = null;
         context.emailsMs = 0;
         context.emailDuplicateSuppressed = true;
-        context.adminEmailSent = true;
-        context.customerEmailSent = true;
+        context.adminEmailSent = null;
+        context.customerEmailSent = null;
         return { data: { id: null } };
       }
 
@@ -184,15 +215,20 @@ class CheckoutResend extends OriginalResend {
       context.pendingEmail = null;
       const emailStart = Date.now();
 
+      const adminPayload = { ...firstEmail.payload };
+      if (adminPayload.replyTo && !validReplyTo(adminPayload.replyTo)) {
+        delete adminPayload.replyTo;
+      }
       const [adminResult, customerResult] = await Promise.allSettled([
-        originalSend(firstEmail.payload),
-        originalSend(payload)
+        originalSend(adminPayload).then(requireResendAccepted),
+        originalSend(payload).then(requireResendAccepted)
       ]);
 
       context.emailsMs = Date.now() - emailStart;
 
       if (adminResult.status === "fulfilled") {
-        firstEmail.placeholder.data.id = adminResult.value?.data?.id || null;
+        firstEmail.placeholder.data.id = adminResult.value.data.id;
+        context.adminMessageId = adminResult.value.data.id;
         context.adminEmailSent = true;
       } else {
         context.adminEmailSent = false;
@@ -211,6 +247,7 @@ class CheckoutResend extends OriginalResend {
         );
       } else {
         context.customerEmailSent = true;
+        context.customerMessageId = customerResult.value.data.id;
       }
 
       await markEmailDeliveryStatus(context);
@@ -386,8 +423,10 @@ export default async function handler(req, res) {
     emailAuditError: null,
     emailDuplicateSuppressed: false,
     adminEmailSent: null,
+    adminMessageId: null,
     adminEmailError: null,
     customerEmailSent: null,
+    customerMessageId: null,
     customerEmailError: null
   };
 

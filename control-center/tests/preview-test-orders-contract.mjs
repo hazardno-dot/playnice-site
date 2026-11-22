@@ -1,0 +1,15 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const server = fs.readFileSync("control-center/server/orders.js","utf8");
+const ui = fs.readFileSync("control-center/src/OrdersManager.jsx","utf8");
+const sql = fs.readFileSync("control-center/supabase/preview_test_orders_readonly_v1.sql","utf8");
+assert.ok(server.includes('process.env.VERCEL_ENV !== "preview"'),"PNTEST read must be Preview-only");
+assert.ok(server.includes('get_control_center_preview_test_orders'),"PNTEST must use admin RPC");
+assert.ok(server.includes('...previewTests'),"PNTEST must be returned outside live orders");
+assert.ok(ui.includes('previewTestMode ? ('),"PNTEST panel must be feature-gated");
+assert.ok(ui.includes('previewTestOrders.map('),"PNTEST must be separate from live orders");
+assert.ok(ui.includes('orders.filter('),"Live orders must retain existing filters");
+assert.ok(sql.includes("auth.uid()") && sql.includes("public.admin_users"),"RPC must verify admin identity");
+assert.ok(sql.includes("environment = 'preview'") && sql.includes("order_id like 'PNTEST-%'"),"Read must be restricted to test orders");
+assert.ok(!/\b(insert|update|delete)\s+(into|public\.checkout_orders|from)\b/i.test(sql),"RPC must be read-only");
+console.log("PASS PNTEST read-only Preview contract");

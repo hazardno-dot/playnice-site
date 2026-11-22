@@ -90,17 +90,90 @@ async function readOrders(token) {
   };
 }
 
+// Preview-only read access to PNTEST records; ordinary Orders RPC remains production-only.
+async function readPreviewTestOrders(token) {
+  if (process.env.VERCEL_ENV !== "preview") {
+    return { preview_test_mode: false, preview_test_orders: [], preview_test_orders_ready: false };
+  }
+  try {
+    const rows = await rpc("get_control_center_preview_test_orders", token, {});
+    if (!Array.isArray(rows)) throw new Error("Invalid test order response");
+    return { preview_test_mode: true, preview_test_orders: rows, preview_test_orders_ready: true };
+  } catch (error) {
+    console.warn("Preview test orders unavailable", String(error?.message || error));
+    return { preview_test_mode: true, preview_test_orders: [], preview_test_orders_ready: false };
+  }
+}
+
 async function readCustomerWatches(token) {
   const rows = await rpc("get_control_center_customer_watches", token, {});
   return Array.isArray(rows) ? rows : [];
 }
 
+async function readEmailEvents(token) {
+  // This secondary panel must never break the primary Orders workspace.
+  try {
+    const response = await userFetch(
+      "/rest/v1/order_email_events?select=order_id,stage,recipient_role,state,provider_message_id,error_message,created_at&order=created_at.desc&limit=500",
+      token, { method: "GET", signal: AbortSignal.timeout(4000) }
+    );
+    if (response.status === 404) return { events: [], ready: false }; // schema not yet deployed
+    const rows = await safeJson(response);
+    if (!response.ok) {
+      console.warn("Order email audit read unavailable", response.status);
+      return { events: [], ready: false };
+    }
+    return { events: Array.isArray(rows) ? rows : [], ready: true };
+  } catch (error) {
+    console.warn("Optional email audit unavailable", String(error?.message || error));
+    return { events: [], ready: false };
+  }
+}
+
+async function recordEmailEvent(token, orderId, result) {
+  if (!["sent", "failed", "skipped_missing_customer_email"].includes(result?.status_email_status)) return null;
+  const record = {
+    order_id: orderId,
+    stage: "PACKED",
+    recipient_role: "customer",
+    state: result.status_email_status === "sent" ? "accepted" : "failed",
+    provider_message_id: result.status_email_message_id || null,
+    error_message: result.status_email_status === "failed"
+      ? String(result.status_email_warning || "Resend request failed").slice(0, 300) : null
+  };
+  const response = await userFetch("/rest/v1/order_email_events", token, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Prefer: "return=minimal" },
+    body: JSON.stringify(record)
+  });
+  if (!response.ok) throw new Error("Email audit write returned HTTP " + response.status);
+  return record.state;
+}
+
 async function readOrdersWorkspace(token) {
-  const [orderData, customerWatches] = await Promise.all([
+  const [orderData, customerWatches, emailAudit, previewTests] = await Promise.all([
     readOrders(token),
-    readCustomerWatches(token)
+    readCustomerWatches(token),
+    readEmailEvents(token),
+    readPreviewTestOrders(token)
   ]);
-  return { ...orderData, customer_watches: customerWatches };
+  let retryClaims = [];
+  if (emailAudit.ready) {
+    try {
+      const claims = await rpc("get_control_center_email_retry_claims", token, {});
+      retryClaims = Array.isArray(claims) ? claims : [];
+    } catch (error) {
+      // Fail closed: missing claim visibility must hide the retry button.
+      console.warn("Order email retry claims unavailable", String(error?.message || error));
+      return { ...orderData, ...previewTests, customer_watches: customerWatches,
+        email_events: emailAudit.events, email_tracking_ready: emailAudit.ready,
+        email_retry_claims: [], email_retry_enabled: false };
+    }
+  }
+  return { ...orderData, ...previewTests, customer_watches: customerWatches,
+    email_events: emailAudit.events, email_tracking_ready: emailAudit.ready,
+    email_retry_claims: retryClaims,
+    email_retry_enabled: STATUS_EMAIL_ENABLED && WRITE_THROUGH_ENABLED && emailAudit.ready };
 }
 
 function normalizeWatchEmail(value) {
@@ -236,6 +309,22 @@ async function mirrorWithAudit(token, order, mirror) {
   }
 }
 
+// Re-packing an order must not send a second confirmation if Resend already
+// accepted one. If the audit cannot be consulted, skip rather than risk a
+// duplicate delivery. The order status change still succeeds.
+async function packedEmailAlreadyAccepted(token, orderId) {
+  const filter = "/rest/v1/order_email_events?select=state,provider_message_id" +
+    "&order_id=eq." + encodeURIComponent(orderId) +
+    "&stage=eq.PACKED&recipient_role=eq.customer&state=eq.accepted&limit=1";
+  const response = await userFetch(filter, token, {
+    method: "GET", signal: AbortSignal.timeout(4000)
+  });
+  if (!response.ok) throw new Error("PACKED email acceptance audit unavailable (HTTP " + response.status + ")");
+  const rows = await safeJson(response);
+  if (!Array.isArray(rows)) throw new Error("PACKED email acceptance audit returned invalid data");
+  return rows.length > 0;
+}
+
 async function sendPackedStatusEmail(token, order, previousStatus) {
   if (previousStatus !== "NEW" || order?.status !== "PACKED") {
     return { status_email_status: "not_applicable", status_email_warning: null };
@@ -243,6 +332,20 @@ async function sendPackedStatusEmail(token, order, previousStatus) {
 
   if (!STATUS_EMAIL_ENABLED) {
     return { status_email_status: "preview_skipped", status_email_warning: null };
+  }
+
+  try {
+    if (await packedEmailAlreadyAccepted(token, order.order_id)) {
+      return {
+        status_email_status: "already_accepted",
+        status_email_warning: null
+      };
+    }
+  } catch (error) {
+    return {
+      status_email_status: "audit_unavailable",
+      status_email_warning: "Order marked PACKED, but the email was not sent because earlier acceptance could not be checked. Verify Resend before retrying."
+    };
   }
 
   const payload = order?.source_payload || {};
@@ -302,6 +405,41 @@ async function sendPackedStatusEmail(token, order, previousStatus) {
   }
 }
 
+async function retryPackedStatusEmail(token, body) {
+  // Never let Preview claim a retry or send production customer messages.
+  if (!STATUS_EMAIL_ENABLED) {
+    return { status_email_status: "preview_skipped", status_email_warning: null };
+  }
+  const id = String(body?.id || "").trim();
+  if (!id) throw new Error("Missing order id.");
+  const current = await readOrders(token);
+  const order = current.orders.find((item) => item.id === id);
+  if (!order || order.status !== "PACKED") {
+    throw new Error("Manual email retry is available only while the order is PACKED.");
+  }
+  if (!cleanText(order?.source_payload?.email, 180)) {
+    throw new Error("Customer email address is missing. Correct the order before retrying.");
+  }
+  // If the acceptance audit is down, do not claim or send.
+  if (await packedEmailAlreadyAccepted(token, order.order_id)) {
+    throw new Error("Resend already accepted a PACKED email. Do not send a duplicate.");
+  }
+  const claimed = await rpc("claim_packed_email_retry", token, { p_order_id: order.order_id });
+  if (claimed !== true) {
+    throw new Error("Email retry is not eligible or has already been claimed. Check Resend before further action.");
+  }
+  const outcome = await sendPackedStatusEmail(token, order, "NEW");
+  if (["sent", "failed"].includes(outcome.status_email_status)) {
+    try {
+      await recordEmailEvent(token, order.order_id, outcome);
+    } catch (error) {
+      outcome.status_email_audit_warning = "Retry result could not be recorded. Check Resend; do not repeat the email.";
+      console.error("PACKED retry audit failed", String(error?.message || error));
+    }
+  }
+  return { order, ...outcome };
+}
+
 async function mutateOrder(token, body) {
   const action = String(body?.action || "").trim();
   const id = String(body?.id || "").trim();
@@ -345,6 +483,17 @@ async function mutateOrder(token, body) {
   const emailResult = action === "set_status"
     ? await sendPackedStatusEmail(token, mutation.order, previousStatus)
     : { status_email_status: "not_applicable", status_email_warning: null };
+
+  // Audit is best-effort: never revert a successful PACKED status or re-send an
+  // accepted email because the audit database is temporarily unavailable.
+  if (["sent", "failed", "skipped_missing_customer_email"].includes(emailResult.status_email_status)) {
+    try {
+      await recordEmailEvent(token, mutation.order.order_id, emailResult);
+    } catch (auditError) {
+      console.error("Email outcome audit failed", String(auditError?.message || auditError));
+      emailResult.status_email_audit_warning = "Email send outcome could not be recorded. Check Resend before retrying.";
+    }
+  }
 
   return {
     order: mutation.order,
@@ -714,7 +863,9 @@ export default async function handler(req, res) {
       });
     }
 
-    const result = action === "retry_sheet_sync"
+    const result = action === "retry_packed_email"
+      ? await retryPackedStatusEmail(auth.token, req.body)
+      : action === "retry_sheet_sync"
       ? await retryMirror(auth.token, req.body)
       : action === "confirm_sheet_sync"
         ? await confirmMirrorAfterTimeout(auth.token, req.body)

@@ -1210,3 +1210,91 @@
 .orders-customer-history-entry > button { justify-self:start; border:0; background:none; padding:0; text-align:left; color:#d5e7da; text-decoration:underline; cursor:pointer; font-size:12px; }
 .orders-customer-history-entry > span { font-size:12px; color:#ced9d0; line-height:1.45; }
 .orders-customer-history-entry > small { font-size:11px; color:#c3b68b; line-height:1.45; }
+
+
+/* Email status audit: intentionally distinguishes provider acceptance from delivery. */
+.orders-email-audit { border:1px solid rgba(118,151,137,.22);border-radius:10px;padding:13px;margin-top:12px; }
+.orders-email-audit-list { display:grid;gap:0;margin-top:10px; }
+.orders-email-audit .orders-email-audit-row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  column-gap:18px;
+  padding:12px 2px;
+  border-top:1px solid rgba(118,151,137,.13);
+  text-align:left;
+}
+.orders-email-audit .orders-email-audit-copy {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  text-align:left;
+}
+.orders-email-audit .orders-email-audit-name {
+  display:block;
+  width:100%;
+  color:#c6dcd0;
+  font-size:12px;
+  font-weight:600;
+  line-height:1.35;
+  text-align:left;
+}
+.orders-email-audit .orders-email-audit-detail {
+  display:block;
+  width:100%;
+  margin:0;
+  color:#8da598;
+  font-size:10px;
+  font-weight:400;
+  line-height:1.5;
+  text-align:left;
+  overflow-wrap:anywhere;
+}
+.orders-email-audit .orders-email-state {
+  justify-self:end;
+  align-self:center;
+  font-size:11px;
+  white-space:nowrap;
+  font-weight:600;
+  text-align:right;
+}
+@media (max-width:560px) {
+  .orders-email-audit .orders-email-audit-row { column-gap:10px; padding:11px 0; }
+  .orders-email-audit .orders-email-state { font-size:10px; }
+}
+.orders-email-state.state-accepted,.orders-email-state.state-delivered { color:#9fd4b2; }
+.orders-email-state.state-failed,.orders-email-state.state-bounced,.orders-email-list-alert { color:#e8a5a5; }
+.orders-email-state.state-delayed { color:#dfc37a; }
+.orders-email-state.state-unverified,.orders-email-state.state-untracked,.orders-email-state.state-pending { color:#9baea2; }
+.orders-email-audit-disclaimer { font-size:10px;line-height:1.55;color:#829589;margin:9px 0 0; }
+.orders-email-list-alert { font-size:10px;font-weight:600; }
+
+.orders-email-audit-side { display:flex; flex-direction:column; align-items:flex-end; gap:7px; }
+.orders-email-audit .orders-email-state.state-complained { color:#e8a5a5; }
+.orders-email-retry {
+  padding:6px 10px;
+  border:1px solid rgba(199,146,82,.45);
+  border-radius:7px;
+  background:rgba(74,46,20,.28);
+  color:#e5cb9e;
+  font-size:11px;
+  cursor:pointer;
+}
+.orders-email-retry:disabled { opacity:.45; cursor:wait; }
+
+/* PNTEST audit is isolated from live fulfillment and available only in Preview. */
+.orders-preview-tests { margin: 16px 0; padding: 16px; border: 1px solid rgba(213,173,98,.38); border-radius: 14px; background: rgba(213,173,98,.055); }
+.orders-preview-tests > summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; color: #e5c88e; }
+.orders-preview-tests > summary strong { font-size: 13px; font-weight: 600; }
+.orders-preview-tests-note, .orders-preview-tests-empty { color: #b8b7ac; font-size: 12px; line-height: 1.55; }
+.orders-preview-tests-list { display: grid; gap: 10px; margin-top: 14px; }
+.orders-preview-tests-card { padding: 12px; border-radius: 10px; border: 1px solid rgba(213,173,98,.2); background: rgba(0,0,0,.16); }
+.orders-preview-tests-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 13px; }
+.orders-preview-tests-head > span { color: #b8b7ac; }
+.orders-preview-tests-detail { display: grid; gap: 4px; color: #c8c8bd; font-size: 12px; padding: 8px 0; overflow-wrap: anywhere; }
+.orders-preview-tests-email { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
+.orders-preview-tests-email > div { border-top: 1px solid rgba(213,173,98,.18); padding-top: 8px; display: grid; gap: 3px; font-size: 11px; color: #b8b7ac; }
+.orders-preview-tests-email strong { color: #dfc894; font-size: 12px; text-transform: capitalize; }
+@media (max-width: 700px) { .orders-preview-tests-email { grid-template-columns: repeat(2,minmax(0,1fr)); } }

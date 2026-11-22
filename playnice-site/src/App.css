@@ -20027,3 +20027,9 @@ body.overlay-lock .header-system {
   transform: none;
   cursor: not-allowed;
 }
+
+/* Checkout email validation — preserve the two-column layout on desktop. */
+.checkout-email-field { min-width: 0; width: 100%; }
+.checkout-email-field > input { box-sizing: border-box; }
+.checkout-email-error { display: block; margin-top: 5px; color: #f4a7a3; font-size: 12px; line-height: 1.4; }
+.checkout-email-field > input[aria-invalid="true"] { border-color: rgba(244, 167, 163, 0.8); }

@@ -335,10 +335,30 @@ Deno.serve(async (req: Request) => {
       const customerEmailSent = typeof body?.customerEmailSent === "boolean" ? body.customerEmailSent : null;
 
       if (!orderId || !syncToken) return json(400, { status: "error", message: "Missing delivery identity" });
+      // The restricted service role has no direct table SELECT/INSERT grants.
+      // Atomic, token-validated SQL RPC performs the audit write.
+      // Never resend emails to repair an audit failure.
+      const events = [
+        ["admin", adminEmailSent, body?.adminMessageId, body?.adminEmailError],
+        ["customer", customerEmailSent, body?.customerMessageId, body?.customerEmailError],
+      ].filter((entry) => typeof entry[1] === "boolean").map(([recipient_role, sent, id, error]) => ({
+        order_id: orderId,
+        stage: "ORDER_RECEIVED",
+        recipient_role,
+        state: sent ? "accepted" : "failed",
+        provider_message_id: sent ? String(id || "").slice(0, 120) || null : null,
+        error_message: sent ? null : String(error || "Resend request rejected").slice(0, 300),
+      }));
+      const { data: recorded, error: auditError } = await admin.rpc("record_checkout_email_acceptances", {
+        p_order_id: orderId, p_sync_token: syncToken, p_events: events
+      });
+      if (auditError || recorded !== true) {
+        console.error("checkout-order-store email acceptance audit unavailable", auditError?.message || "Invalid audit identity");
+        return json(403, { status: "error", message: "Email acceptance audit could not be verified" });
+      }
       const ok = await markDelivery(admin, { orderId, syncToken, adminEmailSent, customerEmailSent });
-      return ok
-        ? json(200, { status: "ok", orderId })
-        : json(500, { status: "error", message: "Failed to update email delivery status" });
+      if (!ok) return json(200, { status: "ok", orderId, emailAuditRecorded: true, emailFlagsRecorded: false });
+      return json(200, { status: "ok", orderId, emailAuditRecorded: true, emailFlagsRecorded: true });
     }
 
     return json(400, { status: "error", message: "Unsupported action" });
