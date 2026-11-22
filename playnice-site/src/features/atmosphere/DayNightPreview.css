@@ -84,3 +84,28 @@ html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell > * { position: rela
 @media(prefers-reduced-motion:reduce){
  .pn-atmosphere-controls * { scroll-behavior: auto; }
 }
+
+/* Public control: intentionally tiny, visually separate from QA panel. */
+.pn-atmosphere-controls--production {
+  left: 12px;
+  right: auto;
+  bottom: max(18px,env(safe-area-inset-bottom));
+  width: auto;
+  max-width: 150px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(12,14,18,.84);
+}
+.pn-atmosphere-controls--production .pn-production-toggle {
+  border: 0;
+  background: transparent;
+  color: #cbb895;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 11px;
+  letter-spacing: .01em;
+}
+.pn-atmosphere-controls--production .pn-production-toggle[aria-pressed="false"] {
+  background: transparent;
+  color: #a5a09a;
+}
