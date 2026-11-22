@@ -39,7 +39,8 @@ if (production || preview) {
     </label>
     <div class="pn-status" role="status" aria-live="polite">Priprema solarnog ciklusa…</div>
   `;
-  if (!production) document.body.appendChild(controls);
+  // For navigation QA, keep Living Sky active but hide the floating preview panel.
+  if (!production && params.get("atmosphereCleanPreview") !== "1") document.body.appendChild(controls);
   const slider=controls.querySelector("#pn-solar-slider");
   const sliderLabel=controls.querySelector("#pn-solar-label");
   const status=controls.querySelector(".pn-status");
