@@ -433,6 +433,14 @@ html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell--exhibition .exhibit
   .app-shell--exhibition .header-system {
     background: #080808;
   }
+
+  /* Match the Living Sky behind the header with the exhibition canvas.
+     HeaderNext shares .header-system, so this override is scoped to the
+     Exhibition page and only applies when the atmosphere is enabled. */
+  html.pn-atmosphere-preview[data-pn-sky="active"]
+    .app-shell--exhibition .header-system {
+    background: transparent;
+  }
 }
 
 .exhibition-outro {
