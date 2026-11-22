@@ -1,4 +1,4 @@
-// PlayNice Living Sky — PREVIEW ONLY. Loaded via guarded index.js dynamic import.
+// PlayNice Living Sky: automatic on production; manual QA on opted-in previews.
 // Six solar phases follow actual solar altitude; manual slider is for visual QA.
 import "./DayNightPreview.css";
 import { atmosphere } from "./solarCycle";
@@ -22,7 +22,7 @@ if (production || preview) {
   const controls = document.createElement("div");
   controls.className = "pn-atmosphere-controls";
   controls.setAttribute("role", "group");
-  controls.setAttribute("aria-label", "PlayNice Living Sky — preview test");
+  controls.setAttribute("aria-label", production ? "Upravljanje PlayNice atmosferom" : "PlayNice Living Sky — preview test");
   controls.innerHTML = production ? `
     <div class="pn-actions pn-production-actions">
       <button type="button" data-mode="auto" aria-label="Uključi atmosferu">Atmosfera: uključena</button>
@@ -140,7 +140,7 @@ if (production || preview) {
     }catch{location={...FALLBACK};}
     if(mode==="auto"){
       manualMinute=Math.floor(localParts(new Date(),location.timezone)/5)*5;
-      slider.value=manualMinute;
+      if (slider) slider.value=manualMinute;
     }
     apply();
   }
