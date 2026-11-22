@@ -84,17 +84,18 @@ function HeaderNext({
     ["playniceshop.me", "www.playniceshop.me"].includes(window.location.hostname.toLowerCase()) ||
     new URLSearchParams(window.location.search).get("atmospherePreview") === "1"
   );
+  const atmosphereProduction = typeof window !== "undefined" &&
+    ["playniceshop.me", "www.playniceshop.me"].includes(window.location.hostname.toLowerCase());
+  const atmosphereStorage = atmosphereProduction ? "playnice_living_sky_enabled" : "playnice_living_sky_preview";
   const [atmosphereEnabled, setAtmosphereEnabled] = useState(() => {
-    try { return window.localStorage.getItem("playnice_living_sky_enabled") !== "off"; }
+    try { return (atmosphereProduction ? window.localStorage : window.sessionStorage).getItem(atmosphereStorage) !== "off"; }
     catch { return true; }
   });
   const toggleAtmosphere = () => {
-    setAtmosphereEnabled(current => {
-      const next = !current;
-      try { window.localStorage.setItem("playnice_living_sky_enabled", next ? "auto" : "off"); } catch {}
-      window.dispatchEvent(new CustomEvent("playnice:atmosphere-change", { detail: { enabled: next } }));
-      return next;
-    });
+    const next = !atmosphereEnabled;
+    setAtmosphereEnabled(next);
+    try { (atmosphereProduction ? window.localStorage : window.sessionStorage).setItem(atmosphereStorage, next ? "auto" : "off"); } catch {}
+    window.dispatchEvent(new CustomEvent("playnice:atmosphere-change", { detail: { enabled: next } }));
   };
   const [languageSpinning, setLanguageSpinning] = useState(false);
   const [cartSpinning, setCartSpinning] = useState(false);
