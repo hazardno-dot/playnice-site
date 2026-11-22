@@ -36,7 +36,7 @@ html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell::before {
   background-repeat: no-repeat;
 }
 html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell { position: relative; }
-html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell > * { position: relative; }
+/* Do not alter positioning of existing header, overlays or sticky children. */
 /* Stars never intercept clicks; no image, CTA or typography styling is changed. */
 .pn-atmosphere-controls {
   position: fixed;
