@@ -238,11 +238,47 @@
     font-weight: 500;
   }
 
-  .header-next-mobile-language {
+  /* HeaderNext renders language + atmosphere as one preferences group.
+     MobileMenuContact adds Support via portal: explicit flex order keeps
+     the complete preferences group after Support, without moving language. */
+  .header-next-mobile-panel > .header-next-mobile-primary { order: 0; }
+  .header-next-mobile-panel > .header-next-mobile-discover { order: 1; }
+  .header-next-mobile-panel > .header-next-mobile-support { order: 2; }
+  .header-next-mobile-panel > .header-next-mobile-preferences {
     order: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .header-next-mobile-language {
     min-height: 40px;
     margin-top: 0 !important;
     font-weight: 400;
+    width: 100%;
+  }
+
+  .header-next-mobile-preferences .header-next-mobile-atmosphere {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 40px;
+    padding: 0 4px;
+    border: 0;
+    border-top: 1px solid rgba(255,248,235,.07);
+    border-radius: 0;
+    background: transparent;
+    color: rgba(255,248,235,.62);
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .header-next-mobile-preferences .header-next-mobile-atmosphere strong {
+    color: #dcb56b;
+    font-size: 11px;
+    font-weight: 500;
   }
 
   .header-next-mobile-language strong {
