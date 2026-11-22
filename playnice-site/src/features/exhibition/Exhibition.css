@@ -10,6 +10,14 @@
   padding-bottom: 0;
 }
 
+/* Living Sky: Exhibition shares the app-shell solar background only while active.
+   Its opaque #080808 page layer otherwise conceals the global atmosphere.
+   With Atmosphere Off, the original exhibition background stays unchanged.
+   The artwork/lightbox viewer retains its own independent black backdrop. */
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell--exhibition .exhibition-page {
+  background: transparent;
+}
+
 .exhibition-intro {
   max-width: 1440px;
   margin: 0 auto;
