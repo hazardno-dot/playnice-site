@@ -14,7 +14,7 @@ function solarAltitude(date,latitude,longitude) {
  const L=M+C+RAD*(102.9372+180);
  const dec=declination(L,0);
  const ra=rightAscension(L,0);
- const sidereal=RAD*(280.16+360.9856235*days)-longitude*RAD;
+ const sidereal=RAD*(280.16+360.9856235*days)+longitude*RAD;
  const hour=sidereal-ra;
  const phi=latitude*RAD;
  return Math.asin(Math.sin(phi)*Math.sin(dec)+Math.cos(phi)*Math.cos(dec)*Math.cos(hour))/RAD;
