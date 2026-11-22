@@ -387,7 +387,9 @@ function OrdersWorkspace() {
       absorb(result);
       if (key === "settlement") setSettlementSelection([]);
       if (key === "gift") setGiftUnlocked(false);
-      if (result?.status_email_warning) setNotice(result.status_email_warning);
+      if (result?.status_email_warning || result?.status_email_audit_warning) {
+        setNotice([result.status_email_warning, result.status_email_audit_warning].filter(Boolean).join(" "));
+      }
       else if (result?.mirror_warning) setNotice(result.mirror_warning);
       else if (result?.settlement?.batch_id) {
         setNotice("Courier settlement " + result.settlement.batch_id + " recorded · " + money(result.settlement.total) + ".");
