@@ -4,6 +4,60 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <!-- Critical Living Sky first paint. Runs before React/CSS bundles.
+         The full solar calculator supersedes these safe initial values. -->
+    <style>
+      html.pn-atmosphere-preview[data-pn-sky="active"] {
+        --sky-base: rgb(9 12 24);
+        --sky-top: rgb(18 25 46);
+        --sky-glow: rgb(150 162 207);
+        --sky-star-opacity: .14;
+      }
+      html.pn-atmosphere-preview[data-pn-sky="active"] body {
+        background-color: var(--sky-base);
+      }
+      html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell {
+        background-color: var(--sky-base);
+        background-image:
+          radial-gradient(ellipse 66% 38% at 87% 8%,
+            color-mix(in srgb, var(--sky-glow) 19%, transparent), transparent 78%),
+          radial-gradient(ellipse 56% 28% at 18% 16%,
+            color-mix(in srgb, var(--sky-glow) 8%, transparent), transparent 78%),
+          linear-gradient(180deg,
+            var(--sky-top) 0%, var(--sky-base) 48%, var(--sky-base) 100%);
+        background-repeat: no-repeat;
+      }
+    </style>
+    <script>
+      (function () {
+        var host = window.location.hostname.toLowerCase();
+        var production = host === "playniceshop.me" || host === "www.playniceshop.me";
+        var preview = !production && new URLSearchParams(window.location.search).get("atmospherePreview") === "1";
+        if (!production && !preview) return;
+        try {
+          var key = production ? "playnice_living_sky_enabled" : "playnice_living_sky_preview";
+          var storage = production ? window.localStorage : window.sessionStorage;
+          if (storage.getItem(key) === "off") return;
+        } catch (error) { /* Keep the default enabled state if storage is blocked. */ }
+        var root = document.documentElement;
+        root.classList.add("pn-atmosphere-preview");
+        root.setAttribute("data-pn-sky", "active");
+        // Temporary palette only until the exact solar altitude is calculated.
+        // This prevents a black-first-frame without requiring network data.
+        var hour = new Date().getHours();
+        var colors = hour >= 7 && hour < 17
+          ? ["18 16 15", "39 33 27", "231 181 108", "0"]
+          : hour >= 17 && hour < 20
+          ? ["23 20 31", "60 39 53", "190 116 129", "0.02"]
+          : ["7 11 23", "11 20 42", "133 151 207", "0.22"];
+        root.style.setProperty("--sky-base", "rgb(" + colors[0] + ")");
+        root.style.setProperty("--sky-top", "rgb(" + colors[1] + ")");
+        root.style.setProperty("--sky-glow", "rgb(" + colors[2] + ")");
+        root.style.setProperty("--sky-star-opacity", colors[3]);
+      })();
+    </script>
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
