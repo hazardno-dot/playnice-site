@@ -336,9 +336,29 @@ Deno.serve(async (req: Request) => {
 
       if (!orderId || !syncToken) return json(400, { status: "error", message: "Missing delivery identity" });
       const ok = await markDelivery(admin, { orderId, syncToken, adminEmailSent, customerEmailSent });
-      return ok
-        ? json(200, { status: "ok", orderId })
-        : json(500, { status: "error", message: "Failed to update email delivery status" });
+      if (!ok) return json(500, { status: "error", message: "Failed to update email delivery status" });
+
+      // Never record a duplicate replay as a successful send. Store only an
+      // actual provider acknowledgement or explicit rejection.
+      const events = [
+        ["admin", adminEmailSent, body?.adminMessageId, body?.adminEmailError],
+        ["customer", customerEmailSent, body?.customerMessageId, body?.customerEmailError],
+      ].filter((entry) => typeof entry[1] === "boolean").map(([recipient_role, sent, id, error]) => ({
+        order_id: orderId,
+        stage: "ORDER_RECEIVED",
+        recipient_role,
+        state: sent ? "accepted" : "failed",
+        provider_message_id: sent ? String(id || "").slice(0, 120) || null : null,
+        error_message: sent ? null : String(error || "Resend request rejected").slice(0, 300),
+      }));
+      if (events.length) {
+        const { error: auditError } = await admin.from("order_email_events").insert(events);
+        if (auditError) {
+          console.error("checkout-order-store email audit event write failed", auditError.message);
+          return json(200, { status: "ok", orderId, emailAuditRecorded: false });
+        }
+      }
+      return json(200, { status: "ok", orderId, emailAuditRecorded: true });
     }
 
     return json(400, { status: "error", message: "Unsupported action" });
