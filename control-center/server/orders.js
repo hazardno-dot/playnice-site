@@ -374,6 +374,41 @@ async function sendPackedStatusEmail(token, order, previousStatus) {
   }
 }
 
+async function retryPackedStatusEmail(token, body) {
+  // Never let Preview claim a retry or send production customer messages.
+  if (!STATUS_EMAIL_ENABLED) {
+    return { status_email_status: "preview_skipped", status_email_warning: null };
+  }
+  const id = String(body?.id || "").trim();
+  if (!id) throw new Error("Missing order id.");
+  const current = await readOrders(token);
+  const order = current.orders.find((item) => item.id === id);
+  if (!order || order.status !== "PACKED") {
+    throw new Error("Manual email retry is available only while the order is PACKED.");
+  }
+  if (!cleanText(order?.source_payload?.email, 180)) {
+    throw new Error("Customer email address is missing. Correct the order before retrying.");
+  }
+  // If the acceptance audit is down, do not claim or send.
+  if (await packedEmailAlreadyAccepted(token, order.order_id)) {
+    throw new Error("Resend already accepted a PACKED email. Do not send a duplicate.");
+  }
+  const claimed = await rpc("claim_packed_email_retry", token, { p_order_id: order.order_id });
+  if (claimed !== true) {
+    throw new Error("Email retry is not eligible or has already been claimed. Check Resend before further action.");
+  }
+  const outcome = await sendPackedStatusEmail(token, order, "NEW");
+  if (["sent", "failed"].includes(outcome.status_email_status)) {
+    try {
+      await recordEmailEvent(token, order.order_id, outcome);
+    } catch (error) {
+      outcome.status_email_audit_warning = "Retry result could not be recorded. Check Resend; do not repeat the email.";
+      console.error("PACKED retry audit failed", String(error?.message || error));
+    }
+  }
+  return { order, ...outcome };
+}
+
 async function mutateOrder(token, body) {
   const action = String(body?.action || "").trim();
   const id = String(body?.id || "").trim();
@@ -797,7 +832,9 @@ export default async function handler(req, res) {
       });
     }
 
-    const result = action === "retry_sheet_sync"
+    const result = action === "retry_packed_email"
+      ? await retryPackedStatusEmail(auth.token, req.body)
+      : action === "retry_sheet_sync"
       ? await retryMirror(auth.token, req.body)
       : action === "confirm_sheet_sync"
         ? await confirmMirrorAfterTimeout(auth.token, req.body)
