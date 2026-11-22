@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PlayNice Atmosphere — Rain on Glass · Wet Film Study v1.4</title>
+<title>PlayNice Atmosphere — Rain on Glass · Editorial Context Study v1.5</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0d0e10;color:#e8e0d3}
@@ -25,6 +25,7 @@ label{display:flex;align-items:center;gap:8px}
 <label><input id="enabled" type="checkbox" checked> Atmosphere on</label>
 <button id="one" type="button">One droplet</button>
 <button id="three" class="secondary" type="button">Three droplets</button>
+<button id="sceneToggle" class="secondary" type="button" aria-pressed="false">Journal layout</button>
 <span id="status" role="status">Initializing</span>
 </div>
 <script>
@@ -40,9 +41,31 @@ var enabled=document.getElementById('enabled');
 var status=document.getElementById('status');
 var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
 var drops=[],raf=0,scheduleId=0,firstId=0,lastFrame=0;
+var editorial=false;
 var viewW=0,viewH=0,dpr=1;
 var random=function(a,b){return a+Math.random()*(b-a);};
 var running=function(){return enabled.checked&&!reduce.matches&&!document.hidden;};
+function editorialBackdrop(){
+ // Representative editorial composition rendered inside the test canvas:
+ // useful for comparing visibility; NOT a screenshot of the real storefront.
+ var c=baseContext,w=viewW,h=viewH;
+ c.fillStyle='#171618';c.fillRect(0,0,w,h);
+ var grd=c.createLinearGradient(0,0,w,h*.55);grd.addColorStop(0,'#24252a');grd.addColorStop(.55,'#715744');grd.addColorStop(1,'#14171c');
+ c.fillStyle=grd;c.fillRect(0,0,w,h*.54);
+ var halo=c.createRadialGradient(w*.75,h*.20,3,w*.75,h*.20,w*.52);halo.addColorStop(0,'#ddb88475');halo.addColorStop(1,'#100e1200');
+ c.fillStyle=halo;c.fillRect(0,0,w,h*.55);
+ // Illustration of a product silhouette: scene detail for optical comparison.
+ c.save();c.translate(w*.77,h*.29);c.shadowColor='#000c';c.shadowBlur=25;
+ c.fillStyle='#080a0ddf';c.fillRect(-24,-63,48,124);c.shadowBlur=0;
+ var bottle=c.createLinearGradient(-23,0,24,0);bottle.addColorStop(0,'#07090dbb');bottle.addColorStop(.36,'#b8a0786b');bottle.addColorStop(.65,'#1c1c1ecc');bottle.addColorStop(1,'#080b10d9');
+ c.fillStyle=bottle;c.fillRect(-23,-48,46,108);c.fillStyle='#181a20';c.fillRect(-13,-74,26,26);c.fillStyle='#bcaa8a';c.font='8px Georgia';c.textAlign='center';c.fillText('PLAYNICE',0,18);c.restore();
+ c.textAlign='left';c.fillStyle='#d2b681';c.font='normal '+Math.min(43,w*.085)+'px Georgia';c.fillText('The art of',25,h*.23);c.fillText('a quiet moment.',25,h*.23+Math.min(49,w*.10));
+ c.fillStyle='#dfd5c8';c.font='10px system-ui';c.fillText('LE JOURNAL  /  EDITORIAL PREVIEW',25,h*.59);
+ c.fillStyle='#e7dfd3';c.font='normal '+Math.min(29,w*.052)+'px Georgia';c.fillText('A fragrance worth remembering',25,h*.65);
+ c.fillStyle='#a99f93';c.font='13px Georgia';
+ var lines=['A moment of stillness, somewhere between','the last light and the first breath of rain.','Small details become part of the story.','Even the quietest gesture can linger.','A scent. A memory. A different kind of day.'];
+ for(var i=0;i<lines.length;i++)c.fillText(lines[i],25,h*.71+i*24);
+}
 function background(){
  baseContext.setTransform(dpr,0,0,dpr,0,0);
  var g=baseContext.createLinearGradient(0,0,viewW,viewH);
@@ -65,6 +88,7 @@ function background(){
  baseContext.fillText('A quiet moment, held in glass.',viewW/2,viewH*.66);
  baseContext.fillStyle='#a59b8d';baseContext.font='12px system-ui,sans-serif';
  baseContext.fillText('A visual experiment in atmosphere.',viewW/2,viewH*.71);
+ if(editorial)editorialBackdrop();
 }
 function resize(){
  dpr=Math.min(window.devicePixelRatio||1,2);
@@ -91,7 +115,7 @@ function position(d,age){
  return {x:d.x+sway+p*d.horizontal,y:d.y+eased*d.travel,p:p};
 }
 function wetTrail(ctx,d){
- // Rain-on-glass v1.4: NO connected straight stroke. This is a short,
+ // Rain-on-glass v1.5: NO connected straight stroke. This is a short,
  // irregular damp film (flecks) with independent beads and a fading lifetime.
  var track=d.history;
  if(track.length===0)return;
@@ -103,11 +127,11 @@ function wetTrail(ctx,d){
   var n=sample.seed;
   // Irregularly distributed film islands. Many locations deliberately have gaps.
   if(n>.71)continue;
-  var filmWidth=d.width*(.07+.16*sample.spread);
+  var filmWidth=d.width*(.045+.12*sample.spread);
   var filmLength=1.3+sample.spread*4.8;
   var cx=sample.x+sample.offset;
   var cy=sample.y+d.height*.26;
-  var op=remaining*remaining*(.045+.13*sample.spread);
+  var op=remaining*remaining*(.025+.095*sample.spread);
   ctx.save();
   ctx.translate(cx,cy);
   ctx.rotate(sample.angle);
@@ -184,15 +208,15 @@ function droplet(ctx,d){
  ctx.restore();
  // Dark inside-edge caustic + bright external rim with a directional specular highlight.
  ctx.shadowColor='#000b';ctx.shadowBlur=5;ctx.shadowOffsetY=2;
- ctx.strokeStyle='#111821aa';ctx.lineWidth=Math.max(1.1,w*.08);shape(ctx,x,y,w,h);ctx.stroke();
+ ctx.strokeStyle='rgba(11,17,24,.28)';ctx.lineWidth=Math.max(.55,w*.042);shape(ctx,x,y,w,h);ctx.stroke();
  ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
  var rim=ctx.createLinearGradient(x-w*.55,y,x+w*.55,y+h*.7);
- rim.addColorStop(0,'#ffffffcf');rim.addColorStop(.30,'#dae7f63f');
- rim.addColorStop(.65,'#0a101856');rim.addColorStop(1,'#f9fcff9c');
+ rim.addColorStop(0,'#ffffffa8');rim.addColorStop(.30,'#dae7f62c');
+ rim.addColorStop(.65,'#0a10182b');rim.addColorStop(1,'#f9fcff73');
  ctx.lineWidth=Math.max(.6,w*.038);ctx.strokeStyle=rim;shape(ctx,x,y,w,h);ctx.stroke();
- var sparkle=ctx.createRadialGradient(x-w*.18,y+h*.22,0,x-w*.18,y+h*.22,w*.31);
- sparkle.addColorStop(0,'#ffffffe0');sparkle.addColorStop(.38,'#ffffff72');sparkle.addColorStop(1,'#ffffff00');
- ctx.fillStyle=sparkle;ctx.beginPath();ctx.ellipse(x-w*.18,y+h*.22,w*.31,h*.23,-.25,0,Math.PI*2);ctx.fill();
+ var sparkle=ctx.createRadialGradient(x-w*.18,y+h*.22,0,x-w*.18,y+h*.22,w*.25);
+ sparkle.addColorStop(0,'#ffffffac');sparkle.addColorStop(.38,'#ffffff45');sparkle.addColorStop(1,'#ffffff00');
+ ctx.fillStyle=sparkle;ctx.beginPath();ctx.ellipse(x-w*.18,y+h*.22,w*.25,h*.19,-.25,0,Math.PI*2);ctx.fill();
  ctx.restore();
 }
 function draw(){
@@ -220,10 +244,10 @@ function loop(t){
       spread:Math.random(),offset:random(-d.width*.24,d.width*.24),
       angle:random(-.22,.22)});
     }
-    if(Math.random()<.18&&d.satellites.length<9){
+    if(Math.random()<.13&&d.satellites.length<7){
      d.satellites.push({x:xy.x+random(-d.width*.31,d.width*.31),
       y:xy.y+d.height*.23+random(-7,7),born:d.age,
-      radius:random(.65,2.05),aspect:random(1.05,1.65),
+      radius:random(.5,1.45),aspect:random(1.05,1.65),
       angle:random(-.24,.24),life:random(1700,4500),
       pinned:random(200,1300),speed:random(.17,.5)});
     }
@@ -248,11 +272,11 @@ function loop(t){
 }
 function spawn(){
  if(!running()||drops.length>=3)return;
- var width=random(13,26);
+ var width=random(9,21);
  var height=width*random(1.2,1.7);
  var x=random(45,Math.max(46,viewW-45));
  var y=random(65,Math.max(66,viewH*.59));
- var travel=random(38,150);
+ var travel=random(55,190);
  var hold=random(1700,5800);
  var moveMs=random(6500,14000);
  drops.push({x:x,y:y,width:width,height:height,hold:hold,moveMs:moveMs,
@@ -278,6 +302,7 @@ enabled.checked=localStorage.getItem('playnice-atmosphere-poc')!=='off';
 enabled.addEventListener('change',function(){localStorage.setItem('playnice-atmosphere-poc',enabled.checked?'on':'off');reset();});
 document.getElementById('one').addEventListener('click',spawn);
 document.getElementById('three').addEventListener('click',function(){spawn();spawn();spawn();});
+document.getElementById('sceneToggle').addEventListener('click',function(){editorial=!editorial;this.setAttribute('aria-pressed',editorial?'true':'false');this.textContent=editorial?'Minimal layout':'Journal layout';background();draw();});
 document.addEventListener('visibilitychange',reset);
 reduce.addEventListener('change',reset);
 window.addEventListener('resize',resize);
