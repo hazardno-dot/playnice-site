@@ -94,8 +94,9 @@ Deno.serve(async (req) => {
   }
 
   const match = matches[0];
-  const eventDate = Date.parse(String(event?.created_at || ""));
-  const createdAt = Number.isFinite(eventDate) ? new Date(eventDate).toISOString() : new Date().toISOString();
+  // Store receipt time for chronological UI ordering. Provider events may
+  // have occurred before the acceptance audit committed and can be retried.
+  const createdAt = new Date().toISOString();
   const { error: insertError } = await admin.from("order_email_events").insert({
     order_id: match.order_id,
     stage: match.stage,
