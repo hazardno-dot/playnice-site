@@ -1,0 +1,61 @@
+/* PlayNice Atmosphere: opt-in PREVIEW ONLY; never enabled by default. */
+html.pn-atmosphere-preview {
+  --pn-night-base: #070a12;
+  --pn-day-base: #12100f;
+}
+html.pn-atmosphere-preview body {
+  transition: background-color 1.2s ease;
+}
+html.pn-atmosphere-preview[data-pn-mood="night"] body {
+  background-color: var(--pn-night-base);
+}
+html.pn-atmosphere-preview[data-pn-mood="day"] body {
+  background-color: var(--pn-day-base);
+}
+
+/* Backgrounds only: no overlay, no image filters, and no foreground edits. */
+html.pn-atmosphere-preview[data-pn-mood="night"] .app-shell,
+html.pn-atmosphere-preview[data-pn-mood="night"] .app-shell--home {
+  background-color: #080b14;
+  background-image:
+    radial-gradient(circle at 84% 9%, rgba(174,192,224,.115) 0%, rgba(66,97,147,.064) 15%, transparent 42%),
+    radial-gradient(circle at 13% 27%, rgba(30,49,85,.13) 0%, transparent 48%),
+    radial-gradient(1px 1px at 8% 12%, rgba(232,235,255,.45) 55%, transparent 100%),
+    radial-gradient(1px 1px at 69% 20%, rgba(238,241,255,.36) 55%, transparent 100%),
+    radial-gradient(1px 1px at 35% 47%, rgba(220,230,250,.28) 55%, transparent 100%),
+    radial-gradient(1px 1px at 90% 63%, rgba(235,242,255,.33) 55%, transparent 100%),
+    linear-gradient(180deg, #090d18 0%, #080a11 48%, #08090d 100%);
+  background-repeat: no-repeat;
+}
+html.pn-atmosphere-preview[data-pn-mood="day"] .app-shell,
+html.pn-atmosphere-preview[data-pn-mood="day"] .app-shell--home {
+  background-color: #12100f;
+  background-image:
+    radial-gradient(ellipse at 90% 6%, rgba(236,190,108,.14) 0%, rgba(189,151,103,.07) 24%, transparent 55%),
+    radial-gradient(ellipse at 12% 24%, rgba(118,136,160,.045) 0%, transparent 43%),
+    linear-gradient(180deg, #181612 0%, #12100f 47%, #090908 100%);
+  background-repeat: no-repeat;
+}
+
+/* Prototype controls are separate from the site design and only exist with opt-in. */
+.pn-atmosphere-controls {
+  position: fixed; z-index: 2147483000; bottom: max(12px,env(safe-area-inset-bottom));
+  left: 12px; right: 12px; width: max-content; max-width: calc(100vw - 24px);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  background: rgba(14,16,20,.96); border: 1px solid rgba(219,181,113,.35);
+  border-radius: 12px; padding: 10px; color: #eee7dc; font: 12px/1.4 Inter,system-ui,sans-serif;
+  box-shadow: 0 12px 35px rgba(0,0,0,.45);
+}
+.pn-atmosphere-controls button {
+  border: 1px solid rgba(223,189,128,.32); border-radius: 7px;
+  background: #272623; color: #f5eee3; font: inherit; padding: 8px 11px;
+}
+.pn-atmosphere-controls button[aria-pressed="true"] { background: #c8a879; color: #14110d; }
+.pn-atmosphere-controls button:focus-visible { outline: 2px solid #e5c89a; outline-offset: 2px; }
+.pn-atmosphere-controls span { color: #b4ad9f; }
+@media (max-width: 480px) {
+  .pn-atmosphere-controls { font-size: 11px; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.pn-atmosphere-preview body { transition: none; }
+}
