@@ -335,14 +335,9 @@ Deno.serve(async (req: Request) => {
       const customerEmailSent = typeof body?.customerEmailSent === "boolean" ? body.customerEmailSent : null;
 
       if (!orderId || !syncToken) return json(400, { status: "error", message: "Missing delivery identity" });
-      const { data: matchingOrder, error: matchError } = await admin.from("checkout_orders")
-        .select("id").eq("order_id", orderId).eq("sync_token", syncToken).maybeSingle();
-      if (matchError || !matchingOrder) return json(403, { status: "error", message: "Invalid email audit identity" });
-      const ok = await markDelivery(admin, { orderId, syncToken, adminEmailSent, customerEmailSent });
-      if (!ok) return json(500, { status: "error", message: "Failed to update email delivery status" });
-
-      // Never record a duplicate replay as a successful send. Store only an
-      // actual provider acknowledgement or explicit rejection.
+      // The restricted service role has no direct table SELECT/INSERT grants.
+      // Atomic, token-validated SQL RPC performs the audit write.
+      // Never resend emails to repair an audit failure.
       const events = [
         ["admin", adminEmailSent, body?.adminMessageId, body?.adminEmailError],
         ["customer", customerEmailSent, body?.customerMessageId, body?.customerEmailError],
@@ -354,14 +349,16 @@ Deno.serve(async (req: Request) => {
         provider_message_id: sent ? String(id || "").slice(0, 120) || null : null,
         error_message: sent ? null : String(error || "Resend request rejected").slice(0, 300),
       }));
-      if (events.length) {
-        const { error: auditError } = await admin.from("order_email_events").insert(events);
-        if (auditError) {
-          console.error("checkout-order-store email audit event write failed", auditError.message);
-          return json(200, { status: "ok", orderId, emailAuditRecorded: false });
-        }
+      const { data: recorded, error: auditError } = await admin.rpc("record_checkout_email_acceptances", {
+        p_order_id: orderId, p_sync_token: syncToken, p_events: events
+      });
+      if (auditError || recorded !== true) {
+        console.error("checkout-order-store email acceptance audit unavailable", auditError?.message || "Invalid audit identity");
+        return json(403, { status: "error", message: "Email acceptance audit could not be verified" });
       }
-      return json(200, { status: "ok", orderId, emailAuditRecorded: true });
+      const ok = await markDelivery(admin, { orderId, syncToken, adminEmailSent, customerEmailSent });
+      if (!ok) return json(200, { status: "ok", orderId, emailAuditRecorded: true, emailFlagsRecorded: false });
+      return json(200, { status: "ok", orderId, emailAuditRecorded: true, emailFlagsRecorded: true });
     }
 
     return json(400, { status: "error", message: "Unsupported action" });

@@ -43,32 +43,14 @@ Deno.serve(async (req) => {
     return json(400, { error:"Invalid identifiers" });
   }
   const db = createClient(url, key, { auth: { autoRefreshToken:false, persistSession:false } });
-  const { data: order, error: orderError } = await db.from("checkout_orders")
-    .select("order_id,status").eq("order_id",orderId).eq("environment","production").maybeSingle();
-  if (orderError) return json(503, { error:"Order lookup unavailable" });
-  if (!order) return json(404, { error:"Order not found" });
-  if (!["SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED"].includes(order.status)) {
-    return json(409, { error:"Order is not in a shipped lifecycle state" });
-  }
-  // A repeated callback can never create a second acceptance event.
-  const { data: recorded, error: readError } = await db.from("order_email_events")
-    .select("id,order_id").eq("provider_message_id",messageId).eq("state","accepted").limit(1);
-  if (readError) return json(503, { error:"Audit lookup unavailable" });
-  if (recorded?.length) {
-    return recorded[0].order_id === orderId
-      ? json(200, { status:"already_recorded" })
-      : json(409, { error:"Message ID already belongs to another order" });
-  }
-  const { data: prior, error: priorError } = await db.from("order_email_events")
-    .select("provider_message_id").eq("order_id",orderId)
-    .eq("stage","SHIPPED").eq("recipient_role","customer").eq("state","accepted").limit(1);
-  if (priorError) return json(503, { error:"Audit lookup unavailable" });
-  if (prior?.length) return json(409, { error:"A different SHIPPED email is already accepted" });
-  const { error } = await db.from("order_email_events").insert({
-    order_id:orderId,stage:"SHIPPED",recipient_role:"customer",
-    state:"accepted",source:"send_api",provider_message_id:messageId
+  const { data: status, error } = await db.rpc("record_shipped_email_acceptance", {
+    p_order_id: orderId, p_message_id: messageId
   });
-  if (error?.code === "23505") return json(200, { status:"already_recorded" });
-  if (error) return json(503, { error:"Audit write unavailable" });
-  return json(200, { status:"recorded" });
+  if (error) return json(503, { error: "Audit write unavailable" });
+  if (status === "recorded" || status === "already_recorded") return json(200, { status });
+  if (status === "order_not_found") return json(404, { error: "Order not found" });
+  if (status === "order_not_shipped") return json(409, { error: "Order is not in a shipped lifecycle state" });
+  if (status === "message_id_conflict" || status === "different_message_accepted")
+    return json(409, { error: "SHIPPED acceptance conflicts with an existing message" });
+  return json(503, { error: "Unexpected audit result" });
 });

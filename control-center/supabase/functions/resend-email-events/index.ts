@@ -73,44 +73,24 @@ Deno.serve(async (req) => {
   }
 
   const admin = createClient(url, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } });
-  // Never link a webhook to an order by recipient address or untrusted subject.
-  // Only a message ID previously accepted and audited by PlayNice can be updated.
-  const { data: matches, error: lookupError } = await admin.from("order_email_events")
-    .select("order_id,stage,recipient_role")
-    .eq("provider_message_id", providerId)
-    .eq("state", "accepted")
-    .order("created_at", { ascending: false })
-    .limit(1);
-  if (lookupError) return response(503, { error: "Event lookup unavailable" });
-  if (!matches?.length) {
-    // A Resend delivery event may race the checkout acceptance audit.
-    // Ask Resend to retry the fresh event once; older untracked messages
-    // are acknowledged without altering unrelated orders.
+  // Signed request already authenticated above. The service-only RPC resolves
+  // the provider ID against a previously recorded acceptance; never guess.
+  const { data: auditStatus, error: auditError } = await admin.rpc("record_resend_lifecycle_event", {
+    p_message_id: providerId,
+    p_event_id: eventId,
+    p_state: state,
+    p_error: (state === "bounced" || state === "failed" || state === "complained" || state === "delayed")
+      ? String(event?.data?.bounce?.message || event?.data?.reason || event?.type || "").slice(0, 300)
+      : null
+  });
+  if (auditError) return response(503, { error: "Event audit unavailable" });
+  if (auditStatus === "untracked_message") {
     const eventAge = Date.now() - Date.parse(event?.created_at || "");
-    if (Number.isFinite(eventAge) && eventAge >= 0 && eventAge < 60000) {
+    if (Number.isFinite(eventAge) && eventAge >= 0 && eventAge < 60000)
       return response(503, { status: "awaiting_acceptance_record" });
-    }
     return response(200, { status: "untracked_message" });
   }
-
-  const match = matches[0];
-  // Store receipt time for chronological UI ordering. Provider events may
-  // have occurred before the acceptance audit committed and can be retried.
-  const createdAt = new Date().toISOString();
-  const { error: insertError } = await admin.from("order_email_events").insert({
-    order_id: match.order_id,
-    stage: match.stage,
-    recipient_role: match.recipient_role,
-    state,
-    source: "resend_webhook",
-    provider_event_id: eventId,
-    provider_message_id: providerId,
-    error_message: (state === "bounced" || state === "failed" || state === "complained" || state === "delayed")
-      ? String(event?.data?.bounce?.message || event?.data?.reason || event?.type || "").slice(0, 300)
-      : null,
-    created_at: createdAt || new Date().toISOString(),
-  });
-  if (insertError?.code === "23505") return response(200, { status: "already_recorded" });
-  if (insertError) return response(503, { error: "Event write unavailable" });
-  return response(200, { status: "recorded" });
+  if (auditStatus !== "recorded" && auditStatus !== "already_recorded")
+    return response(503, { error: "Unexpected event audit status" });
+  return response(200, { status: auditStatus });
 });
