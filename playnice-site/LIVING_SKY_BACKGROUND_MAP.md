@@ -54,6 +54,8 @@ The first-paint HTML contains a **temporary**, client-clock-based palette that i
 | Exhibition body | `src/features/exhibition/Exhibition.css` | `body.exhibition-active` also declares `#080808`; if a future seam remains, inspect this alongside inherited active `body` CSS rather than blindly overriding. |
 | Desktop PDP base | `src/desktop-product-page/DesktopProductPage.css` | `.desktop-product-page` default `#090909`; product imagery and detailed panel surfaces. |
 | Desktop PDP overrides | `src/desktop-product-page/DesktopProductPageOverrides.css` | Legacy `body.desktop-product-route-active` forced `#050505 !important` across html/body/root/shell/main/header/footer/PDP. PR #572 gates this forcing to Atmosphere Off and makes outer PDP canvas transparent when On (**pending QA/merge**). |
+| Desktop PDP portal host | `src/desktop-product-page/DesktopProductPageBridge.css` | `.desktop-product-route-host` is the actual full-page portal wrapper; its opaque `#050505` must become transparent in active Living Sky. Earlier PDP-only transparency missed this parent. PR #572 revised fix (**pending QA**). |
+| Desktop PDP fixed header | `src/desktop-product-page/DesktopProductPageNavigationPolish.css` | Fixed `.header-system.header-next-system` has its own `#050505 !important`; active-only transparent override preserves fixed geometry. PR #572 revised fix (**pending QA**). |
 | Mobile PDP | `src/mobile-v2/product-page/MobileProductPage.css` | `.mobile-product-page` has its own warm black page canvas. PR #572 makes **only the outer page** transparent when On; bottle stage, note map and buying controls stay dark (**pending QA/merge**). |
 | Mobile first paint / performance | `src/mobile-v2/home/MobileFirstPaintContainment.css` | Content visibility and deferred painting of deeper Home sections; not Living Sky palette. May affect visual timing when troubleshooting. |
 
@@ -79,7 +81,7 @@ The first-paint HTML contains a **temporary**, client-clock-based palette that i
 | Exhibition mobile header | Transparent wrapper reveals sky | Original dark header strip | <=800px; closed/open menu |
 | Exhibition ending / final CTA | Transparent, inherits sky (**PR #572**) | Opaque `#080808` | End of long page |
 | Exhibition lightbox | Intentionally near-black | Near-black | Open an image/video |
-| Desktop PDP outer page | Sky visible behind content (**PR #572**) | Original black canvas | >=769px; photo panel stays dark |
+| Desktop PDP page + portal host + fixed header | Sky visible behind content (**PR #572, revised; pending QA**) | Original black canvas | >=769px; check portal wrapper, header and photo panel |
 | Mobile PDP outer page | Sky visible behind content (**PR #572**) | Original dark canvas | <=640px; bottle/card contrast |
 | PDP image/card/modal | Remains separately dark | Dark | No accidental transparency |
 | Navigation/menu overlays | Independently dark for readability | Independently dark | Dropdown + mobile sheet |
@@ -141,6 +143,6 @@ rg -n 'playnice_living_sky_|atmospherePreview|atmosphereCleanPreview|playnice:at
 - **PR #568:** Atmosphere On/Off moved into navigation; removed floating Production control.
 - **PR #570:** Exhibition page + mobile header transparency and earlier static JS import for sky.
 - **PR #571:** Critical pre-React `html`/`body` first-paint handling for normal/hard refresh.
-- **PR #572 (Draft at writing):** Desktop/mobile PDP canvas and Exhibition final outro sky reveal; this document.
+- **PR #572 (Draft at writing):** Desktop/mobile PDP canvas, **desktop portal host and fixed header**, Exhibition final outro sky reveal; this document. Earlier PR #572 Preview showed PDP remaining black while Atmosphere On; the portal host and fixed header were found after that test and need a new Preview QA.
 
 **Rule for future work:** When a new background seam appears, identify which element draws the opaque rectangle and update that one route-scoped canvas. Do not rebuild the sky engine or create independent per-page seasonal modes.
