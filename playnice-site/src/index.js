@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+// Initialize Living Sky palette before first React render to avoid black first-paint flash.
+import "./features/atmosphere/DayNightPreview";
 import PrivateSelectionEnhancer from "./features/private-selection/PrivateSelectionEnhancer";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
@@ -110,10 +112,3 @@ if (window.matchMedia("(min-width: 769px)").matches) {
   renderApp();
 }
 
-/* Living Sky runs automatically in Production and only by opt-in on previews. */
-const atmosphereParams = new URLSearchParams(window.location.search);
-const atmosphereHost = window.location.hostname.toLowerCase();
-const isProductionAtmosphereHost = atmosphereHost === "playniceshop.me" || atmosphereHost === "www.playniceshop.me";
-if (isProductionAtmosphereHost || atmosphereParams.get("atmospherePreview") === "1") {
-  import("./features/atmosphere/DayNightPreview").catch(() => {});
-}
