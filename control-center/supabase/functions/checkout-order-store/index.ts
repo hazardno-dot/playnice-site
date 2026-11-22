@@ -335,6 +335,9 @@ Deno.serve(async (req: Request) => {
       const customerEmailSent = typeof body?.customerEmailSent === "boolean" ? body.customerEmailSent : null;
 
       if (!orderId || !syncToken) return json(400, { status: "error", message: "Missing delivery identity" });
+      const { data: matchingOrder, error: matchError } = await admin.from("checkout_orders")
+        .select("id").eq("order_id", orderId).eq("sync_token", syncToken).maybeSingle();
+      if (matchError || !matchingOrder) return json(403, { status: "error", message: "Invalid email audit identity" });
       const ok = await markDelivery(admin, { orderId, syncToken, adminEmailSent, customerEmailSent });
       if (!ok) return json(500, { status: "error", message: "Failed to update email delivery status" });
 
