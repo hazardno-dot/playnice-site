@@ -7,8 +7,8 @@ html.pn-atmosphere-preview {
   --sky-star-opacity: .14;
 }
 html.pn-atmosphere-preview body { background-color: var(--sky-base); }
-html.pn-atmosphere-preview .app-shell,
-html.pn-atmosphere-preview .app-shell--home {
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell,
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell--home {
   background-color: var(--sky-base);
   background-image:
     radial-gradient(ellipse 66% 38% at 87% 8%,
@@ -20,7 +20,7 @@ html.pn-atmosphere-preview .app-shell--home {
   background-repeat: no-repeat;
 }
 /* Stars are tiny pinpoints inside the shell background, never over photographs/text. */
-html.pn-atmosphere-preview .app-shell::before {
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -35,8 +35,8 @@ html.pn-atmosphere-preview .app-shell::before {
     radial-gradient(circle at 59% 65%, #dee8fa 0 .55px, transparent .9px);
   background-repeat: no-repeat;
 }
-html.pn-atmosphere-preview .app-shell { position: relative; }
-html.pn-atmosphere-preview .app-shell > * { position: relative; }
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell { position: relative; }
+html.pn-atmosphere-preview[data-pn-sky="active"] .app-shell > * { position: relative; }
 /* Stars never intercept clicks; no image, CTA or typography styling is changed. */
 .pn-atmosphere-controls {
   position: fixed;
