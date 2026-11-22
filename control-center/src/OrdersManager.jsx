@@ -182,6 +182,7 @@ function OrdersWorkspace() {
   const [emailEvents, setEmailEvents] = useState([]);
   const [emailTrackingReady, setEmailTrackingReady] = useState(false);
   const [emailRetryEnabled, setEmailRetryEnabled] = useState(false);
+  const [emailRetryClaims, setEmailRetryClaims] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
@@ -204,6 +205,7 @@ function OrdersWorkspace() {
     setEmailEvents(Array.isArray(payload?.email_events) ? payload.email_events : []);
     setEmailTrackingReady(Boolean(payload?.email_tracking_ready));
     setEmailRetryEnabled(Boolean(payload?.email_retry_enabled));
+    setEmailRetryClaims(Array.isArray(payload?.email_retry_claims) ? payload.email_retry_claims : []);
     setWriteEnabled(Boolean(payload?.write_enabled));
     setSelectedId((current) => nextOrders.some((order) => order.id === current) ? current : (nextOrders[0]?.id || ""));
   };
@@ -975,11 +977,13 @@ function OrdersWorkspace() {
                       result.state === "complained" ? "Complained" :
                       result.state === "delayed" ? "Delayed" : result.state}</strong>
                     {stage === "PACKED" && role === "customer" && result.state === "failed" &&
-                     emailRetryEnabled && selected.status === "PACKED" &&
+                     emailRetryEnabled && !emailRetryClaims.includes(selected.order_id) && selected.status === "PACKED" &&
                      !emailEvents.some((e) => e.order_id === selected.order_id && e.stage === "PACKED" && e.recipient_role === "customer" && e.state === "accepted")
                       ? <button type="button" className="orders-email-retry" onClick={retryPackedEmail} disabled={Boolean(busy)}>
                           {busy === "retry-packed-email" ? "Retrying…" : "Retry once"}
                         </button> : null}
+                    {stage === "PACKED" && result.state === "failed" && emailRetryClaims.includes(selected.order_id)
+                      ? <small className="orders-email-retry-used">Retry already used</small> : null}
                   </div>
                 </div>;
               })}
