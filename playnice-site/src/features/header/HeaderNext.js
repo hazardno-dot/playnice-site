@@ -466,6 +466,7 @@ function HeaderNext({
               ))}
               {atmosphereAvailable && (
                 <button type="button" className="header-next-atmosphere-desktop"
+                  style={{ "--discover-index": discoverItems.length }}
                   onClick={toggleAtmosphere}
                   aria-label={lang === "sr" ? "Uključi ili isključi atmosferu" : "Toggle atmosphere"}
                   aria-pressed={atmosphereEnabled}>
@@ -610,19 +611,21 @@ function HeaderNext({
           </div>
         </div>
 
-        <button className="header-next-mobile-language" type="button" onClick={onLanguage}>
-          <span>{copy.language}</span>
-          <strong>{lang === "sr" ? "SR / EN" : "EN / SR"}</strong>
-        </button>
-        {atmosphereAvailable && (
-          <button className="header-next-mobile-atmosphere" type="button"
-            onClick={toggleAtmosphere}
-            aria-label={lang === "sr" ? "Uključi ili isključi atmosferu" : "Toggle atmosphere"}
-            aria-pressed={atmosphereEnabled}>
-            <span>{lang === "sr" ? "Atmosfera" : "Atmosphere"}</span>
-            <strong>{atmosphereEnabled ? "On" : "Off"}</strong>
+        <div className="header-next-mobile-preferences">
+          <button className="header-next-mobile-language" type="button" onClick={onLanguage}>
+            <span>{copy.language}</span>
+            <strong>{lang === "sr" ? "SR / EN" : "EN / SR"}</strong>
           </button>
-        )}
+          {atmosphereAvailable && (
+            <button className="header-next-mobile-atmosphere" type="button"
+              onClick={toggleAtmosphere}
+              aria-label={lang === "sr" ? "Uključi ili isključi atmosferu" : "Toggle atmosphere"}
+              aria-pressed={atmosphereEnabled}>
+              <span>{lang === "sr" ? "Atmosfera" : "Atmosphere"}</span>
+              <strong>{atmosphereEnabled ? "On" : "Off"}</strong>
+            </button>
+          )}
+        </div>
       </div>
     </header>
   );
