@@ -3694,6 +3694,37 @@ export const discoveryProfiles = {
     "cleanliness": 9,
     "versatility": 9,
     "gourmandness": 1.2
+  },
+
+  "mykonos-conquer": {
+    "date": 8.5,
+    "casual": 8,
+    "citrus": 7.8,
+    "office": 8,
+    "unisex": 5.5,
+    "warmth": 7,
+    "aquatic": 0,
+    "dryness": 5.2,
+    "evening": 8.5,
+    "powdery": 4.5,
+    "airiness": 5.8,
+    "darkness": 3.5,
+    "elegance": 9,
+    "feminine": 3.5,
+    "florality": 5.5,
+    "freshness": 7.8,
+    "longevity": 8.5,
+    "masculine": 8,
+    "spiciness": 7.5,
+    "sweetness": 4.5,
+    "woodiness": 6,
+    "creaminess": 4,
+    "fruitiness": 1.5,
+    "projection": 7.5,
+    "aromaticity": 6.5,
+    "cleanliness": 8,
+    "versatility": 8.5,
+    "gourmandness": 1.8
   }
 };
 

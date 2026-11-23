@@ -515,5 +515,10 @@ export const productWearContext = {
   "Mykonos Reflection Elixir Extrait de Parfum": {
     "sr": "Sunčani dani, grad, posao i večera na terasi.",
     "en": "Sunny days, city walks, work and terrace dinners."
+  },
+
+  "Mykonos Conquer Extrait de Parfum": {
+    "sr": "Posao, večernji izlazak i susreti uz dozu samopouzdanja.",
+    "en": "Work, evenings out and confident first impressions."
   }
 };

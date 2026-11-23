@@ -184,6 +184,10 @@ export default [
   {
     "sr": "Kad planiraš da se sakriješ u gužvi. Grejpfrut će prvi odati tvoju lokaciju, a ambroksan poslati koordinate.",
     "en": "When trying to disappear into a crowd. Grapefruit will expose your location, and ambroxan will send everyone your coordinates."
+  },
+  {
+    "sr": "Kad planiraš da osvojiš svet do podneva. Kreni od komšiluka, Napoleone. Parfem se zove Conquer, ne Conquer Everything.",
+    "en": "When planning to conquer the world before lunch. Start with your neighborhood, Napoleon. It's Conquer, not Conquer Everything."
   }
 
 ];

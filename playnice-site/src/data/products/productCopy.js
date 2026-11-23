@@ -4038,6 +4038,55 @@ export const productCopy = {
       "en": "For bright citrus, soft peach and a polished, clean trail that never feels ordinary.",
       "sr": "Kad želiš svetle citruse, nežnu breskvu i čist, sofisticiran trag koji nije dosadan."
     }
+  },
+
+  "Mykonos Conquer Extrait de Parfum": {
+    "miniTag": {
+      "en": "⚡ Citrus / Spicy",
+      "sr": "⚡ Citrusni / Začinski"
+    },
+    "card": {
+      "en": "Bergamot and ginger meet powdery iris and a warm amber base.",
+      "sr": "Bergamot i đumbir uz puderasti iris i toplu ambrastu bazu."
+    },
+    "modal": {
+      "en": "Bergamot, ginger and cardamom spark the opening. Orris and orange blossom add refined softness, while patchouli, amber, musk and vanilla warm the trail.",
+      "sr": "Bergamot, đumbir i kardamom otvaraju miris živahno. Iris i cvet narandže daju uglađenu mekoću, dok pačuli, amber, mošus i vanila zaokružuju trag."
+    },
+    "scentType": {
+      "en": "Citrus spicy amber floral",
+      "sr": "Citrusni, začinski, ambrasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Bergamot",
+        "Đumbir",
+        "Iris",
+        "Amber"
+      ],
+      "en": [
+        "Bergamot",
+        "Ginger",
+        "Orris",
+        "Amber"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Začinski",
+        "Elegantan",
+        "Topao"
+      ],
+      "en": [
+        "Spicy",
+        "Elegant",
+        "Warm"
+      ]
+    },
+    "whyChoose": {
+      "en": "For energetic spice, clean florals and an elegant, warm drydown.",
+      "sr": "Za spoj energičnih začina, čistih cvetova i elegantne, tople baze."
+    }
   }
 };
 
