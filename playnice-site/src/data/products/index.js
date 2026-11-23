@@ -3417,9 +3417,8 @@ export const products = [
     moods: ["clean","summer","signature"],
     recommendations: ["khadlaj-island-dreams","essential-parfums-nice-bergamote","french-avenue-pinnace-oryn"],
     inspiredBy: {
-      name: "Original Mykonos creation",
-      short: "Citrus Fruity Chypre DNA"
-    },
+      name: "Louis Vuitton Symphony",
+      short: "Symphony DNA"},
     noteMap: {
       top: ["grapefruit","bergamot","ginger","rhubarb"],
       heart: ["ylang-ylang","peach","magnolia"],
