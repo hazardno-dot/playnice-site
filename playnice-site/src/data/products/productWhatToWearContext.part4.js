@@ -186,6 +186,10 @@ const entries = [
   {
     "sr": "Svetloplava košulja, bež pantalone i bele patike; uveče lagani sako.",
     "en": "Pale-blue shirt, beige trousers and white sneakers; a light blazer after dark."
+  },
+  {
+    "sr": "Tamnoplava košulja, krojene pantalone i kožne mokasine. Za veče, sako bez kravate.",
+    "en": "Navy shirt, tailored trousers and leather loafers. For evening, add an unstructured blazer."
   }
 
 ];

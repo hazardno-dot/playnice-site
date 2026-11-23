@@ -3425,6 +3425,32 @@ export const products = [
       heart: ["ylang-ylang","peach","magnolia"],
       base: ["ambroxan","musk"]
     }
+  },
+  {
+    id: 123,
+    addedAt: "2026-11-23T22:51:49.027Z",
+    slug: "mykonos-conquer",
+    name: "Mykonos Conquer Extrait de Parfum",
+    modalName: "Mykonos Conquer Extrait",
+    shortName: "Conquer",
+    category: "Niche",
+    image: "/products/mykonos-conquer.png",
+    sizes: {"5ml":8,"10ml":14,"20ml":27},
+    badge: "SIGNATURE",
+    rating: 8.5,
+    ratingLabel: "PlayNice Pick",
+    season: "all",
+    moods: ["clean","signature","date"],
+    recommendations: ["ysl-myslf-edp","prada-paradigme-edp","rayhaan-vantage"],
+    inspiredBy: {
+      name: "Yves Saint Laurent MYSLF L'Absolu",
+      short: "MYSLF L'Absolu DNA"
+    },
+    noteMap: {
+      top: ["bergamot","ginger","cardamom"],
+      heart: ["iris","orange-blossom"],
+      base: ["patchouli","musk","amber","vanilla"]
+    }
   }
 
 ];
