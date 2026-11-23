@@ -3402,7 +3402,7 @@ export const products = [
   },
   {
     id: 122,
-    addedAt: "2026-11-23T22:25:23.314Z",
+    addedAt: "2026-11-23T22:31:47.113Z",
     slug: "mykonos-reflection-elixir",
     name: "Mykonos Reflection Elixir Extrait de Parfum",
     modalName: "Mykonos Reflection Elixir Extrait",
@@ -3410,7 +3410,7 @@ export const products = [
     category: "Niche",
     image: "/products/mykonos-reflection-elixir.png",
     sizes: {"5ml":8,"10ml":14,"20ml":27},
-    badge: "NEW ARRIVAL",
+    badge: "FRESH DROP",
     rating: 8.5,
     ratingLabel: "PlayNice Pick",
     season: "all",
