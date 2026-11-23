@@ -3451,6 +3451,32 @@ export const products = [
       heart: ["iris","orange-blossom"],
       base: ["patchouli","musk","amber","vanilla"]
     }
+  },
+  {
+    id: 124,
+    addedAt: "2026-11-23T23:10:36.562Z",
+    slug: "mykonos-dark-secret",
+    name: "Mykonos Dark Secret Extrait de Parfum",
+    modalName: "Mykonos Dark Secret Extrait",
+    shortName: "Dark Secret",
+    category: "Niche",
+    image: "/products/mykonos-dark-secret.png",
+    sizes: {"5ml":5,"10ml":9,"20ml":17},
+    badge: "DATE NIGHT",
+    rating: 8.4,
+    ratingLabel: "PlayNice Pick",
+    season: "winter",
+    moods: ["rich","date","signature"],
+    recommendations: ["lattafa-khamrah-qahwa","lattafa-khamrah-waha-edp","tom-ford-noir-extreme"],
+    inspiredBy: {
+      name: "Kilian Angels' Share",
+      short: "Angels' Share DNA"
+    },
+    noteMap: {
+      top: ["red-fruits","saffron","bergamot"],
+      heart: ["cinnamon","nutmeg","jasmine","praline"],
+      base: ["amber","musk","tonka-bean","sandalwood"]
+    }
   }
 
 ];

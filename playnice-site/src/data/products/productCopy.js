@@ -4087,6 +4087,55 @@ export const productCopy = {
       "en": "For energetic spice, clean florals and an elegant, warm drydown.",
       "sr": "Za spoj energičnih začina, čistih cvetova i elegantne, tople baze."
     }
+  },
+
+  "Mykonos Dark Secret Extrait de Parfum": {
+    "miniTag": {
+      "en": "🍒 Cherry / Spicy",
+      "sr": "🍒 Trešnja / Začinski"
+    },
+    "card": {
+      "en": "Dark cherry and saffron meet praline, cinnamon and warm amber.",
+      "sr": "Tamna trešnja i šafran uz praline, cimet i topao amber."
+    },
+    "modal": {
+      "en": "Black cherry, saffron and bergamot set a rich opening. Cinnamon, praline and jasmine deepen the heart, while tonka, amber and sandalwood warm the finish.",
+      "sr": "Crna trešnja, šafran i bergamot otvaraju raskošnu priču. Cimet, praline i jasmin daju dubinu, dok tonka, amber i sandalovina greju završnicu."
+    },
+    "scentType": {
+      "en": "Fruity spicy gourmand amber",
+      "sr": "Voćni, začinski, gourmand i ambrasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Crna trešnja",
+        "Šafran",
+        "Praline",
+        "Amber"
+      ],
+      "en": [
+        "Black Cherry",
+        "Saffron",
+        "Praline",
+        "Amber"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Sladak",
+        "Začinski",
+        "Zavodljiv"
+      ],
+      "en": [
+        "Sweet",
+        "Spicy",
+        "Seductive"
+      ]
+    },
+    "whyChoose": {
+      "en": "For lovers of dark fruit, warm spices and a sweet, seductive evening drydown.",
+      "sr": "Za ljubitelje tamnog voća, toplih začina i slatke, zavodljive večernje baze."
+    }
   }
 };
 
