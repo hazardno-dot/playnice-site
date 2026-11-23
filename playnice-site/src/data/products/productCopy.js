@@ -3989,6 +3989,55 @@ export const productCopy = {
       "en": "For those who love sparkling ginger, bright citrus and warmth without heavy sweetness.",
       "sr": "Za one koji vole živahan đumbir, blistave citruse i toplinu bez teške slatkoće."
     }
+  },
+
+  "Mykonos Reflection Elixir Extrait de Parfum": {
+    "miniTag": {
+      "en": "🍑 Citrus / Fruity",
+      "sr": "🍑 Citrusni / Voćni"
+    },
+    "card": {
+      "en": "Grapefruit and ginger meet juicy peach and a clean musky base.",
+      "sr": "Grejpfrut i đumbir uz sočnu breskvu i čistu mošusnu bazu."
+    },
+    "modal": {
+      "en": "Grapefruit, bergamot and ginger burst open with crisp energy. Peach and magnolia soften the citrus before ambroxan and musk leave a clean, lasting trail.",
+      "sr": "Grejpfrut, bergamot i đumbir otvaraju miris sveže i oštro. Breskva i magnolija ublažavaju citruse, dok ambroksan i mošus daju čist, dugotrajan trag."
+    },
+    "scentType": {
+      "en": "Citrus fruity floral musk",
+      "sr": "Citrusni, voćno-cvetni, mošusni"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Grejpfrut",
+        "Đumbir",
+        "Breskva",
+        "Ambroksan"
+      ],
+      "en": [
+        "Grapefruit",
+        "Ginger",
+        "Peach",
+        "Ambroxan"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Citrusni",
+        "Sočan",
+        "Čist"
+      ],
+      "en": [
+        "Citrusy",
+        "Juicy",
+        "Clean"
+      ]
+    },
+    "whyChoose": {
+      "en": "For bright citrus, soft peach and a polished, clean trail that never feels ordinary.",
+      "sr": "Kad želiš svetle citruse, nežnu breskvu i čist, sofisticiran trag koji nije dosadan."
+    }
   }
 };
 

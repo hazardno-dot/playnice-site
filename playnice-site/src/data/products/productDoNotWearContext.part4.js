@@ -180,6 +180,10 @@ export default [
   {
     "sr": "Kad te spuštaju u kavezu među ajkule kod Australije. Ako neka pregrize rešetke zbog tvog parfema, nemoj reći da te nismo upozorili.",
     "en": "When cage diving with sharks off Australia. If one bites through the bars for your fragrance, don't say we didn't warn you."
+  },
+  {
+    "sr": "Kad planiraš da se sakriješ u gužvi. Grejpfrut će prvi odati tvoju lokaciju, a ambroksan poslati koordinate.",
+    "en": "When trying to disappear into a crowd. Grapefruit will expose your location, and ambroxan will send everyone your coordinates."
   }
 
 ];

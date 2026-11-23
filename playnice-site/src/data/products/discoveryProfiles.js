@@ -3663,6 +3663,37 @@ export const discoveryProfiles = {
     "cleanliness": 8.2,
     "versatility": 9,
     "gourmandness": 1.8
+  },
+
+  "mykonos-reflection-elixir": {
+    "date": 7.5,
+    "casual": 9.5,
+    "citrus": 9.5,
+    "office": 8.5,
+    "unisex": 9.5,
+    "warmth": 3.8,
+    "aquatic": 1,
+    "dryness": 4,
+    "evening": 7.2,
+    "powdery": 2,
+    "airiness": 8.2,
+    "darkness": 1.2,
+    "elegance": 8.5,
+    "feminine": 5.5,
+    "florality": 5.2,
+    "freshness": 9.2,
+    "longevity": 8.8,
+    "masculine": 5.5,
+    "spiciness": 4.5,
+    "sweetness": 4.2,
+    "woodiness": 3.2,
+    "creaminess": 2.5,
+    "fruitiness": 7.5,
+    "projection": 8,
+    "aromaticity": 5.8,
+    "cleanliness": 9,
+    "versatility": 9,
+    "gourmandness": 1.2
   }
 };
 
