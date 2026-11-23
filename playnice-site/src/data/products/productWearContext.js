@@ -520,5 +520,10 @@ export const productWearContext = {
   "Mykonos Conquer Extrait de Parfum": {
     "sr": "Posao, večernji izlazak i susreti uz dozu samopouzdanja.",
     "en": "Work, evenings out and confident first impressions."
+  },
+
+  "Mykonos Dark Secret Extrait de Parfum": {
+    "sr": "Hladne večeri, koktel-bar, koncert i večera udvoje.",
+    "en": "Cold evenings, cocktail bars, concerts and dinner for two."
   }
 };

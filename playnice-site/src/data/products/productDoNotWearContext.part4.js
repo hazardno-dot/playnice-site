@@ -188,6 +188,10 @@ export default [
   {
     "sr": "Kad planiraš da osvojiš svet do podneva. Kreni od komšiluka, Napoleone. Parfem se zove Conquer, ne Conquer Everything.",
     "en": "When planning to conquer the world before lunch. Start with your neighborhood, Napoleon. It's Conquer, not Conquer Everything."
+  },
+  {
+    "sr": "Kad planiraš da provališ u banku. Sa ovoliko trešnje i šafrana, policijski pas će preskočiti novac i krenuti pravo za tobom.",
+    "en": "When planning a bank heist. With this much cherry and saffron, the police dog will ignore the money and follow your scent instead."
   }
 
 ];

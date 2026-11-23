@@ -3725,6 +3725,37 @@ export const discoveryProfiles = {
     "cleanliness": 8,
     "versatility": 8.5,
     "gourmandness": 1.8
+  },
+
+  "mykonos-dark-secret": {
+    "date": 9.5,
+    "casual": 5,
+    "citrus": 2.2,
+    "office": 3.5,
+    "unisex": 9.2,
+    "warmth": 9.2,
+    "aquatic": 0,
+    "dryness": 3.5,
+    "evening": 9.8,
+    "powdery": 3,
+    "airiness": 1.5,
+    "darkness": 8.2,
+    "elegance": 8.2,
+    "feminine": 5.5,
+    "florality": 3.5,
+    "freshness": 2.8,
+    "longevity": 8.8,
+    "masculine": 5.5,
+    "spiciness": 7.8,
+    "sweetness": 8.7,
+    "woodiness": 6.2,
+    "creaminess": 6.8,
+    "fruitiness": 8.5,
+    "projection": 8.5,
+    "aromaticity": 2,
+    "cleanliness": 2.5,
+    "versatility": 5.5,
+    "gourmandness": 8.8
   }
 };
 
