@@ -140,6 +140,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/black-cherry.webp",
     fallback: "•",
   },
+  "marigold": {
+    sr: "Neven",
+    en: "Marigold",
+    image: "/note-map/marigold.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
