@@ -3473,8 +3473,8 @@ export const products = [
       short: "Angels' Share DNA"
     },
     noteMap: {
-      top: ["red-fruits","saffron","bergamot"],
-      heart: ["cinnamon","nutmeg","jasmine","praline"],
+      top: ["black-cherry","saffron","bergamot"],
+      heart: ["cinnamon","nutmeg","marigold","jasmine","praline"],
       base: ["amber","musk","tonka-bean","sandalwood"]
     }
   }
