@@ -134,6 +134,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/green-notes.webp",
     fallback: "•",
   },
+  "black-cherry": {
+    sr: "Crna trešnja",
+    en: "Black Cherry",
+    image: "/note-map/black-cherry.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
