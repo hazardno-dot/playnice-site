@@ -3399,6 +3399,32 @@ export const products = [
       heart: ["magnolia","neroli"],
       base: ["amber","sandalwood","vanilla"]
     }
+  },
+  {
+    id: 122,
+    addedAt: "2026-11-23T22:25:23.314Z",
+    slug: "mykonos-reflection-elixir",
+    name: "Mykonos Reflection Elixir Extrait de Parfum",
+    modalName: "Mykonos Reflection Elixir Extrait",
+    shortName: "Reflection Elixir",
+    category: "Niche",
+    image: "/products/mykonos-reflection-elixir.png",
+    sizes: {"5ml":8,"10ml":14,"20ml":27},
+    badge: "NEW ARRIVAL",
+    rating: 8.5,
+    ratingLabel: "PlayNice Pick",
+    season: "all",
+    moods: ["clean","summer","signature"],
+    recommendations: ["khadlaj-island-dreams","essential-parfums-nice-bergamote","french-avenue-pinnace-oryn"],
+    inspiredBy: {
+      name: "Original Mykonos creation",
+      short: "Citrus Fruity Chypre DNA"
+    },
+    noteMap: {
+      top: ["grapefruit","bergamot","ginger","rhubarb"],
+      heart: ["ylang-ylang","peach","magnolia"],
+      base: ["ambroxan","musk"]
+    }
   }
 
 ];

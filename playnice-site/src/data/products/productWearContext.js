@@ -510,5 +510,10 @@ export const productWearContext = {
   "Goldfield & Banks Ingenious Ginger Eau de Parfum": {
     "sr": "Sunčani dani, putovanja, ručkovi i opušteni susreti.",
     "en": "Sunny days, travel, lunches and relaxed encounters."
+  },
+
+  "Mykonos Reflection Elixir Extrait de Parfum": {
+    "sr": "Sunčani dani, grad, posao i večera na terasi.",
+    "en": "Sunny days, city walks, work and terrace dinners."
   }
 };
