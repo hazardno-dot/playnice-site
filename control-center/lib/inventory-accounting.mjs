@@ -90,6 +90,15 @@ export function inventoryGiftItems(payload) {
   return legacy ? [{ product_name: canonicalProductName(legacy[1]), ml: Number(legacy[2]) }] : [];
 }
 
+// Keep existing stock totals authoritative; do not invent a split for inconsistent historical data.
+export function consumptionBreakdown(total, sold, gift) {
+  const round = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
+  if (![total, sold, gift].every(Number.isFinite) || sold < 0 || gift < 0 || Math.abs(total - sold - gift) > 0.011) {
+    return { orders_out_ml: null, gift_out_ml: null };
+  }
+  return { orders_out_ml: round(sold), gift_out_ml: round(gift) };
+}
+
 export function buildInventoryAnalytics(orders, stockRows, commerce) {
   const tracked = new Map((Array.isArray(stockRows) ? stockRows : []).map((row) => [
     canonicalProductName(row.product_name).toLowerCase(),
@@ -104,7 +113,9 @@ export function buildInventoryAnalytics(orders, stockRows, commerce) {
       estimated: Boolean(row.estimated),
       baseline_verified: Boolean(row.baseline_verified),
       historical_baseline: Boolean(row.historical_baseline),
-      consumed_since_tracking_ml: 0
+      consumed_since_tracking_ml: 0,
+      sold_since_tracking_ml: 0,
+      gift_since_tracking_ml: 0
     }
   ]));
 
@@ -112,6 +123,7 @@ export function buildInventoryAnalytics(orders, stockRows, commerce) {
   // Active, non-delivered orders have already committed stock but are absent
   // from the CC delivered-only historical commerce RPC.
   const historicalTransit = new Map();
+  const transitBreakdown = new Map();
   const resale = new Map();
   for (const item of commerce.full_bottles || []) {
     const product_name = canonicalProductName(item.product_name);
@@ -130,15 +142,19 @@ export function buildInventoryAnalytics(orders, stockRows, commerce) {
     const consumedAt = order.packed_at || order.shipped_at || order.updated_at || order.created_at;
     if (!consumedAt) continue;
     const payload = order.source_payload || {};
-    const entries = [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)];
+    const entries = [...inventorySaleItems(payload.items).map(entry => ({...entry, kind: 'sold'})), ...inventoryGiftItems(payload).map(entry => ({...entry, kind: 'gift'}))];
     for (const entry of entries) {
       const key = String(entry.product_name || "").toLowerCase();
       const row = tracked.get(key);
       if (!row || (!row.estimated && new Date(consumedAt) < new Date(row.tracking_started_at))) continue;
       row.consumed_since_tracking_ml += Number(entry.ml || 0);
+      row[entry.kind === 'gift' ? 'gift_since_tracking_ml' : 'sold_since_tracking_ml'] += Number(entry.ml || 0);
       if (row.historical_baseline &&
           ["PACKED","SHIPPED","OUT_FOR_DELIVERY"].includes(order.status)) {
         historicalTransit.set(key,(historicalTransit.get(key)||0)+Number(entry.ml||0));
+        const split = transitBreakdown.get(key) || {sold:0,gift:0};
+        split[entry.kind] += Number(entry.ml || 0);
+        transitBreakdown.set(key, split);
       }
     }
   }
@@ -163,12 +179,18 @@ export function buildInventoryAnalytics(orders, stockRows, commerce) {
       ? Number(historical.get(row.product_name.toLowerCase())?.ml || 0) +
         Number(historicalTransit.get(row.product_name.toLowerCase()) || 0)
       : Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
+    const history = historical.get(row.product_name.toLowerCase());
+    const transit = transitBreakdown.get(row.product_name.toLowerCase());
+    const breakdown = row.historical_baseline
+      ? consumptionBreakdown(consumed, (history?.sold_ml || 0) + (transit?.sold || 0), (history?.gift_ml || 0) + (transit?.gift || 0))
+      : consumptionBreakdown(consumed, row.sold_since_tracking_ml, row.gift_since_tracking_ml);
     const remaining = Math.round((row.stock_in_ml - consumed - row.manual_out_ml + Number.EPSILON) * 100) / 100;
     return {
       ...row,
       resale_in_ml: resale.get(row.product_name.toLowerCase())?.ml || 0,
       resale_out_ml: resale.get(row.product_name.toLowerCase())?.ml || 0,
       consumed_since_tracking_ml: consumed,
+      ...breakdown,
       // Audit estimate only. Not subtracted from the operational remaining_ml.
       pending_new_ml: Math.round(((newDemand.get(row.product_name.toLowerCase()) || 0) + Number.EPSILON) * 100) / 100,
       hypothetical_after_new_ml: Math.round((remaining - (newDemand.get(row.product_name.toLowerCase()) || 0) + Number.EPSILON) * 100) / 100,

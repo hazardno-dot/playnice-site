@@ -216,16 +216,19 @@ export default function AnalyticsManager() {
   const fullBottles = data.orderAnalytics?.full_bottles || [];
   const giftProducts = data.orderAnalytics?.gifts || [];
   const inventory = data.orderAnalytics?.inventory || {};
-  const historicalByName = new Map((inventory.historical_consumption || []).map((row) => [String(row.product_name || "").toLowerCase(), Number(row.ml || 0)]));
+  const historicalByName = new Map((inventory.historical_consumption || []).map((row) => [String(row.product_name || "").toLowerCase(), row]));
   const storedByName = new Map((inventory.rows || []).map((row) => [String(row.product_name || "").toLowerCase(), row]));
   const resaleByName = new Map((inventory.resale_bottles || []).map((row) => [String(row.product_name || "").toLowerCase(), Number(row.ml || 0)]));
   const inventoryRows = products.map((product) => {
     const stored = storedByName.get(String(product.name).toLowerCase());
     if (stored) return stored;
-    const used = historicalByName.get(String(product.name).toLowerCase()) || 0;
+    const history = historicalByName.get(String(product.name).toLowerCase());
+    const used = Number(history?.ml || 0);
+    const sold = Number(history?.sold_ml || 0), gift = Number(history?.gift_ml || 0);
+    const validSplit = Number.isFinite(sold) && Number.isFinite(gift) && sold >= 0 && gift >= 0 && Math.abs(used - sold - gift) <= 0.011;
     const remaining = Math.round((100 - used) * 100) / 100;
     const resaleMl = resaleByName.get(String(product.name).toLowerCase()) || 0;
-    return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, resale_in_ml: resaleMl, resale_out_ml: resaleMl, consumed_since_tracking_ml: used, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
+    return { product_name: product.name, estimated: true, provisional: true, opening_balance_ml: 100, restock_ml: 0, manual_out_ml: 0, resale_in_ml: resaleMl, resale_out_ml: resaleMl, consumed_since_tracking_ml: used, orders_out_ml: validSplit ? sold : null, gift_out_ml: validSplit ? gift : null, remaining_ml: remaining, stock_status: remaining < 0 ? "REVIEW" : remaining === 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK" };
   });
   const stockAlerts = inventoryRows
     .filter((row) => Number.isFinite(Number(row.remaining_ml)) &&
@@ -741,7 +744,9 @@ export default function AnalyticsManager() {
             {visibleInventoryRows.length ? visibleInventoryRows.map((row) => <button type="button" className={"inventory-row inventory-select-row stock-" + String(row.stock_status || "ok").toLowerCase() + (inventoryProduct === row.product_name ? " is-selected" : "")} key={row.product_name} onClick={() => {setInventoryProduct(row.product_name);setInventoryNotice("");}} aria-pressed={inventoryProduct === row.product_name} title="Select fragrance for stock management">
               <div>
                 <strong>{row.product_name}</strong>
-                <small>{row.baseline_verified ? "Original size verified · " + number(row.opening_balance_ml, 1) + " ml" : row.estimated ? "PROVISIONAL · " + number(row.opening_balance_ml, 1) + " ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml · orders {number(row.consumed_since_tracking_ml, 1)} ml · manual {number(row.manual_out_ml, 1)} ml</small>
+                <small>{row.baseline_verified ? "Original size verified · " + number(row.opening_balance_ml, 1) + " ml" : row.estimated ? "PROVISIONAL · " + number(row.opening_balance_ml, 1) + " ml assumed" : "Measured opening " + number(row.opening_balance_ml, 1) + " ml"} · bottles {number(row.restock_ml, 1)} ml</small>
+                <small>Orders {row.orders_out_ml == null ? "—" : number(row.orders_out_ml, 2) + " ml"} · Gift samples {row.gift_out_ml == null ? "—" : number(row.gift_out_ml, 2) + " ml"} · Manual {number(row.manual_out_ml, 2)} ml{Number(row.resale_out_ml || 0) > 0 ? " · Bottle resale " + number(row.resale_out_ml, 2) + " ml" : ""}</small>
+                {row.orders_out_ml == null || row.gift_out_ml == null ? <small>Breakdown unavailable · recorded consumption {number(row.consumed_since_tracking_ml, 2)} ml</small> : null}
               </div>
               <div className="inventory-volume-cells">
                 <span><small>TOTAL</small><strong>{number(Number(row.opening_balance_ml || 0) + Number(row.restock_ml || 0) + Number(row.resale_in_ml || 0), 1)} ml</strong></span>
