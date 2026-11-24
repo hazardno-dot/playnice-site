@@ -326,11 +326,9 @@ function OrdersWorkspace() {
     order.courier_payment_status === "PAID" && !order.courier_batch_id
   ).length, [saleOrders]);
   const selectedEvents = useMemo(() => events.filter((event) => event.order_id === selectedId), [events, selectedId]);
-  const giftEditable = Boolean(
-    writeEnabled &&
-    (selected?.status === "NEW" || (selected?.status === "PACKED" && giftUnlocked))
-  );
-  const canUnlockGift = Boolean(writeEnabled && selected?.status === "PACKED");
+  const giftOverrideStatus = ["PACKED", "SHIPPED", "OUT_FOR_DELIVERY", "DELIVERED", "DELIVERY_FAILED", "RETURNED", "CANCELLED"].includes(selected?.status);
+  const canUnlockGift = Boolean(writeEnabled && giftOverrideStatus);
+  const giftEditable = Boolean(writeEnabled && (selected?.status === "NEW" || (canUnlockGift && giftUnlocked)));
   const savedGift = useMemo(() => {
     const data = selected?.source_payload || {};
     const sample = Array.isArray(data.giftSamples) ? data.giftSamples[0] : null;
@@ -515,7 +513,7 @@ function OrdersWorkspace() {
     }
 
     const confirmed = window.confirm(
-      "This order is already packed. Unlock gift editing to add or correct the gift before courier handoff?\n\nSaving the gift will not change the order status or resend the customer email."
+      "This order is no longer new. Unlock gift editing to add or correct the recorded gift?\n\nSaving the gift will not change the order status or resend the customer email."
     );
 
     setGiftUnlocked(confirmed);
@@ -877,13 +875,13 @@ function OrdersWorkspace() {
               />
               <span>{giftUnlocked ? "Gift editing unlocked" : "Unlock gift editing"}</span>
             </label> : null}
-            {selected?.status === "PACKED" ? <div className="orders-gift-lock-note">
+            {giftOverrideStatus ? <div className="orders-gift-lock-note">
               {giftUnlocked
                 ? "Editing is temporarily unlocked. Save gift will re-lock this section without changing the order status or resending the customer email."
-                : "Gift/sample is locked after packing. Unlock only to add or correct the gift before courier handoff."}
+                : "Gift/sample is locked by default. Unlock to add or correct the recorded gift."}
             </div> : null}
-            {selected && !["NEW","PACKED"].includes(selected.status) ? <div className="orders-gift-lock-note">
-              Gift/sample editing is unavailable after the order has been handed to the courier.
+            {selected && selected.status !== "NEW" && !giftOverrideStatus ? <div className="orders-gift-lock-note">
+              Gift/sample editing is unavailable for this order status.
             </div> : null}
             <div className="orders-gift-preview">
               <span>CURRENT RECORD</span>
