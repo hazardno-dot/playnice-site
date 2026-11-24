@@ -37,3 +37,8 @@ assert.equal(measured.gift_out_ml,2);
 assert.equal(measured.remaining_ml,90);
 assert.deepEqual(consumptionBreakdown(26,20,5),{orders_out_ml:null,gift_out_ml:null});
 console.log("PASS inventory consumption breakdown");
+
+// The split must retain parity with the storefront's shared accounting module.
+assert.equal(fs.readFileSync(path.join(root, "control-center/lib/inventory-accounting.mjs"), "utf8"), fs.readFileSync(path.join(root, "playnice-site/server/inventory-accounting.mjs"), "utf8"));
+assert.equal(row.orders_out_ml + row.gift_out_ml, row.consumed_since_tracking_ml);
+assert.equal(measured.orders_out_ml + measured.gift_out_ml + measured.manual_out_ml, 15);
