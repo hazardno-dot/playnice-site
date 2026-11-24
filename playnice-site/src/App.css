@@ -20033,3 +20033,11 @@ body.overlay-lock .header-system {
 .checkout-email-field > input { box-sizing: border-box; }
 .checkout-email-error { display: block; margin-top: 5px; color: #f4a7a3; font-size: 12px; line-height: 1.4; }
 .checkout-email-field > input[aria-invalid="true"] { border-color: rgba(244, 167, 163, 0.8); }
+
+/* Mobile Shop typography refinement — wear context only; preserve card geometry. */
+@media (max-width: 640px) {
+  .shop-section .product-card .product-card-decant-note {
+    color: #e2c58b;
+    font-style: normal;
+  }
+}
