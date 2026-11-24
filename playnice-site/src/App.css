@@ -20039,5 +20039,7 @@ body.overlay-lock .header-system {
   .shop-section .product-card .product-card-decant-note {
     color: #e2c58b;
     font-style: normal;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
   }
 }
