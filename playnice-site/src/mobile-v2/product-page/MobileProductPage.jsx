@@ -133,6 +133,8 @@ export default function MobileProductPage({
   const recommendationTrackRef = useRef(null);
   const accordionRef = useRef(null);
   const previousProductSlugRef = useRef(null);
+  const signatureTouchRef = useRef(null);
+  const suppressSignatureClickRef = useRef(false);
 
   useLayoutEffect(() => {
     if (!product?.slug) return;
@@ -195,6 +197,55 @@ export default function MobileProductPage({
     () => getProductSequenceNeighbors(products, product?.slug),
     [product?.slug]
   );
+
+  // Track touch only. Keep the native click path for taps and keyboard input.
+  const handleSignatureTouchStart = (event) => {
+    suppressSignatureClickRef.current = false;
+    signatureTouchRef.current = null;
+    if (event.touches.length !== 1) {
+      suppressSignatureClickRef.current = true;
+      return;
+    }
+    const touch = event.touches[0];
+    signatureTouchRef.current = { id: touch.identifier, x: touch.clientX, y: touch.clientY, moved: false };
+  };
+
+  const handleSignatureTouchMove = (event) => {
+    const start = signatureTouchRef.current;
+    if (!start) return;
+    if (event.touches.length !== 1) {
+      signatureTouchRef.current = null;
+      suppressSignatureClickRef.current = true;
+      return;
+    }
+    const touch = event.touches[0];
+    if (touch.identifier !== start.id) return;
+    if (Math.hypot(touch.clientX - start.x, touch.clientY - start.y) >= 10) {
+      start.moved = true;
+      suppressSignatureClickRef.current = true;
+    }
+  };
+
+  const handleSignatureTouchEnd = (event) => {
+    const start = signatureTouchRef.current;
+    signatureTouchRef.current = null;
+    if (!start || event.touches.length !== 0) return;
+    const touch = Array.from(event.changedTouches).find((item) => item.identifier === start.id);
+    if (!touch) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (start.moved || Math.hypot(dx, dy) >= 10) suppressSignatureClickRef.current = true;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    const neighbor = dx < 0 ? nextProduct : previousProduct;
+    if (!neighbor || !onOpenProduct) return;
+    setNoteMapOpen(false);
+    onOpenProduct(neighbor);
+  };
+
+  const handleSignatureTouchCancel = () => {
+    signatureTouchRef.current = null;
+    suppressSignatureClickRef.current = true;
+  };
 
   const sensoryHighlights = useMemo(() => {
     if (!profile) return [];
@@ -348,7 +399,17 @@ export default function MobileProductPage({
 
         <div
           className={`mobile-product-page__visual-frame ${noteMapOpen ? "is-note-map-open" : ""}`}
+          onTouchStart={handleSignatureTouchStart}
+          onTouchMove={handleSignatureTouchMove}
+          onTouchEnd={handleSignatureTouchEnd}
+          onTouchCancel={handleSignatureTouchCancel}
           onClickCapture={(event) => {
+            if (suppressSignatureClickRef.current && event.detail !== 0) {
+              suppressSignatureClickRef.current = false;
+              event.preventDefault();
+              event.stopPropagation();
+              return;
+            }
             if (!noteMapOpen) return;
             if (event.target.closest?.(".the-note-map__levels")) {
               setNoteMapOpen(false);
