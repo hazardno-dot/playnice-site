@@ -134,6 +134,8 @@ export default function MobileProductPage({
   const accordionRef = useRef(null);
   const previousProductSlugRef = useRef(null);
   const signatureTouchRef = useRef(null);
+  const signatureFrameRef = useRef(null);
+  const swipeScrollAnchorRef = useRef(null);
   const suppressSignatureClickRef = useRef(false);
 
   useLayoutEffect(() => {
@@ -143,11 +145,21 @@ export default function MobileProductPage({
     const isProductToProductNavigation =
       Boolean(previousSlug) && previousSlug !== product.slug;
 
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: isProductToProductNavigation ? "smooth" : "auto",
-    });
+    const swipeAnchor = swipeScrollAnchorRef.current;
+    swipeScrollAnchorRef.current = null;
+    const frame = signatureFrameRef.current;
+    if (isProductToProductNavigation && swipeAnchor?.slug === product.slug && frame) {
+      // Restore the Signature frame to the same viewport position before paint.
+      // A different product title or badge may change the document offset.
+      const delta = frame.getBoundingClientRect().top - swipeAnchor.viewportTop;
+      window.scrollTo({ top: window.scrollY + delta, left: 0, behavior: "instant" });
+    } else {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: isProductToProductNavigation ? "smooth" : "auto",
+      });
+    }
 
     previousProductSlugRef.current = product.slug;
 
@@ -238,6 +250,13 @@ export default function MobileProductPage({
     if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
     const neighbor = dx < 0 ? nextProduct : previousProduct;
     if (!neighbor || !onOpenProduct) return;
+    const frame = signatureFrameRef.current;
+    if (frame) {
+      swipeScrollAnchorRef.current = {
+        slug: neighbor.slug,
+        viewportTop: frame.getBoundingClientRect().top,
+      };
+    }
     setNoteMapOpen(false);
     onOpenProduct(neighbor);
   };
@@ -398,6 +417,7 @@ export default function MobileProductPage({
         ) : null}
 
         <div
+          ref={signatureFrameRef}
           className={`mobile-product-page__visual-frame ${noteMapOpen ? "is-note-map-open" : ""}`}
           onTouchStart={handleSignatureTouchStart}
           onTouchMove={handleSignatureTouchMove}
