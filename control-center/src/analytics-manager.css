@@ -331,7 +331,9 @@
 /* Keep search/sort visible; only the 115-row fragrance catalog scrolls. */
 .inventory-panel .inventory-catalog-scroll{
   max-height:clamp(320px,55vh,620px);
-  min-height:180px;
+  min-height:0;
+  align-content:start;
+  grid-auto-rows:max-content;
   overflow-y:auto;
   overscroll-behavior-y:contain;
   scrollbar-width:thin;
@@ -354,7 +356,7 @@
 }
 .inventory-protection-diagnostics{margin-top:0;margin-bottom:18px}
 @media(max-width:700px){
-  .inventory-panel .inventory-catalog-scroll{max-height:52vh;min-height:240px}
+  .inventory-panel .inventory-catalog-scroll{max-height:52vh;min-height:0}
 }
 
 /* Administrative-only stock advisory; never a customer-facing stock-out. */
