@@ -4136,6 +4136,55 @@ export const productCopy = {
       "en": "For lovers of dark fruit, warm spices and a sweet, seductive evening drydown.",
       "sr": "Za ljubitelje tamnog voća, toplih začina i slatke, zavodljive večernje baze."
     }
+  },
+
+  "Nishane Ani X Extrait de Parfum": {
+    "miniTag": {
+      "en": "🍈 Citrus / Vanilla",
+      "sr": "🍈 Citrusni / Vanilast"
+    },
+    "card": {
+      "en": "Citrus, melon and ginger over cool woods and creamy vanilla.",
+      "sr": "Citrusi, dinja i đumbir iznad hladnih drvenih nota i vanile."
+    },
+    "modal": {
+      "en": "Bergamot, melon and ginger open brightly. Lavender, rose and blackcurrant add depth, while vanilla, cashmere wood and ambergris form a soft mineral trail.",
+      "sr": "Bergamot, dinja i đumbir daju blistav početak. Lavanda, ruža i ribizla unose dubinu, dok vanila, kašmir drvo i ambergris grade mekan, mineralan trag."
+    },
+    "scentType": {
+      "en": "Citrus spicy amber vanilla",
+      "sr": "Citrusni, začinski, ambrasto-vanilast"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Dinja",
+        "Đumbir",
+        "Vanila",
+        "Ambergris"
+      ],
+      "en": [
+        "Honeydew Melon",
+        "Ginger",
+        "Vanilla",
+        "Ambergris"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Osvežavajući",
+        "Kremast",
+        "Elegantan"
+      ],
+      "en": [
+        "Refreshing",
+        "Creamy",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For vanilla lovers who want brightness, freshness and a cool mineral edge.",
+      "sr": "Za one koji vole bogatu vanilu, ali žele i svetlu, osvežavajuću stranu tog karaktera."
+    }
   }
 };
 

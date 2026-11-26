@@ -194,6 +194,10 @@ const entries = [
   {
     "sr": "Crna rolka, tamni kaput i kožne čizme. Za veče, bordo košulja i crne pantalone.",
     "en": "Black turtleneck, dark coat and leather boots. For evening, a burgundy shirt and black trousers."
+  },
+  {
+    "sr": "Krem rolka, svetli kaput i elegantne patike. Za veče, tamnoplava košulja i sako.",
+    "en": "Cream turtleneck, light coat and sleek sneakers. For evening, a navy shirt and blazer."
   }
 
 ];

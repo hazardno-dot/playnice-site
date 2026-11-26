@@ -192,6 +192,10 @@ export default [
   {
     "sr": "Kad planiraš da provališ u banku. Sa ovoliko trešnje i šafrana, policijski pas će preskočiti novac i krenuti pravo za tobom.",
     "en": "When planning a bank heist. With this much cherry and saffron, the police dog will ignore the money and follow your scent instead."
+  },
+  {
+    "sr": "Kad ideš u zoološki vrt. Ako polarni medved oseti ovu vanilu, preskočiće ogradu, pojesti čuvara i tražiti da mu spakuješ još 10 ml za poneti. (Prilikom pisanja ovog teksta nijedan čuvar nije stradao.)",
+    "en": "At the zoo. If a polar bear smells this vanilla, he'll jump the fence, eat the zookeeper and ask for another 10 ml to go. (No zookeepers were harmed in the making of this text.)"
   }
 
 ];

@@ -525,5 +525,10 @@ export const productWearContext = {
   "Mykonos Dark Secret Extrait de Parfum": {
     "sr": "Hladne večeri, koktel-bar, koncert i večera udvoje.",
     "en": "Cold evenings, cocktail bars, concerts and dinner for two."
+  },
+
+  "Nishane Ani X Extrait de Parfum": {
+    "sr": "Putovanja, grad, večera i promenljivo vreme.",
+    "en": "Travel, city days, dinner and changing weather."
   }
 };
