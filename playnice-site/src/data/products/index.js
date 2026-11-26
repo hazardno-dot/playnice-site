@@ -3476,6 +3476,32 @@ export const products = [
       heart: ["cinnamon","nutmeg","marigold","jasmine","praline"],
       base: ["amber","musk","tonka-bean","sandalwood"]
     }
+  },
+  {
+    id: 125,
+    addedAt: "2026-11-26T23:36:46.996Z",
+    slug: "nishane-ani-x",
+    name: "Nishane Ani X Extrait de Parfum",
+    modalName: "Nishane Ani X Extrait",
+    shortName: "Ani X",
+    category: "Niche",
+    image: "/products/nishane-ani-x.png",
+    sizes: {"2ml":9,"5ml":21,"10ml":39},
+    badge: "LUXURY PICK",
+    rating: 9,
+    ratingLabel: "PlayNice Pick",
+    season: "all",
+    moods: ["signature","rich","date"],
+    recommendations: ["nishane-hundred-silent-ways-x","xerjoff-naxos","goldfield-banks-ingenious-ginger"],
+    inspiredBy: {
+      name: "Original Nishane creation — Ani reinterpretation",
+      short: "Ani X Vanilla Amber DNA"
+    },
+    noteMap: {
+      top: ["bergamot","lemon","aqua-accord","honeydew-melon","cardamom","ginger","pink-pepper"],
+      heart: ["lavender","sage","green-apple","black-currant","rose","patchouli"],
+      base: ["cedarwood","cashmere","vanilla","ambergris","white-musk","sandalwood"]
+    }
   }
 
 ];

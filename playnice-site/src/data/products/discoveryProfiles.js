@@ -3756,6 +3756,37 @@ export const discoveryProfiles = {
     "cleanliness": 2.5,
     "versatility": 5.5,
     "gourmandness": 8.8
+  },
+
+  "nishane-ani-x": {
+    "date": 9,
+    "casual": 8,
+    "citrus": 8,
+    "office": 6.8,
+    "unisex": 9.2,
+    "warmth": 7.2,
+    "aquatic": 4.5,
+    "dryness": 4.2,
+    "evening": 8.8,
+    "powdery": 3,
+    "airiness": 5.8,
+    "darkness": 3.5,
+    "elegance": 9.2,
+    "feminine": 5.5,
+    "florality": 4.8,
+    "freshness": 7.8,
+    "longevity": 9,
+    "masculine": 6,
+    "spiciness": 6.3,
+    "sweetness": 7.4,
+    "woodiness": 7.2,
+    "creaminess": 8.2,
+    "fruitiness": 6.5,
+    "projection": 8.5,
+    "aromaticity": 6.8,
+    "cleanliness": 6.5,
+    "versatility": 8.5,
+    "gourmandness": 7.5
   }
 };
 
