@@ -2968,11 +2968,11 @@ export const products = [
     shortName: "Hundred Silent Ways X",
     category: "Niche",
     image: "/products/nishane-hundred-silent-ways-x.png",
-    sizes: {"2ml":12,"5ml":27,"10ml":49},
+    sizes: {"2ml": 9,"5ml": 21,"10ml": 39},
     badge: "LUXURY PICK",
     rating: 8.9,
     ratingLabel: "Niche Pick",
-    season: "all",
+    season: "winter",
     moods: ["elegant","date","rich"],
     recommendations: ["ysl-black-opium-le-parfum","my-geisha-unseen-extrait-de-parfum","gisada-luxury-collection-royal"],
     inspiredBy: {
