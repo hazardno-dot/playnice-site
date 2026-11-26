@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlayNice Atmosphere — Rain on Glass · Teardrop Motion Study v1.7</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0d0e10;color:#e8e0d3}
+#stage{position:relative;height:100svh;min-height:440px;overflow:hidden}
+#scene{width:100%;height:100%;display:block}
+#info{position:absolute;top:18px;left:18px;font-size:10px;letter-spacing:.16em;color:#c8baa3;pointer-events:none}
+#panel{position:fixed;z-index:5;left:16px;bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;max-width:calc(100vw - 32px);background:#141619e8;border:1px solid #e8cc9630;border-radius:12px;padding:12px;backdrop-filter:blur(12px);font-size:12px}
+button{border:0;border-radius:7px;padding:9px 12px;background:#c9aa77;color:#131313;font-weight:650;cursor:pointer}
+button.secondary{background:#353330;color:#e9e3d7}
+label{display:flex;align-items:center;gap:8px}
+#status{font-size:11px;color:#a99d8b}
+@media(prefers-reduced-motion:reduce){#status{color:#e9c596}}
+</style></head>
+<body>
+<main id="stage">
+<canvas id="scene" aria-label="Rain on glass study, featuring soft translucent drops refracting a dark PlayNice scene"></canvas>
+<div id="info">PLAYNICE ATMOSPHERE / OPTICAL REFRACTION STUDY / NOT PRODUCTION</div>
+</main>
+<div id="panel" role="group" aria-label="Rain prototype controls">
+<label><input id="enabled" type="checkbox" checked> Atmosphere on</label>
+<button id="one" type="button">One droplet</button>
+<button id="three" class="secondary" type="button">Three droplets</button>
+<button id="sceneToggle" class="secondary" type="button" aria-pressed="false">Journal layout</button>
+<span id="status" role="status">Initializing</span>
+</div>
+<script>
+(function(){
+'use strict';
+// This is a canvas-local optical refraction experiment, not refraction of arbitrary HTML.
+// This prototype deliberately does not attach effects to store pages.
+var canvas=document.getElementById('scene');
+var context=canvas.getContext('2d',{alpha:false});
+var base=document.createElement('canvas');
+var baseContext=base.getContext('2d',{alpha:false});
+var enabled=document.getElementById('enabled');
+var status=document.getElementById('status');
+var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+var drops=[],raf=0,scheduleId=0,firstId=0,lastFrame=0;
+var editorial=false;
+var viewW=0,viewH=0,dpr=1;
+var random=function(a,b){return a+Math.random()*(b-a);};
+var running=function(){return enabled.checked&&!reduce.matches&&!document.hidden;};
+function editorialBackdrop(){
+ // Representative editorial composition rendered inside the test canvas:
+ // useful for comparing visibility; NOT a screenshot of the real storefront.
+ var c=baseContext,w=viewW,h=viewH;
+ c.fillStyle='#171618';c.fillRect(0,0,w,h);
+ var grd=c.createLinearGradient(0,0,w,h*.55);grd.addColorStop(0,'#24252a');grd.addColorStop(.55,'#715744');grd.addColorStop(1,'#14171c');
+ c.fillStyle=grd;c.fillRect(0,0,w,h*.54);
+ var halo=c.createRadialGradient(w*.75,h*.20,3,w*.75,h*.20,w*.52);halo.addColorStop(0,'#ddb88475');halo.addColorStop(1,'#100e1200');
+ c.fillStyle=halo;c.fillRect(0,0,w,h*.55);
+ // Illustration of a product silhouette: scene detail for optical comparison.
+ c.save();c.translate(w*.77,h*.29);c.shadowColor='#000c';c.shadowBlur=25;
+ c.fillStyle='#080a0ddf';c.fillRect(-24,-63,48,124);c.shadowBlur=0;
+ var bottle=c.createLinearGradient(-23,0,24,0);bottle.addColorStop(0,'#07090dbb');bottle.addColorStop(.36,'#b8a0786b');bottle.addColorStop(.65,'#1c1c1ecc');bottle.addColorStop(1,'#080b10d9');
+ c.fillStyle=bottle;c.fillRect(-23,-48,46,108);c.fillStyle='#181a20';c.fillRect(-13,-74,26,26);c.fillStyle='#bcaa8a';c.font='8px Georgia';c.textAlign='center';c.fillText('PLAYNICE',0,18);c.restore();
+ c.textAlign='left';c.fillStyle='#d2b681';c.font='normal '+Math.min(43,w*.085)+'px Georgia';c.fillText('The art of',25,h*.23);c.fillText('a quiet moment.',25,h*.23+Math.min(49,w*.10));
+ c.fillStyle='#dfd5c8';c.font='10px system-ui';c.fillText('LE JOURNAL  /  EDITORIAL PREVIEW',25,h*.59);
+ c.fillStyle='#e7dfd3';c.font='normal '+Math.min(29,w*.052)+'px Georgia';c.fillText('A fragrance worth remembering',25,h*.65);
+ c.fillStyle='#a99f93';c.font='13px Georgia';
+ var lines=['A moment of stillness, somewhere between','the last light and the first breath of rain.','Small details become part of the story.','Even the quietest gesture can linger.','A scent. A memory. A different kind of day.'];
+ for(var i=0;i<lines.length;i++)c.fillText(lines[i],25,h*.71+i*24);
+}
+function background(){
+ baseContext.setTransform(dpr,0,0,dpr,0,0);
+ var g=baseContext.createLinearGradient(0,0,viewW,viewH);
+ g.addColorStop(0,'#090b10');g.addColorStop(.45,'#27221e');g.addColorStop(1,'#0b0d13');
+ baseContext.fillStyle=g;baseContext.fillRect(0,0,viewW,viewH);
+ var glow=baseContext.createRadialGradient(viewW*.83,viewH*.08,5,viewW*.83,viewH*.08,Math.max(viewW,viewH)*.67);
+ glow.addColorStop(0,'#b9905740');glow.addColorStop(.48,'#977c5010');glow.addColorStop(1,'#00000000');
+ baseContext.fillStyle=glow;baseContext.fillRect(0,0,viewW,viewH);
+ baseContext.strokeStyle='#d5b57c24';baseContext.lineWidth=1;
+ baseContext.strokeRect(18,18,viewW-36,viewH-36);
+ baseContext.textAlign='center';
+ baseContext.fillStyle='#d8b987';
+ baseContext.font='normal '+Math.min(100,Math.max(41,viewW*.095))+'px Georgia,serif';
+ baseContext.fillText('PlayNice.',viewW/2,viewH*.47);
+ baseContext.fillStyle='#b6a992';
+ baseContext.font='11px system-ui,sans-serif';
+ baseContext.fillText('R E M E M B E R .  P L A Y N I C E .',viewW/2,viewH*.54);
+ baseContext.fillStyle='#ded7cc';
+ baseContext.font='normal '+Math.min(30,Math.max(17,viewW*.028))+'px Georgia,serif';
+ baseContext.fillText('A quiet moment, held in glass.',viewW/2,viewH*.66);
+ baseContext.fillStyle='#a59b8d';baseContext.font='12px system-ui,sans-serif';
+ baseContext.fillText('A visual experiment in atmosphere.',viewW/2,viewH*.71);
+ if(editorial)editorialBackdrop();
+}
+function resize(){
+ dpr=Math.min(window.devicePixelRatio||1,2);
+ viewW=Math.max(1,canvas.clientWidth);viewH=Math.max(1,canvas.clientHeight);
+ canvas.width=base.width=Math.round(viewW*dpr);
+ canvas.height=base.height=Math.round(viewH*dpr);
+ background();draw();
+}
+function shape(ctx,x,y,w,h){
+ // Vertical teardrop: a tiny narrow upstream tail, expanding towards
+ // a rounded, weighted lower belly. It is a lens on glass, not a sphere.
+ ctx.beginPath();
+ ctx.moveTo(x-w*.055,y);
+ ctx.bezierCurveTo(x+w*.055,y+h*.065,x+w*.12,y+h*.16,x+w*.23,y+h*.28);
+ ctx.bezierCurveTo(x+w*.42,y+h*.44,x+w*.51,y+h*.62,x+w*.44,y+h*.78);
+ ctx.bezierCurveTo(x+w*.35,y+h*.98,x+w*.08,y+h*1.01,x-w*.13,y+h*.97);
+ ctx.bezierCurveTo(x-w*.43,y+h*.93,x-w*.54,y+h*.71,x-w*.41,y+h*.52);
+ ctx.bezierCurveTo(x-w*.33,y+h*.39,x-w*.15,y+h*.17,x-w*.055,y);
+ ctx.closePath();
+}
+function motionProgress(d,age){
+ var t=Math.min(1,Math.max(0,(age-d.hold)/d.moveMs));
+ if(d.mode==='fast'){
+  // Immediate slip, then gravity-led acceleration; reaches the bottom quickly.
+  return .23*t+.77*t*t;
+ }
+ if(d.mode==='oblique'){
+  // Slow release and gradual diagonal passage, never direction reversal.
+  return t*t*(3-2*t);
+ }
+ // Stick-slip: strictly increasing displacement with a flat slow interval.
+ if(t<.22)return t*.14;
+ if(t<.48)return .0308+(t-.22)*.64;
+ if(t<.69)return .1972+(t-.48)*.10;
+ return .2182+(t-.69)*(1-.2182)/.31;
+}
+function position(d,age){
+ var p=motionProgress(d,age);
+ return {x:d.x+p*d.horizontal,y:d.y+p*d.travel,p:p};
+}
+function wetTrail(ctx,d){
+ // Rain-on-glass v1.5: NO connected straight stroke. This is a short,
+ // irregular damp film (flecks) with independent beads and a fading lifetime.
+ var track=d.history;
+ if(track.length===0)return;
+ ctx.save();
+ for(var i=0;i<track.length;i++){
+  var sample=track[i],age=d.age-sample.t;
+  var remaining=Math.max(0,1-age/3300);
+  if(!remaining)continue;
+  var n=sample.seed;
+  // Irregularly distributed film islands. Many locations deliberately have gaps.
+  if(n>.71)continue;
+  var filmWidth=d.width*(.045+.12*sample.spread);
+  var filmLength=1.3+sample.spread*4.8;
+  var cx=sample.x+sample.offset;
+  var cy=sample.y+d.height*.26;
+  var op=remaining*remaining*(.025+.095*sample.spread);
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(sample.angle);
+  // Refracted fragment, never an opaque line. Optical distortion is local to
+  // the prototype canvas, not to HTML/React elements.
+  ctx.beginPath();
+  ctx.ellipse(0,0,filmWidth,filmLength,0,0,Math.PI*2);
+  ctx.clip();
+  var sx=Math.max(0,Math.min(base.width-2,Math.round((cx-filmWidth*1.1)*dpr)));
+  var sy=Math.max(0,Math.min(base.height-2,Math.round((cy-filmLength*1.1)*dpr)));
+  var sw=Math.max(1,Math.min(base.width-sx,Math.round(filmWidth*2.2*dpr)));
+  var sh=Math.max(1,Math.min(base.height-sy,Math.round(filmLength*2.2*dpr)));
+  ctx.globalAlpha=remaining*.28;
+  ctx.drawImage(base,sx,sy,sw,sh,cx-filmWidth*1.13,cy-filmLength*1.04,filmWidth*2.2,filmLength*2.2);
+  ctx.restore();
+  ctx.beginPath();
+  ctx.ellipse(cx,cy,filmWidth,filmLength,sample.angle,0,Math.PI*2);
+  ctx.fillStyle='rgba(187,209,219,'+op.toFixed(4)+')';ctx.fill();
+  ctx.lineWidth=.38;
+  ctx.strokeStyle='rgba(239,248,252,'+(op*.82).toFixed(4)+')';ctx.stroke();
+ }
+ // Pearl droplets left on the moving meniscus. They fade, and some chase
+ // the main drop while others stay pinned briefly to the glass.
+ for(var j=0;j<d.satellites.length;j++){
+  var bead=d.satellites[j],elapsed=d.age-bead.born;
+  var life=Math.max(0,1-elapsed/bead.life);
+  if(!life)continue;
+  var r=bead.radius*(.78+.22*life);
+  var spec=ctx.createLinearGradient(bead.x-r,bead.y-r,bead.x+r,bead.y+r);
+  spec.addColorStop(0,'rgba(255,255,255,'+(life*.47).toFixed(4)+')');
+  spec.addColorStop(.45,'rgba(203,225,235,'+(life*.065).toFixed(4)+')');
+  spec.addColorStop(1,'rgba(2,12,22,'+(life*.34).toFixed(4)+')');
+  ctx.beginPath();
+  ctx.ellipse(bead.x,bead.y,r,r*bead.aspect,bead.angle,0,Math.PI*2);
+  ctx.fillStyle=spec;ctx.fill();
+  ctx.strokeStyle='rgba(237,246,251,'+(life*.35).toFixed(4)+')';
+  ctx.lineWidth=.45;ctx.stroke();
+  ctx.beginPath();ctx.ellipse(bead.x-r*.25,bead.y-r*.28,r*.2,r*.26,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,'+(life*.5).toFixed(4)+')';ctx.fill();
+ }
+ ctx.restore();
+}
+function droplet(ctx,d){
+ var age=d.age;
+ var xy=position(d,age),p=xy.p,x=xy.x,y=xy.y;
+ var stretch=1+Math.min(.12,p*.16);
+ var w=d.width,h=d.height*stretch;
+ var appear=Math.min(1,age/650);
+ var fade=Math.min(1,(d.lifetime-age)/1200);
+ var alpha=Math.max(0,Math.min(appear,fade))*.85;
+ if(alpha<=0)return;
+ ctx.save();ctx.globalAlpha=alpha;
+ ctx.translate(x,y);ctx.rotate(d.tilt);
+ ctx.translate(-x,-y);
+ // Local image-space displacement: the clipped backdrop is magnified and shifted
+ // beneath the water volume. This is an approximation of optical lens refraction.
+ shape(ctx,x,y,w,h);ctx.save();ctx.clip();
+ var sx=(x-w*.53)*dpr,sy=(y-h*.04)*dpr,sw=w*1.06*dpr,sh=h*1.09*dpr;
+ // Guard against drawImage source rectangles reaching off-canvas.
+ var sourceX=Math.max(0,sx),sourceY=Math.max(0,sy);
+ var sourceR=Math.min(base.width,sx+sw),sourceB=Math.min(base.height,sy+sh);
+ if(sourceR>sourceX&&sourceB>sourceY){
+  var scale=1.12;
+  var dx=x-w*.53+(sourceX-sx)/dpr;
+  var dy=y-h*.04+(sourceY-sy)/dpr;
+  var dw=(sourceR-sourceX)/dpr,dh=(sourceB-sourceY)/dpr;
+  ctx.drawImage(base,sourceX,sourceY,sourceR-sourceX,sourceB-sourceY,
+    x+(dx-x)*scale+w*.035,y+(dy-y)*scale-h*.03,dw*scale,dh*scale);
+ }
+ var shade=ctx.createLinearGradient(x-w*.5,y,x+w*.6,y+h);
+ shade.addColorStop(0,'#ffffff13');shade.addColorStop(.31,'#d2e6ff08');
+ shade.addColorStop(.72,'#080c1740');shade.addColorStop(1,'#ffffff19');
+ ctx.fillStyle=shade;ctx.fillRect(x-w,y-h*.1,w*2,h*1.3);
+ ctx.restore();
+ // Dark inside-edge caustic + bright external rim with a directional specular highlight.
+ ctx.shadowColor='#0005';ctx.shadowBlur=2.5;ctx.shadowOffsetY=1;
+ ctx.strokeStyle='rgba(11,17,24,.18)';ctx.lineWidth=Math.max(.55,w*.042);shape(ctx,x,y,w,h);ctx.stroke();
+ ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+ var rim=ctx.createLinearGradient(x-w*.55,y,x+w*.55,y+h*.7);
+ rim.addColorStop(0,'#ffffffa8');rim.addColorStop(.30,'#dae7f62c');
+ rim.addColorStop(.65,'#0a10182b');rim.addColorStop(1,'#f9fcff73');
+ ctx.lineWidth=Math.max(.6,w*.038);ctx.strokeStyle=rim;shape(ctx,x,y,w,h);ctx.stroke();
+ var sparkle=ctx.createRadialGradient(x-w*.18,y+h*.22,0,x-w*.18,y+h*.22,w*.25);
+ sparkle.addColorStop(0,'#ffffffac');sparkle.addColorStop(.38,'#ffffff45');sparkle.addColorStop(1,'#ffffff00');
+ ctx.fillStyle=sparkle;ctx.beginPath();ctx.ellipse(x-w*.18,y+h*.22,w*.25,h*.19,-.25,0,Math.PI*2);ctx.fill();
+ ctx.restore();
+}
+function draw(){
+ context.setTransform(1,0,0,1,0,0);
+ context.clearRect(0,0,canvas.width,canvas.height);
+ context.drawImage(base,0,0);
+ context.setTransform(dpr,0,0,dpr,0,0);
+ for(var i=0;i<drops.length;i++)wetTrail(context,drops[i]);
+ for(var j=0;j<drops.length;j++)droplet(context,drops[j]);
+}
+function loop(t){
+ raf=0;if(!running()){lastFrame=0;return;}
+ var delta=Math.min(50,t-(lastFrame||t));lastFrame=t;
+ drops=drops.filter(function(d){
+  d.age+=delta;
+  var xy=position(d,d.age);
+  if(d.age>d.hold&&d.age<d.hold+d.moveMs&&d.age-d.lastSample>=95){
+   var previous=d.history[d.history.length-1];
+   var moved=!previous||Math.hypot(xy.x-previous.x,xy.y-previous.y)>1.5;
+   if(moved){
+    d.lastSample=d.age;
+    // Fragmentary wetting patches, with gaps and irregular lateral scatter.
+    if(Math.random()<.78){
+     d.history.push({x:xy.x,y:xy.y,t:d.age,seed:Math.random(),
+      spread:Math.random(),offset:random(-d.width*.24,d.width*.24),
+      angle:random(-.22,.22)});
+    }
+    if(Math.random()<.13&&d.satellites.length<7){
+     d.satellites.push({x:xy.x+random(-d.width*.31,d.width*.31),
+      y:xy.y+d.height*.23+random(-7,7),born:d.age,
+      radius:random(.5,1.45),aspect:random(1.05,1.65),
+      angle:random(-.24,.24),life:random(1700,4500),
+      pinned:random(200,1300),speed:random(.17,.5)});
+    }
+   }
+  }
+  d.history=d.history.filter(function(p){return d.age-p.t<3400;});
+  d.satellites=d.satellites.filter(function(dot){
+   var age=d.age-dot.born;
+   if(age>dot.pinned){
+    // Stick-slip start followed by delayed acceleration and eventual merger.
+    var factor=Math.min(.23,delta/1000*dot.speed);
+    dot.x+=(xy.x-dot.x)*factor;
+    dot.y+=(xy.y+d.height*.66-dot.y)*factor;
+   }
+   var merged=age>dot.pinned&&Math.hypot(dot.x-xy.x,dot.y-(xy.y+d.height*.66))<Math.max(1.5,d.width*.22);
+   return age<dot.life&&!merged;
+  });
+  return d.age<d.lifetime;
+ });
+ draw();
+ if(drops.length)raf=requestAnimationFrame(loop);else lastFrame=0;
+}
+function spawn(){
+ if(!running()||drops.length>=3)return;
+ var width=random(9,21);
+ var height=width*random(1.4,1.85);
+ var x=random(45,Math.max(46,viewW-45));
+ var y=random(65,Math.max(66,viewH*.59));
+ var mode=['fast','oblique','resistant'][Math.floor(random(0,3))];
+ var travel=mode==='fast'?random(175,300):mode==='oblique'?random(110,205):random(55,120);
+ var hold=mode==='fast'?random(550,1900):mode==='oblique'?random(1400,3600):random(2200,5400);
+ var moveMs=mode==='fast'?random(2400,4500):mode==='oblique'?random(7000,11500):random(12000,19000);
+ var horizontal=mode==='oblique'?random(9,24)*(Math.random()<.5?-1:1):random(-1.5,1.5);
+ drops.push({x:x,y:y,width:width,height:height,hold:hold,moveMs:moveMs,
+  lifetime:hold+moveMs+900,travel:travel,horizontal:horizontal,mode:mode,
+  tilt:random(-.035,.035),age:0,history:[],satellites:[],lastSample:0});
+ draw();if(!raf)raf=requestAnimationFrame(loop);
+}
+function queue(){
+ clearTimeout(scheduleId);
+ if(!running())return;
+ scheduleId=setTimeout(function(){
+  if(running()){spawn();if(Math.random()<.24)setTimeout(spawn,random(300,1200));}
+  queue();
+ },random(12000,39000));
+}
+function reset(){
+ clearTimeout(scheduleId);clearTimeout(firstId);
+ if(raf)cancelAnimationFrame(raf);raf=0;lastFrame=0;drops=[];draw();
+ status.textContent=!enabled.checked?'Disabled':reduce.matches?'Reduced motion: disabled':document.hidden?'Paused':'Ready · 0–3 droplets';
+ if(running()){queue();firstId=setTimeout(spawn,random(4000,8000));}
+}
+enabled.checked=localStorage.getItem('playnice-atmosphere-poc')!=='off';
+enabled.addEventListener('change',function(){localStorage.setItem('playnice-atmosphere-poc',enabled.checked?'on':'off');reset();});
+document.getElementById('one').addEventListener('click',spawn);
+document.getElementById('three').addEventListener('click',function(){spawn();spawn();spawn();});
+document.getElementById('sceneToggle').addEventListener('click',function(){editorial=!editorial;this.setAttribute('aria-pressed',editorial?'true':'false');this.textContent=editorial?'Minimal layout':'Journal layout';background();draw();});
+document.addEventListener('visibilitychange',reset);
+reduce.addEventListener('change',reset);
+window.addEventListener('resize',resize);
+resize();reset();
+})();
+</script></body></html>
