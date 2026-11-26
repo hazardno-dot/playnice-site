@@ -146,6 +146,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/marigold.webp",
     fallback: "•",
   },
+  "honeydew-melon": {
+    sr: "Medna dinja",
+    en: "Honeydew Melon",
+    image: "/note-map/honeydew-melon.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
