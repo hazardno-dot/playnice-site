@@ -725,7 +725,7 @@ export const products = [
     shortName: "Colonia Pura",
     category: "Niche",
     image: "/products/AdP-Colonia-Pura.png",
-    sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
+    sizes: { "2ml": 5, "5ml": 11, "10ml": 20 },
     badge: "LUXURY PICK",
     rating: 7.8,
     ratingLabel: "Well Loved",
