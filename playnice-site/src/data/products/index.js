@@ -665,7 +665,7 @@ export const products = [
     shortName: "Fico di Amalfi",
     category: "Niche",
     image: "/products/AdP-Fico.png",
-    sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
+    sizes: { "2ml": 5, "5ml": 11, "10ml": 20 },
     badge: "BESTSELLER",
     rating: 8.3,
     ratingLabel: "Audience Favorite",
