@@ -1009,7 +1009,7 @@ export const products = [
     shortName: "Aventus Cologne",
     category: "Niche",
     image: "/products/Creed-Aventus-Cologne.png",
-    sizes: { "2ml": 10, "5ml": 22, "10ml": 39 },
+    sizes: { "2ml": 11, "5ml": 25, "10ml": 45 },
     badge: "LUXURY PICK",
     rating: 9.3,
     ratingLabel: "Top Rated",
